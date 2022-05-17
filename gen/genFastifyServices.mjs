@@ -10,8 +10,8 @@ import {resolve} from "path";
 
 
 
-const SERVICES_DIR = resolve('./services')
-console.log(SERVICES_DIR)
+const SERVICES_DIR = resolve('../services')
+console.log({SERVICES_DIR})
 
 async function createTagDirectories(tags){
     for(const tag of tags){
@@ -158,12 +158,11 @@ import { ${name}Controller } from '${['.','controllers', name + 'Controller.js']
     }
 }
 
+// json spec contains response schema
 const spec = await readFile(resolve('../spec/apispec.json')).then(String).then(JSON.parse)
+// yaml spec is more correct
 const Yspec = await readFile(resolve('../spec/openapi.yaml')).then(String).then(YAML.parse)
 
-
-console.log(spec.paths['/company/{company_number}/charges'].get.responses[200])
-console.log(Yspec.paths['/company/{company_number}/charges'].get.responses[200].content)
 
 await createTagDirectories(Yspec.tags)
 await createRoutes(Yspec.paths, spec.paths)
