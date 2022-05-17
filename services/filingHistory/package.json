@@ -1,0 +1,16 @@
+{
+  "name": "filing-history",
+  "type": "module",
+  "scripts": {
+    "start": "node index | pino-pretty -c -t",
+    "build": "tsc -b ",
+    "watch": "tsc -b -w "
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "fastify": "^3.29.0"
+  },
+  "devDependencies": {
+    "pino-pretty": "^7.6.1"
+  }
+}
