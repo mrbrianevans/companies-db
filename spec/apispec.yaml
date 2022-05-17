@@ -1,0 +1,1321 @@
+openapi: 3.0.1
+info:
+  description: An API suite providing read only access to search and retrieve public
+    company data
+  title: Companies House Public Data API
+  version: 1.0.0
+servers:
+- url: https://api.company-information.service.gov.uk/
+- url: http://api.company-information.service.gov.uk/
+security:
+- api_key: []
+tags:
+- description: Registered office address
+  name: registeredOfficeAddress
+- description: Company profile
+  name: companyProfile
+- description: Search
+  name: search
+- description: Officers
+  name: officers
+- description: Registers
+  name: registers
+- description: Charges
+  name: charges
+- description: Filing history
+  name: filingHistory
+- description: Insolvency
+  name: insolvency
+- description: Exemptions
+  name: exemptions
+- description: Officer disqualifications
+  name: officerDisqualifications
+- description: Officer appointments
+  name: officerAppointments
+- description: UK Establishments
+  name: UKEstablishments
+- description: Persons with significant control
+  name: personsWithSignificantControl
+paths:
+  /company/{companyNumber}/registered-office-address:
+    get:
+      description: Get the current address of a company
+      parameters:
+      - description: Company number for registered office address
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/registeredOfficeAddress'
+          description: Successful response
+        "401":
+          content: {}
+          description: Not authorised
+        "404":
+          content: {}
+          description: Resource not found
+      security:
+      - oauth2:
+        - https://identity.company-information.service.gov.uk/user/profile.read
+        - https://api.company-information.service.gov.uk/company/{company_number}/registered-office-address.update
+      summary: Registered Office Address
+      tags:
+      - registeredOfficeAddress
+  /company/{companyNumber}:
+    get:
+      description: Get the basic company information
+      parameters:
+      - description: The company number of the basic information to return.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: companyProfile
+                type: object
+          description: readCompanyProfile
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Company profile
+      tags:
+      - companyProfile
+  /search:
+    get:
+      description: Search companies, officers and disqualified officers
+      parameters:
+      - description: The term being searched for.
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      - description: The number of search results to return per page.
+        in: query
+        name: items_per_page
+        schema:
+          type: integer
+      - description: The index of the first result item to return.
+        in: query
+        name: start_index
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: Search
+                type: object
+          description: Search all
+        "401":
+          content: {}
+          description: Not authorised
+      summary: Search All
+      tags:
+      - search
+      x-operationName: search all
+  /search/companies:
+    get:
+      description: Search company information
+      parameters:
+      - description: The term being searched for.
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      - description: The number of search results to return per page.
+        in: query
+        name: items_per_page
+        schema:
+          type: integer
+      - description: The index of the first result item to return.
+        in: query
+        name: start_index
+        schema:
+          type: integer
+      - description: Enumerable options to restrict search results. Space separate
+          multiple restriction options to combine functionality. For a "company name
+          availability" search use "active-companies legally-equivalent-company-name"
+          together.
+        in: query
+        name: restrictions
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: CompanySearch
+                type: object
+          description: Search company
+        "401":
+          content: {}
+          description: Not authorised
+      summary: Search companies
+      tags:
+      - search
+      x-operationName: search companies
+  /search/officers:
+    get:
+      description: Search for officer information
+      parameters:
+      - description: The term being searched for.
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      - description: The number of search results to return per page.
+        in: query
+        name: items_per_page
+        schema:
+          type: integer
+      - description: The index of the first result item to return.
+        in: query
+        name: start_index
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: OfficerSearch
+                type: object
+          description: Search officer
+        "401":
+          content: {}
+          description: Not authorised
+      summary: Search company officers
+      tags:
+      - search
+      x-operationName: search officers
+  /search/disqualified-officers:
+    get:
+      description: Search for disqualified officer information
+      parameters:
+      - description: The term being searched for.
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      - description: The number of search results to return per page.
+        in: query
+        name: items_per_page
+        schema:
+          type: integer
+      - description: The index of the first result item to return.
+        in: query
+        name: start_index
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: DisqualifiedOfficerSearch
+                type: object
+          description: Search all
+        "401":
+          content: {}
+          description: Not authorised
+      summary: Search disqualified officers
+      tags:
+      - search
+      x-operationName: search disqualified officers
+  /dissolved-search/companies:
+    get:
+      description: Search for a dissolved company
+      parameters:
+      - description: The company name being searched for
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      - description: Determines type of search. Options are alphabetical, best-match,
+          previous-name-dissolved
+        in: query
+        name: search_type
+        required: true
+        schema:
+          type: string
+      - description: The ordered_alpha_key_with_id used for alphabetical paging
+        in: query
+        name: search_above
+        schema:
+          type: string
+      - description: The ordered_alpha_key_with_id used for alphabetical paging
+        in: query
+        name: search_below
+        schema:
+          type: string
+      - description: The maximum number of results matching the search term(s) to
+          return with a range of 1 to 100
+        in: query
+        name: size
+        schema:
+          type: string
+      - description: Used in best-match and previous-name-dissolved search-type
+        in: query
+        name: start_index
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: List of dissolved companies
+                type: object
+          description: A list of dissolved companies
+        "404":
+          content: {}
+          description: No companies found
+        "422":
+          content: {}
+          description: Invalid size parameter, size must be greater than zero and
+            not greater than 100
+      summary: Search for a dissolved company
+      tags:
+      - search
+      x-operationName: search dissolved companies
+  /alphabetic-search/companies:
+    get:
+      description: Search for a company
+      parameters:
+      - description: The company name being searched for
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      - description: The ordered_alpha_key_with_id used for paging
+        in: query
+        name: search_above
+        schema:
+          type: string
+      - description: The ordered_alpha_key_with_id used for paging
+        in: query
+        name: search_below
+        schema:
+          type: string
+      - description: The maximum number of results matching the search term(s) to
+          return with a range of 1 to 100
+        in: query
+        name: size
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: List of companies
+                type: object
+          description: A list of companies
+        "404":
+          content: {}
+          description: No companies found
+        "422":
+          content: {}
+          description: Invalid size parameter, size must be greater than zero and
+            not greater than 100
+      summary: Search for a company
+      tags:
+      - search
+      x-operationName: search companies alphabetically
+  /advanced-search/companies:
+    get:
+      description: Advanced search for a company
+      parameters:
+      - description: The company name (must contain) advanced search filter
+        in: query
+        name: company_name
+        schema:
+          type: string
+      - description: The company status advanced search filter. To search using multiple
+          values, use a comma delimited list or multiple of the same key i.e. company_status=xxx&company_status=yyy
+        in: query
+        name: company_status
+        schema: {}
+      - description: The company subtype advanced search filter. To search using multiple
+          values, use a comma delimited list or multiple of the same key i.e. company_subtype=xxx&company_subtype=yyy
+        in: query
+        name: company_subtype
+        schema:
+          type: string
+      - description: The company type advanced search filter. To search using multiple
+          values, use a comma delimited list or multiple of the same key i.e. company_type=xxx&company_type=yyy
+        in: query
+        name: company_type
+        schema: {}
+      - description: The dissolved from date advanced search filter
+        in: query
+        name: dissolved_from
+        schema: {}
+      - description: The dissolved to date advanced search filter
+        in: query
+        name: dissolved_to
+        schema: {}
+      - description: The incorporated from date advanced search filter
+        in: query
+        name: incorporated_from
+        schema: {}
+      - description: The incorporated to date advanced search filter
+        in: query
+        name: incorporated_to
+        schema: {}
+      - description: The location advanced search filter
+        in: query
+        name: location
+        schema:
+          type: string
+      - description: The SIC codes advanced search filter. To search using multiple
+          values, use a comma delimited list or multiple of the same key i.e. sic_codes=xxx&sic_codes=yyy
+        in: query
+        name: sic_codes
+        schema: {}
+      - description: The maximum number of results matching the search term(s) to
+          return with a range of 1 to 5000
+        in: query
+        name: size
+        schema:
+          type: string
+      - description: The point at which results will start from i.e show search results
+          from result 20 (used for paging)
+        in: query
+        name: start_index
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: A list of companies
+                type: object
+          description: A list of companies
+        "400":
+          content: {}
+          description: Bad request
+        "404":
+          content: {}
+          description: No companies found
+      summary: Advanced search for a company
+      tags:
+      - search
+      x-operationName: advanced company search
+  /company/{company_number}/officers:
+    get:
+      description: List of all company officers
+      parameters:
+      - description: The company number of the officer list being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The number of officers to return per page.
+        in: query
+        name: items_per_page
+        schema:
+          type: integer
+      - description: The register_type determines which officer type is returned for
+          the registers view.The register_type field will only work if registers_view
+          is set to true
+        in: query
+        name: register_type
+        schema:
+          enum:
+          - directors
+          - secretaries
+          - llp-members
+          type: string
+      - description: Display register specific information. If given register is held
+          at Companies House, registers_view set to true and correct register_type
+          specified, only active officers will be returned. Those will also have full
+          date of birth.Defaults to false
+        in: query
+        name: register_view
+        schema:
+          enum:
+          - "true"
+          - "false"
+          type: string
+      - description: The offset into the entire result set that this page starts.
+        in: query
+        name: start_index
+        schema:
+          type: integer
+      - description: The field by which to order the result set.
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - appointed_on
+          - resigned_on
+          - surname
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: officerList
+                type: object
+          description: List the company officers
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                title: error
+                type: object
+          description: Bad request
+        "401":
+          content: {}
+          description: Unauthorised
+      summary: Company Officers
+      tags:
+      - officers
+      x-operationName: list
+  /company/{company_number}/appointments/{appointment_id}:
+    get:
+      description: Get details of an individual company officer appointment
+      parameters:
+      - description: The company number of the officer list being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The appointment id of the company officer appointment being requested.
+        in: path
+        name: appointment_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: officerSummary
+                type: object
+          description: Get a company officer appointment
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                title: error
+                type: object
+          description: Bad request
+        "401":
+          content: {}
+          description: Unauthorised
+      summary: Get a company officer appointment
+      tags:
+      - officers
+  /company/{company_number}/registers:
+    get:
+      description: Get the company registers information
+      parameters:
+      - description: The company number of the register information to return.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/companyRegister'
+          description: readCompanyRegister
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+      summary: Company registers
+      tags:
+      - registers
+  /company/{company_number}/filing-history/{transaction_id}:
+    get:
+      description: Get the filing history item of a company
+      parameters:
+      - description: The company number that the single filing is required for.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The transaction id that the filing history is required for.
+        in: path
+        name: transaction_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: filingHistoryItem
+                type: object
+          description: Filing history items resource returned
+        "401":
+          content:
+            application/json:
+              schema:
+                title: error
+                type: object
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Filing history not available for this company
+      summary: filingHistoryItem resource
+      tags:
+      - filingHistory
+  /company/{company_number}/filing-history:
+    get:
+      description: Get the filing history list of a company
+      parameters:
+      - description: One or more comma-separated categories to filter by (inclusive).
+        in: query
+        name: category
+        schema:
+          type: string
+      - description: The company number that the filing history is required for.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The number of filing history items to return per page.
+        in: query
+        name: items_per_page
+        schema:
+          type: integer
+      - description: The index into the entire result set that this result page starts.
+        in: query
+        name: start_index
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: filingHistoryList
+                type: object
+          description: Filing history items resource returned
+        "401":
+          content:
+            application/json:
+              schema:
+                title: error
+                type: object
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Filing history not available for this company
+      summary: filingHistoryList resource
+      tags:
+      - filingHistory
+      x-operationName: list
+  /company/{company_number}/exemptions:
+    get:
+      description: Company exemptions information
+      parameters:
+      - description: The company number that the exemptions list is quired for.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: companyExemptions
+                type: object
+          description: Successful response
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      tags:
+      - exemptions
+  /disqualified-officers/natural/{officer_id}:
+    get:
+      description: Get a natural officer's disqualifications
+      parameters:
+      - description: The disqualified officer's id.
+        in: path
+        name: officer_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: naturalDisqualification
+                type: object
+          description: Natural officer's disqualifications returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get natural officers disqualifications
+      tags:
+      - officerDisqualifications
+      x-operationName: get natural officer
+  /disqualified-officers/corporate/{officer_id}:
+    get:
+      description: Get a corporate officer's disqualifications
+      parameters:
+      - description: The disqualified officer id.
+        in: path
+        name: officer_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: corporateDisqualification
+                type: object
+          description: Corporate officer's disqualifications returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get a corporate officers disqualifications
+      tags:
+      - officerDisqualifications
+      x-operationName: get corporate officer
+  /officers/{officer_id}/appointments:
+    get:
+      description: List of all officer appointments
+      parameters:
+      - description: The officer id of the appointment list being requested.
+        in: path
+        name: officer_id
+        required: true
+        schema:
+          type: string
+      - description: The number of appointments to return per page.
+        in: query
+        name: items_per_page
+        schema:
+          type: integer
+      - description: The first row of data to retrieve, starting at 0. Use this parameter
+          as a pagination mechanism along with the items_per_page parameter.
+        in: query
+        name: start_index
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: appointmentList
+                type: object
+          description: List the officer appointments
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "400":
+          content: {}
+          description: Bad request
+        "401":
+          content: {}
+          description: Unauthorised
+      summary: Officer Appointment List
+      tags:
+      - officerAppointments
+      x-operationName: list
+  /company/{company_number}/charges:
+    get:
+      description: List of charges for a company.
+      parameters:
+      - description: The company number that the charge list is required for.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: chargeList
+                type: object
+          description: Resource returned
+        "401":
+          content: {}
+          description: Unauthorised
+        "404 ":
+          content: {}
+          description: Resource not found
+      summary: Charges
+      tags:
+      - charges
+      x-operationName: list
+  /company/{company_number}/charges/{charge_id}:
+    get:
+      description: Individual charge information for company.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: chargeDetails
+                type: object
+          description: Resource returned
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      tags:
+      - charges
+  /company/{company_number}/insolvency:
+    get:
+      description: Company insolvency information
+      parameters:
+      - description: The company number of the basic information to return.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: companyInsolvency
+                type: object
+          description: Company insolvency resource returned
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      tags:
+      - insolvency
+  /company/{company_number}/uk-establishments:
+    get:
+      description: List of uk-establishments companies
+      parameters:
+      - description: Company number
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: companyUKEstablishments
+                type: object
+          description: Resource returned
+        "401":
+          content: {}
+          description: Unauthorised
+      summary: Company UK Establishments
+      tags:
+      - UKEstablishments
+  /company/{company_number}/persons-with-significant-control:
+    get:
+      description: List of all persons with significant control (not statements)
+      parameters:
+      - description: The company number of the persons with significant control list
+          being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The number of persons with significant control to return per
+          page.
+        in: query
+        name: items_per_page
+        required: true
+        schema:
+          type: string
+      - description: The offset into the entire result set that this page starts.
+        in: query
+        name: start_index
+        required: true
+        schema:
+          type: string
+      - description: "Display register specific information. If register is held at\
+          \ Companies House and register_view is set to true, only PSCs which are\
+          \ active or were terminated during election period are shown together with\
+          \ full dates of birth where available. Accepted values are: -`true`  \n\
+          \ -`false`  \n Defaults to false."
+        in: query
+        name: register_view
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: list
+                type: object
+          description: readCompanyProfile
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: List the company persons with significant control
+      tags:
+      - personsWithSignificantControl
+      x-operationName: list
+  /company/{company_number}/persons-with-significant-control/individual/{psc_id}:
+    get:
+      description: Get details of an individual person with significant control
+      parameters:
+      - description: The company number of the person with significant control details
+          being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the person with significant control details being requested.
+        in: path
+        name: psc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: individual
+                type: object
+          description: IndividualPSC resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the individual person with significant control
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get individual
+  /company/{company_number}/persons-with-significant-control/corporate-entity/{psc_id}:
+    get:
+      description: Get details of a corporate entity with significant control
+      parameters:
+      - description: The company number of the corporate entity with significant control
+          details being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the corporate entity with significant control details
+          being requested.
+        in: path
+        name: psc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: corporateEntity
+                type: object
+          description: CorporateEntityPSC resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the corporate entity with significant control
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get corporate entities
+  /company/{company_number}/persons-with-significant-control/legal-person/{psc_id}:
+    get:
+      description: Get details of a legal person with significant control
+      parameters:
+      - description: The company number of the legal person with significant control
+          details being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the legal person with significant control details being
+          requested.
+        in: path
+        name: psc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: legalPerson
+                type: object
+          description: LegalPersonPSC resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the legal person with significant control
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get legal persons
+  /company/{company_number}/persons-with-significant-control-statements:
+    get:
+      description: List of all persons with significant control statements
+      parameters:
+      - description: The company number of the persons with significant control statements
+          list being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the legal person with significant control details being
+          requested.
+        in: query
+        name: items_per_page
+        required: true
+        schema:
+          type: integer
+      - description: The offset into the entire result set that this page starts.
+        in: query
+        name: start_index
+        required: true
+        schema:
+          type: integer
+      - description: "Display register specific information. If register is held at\
+          \ Companies House and register_view is set to true, only statements which\
+          \ are active or were withdrawn during election period are shown. Accepted\
+          \ values are: -`true`  \n -`false`  \n Defaults to false."
+        in: query
+        name: register_view
+        required: true
+        schema: {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: statementList
+                type: object
+          description: CompanyPSCStatements resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: List the company persons with significant control statements
+      tags:
+      - personsWithSignificantControl
+      x-operationName: list statements
+  /company/{company_number}/persons-with-significant-control-statements/{statement_id}:
+    get:
+      description: Get details of a person with significant control statement
+      parameters:
+      - description: The company number of the persons with significant control statements
+          list being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the person with significant control statement details
+          being requested.
+        in: path
+        name: statement_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: statement
+                type: object
+          description: PSCStatement resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the person with significant control statement
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get statement
+  /company/{company_number}/persons-with-significant-control/super-secure/{super_secure_id}:
+    get:
+      description: Get details of a super secure person with significant control
+      parameters:
+      - description: The company number of the super secure person with significant
+          control details being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the super secure person with significant control details
+          being requested.
+        in: path
+        name: super_secure_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: superSecure
+                type: object
+          description: SuperSecurePSC resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the super secure person with significant control
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get super secure person
+components:
+  schemas:
+    companyRegister:
+      example:
+        company_number: company_number
+        kind: registers
+        registers: '{}'
+        links: '{}'
+        etag: etag
+      properties:
+        links:
+          description: A set of URLs related to the resource, including self.
+          properties: {}
+          type: object
+        company_number:
+          description: The number of the company.
+          type: string
+        kind:
+          enum:
+          - registers
+          type: string
+        registers:
+          description: company registers information.
+          type: object
+        etag:
+          description: The ETag of the resource.
+          type: string
+      required:
+      - company_number
+      - kind
+      - links
+      - registers
+      title: companyRegister
+      type: object
+    registeredOfficeAddress:
+      example:
+        country: England
+        kind: registered-office-address
+        premises: premises
+        address_line_1: address_line_1
+        locality: locality
+        etag: etag
+        links: '{}'
+        address_line_2: address_line_2
+        region: region
+        postal_code: postal_code
+        po_box: po_box
+      properties:
+        etag:
+          description: The ETag of the resource.
+          readOnly: true
+          type: string
+        kind:
+          description: The type of resource.
+          enum:
+          - registered-office-address
+          readOnly: true
+          type: string
+        links:
+          description: Links to the related resources
+          properties: {}
+          readOnly: true
+          type: object
+        premises:
+          description: The property name or number.
+          type: string
+        address_line_1:
+          description: The first line of the address.
+          type: string
+        address_line_2:
+          description: The second line of the address.
+          type: string
+        locality:
+          description: The locality e.g London.
+          type: string
+        region:
+          description: The region e.g Surrey.
+          type: string
+        postal_code:
+          description: The postal code e.g CF14 3UZ.
+          type: string
+        country:
+          description: The country.
+          enum:
+          - England
+          - Wales
+          - Scotland
+          - Northern Ireland
+          - Great Britain
+          - United Kingdom
+          - Not specified
+          type: string
+        po_box:
+          description: The post-office box number.
+          type: string
+      required:
+      - address_line_1
+      - country
+      - locality
+      - premises
+      title: registeredOfficeAddress
+      type: object
+  securitySchemes:
+    api_key:
+      in: header
+      name: api_key
+      type: apiKey
+x-original-swagger-version: "2.0"

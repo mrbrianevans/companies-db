@@ -1,0 +1,13 @@
+{
+  "name": "proxy",
+  "description": "This downloads the OpenAPI specification for companies house API, and converts it to YAML",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node parseSpec && openapi-generator-cli generate -g go -o output -i apispec.json --skip-validate-spec && node copySpec"
+  },
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@openapitools/openapi-generator-cli": "^2.5.1"
+  }
+}
