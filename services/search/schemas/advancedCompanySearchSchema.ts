@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface AdvancedCompanySearchParams {
 
 }
@@ -41,7 +39,26 @@ export const AdvancedCompanySearchSchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {
+        "company_name": {
+          "type": "string"
+        },
+        "company_status": {},
+        "company_subtype": {
+          "type": "string"
+        },
+        "company_type": {},
+        "dissolved_from": {},
+        "dissolved_to": {},
+        "incorporated_from": {},
+        "incorporated_to": {},
+        "location": {
+          "type": "string"
+        },
+        "sic_codes": {},
+        "size": {
+          "type": "string"
+        },
+        "start_index": {
           "type": "string"
         }
       },
@@ -409,5 +426,6 @@ export const AdvancedCompanySearchSchema = {
   }
 } as const
 
-export type AdvancedCompanySearchResponse = FromSchema<typeof AdvancedCompanySearchSchema['schema']['response']['200']>
+// export type AdvancedCompanySearchResponse = FromSchema<typeof AdvancedCompanySearchSchema['schema']['response']['200']>
+export type AdvancedCompanySearchResponse = any
 

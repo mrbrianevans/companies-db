@@ -10,8 +10,7 @@ import {
 export const searchCompaniesAlphabeticallyController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{ Params: SearchCompaniesAlphabeticallyParams, Querystring: SearchCompaniesAlphabeticallyQueryString }>('/alphabetic-search/companies', schema, (req, res) => {
     const {} = req.params
-    const {, , , }
-    = req.query
+    const {q, search_above, search_below, size} = req.query
     return searchCompaniesAlphabetically(q, search_above, search_below, size)
   })
 }

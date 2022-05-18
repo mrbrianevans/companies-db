@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetInsolvencyParams {
   /** The company number that the insolvency list is required for. */
   company_number: string
@@ -240,5 +238,6 @@ export const GetInsolvencySchema = {
   }
 } as const
 
-export type GetInsolvencyResponse = FromSchema<typeof GetInsolvencySchema['schema']['response']['200']>
+// export type GetInsolvencyResponse = FromSchema<typeof GetInsolvencySchema['schema']['response']['200']>
+export type GetInsolvencyResponse = any
 

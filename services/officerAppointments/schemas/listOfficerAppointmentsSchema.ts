@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface ListOfficerAppointmentsParams {
   /** The officer id of the appointment list being requested. */
   officer_id: string
@@ -28,7 +26,10 @@ export const ListOfficerAppointmentsSchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {
+        "items_per_page": {
+          "type": "integer"
+        },
+        "start_index": {
           "type": "integer"
         }
       },
@@ -377,5 +378,6 @@ export const ListOfficerAppointmentsSchema = {
   }
 } as const
 
-export type ListOfficerAppointmentsResponse = FromSchema<typeof ListOfficerAppointmentsSchema['schema']['response']['200']>
+// export type ListOfficerAppointmentsResponse = FromSchema<typeof ListOfficerAppointmentsSchema['schema']['response']['200']>
+export type ListOfficerAppointmentsResponse = any
 

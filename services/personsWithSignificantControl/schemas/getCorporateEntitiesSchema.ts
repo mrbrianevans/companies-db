@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetCorporateEntitiesParams {
   /** The company number of the corporate entity with significant control details being requested. */
   company_number: string;
@@ -188,5 +186,6 @@ export const GetCorporateEntitiesSchema = {
   }
 } as const
 
-export type GetCorporateEntitiesResponse = FromSchema<typeof GetCorporateEntitiesSchema['schema']['response']['200']>
+// export type GetCorporateEntitiesResponse = FromSchema<typeof GetCorporateEntitiesSchema['schema']['response']['200']>
+export type GetCorporateEntitiesResponse = any
 

@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface ListPersonsWithSignificantControlParams {
   /** The company number of the persons with significant control list being requested. */
   company_number: string
@@ -35,14 +33,20 @@ export const ListPersonsWithSignificantControlSchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {
+        "items_per_page": {
+          "type": "string"
+        },
+        "start_index": {
+          "type": "string"
+        },
+        "register_view": {
           "type": "string"
         }
       },
       "required": [
-        null,
-        null,
-        null
+        "items_per_page",
+        "start_index",
+        "register_view"
       ]
     },
     "response": {
@@ -339,5 +343,6 @@ export const ListPersonsWithSignificantControlSchema = {
   }
 } as const
 
-export type ListPersonsWithSignificantControlResponse = FromSchema<typeof ListPersonsWithSignificantControlSchema['schema']['response']['200']>
+// export type ListPersonsWithSignificantControlResponse = FromSchema<typeof ListPersonsWithSignificantControlSchema['schema']['response']['200']>
+export type ListPersonsWithSignificantControlResponse = any
 

@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface ListChargesParams {
   /** The company number that the charge list is required for. */
   company_number: string
@@ -394,5 +392,6 @@ export const ListChargesSchema = {
   }
 } as const
 
-export type ListChargesResponse = FromSchema<typeof ListChargesSchema['schema']['response']['200']>
+// export type ListChargesResponse = FromSchema<typeof ListChargesSchema['schema']['response']['200']>
+export type ListChargesResponse = any
 

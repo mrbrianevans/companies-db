@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface SearchCompaniesAlphabeticallyParams {
 
 }
@@ -25,12 +23,21 @@ export const SearchCompaniesAlphabeticallySchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {
+        "q": {
+          "type": "string"
+        },
+        "search_above": {
+          "type": "string"
+        },
+        "search_below": {
+          "type": "string"
+        },
+        "size": {
           "type": "string"
         }
       },
       "required": [
-        null
+        "q"
       ]
     },
     "response": {
@@ -167,5 +174,6 @@ export const SearchCompaniesAlphabeticallySchema = {
   }
 } as const
 
-export type SearchCompaniesAlphabeticallyResponse = FromSchema<typeof SearchCompaniesAlphabeticallySchema['schema']['response']['200']>
+// export type SearchCompaniesAlphabeticallyResponse = FromSchema<typeof SearchCompaniesAlphabeticallySchema['schema']['response']['200']>
+export type SearchCompaniesAlphabeticallyResponse = any
 

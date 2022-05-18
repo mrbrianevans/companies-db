@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetNaturalOfficerParams {
   /** The disqualified officer's id. */
   officer_id: string
@@ -283,5 +281,6 @@ export const GetNaturalOfficerSchema = {
   }
 } as const
 
-export type GetNaturalOfficerResponse = FromSchema<typeof GetNaturalOfficerSchema['schema']['response']['200']>
+// export type GetNaturalOfficerResponse = FromSchema<typeof GetNaturalOfficerSchema['schema']['response']['200']>
+export type GetNaturalOfficerResponse = any
 

@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetUKEstablishmentsParams {
   /** Company number */
   company_number: string
@@ -121,5 +119,6 @@ export const GetUKEstablishmentsSchema = {
   }
 } as const
 
-export type GetUKEstablishmentsResponse = FromSchema<typeof GetUKEstablishmentsSchema['schema']['response']['200']>
+// export type GetUKEstablishmentsResponse = FromSchema<typeof GetUKEstablishmentsSchema['schema']['response']['200']>
+export type GetUKEstablishmentsResponse = any
 

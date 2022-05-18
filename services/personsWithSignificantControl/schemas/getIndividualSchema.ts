@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetIndividualParams {
   /** The company number of the person with significant control details being requested. */
   company_number: string;
@@ -220,5 +218,6 @@ export const GetIndividualSchema = {
   }
 } as const
 
-export type GetIndividualResponse = FromSchema<typeof GetIndividualSchema['schema']['response']['200']>
+// export type GetIndividualResponse = FromSchema<typeof GetIndividualSchema['schema']['response']['200']>
+export type GetIndividualResponse = any
 

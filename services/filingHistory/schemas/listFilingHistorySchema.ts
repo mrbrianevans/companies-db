@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface ListFilingHistoryParams {
   /** The company number that the filing history is required for. */
   company_number: string
@@ -30,7 +28,13 @@ export const ListFilingHistorySchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {
+        "category": {
+          "type": "string"
+        },
+        "items_per_page": {
+          "type": "integer"
+        },
+        "start_index": {
           "type": "integer"
         }
       },
@@ -277,5 +281,6 @@ export const ListFilingHistorySchema = {
   }
 } as const
 
-export type ListFilingHistoryResponse = FromSchema<typeof ListFilingHistorySchema['schema']['response']['200']>
+// export type ListFilingHistoryResponse = FromSchema<typeof ListFilingHistorySchema['schema']['response']['200']>
+export type ListFilingHistoryResponse = any
 

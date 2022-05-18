@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetExemptionsParams {
   /** The company number that the exemptions list is quired for. */
   company_number: string
@@ -209,5 +207,6 @@ export const GetExemptionsSchema = {
   }
 } as const
 
-export type GetExemptionsResponse = FromSchema<typeof GetExemptionsSchema['schema']['response']['200']>
+// export type GetExemptionsResponse = FromSchema<typeof GetExemptionsSchema['schema']['response']['200']>
+export type GetExemptionsResponse = any
 

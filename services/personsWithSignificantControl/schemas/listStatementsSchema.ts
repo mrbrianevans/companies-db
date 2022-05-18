@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface ListStatementsParams {
   /** The company number of the persons with significant control statements list being requested. */
   company_number: string
@@ -34,12 +32,18 @@ export const ListStatementsSchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {}
+        "items_per_page": {
+          "type": "integer"
+        },
+        "start_index": {
+          "type": "integer"
+        },
+        "register_view": {}
       },
       "required": [
-        null,
-        null,
-        null
+        "items_per_page",
+        "start_index",
+        "register_view"
       ]
     },
     "response": {
@@ -187,5 +191,6 @@ export const ListStatementsSchema = {
   }
 } as const
 
-export type ListStatementsResponse = FromSchema<typeof ListStatementsSchema['schema']['response']['200']>
+// export type ListStatementsResponse = FromSchema<typeof ListStatementsSchema['schema']['response']['200']>
+export type ListStatementsResponse = any
 

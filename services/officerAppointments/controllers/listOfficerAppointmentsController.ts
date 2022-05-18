@@ -10,8 +10,7 @@ import {
 export const listOfficerAppointmentsController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{ Params: ListOfficerAppointmentsParams, Querystring: ListOfficerAppointmentsQueryString }>('/officers/:officer_id/appointments', schema, (req, res) => {
     const {officer_id} = req.params
-    const {, }
-    = req.query
+    const {items_per_page, start_index} = req.query
     return listOfficerAppointments(officer_id, items_per_page, start_index)
   })
 }

@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetRegistersParams {
   /** The company number of the register information to return. */
   company_number: string
@@ -667,5 +665,6 @@ export const GetRegistersSchema = {
   }
 } as const
 
-export type GetRegistersResponse = FromSchema<typeof GetRegistersSchema['schema']['response']['200']>
+// export type GetRegistersResponse = FromSchema<typeof GetRegistersSchema['schema']['response']['200']>
+export type GetRegistersResponse = any
 

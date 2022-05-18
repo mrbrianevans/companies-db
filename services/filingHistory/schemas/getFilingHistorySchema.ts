@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetFilingHistoryParams {
   /** The company number that the single filing is required for. */
   company_number: string;
@@ -225,5 +223,6 @@ export const GetFilingHistorySchema = {
   }
 } as const
 
-export type GetFilingHistoryResponse = FromSchema<typeof GetFilingHistorySchema['schema']['response']['200']>
+// export type GetFilingHistoryResponse = FromSchema<typeof GetFilingHistorySchema['schema']['response']['200']>
+export type GetFilingHistoryResponse = any
 

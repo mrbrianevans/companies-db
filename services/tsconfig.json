@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES2021",
+    "sourceMap": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "references": [
+    {
+      "path": "registeredOfficeAddress"
+    },
+    {
+      "path": "companyProfile"
+    },
+    {
+      "path": "search"
+    },
+    {
+      "path": "officers"
+    },
+    {
+      "path": "registers"
+    },
+    {
+      "path": "charges"
+    },
+    {
+      "path": "filingHistory"
+    },
+    {
+      "path": "insolvency"
+    },
+    {
+      "path": "exemptions"
+    },
+    {
+      "path": "officerDisqualifications"
+    },
+    {
+      "path": "officerAppointments"
+    },
+    {
+      "path": "UKEstablishments"
+    },
+    {
+      "path": "personsWithSignificantControl"
+    }
+  ]
+}

@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetSuperSecurePersonParams {
   /** The company number of the super secure person with significant control details being requested. */
   company_number: string;
@@ -88,5 +86,6 @@ export const GetSuperSecurePersonSchema = {
   }
 } as const
 
-export type GetSuperSecurePersonResponse = FromSchema<typeof GetSuperSecurePersonSchema['schema']['response']['200']>
+// export type GetSuperSecurePersonResponse = FromSchema<typeof GetSuperSecurePersonSchema['schema']['response']['200']>
+export type GetSuperSecurePersonResponse = any
 

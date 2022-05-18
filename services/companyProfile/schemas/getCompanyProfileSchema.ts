@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface GetCompanyProfileParams {
   /** The company number of the basic information to return. */
   company_number: string
@@ -658,5 +656,6 @@ export const GetCompanyProfileSchema = {
   }
 } as const
 
-export type GetCompanyProfileResponse = FromSchema<typeof GetCompanyProfileSchema['schema']['response']['200']>
+// export type GetCompanyProfileResponse = FromSchema<typeof GetCompanyProfileSchema['schema']['response']['200']>
+export type GetCompanyProfileResponse = any
 

@@ -10,8 +10,7 @@ import {
 export const searchDissolvedCompaniesController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{ Params: SearchDissolvedCompaniesParams, Querystring: SearchDissolvedCompaniesQueryString }>('/dissolved-search/companies', schema, (req, res) => {
     const {} = req.params
-    const {, , , , , }
-    = req.query
+    const {q, search_type, search_above, search_below, size, start_index} = req.query
     return searchDissolvedCompanies(q, search_type, search_above, search_below, size, start_index)
   })
 }

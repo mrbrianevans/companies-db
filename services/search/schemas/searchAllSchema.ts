@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface SearchAllParams {
 
 }
@@ -23,12 +21,18 @@ export const SearchAllSchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {
+        "q": {
+          "type": "string"
+        },
+        "items_per_page": {
+          "type": "integer"
+        },
+        "start_index": {
           "type": "integer"
         }
       },
       "required": [
-        null
+        "q"
       ]
     },
     "response": {
@@ -246,5 +250,6 @@ export const SearchAllSchema = {
   }
 } as const
 
-export type SearchAllResponse = FromSchema<typeof SearchAllSchema['schema']['response']['200']>
+// export type SearchAllResponse = FromSchema<typeof SearchAllSchema['schema']['response']['200']>
+export type SearchAllResponse = any
 

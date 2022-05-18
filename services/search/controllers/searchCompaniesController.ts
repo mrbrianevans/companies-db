@@ -10,8 +10,7 @@ import {
 export const searchCompaniesController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{ Params: SearchCompaniesParams, Querystring: SearchCompaniesQueryString }>('/search/companies', schema, (req, res) => {
     const {} = req.params
-    const {, , , }
-    = req.query
+    const {q, items_per_page, start_index, restrictions} = req.query
     return searchCompanies(q, items_per_page, start_index, restrictions)
   })
 }

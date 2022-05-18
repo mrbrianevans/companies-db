@@ -1,5 +1,3 @@
-import {FromSchema} from "json-schema-to-ts";
-
 export interface ListOfficersParams {
   /** The company number of the officer list being requested. */
   company_number: string
@@ -34,7 +32,28 @@ export const ListOfficersSchema = {
     "querystring": {
       "type": "object",
       "properties": {
-        "undefined": {
+        "items_per_page": {
+          "type": "integer"
+        },
+        "register_type": {
+          "enum": [
+            "directors",
+            "secretaries",
+            "llp-members"
+          ],
+          "type": "string"
+        },
+        "register_view": {
+          "enum": [
+            "true",
+            "false"
+          ],
+          "type": "string"
+        },
+        "start_index": {
+          "type": "integer"
+        },
+        "order_by": {
           "enum": [
             "appointed_on",
             "resigned_on",
@@ -468,5 +487,6 @@ export const ListOfficersSchema = {
   }
 } as const
 
-export type ListOfficersResponse = FromSchema<typeof ListOfficersSchema['schema']['response']['200']>
+// export type ListOfficersResponse = FromSchema<typeof ListOfficersSchema['schema']['response']['200']>
+export type ListOfficersResponse = any
 
