@@ -83,9 +83,8 @@ export const GetLegalPersonsSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           address: {
             description: 'The address of the person with significant control.',
@@ -130,9 +129,8 @@ export const GetLegalPersonsSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           identification: {
             description: '',
@@ -151,9 +149,8 @@ export const GetLegalPersonsSchema = {
                 },
               },
               required: ['legal_authority', 'legal_form'],
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           natures_of_control: {
             description:
@@ -161,11 +158,12 @@ export const GetLegalPersonsSchema = {
             type: 'array',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetLegalPersonsResponse = FromSchema<typeof GetLegalPersonsSchema['schema']['response']['200']>
-export type GetLegalPersonsResponse = any // temporary until schemas can be fixed
+export type GetLegalPersonsResponse = FromSchema<
+  typeof GetLegalPersonsSchema['schema']['response']['200']
+>
+//export type GetLegalPersonsResponse = any // temporary until schemas can be fixed

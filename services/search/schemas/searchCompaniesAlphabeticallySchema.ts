@@ -96,7 +96,6 @@ export const SearchCompaniesAlphabeticallySchema = {
                         'The type of company associated with the company',
                     },
                   },
-                  type: 'object',
                 },
               },
               kind: {
@@ -154,7 +153,6 @@ export const SearchCompaniesAlphabeticallySchema = {
                           'The type of company associated with the company',
                       },
                     },
-                    type: 'object',
                   },
                   {
                     description:
@@ -162,9 +160,7 @@ export const SearchCompaniesAlphabeticallySchema = {
                   },
                 ],
               },
-              type: 'array',
             },
-            type: 'object',
           },
         ],
       },
@@ -172,5 +168,7 @@ export const SearchCompaniesAlphabeticallySchema = {
   },
 } as const
 
-// export type SearchCompaniesAlphabeticallyResponse = FromSchema<typeof SearchCompaniesAlphabeticallySchema['schema']['response']['200']>
-export type SearchCompaniesAlphabeticallyResponse = any // temporary until schemas can be fixed
+export type SearchCompaniesAlphabeticallyResponse = FromSchema<
+  typeof SearchCompaniesAlphabeticallySchema['schema']['response']['200']
+>
+//export type SearchCompaniesAlphabeticallyResponse = any // temporary until schemas can be fixed

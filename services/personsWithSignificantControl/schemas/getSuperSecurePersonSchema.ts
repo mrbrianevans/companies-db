@@ -63,16 +63,16 @@ export const GetSuperSecurePersonSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetSuperSecurePersonResponse = FromSchema<typeof GetSuperSecurePersonSchema['schema']['response']['200']>
-export type GetSuperSecurePersonResponse = any // temporary until schemas can be fixed
+export type GetSuperSecurePersonResponse = FromSchema<
+  typeof GetSuperSecurePersonSchema['schema']['response']['200']
+>
+//export type GetSuperSecurePersonResponse = any // temporary until schemas can be fixed

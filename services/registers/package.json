@@ -1,5 +1,5 @@
 {
-  "name": "registers",
+  "name": "registers-service",
   "description": "Registers",
   "type": "module",
   "scripts": {

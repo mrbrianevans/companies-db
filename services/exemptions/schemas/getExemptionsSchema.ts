@@ -39,7 +39,6 @@ export const GetExemptionsSchema = {
                 },
               },
               required: ['self'],
-              type: 'object',
             },
             type: 'array',
           },
@@ -78,7 +77,6 @@ export const GetExemptionsSchema = {
                             },
                           },
                           required: ['exempt_from'],
-                          type: 'object',
                         },
                       },
                       exemption_type: {
@@ -86,12 +84,9 @@ export const GetExemptionsSchema = {
                         type: 'string',
                         enum: ['psc-exempt-as-trading-on-regulated-market'],
                       },
-                      type: 'array',
                     },
                     required: ['exemption_type', 'items'],
-                    type: 'object',
                   },
-                  type: 'array',
                 },
                 psc_exempt_as_shares_admitted_on_market: {
                   description:
@@ -116,7 +111,6 @@ export const GetExemptionsSchema = {
                             },
                           },
                           required: ['exempt_from'],
-                          type: 'object',
                         },
                       },
                       exemption_type: {
@@ -124,11 +118,8 @@ export const GetExemptionsSchema = {
                         enum: ['psc-exempt-as-shares-admitted-on-market'],
                         type: 'string',
                       },
-                      type: 'array',
                     },
-                    type: 'object',
                   },
-                  type: 'array',
                 },
                 disclosure_transparency_rules_chapter_five_applies: {
                   description:
@@ -151,7 +142,6 @@ export const GetExemptionsSchema = {
                             },
                           },
                           required: ['exempt_from'],
-                          type: 'object',
                         },
                         type: 'array',
                       },
@@ -162,24 +152,20 @@ export const GetExemptionsSchema = {
                         ],
                         type: 'string',
                       },
-                      type: 'array',
                     },
                     required: ['exemption_type', 'items'],
-                    type: 'object',
                   },
-                  type: 'array',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetExemptionsResponse = FromSchema<typeof GetExemptionsSchema['schema']['response']['200']>
-export type GetExemptionsResponse = any // temporary until schemas can be fixed
+export type GetExemptionsResponse = FromSchema<
+  typeof GetExemptionsSchema['schema']['response']['200']
+>
+//export type GetExemptionsResponse = any // temporary until schemas can be fixed

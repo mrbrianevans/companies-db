@@ -90,9 +90,8 @@ export const GetIndividualSchema = {
                 },
               },
               required: ['month', 'year'],
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           name: {
             description: 'Name of the person with significant control.',
@@ -125,9 +124,8 @@ export const GetIndividualSchema = {
                 },
               },
               required: ['surname'],
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           links: {
             description:
@@ -146,9 +144,8 @@ export const GetIndividualSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           nationality: {
             description:
@@ -199,9 +196,8 @@ export const GetIndividualSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           natures_of_control: {
             description:
@@ -209,11 +205,12 @@ export const GetIndividualSchema = {
             type: 'array',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetIndividualResponse = FromSchema<typeof GetIndividualSchema['schema']['response']['200']>
-export type GetIndividualResponse = any // temporary until schemas can be fixed
+export type GetIndividualResponse = FromSchema<
+  typeof GetIndividualSchema['schema']['response']['200']
+>
+//export type GetIndividualResponse = any // temporary until schemas can be fixed

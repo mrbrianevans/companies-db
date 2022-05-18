@@ -52,7 +52,7 @@ export const GetCorporateOfficerSchema = {
           links: {
             description:
               'Links to other resources associated with this officer disqualification resource.',
-            type: 'array',
+            type: 'object',
             items: {
               title: 'links',
               properties: {
@@ -62,7 +62,6 @@ export const GetCorporateOfficerSchema = {
                 },
               },
               required: ['self'],
-              type: 'object',
             },
           },
           disqualifications: {
@@ -78,7 +77,7 @@ export const GetCorporateOfficerSchema = {
                 address: {
                   description:
                     'The address of the disqualified officer as provided by the disqualifying authority.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'address',
                     properties: {
@@ -111,7 +110,6 @@ export const GetCorporateOfficerSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 company_names: {
@@ -176,12 +174,11 @@ export const GetCorporateOfficerSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 reason: {
                   description: 'The reason for the disqualification.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'reason',
                     properties: {
@@ -207,7 +204,6 @@ export const GetCorporateOfficerSchema = {
                       },
                     },
                     required: ['description_identifier', 'act'],
-                    type: 'object',
                   },
                 },
               },
@@ -218,7 +214,6 @@ export const GetCorporateOfficerSchema = {
                 'disqualified_until',
                 'reason',
               ],
-              type: 'object',
             },
           },
           permissions_to_act: {
@@ -253,15 +248,15 @@ export const GetCorporateOfficerSchema = {
                   format: 'date',
                 },
               },
-              type: 'object',
             },
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetCorporateOfficerResponse = FromSchema<typeof GetCorporateOfficerSchema['schema']['response']['200']>
-export type GetCorporateOfficerResponse = any // temporary until schemas can be fixed
+export type GetCorporateOfficerResponse = FromSchema<
+  typeof GetCorporateOfficerSchema['schema']['response']['200']
+>
+//export type GetCorporateOfficerResponse = any // temporary until schemas can be fixed

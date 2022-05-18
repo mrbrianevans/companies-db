@@ -4,54 +4,80 @@
     "build": "registeredOfficeAddress"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "company-profile":
     "build": "companyProfile"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "search":
     "build": "search"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "officers":
     "build": "officers"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "registers":
     "build": "registers"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "charges":
     "build": "charges"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "filing-history":
     "build": "filingHistory"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "insolvency":
     "build": "insolvency"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "exemptions":
     "build": "exemptions"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "officer-disqualifications":
     "build": "officerDisqualifications"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "officer-appointments":
     "build": "officerAppointments"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "ukestablishments":
     "build": "UKEstablishments"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "persons-with-significant-control":
     "build": "personsWithSignificantControl"
     "networks":
       - "microservices"
+    "env_file":
+      - ".env"
   "gateway":
     "image": "caddy"
     "volumes":
@@ -60,6 +86,17 @@
       - "3000:80"
     "networks":
       - "microservices"
+  "auth-db":
+    "image": "redis"
+    "networks":
+      - "auth"
+  "auth-service":
+    "build": "auth"
+    "networks":
+      - "auth"
+      - "microservices"
 "networks":
   "microservices":
+    "driver": "bridge"
+  "auth":
     "driver": "bridge"

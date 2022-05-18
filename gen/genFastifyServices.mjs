@@ -32,14 +32,15 @@ async function createTagDirectories(tags) {
         version: '3',
         services: Object.fromEntries(tags.map((tag, i) => [kebabCase(tag.name), {
             build: tag.name,
-            // ports: [`${3001 + i}:3000`],
-            networks: ['microservices']
+            networks: ['microservices'],
+            env_file: ['.env']
         }]).concat([['gateway', {
             image: 'caddy',
             volumes: ['./Caddyfile:/etc/caddy/Caddyfile'],
             ports: ['3000:80'], networks: ['microservices']
-        }]])),
-        networks: {microservices: {driver: 'bridge'}}
+        }], ['auth-db', {image: 'redis', networks: ['auth']}],
+        ['auth-service', {build: 'auth', networks: ['auth', 'microservices']}]])),
+        networks: {microservices: {driver: 'bridge'}, auth: {driver: 'bridge'}}
     }, {defaultStringType: 'QUOTE_DOUBLE'}))
     await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(`import Fastify from 'fastify'
 // --- import controllers ---
@@ -87,7 +88,7 @@ await fastify.listen(3000, '::')
     for (const tag of tags) {
         await mkdir(resolve(SERVICES_DIR, tag.name), {recursive: true})
         await writeFile(resolve(SERVICES_DIR, tag.name, 'package.json'), JSON.stringify({
-            "name": tag.name,
+            "name": kebabCase(tag.name+'-service'),
             "description": tag.description,
             "type": "module",
             "scripts": {
@@ -141,7 +142,7 @@ COPY controllers controllers/
 COPY service service/
 COPY schemas schemas/
 RUN npm exec tsc -- -b --clean
-RUN ls && ls schemas && npm run build
+RUN npm run build
 EXPOSE 3000
 CMD ["npm", "run", "start"]
 `)
@@ -153,7 +154,7 @@ CMD ["npm", "run", "start"]
 
 const isObject = obj => obj !== null && typeof obj === 'object';
 
-// sets the "type" attribute of schemas for arrays and objects correctly
+// sets the "type" attribute of schemas for arrays and objects correctly. modifies input
 function correctObjectTypes(schema) {
     if (!isObject(schema)) return
     else if ('properties' in schema) schema.type = 'object'
@@ -162,6 +163,16 @@ function correctObjectTypes(schema) {
         if (isObject(schema[schemaElement])) {
             correctObjectTypes(schema[schemaElement])
         }
+    }
+}
+// remove erroneous items key, and bring its children up a level
+function flattenItems(schema){
+    if (!isObject(schema)) return
+    else if ('items' in schema) {
+        for (const item in schema.items) {
+            schema[item] = schema.items[item]
+        }
+        delete schema.items
     }
 }
 
@@ -195,7 +206,7 @@ async function createRoutes(paths, responsePaths) {
         const op = camelCase(operationName ?? 'get')
         const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op,
             Name = name.replace(/^\w/, l => l.toUpperCase())
-        if (responses?.[200]?.schema) correctObjectTypes(responses[200].schema)
+        if (responses?.[200]?.schema) flattenItems(responses[200].schema)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', Name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
@@ -223,29 +234,51 @@ export const ${Name}Schema = {
         }, null, 2)}
 } as const
 
-// export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['response']['200']>
-export type ${Name}Response = any // temporary until schemas can be fixed
+export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['response']['200']>
+//export type ${Name}Response = any // temporary until schemas can be fixed
         
         `))
         await writeFile(resolve(SERVICES_DIR, tag, 'controllers', name + 'Controller.ts'), prettyTs(`
 import {FastifyPluginAsync} from "fastify";
 import {${name}} from "../service/${name}.js";
+import { reflect, auth } from "./reflect.js";
 import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${Name}Schema.js";
 
 
 
 export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
-  fastify.get<{Params: ${Name}Params, Querystring: ${Name}QueryString}>('${path.replace(/\{(.*?)}/g, (whole, pName) => ':' + pName)}', schema, (req, res)=>{
+  fastify.get<{Params: ${Name}Params, Querystring: ${Name}QueryString}>('${path.replace(/\{(.*?)}/g, (whole, pName) => ':' + pName)}', schema, async (req, res)=>{
     const {${parameters.filter(isPath).map(getName).join(', ')}} = req.params
     const {${parameters.filter(isQuery).map(getName).join(', ')}} = req.query
+      const ratelimit = await auth({ Authorization: req.headers.authorization })
+      res.header('X-Ratelimit-Limit', ratelimit.limit)
+      res.header('X-Ratelimit-Remain', ratelimit.remain)
+      res.header('X-Ratelimit-Reset', ratelimit.reset)
+      res.header('X-Ratelimit-Window', ratelimit.window)
+    return reflect(req.url)
     return ${name}(${processParams(parameters)})
   })
 }
 
         `))
-function convertSchemaToTypedef(){
+        // this reflects requests to the companies house api
+        await writeFile(resolve(SERVICES_DIR, tag, 'controllers', 'reflect.ts'), prettyTs(`
+        import pino from 'pino'
+const logger = pino()
+        const apiUrl = 'https://api.company-information.service.gov.uk'
+const headers =  {Authorization: 'Basic '+Buffer.from(process.env.RESTAPIKEY+':').toString('base64')}
 
+export async function reflect(path){
+ const res = await fetch(apiUrl+path, {headers})
+  logger.info({path, status: res.status},'Requesting official API')
+ return await res.json()
 }
+export async function auth(headers) {
+  const ratelimit = await fetch('http://auth-service:3000', { headers }).then(r=>r.json())
+  logger.info({ratelimit}, 'Fetched ratelimit from auth service')
+  return ratelimit
+}
+        `))
         // write service stub
         await writeFile(resolve(SERVICES_DIR, tag, 'service', name + '.ts'), prettyTs(`
 import type { ${Name}Response } from "../schemas/${Name}Schema.js";
@@ -288,3 +321,4 @@ const Yspec = await readFile(resolve('../spec/openapi.yaml')).then(String).then(
 
 await createTagDirectories(Yspec.tags)
 await createRoutes(Yspec.paths, spec.paths)
+// console.log(Object.keys(Yspec.paths).map(p=>`"${p}": [{query: {}, params: {company_number: getCompanyNumber()}}]`).join(',\n\t'))

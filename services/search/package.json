@@ -1,5 +1,5 @@
 {
-  "name": "search",
+  "name": "search-service",
   "description": "Search",
   "type": "module",
   "scripts": {

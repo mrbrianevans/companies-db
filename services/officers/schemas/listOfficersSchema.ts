@@ -113,9 +113,8 @@ export const ListOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 appointed_on: {
                   description: 'The date on which the officer was appointed.',
@@ -170,9 +169,8 @@ export const ListOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 country_of_residence: {
                   description: "The officer's country of residence.",
@@ -197,9 +195,8 @@ export const ListOfficersSchema = {
                       },
                     },
                     required: ['month', 'year'],
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 links: {
                   description:
@@ -226,14 +223,12 @@ export const ListOfficersSchema = {
                               type: 'string',
                             },
                           },
-                          type: 'object',
                         },
-                        type: 'array',
+                        type: 'object',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 name: {
                   description: 'Corporate or natural officer name.',
@@ -326,9 +321,8 @@ export const ListOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 resigned_on: {
                   description: 'The date on which the officer resigned.',
@@ -354,7 +348,6 @@ export const ListOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                   type: 'array',
                 },
@@ -394,9 +387,8 @@ export const ListOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
               },
               required: [
@@ -406,7 +398,6 @@ export const ListOfficersSchema = {
                 'name',
                 'officer_role',
               ],
-              type: 'object',
             },
             type: 'array',
           },
@@ -430,9 +421,8 @@ export const ListOfficersSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           resigned_count: {
             description: 'The number of resigned officers in this result set.',
@@ -447,7 +437,6 @@ export const ListOfficersSchema = {
             description: 'The total number of officers in this result set.',
             type: 'integer',
           },
-          type: 'array',
         },
         required: [
           'etag',
@@ -460,11 +449,12 @@ export const ListOfficersSchema = {
           'active_count',
           'resigned_count',
         ],
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type ListOfficersResponse = FromSchema<typeof ListOfficersSchema['schema']['response']['200']>
-export type ListOfficersResponse = any // temporary until schemas can be fixed
+export type ListOfficersResponse = FromSchema<
+  typeof ListOfficersSchema['schema']['response']['200']
+>
+//export type ListOfficersResponse = any // temporary until schemas can be fixed

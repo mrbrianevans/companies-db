@@ -83,9 +83,8 @@ export const GetCorporateEntitiesSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           address: {
             description: 'The address of the person with significant control.',
@@ -130,9 +129,8 @@ export const GetCorporateEntitiesSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           identification: {
             description: '',
@@ -166,9 +164,8 @@ export const GetCorporateEntitiesSchema = {
                 },
               },
               required: ['legal_authority', 'legal_form'],
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           natures_of_control: {
             description:
@@ -176,11 +173,12 @@ export const GetCorporateEntitiesSchema = {
             type: 'array',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetCorporateEntitiesResponse = FromSchema<typeof GetCorporateEntitiesSchema['schema']['response']['200']>
-export type GetCorporateEntitiesResponse = any // temporary until schemas can be fixed
+export type GetCorporateEntitiesResponse = FromSchema<
+  typeof GetCorporateEntitiesSchema['schema']['response']['200']
+>
+//export type GetCorporateEntitiesResponse = any // temporary until schemas can be fixed

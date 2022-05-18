@@ -75,9 +75,8 @@ export const GetOfficersSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           appointed_on: {
             description: 'The date on which the officer was appointed.',
@@ -132,9 +131,8 @@ export const GetOfficersSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           country_of_residence: {
             description: "The officer's country of residence.",
@@ -159,9 +157,8 @@ export const GetOfficersSchema = {
                 },
               },
               required: ['month', 'year'],
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           links: {
             description:
@@ -188,14 +185,12 @@ export const GetOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           name: {
             description: 'Corporate or natural officer name.',
@@ -288,9 +283,8 @@ export const GetOfficersSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           resigned_on: {
             description: 'The date on which the officer resigned.',
@@ -316,7 +310,6 @@ export const GetOfficersSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
             type: 'array',
           },
@@ -355,17 +348,17 @@ export const GetOfficersSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
         },
         required: ['address', 'appointed_on', 'links', 'name', 'officer_role'],
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetOfficersResponse = FromSchema<typeof GetOfficersSchema['schema']['response']['200']>
-export type GetOfficersResponse = any // temporary until schemas can be fixed
+export type GetOfficersResponse = FromSchema<
+  typeof GetOfficersSchema['schema']['response']['200']
+>
+//export type GetOfficersResponse = any // temporary until schemas can be fixed

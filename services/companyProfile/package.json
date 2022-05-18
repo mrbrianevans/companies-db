@@ -1,5 +1,5 @@
 {
-  "name": "companyProfile",
+  "name": "company-profile-service",
   "description": "Company profile",
   "type": "module",
   "scripts": {

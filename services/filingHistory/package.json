@@ -1,5 +1,5 @@
 {
-  "name": "filingHistory",
+  "name": "filing-history-service",
   "description": "Filing history",
   "type": "module",
   "scripts": {

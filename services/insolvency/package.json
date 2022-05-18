@@ -1,5 +1,5 @@
 {
-  "name": "insolvency",
+  "name": "insolvency-service",
   "description": "Insolvency",
   "type": "module",
   "scripts": {

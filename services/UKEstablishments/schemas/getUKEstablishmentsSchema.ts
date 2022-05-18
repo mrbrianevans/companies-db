@@ -38,7 +38,7 @@ export const GetUKEstablishmentsSchema = {
             enum: ['ukestablishment-companies'],
           },
           links: {
-            type: 'array',
+            type: 'object',
             description: 'UK Establishment Resources related to this company.',
             items: {
               title: 'self_links',
@@ -49,7 +49,6 @@ export const GetUKEstablishmentsSchema = {
                   description: 'Link to this company.',
                 },
               },
-              type: 'object',
             },
           },
           items: {
@@ -82,7 +81,7 @@ export const GetUKEstablishmentsSchema = {
                 },
                 links: {
                   description: 'Resources related to this company.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'links',
                     required: ['company'],
@@ -92,20 +91,18 @@ export const GetUKEstablishmentsSchema = {
                         description: 'The link to the company.',
                       },
                     },
-                    type: 'object',
                   },
                 },
               },
-              type: 'object',
             },
           },
-          type: 'array',
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetUKEstablishmentsResponse = FromSchema<typeof GetUKEstablishmentsSchema['schema']['response']['200']>
-export type GetUKEstablishmentsResponse = any // temporary until schemas can be fixed
+export type GetUKEstablishmentsResponse = FromSchema<
+  typeof GetUKEstablishmentsSchema['schema']['response']['200']
+>
+//export type GetUKEstablishmentsResponse = any // temporary until schemas can be fixed

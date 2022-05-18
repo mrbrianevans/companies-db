@@ -58,7 +58,6 @@ export const SearchAllSchema = {
                 description: 'The ETag of the resource',
               },
             },
-            type: 'object',
           },
         ],
         properties: {
@@ -86,7 +85,7 @@ export const SearchAllSchema = {
                         'A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member).',
                     },
                     links: {
-                      type: 'array',
+                      type: 'object',
                       description: 'The URL of the search result.',
                       items: {
                         title: 'LinksModel',
@@ -97,7 +96,6 @@ export const SearchAllSchema = {
                               'The URL of the resource being returned by the search item.',
                           },
                         },
-                        type: 'object',
                       },
                     },
                     description: {
@@ -110,7 +108,7 @@ export const SearchAllSchema = {
                         'Summary information for the result showing additional details that have matched.',
                     },
                     matches: {
-                      type: 'array',
+                      type: 'object',
                       description:
                         'A list of members and arrays of character offset defining substrings that matched the search terms.',
                       items: {
@@ -141,11 +139,9 @@ export const SearchAllSchema = {
                               'An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms.',
                           },
                         },
-                        type: 'object',
                       },
                     },
                   },
-                  type: 'object',
                 },
               ],
               required: [
@@ -195,7 +191,7 @@ export const SearchAllSchema = {
                 address: {
                   description:
                     "The address of the company's registered office.",
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'registeredOfficeAddress',
                     required: ['address_line_1'],
@@ -242,20 +238,18 @@ export const SearchAllSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
               },
-              type: 'object',
             },
           },
-          type: 'array',
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type SearchAllResponse = FromSchema<typeof SearchAllSchema['schema']['response']['200']>
-export type SearchAllResponse = any // temporary until schemas can be fixed
+export type SearchAllResponse = FromSchema<
+  typeof SearchAllSchema['schema']['response']['200']
+>
+//export type SearchAllResponse = any // temporary until schemas can be fixed

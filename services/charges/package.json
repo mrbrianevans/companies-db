@@ -1,5 +1,5 @@
 {
-  "name": "charges",
+  "name": "charges-service",
   "description": "Charges",
   "type": "module",
   "scripts": {

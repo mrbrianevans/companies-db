@@ -54,7 +54,6 @@ export const GetFilingHistorySchema = {
                     'A description of the annotation.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
                 },
               },
-              type: 'object',
             },
             type: 'array',
           },
@@ -79,7 +78,6 @@ export const GetFilingHistorySchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
             type: 'array',
           },
@@ -121,7 +119,7 @@ export const GetFilingHistorySchema = {
           links: {
             description:
               'Links to other resources associated with this filing history item.',
-            type: 'array',
+            type: 'object',
             items: {
               title: 'filingHistoryItemLinks',
               properties: {
@@ -135,7 +133,6 @@ export const GetFilingHistorySchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
           },
           pages: {
@@ -188,7 +185,6 @@ export const GetFilingHistorySchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
             type: 'array',
           },
@@ -202,11 +198,12 @@ export const GetFilingHistorySchema = {
             type: 'string',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetFilingHistoryResponse = FromSchema<typeof GetFilingHistorySchema['schema']['response']['200']>
-export type GetFilingHistoryResponse = any // temporary until schemas can be fixed
+export type GetFilingHistoryResponse = FromSchema<
+  typeof GetFilingHistorySchema['schema']['response']['200']
+>
+//export type GetFilingHistoryResponse = any // temporary until schemas can be fixed

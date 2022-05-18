@@ -1,0 +1,21 @@
+{
+  "name": "auth",
+  "description": "Authentication and rate limiting",
+  "type": "module",
+  "scripts": {
+    "start": "node index | pino-pretty -c -t",
+    "build": "tsc -b",
+    "watch": "tsc -b -w"
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "fastify": "^3.29.0",
+    "redis": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.34",
+    "json-schema-to-ts": "^2.4.0",
+    "pino-pretty": "^7.6.1",
+    "typescript": "^4.6.4"
+  }
+}

@@ -94,7 +94,6 @@ export const ListFilingHistorySchema = {
                           'A description of the annotation.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
                       },
                     },
-                    type: 'object',
                   },
                   type: 'array',
                 },
@@ -120,7 +119,6 @@ export const ListFilingHistorySchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                   type: 'array',
                 },
@@ -162,7 +160,7 @@ export const ListFilingHistorySchema = {
                 links: {
                   description:
                     'Links to other resources associated with this filing history item.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'filingHistoryItemLinks',
                     properties: {
@@ -176,7 +174,6 @@ export const ListFilingHistorySchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 pages: {
@@ -229,7 +226,6 @@ export const ListFilingHistorySchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                   type: 'array',
                 },
@@ -243,7 +239,6 @@ export const ListFilingHistorySchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
             type: 'array',
           },
@@ -267,13 +262,13 @@ export const ListFilingHistorySchema = {
               'The total number of filing history items for this company.',
             type: 'integer',
           },
-          type: 'array',
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type ListFilingHistoryResponse = FromSchema<typeof ListFilingHistorySchema['schema']['response']['200']>
-export type ListFilingHistoryResponse = any // temporary until schemas can be fixed
+export type ListFilingHistoryResponse = FromSchema<
+  typeof ListFilingHistorySchema['schema']['response']['200']
+>
+//export type ListFilingHistoryResponse = any // temporary until schemas can be fixed

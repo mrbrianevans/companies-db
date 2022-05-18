@@ -92,7 +92,6 @@ export const GetInsolvencySchema = {
                         description: 'The case date, described by `date_type`.',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 notes: {
@@ -146,7 +145,6 @@ export const GetInsolvencySchema = {
                               description: 'The country.',
                             },
                           },
-                          type: 'object',
                         },
                       },
                       appointed_on: {
@@ -176,11 +174,10 @@ export const GetInsolvencySchema = {
                         ],
                       },
                     },
-                    type: 'object',
                   },
                 },
                 links: {
-                  type: 'array',
+                  type: 'object',
                   description: 'The practitioners for the case.',
                   items: {
                     title: 'links',
@@ -191,7 +188,6 @@ export const GetInsolvencySchema = {
                           'The link to the charge this case is lodged against.',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 number: {
@@ -199,7 +195,6 @@ export const GetInsolvencySchema = {
                   description: 'The case number.',
                 },
               },
-              type: 'object',
             },
           },
           status: {
@@ -219,11 +214,12 @@ export const GetInsolvencySchema = {
             ],
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetInsolvencyResponse = FromSchema<typeof GetInsolvencySchema['schema']['response']['200']>
-export type GetInsolvencyResponse = any // temporary until schemas can be fixed
+export type GetInsolvencyResponse = FromSchema<
+  typeof GetInsolvencySchema['schema']['response']['200']
+>
+//export type GetInsolvencyResponse = any // temporary until schemas can be fixed

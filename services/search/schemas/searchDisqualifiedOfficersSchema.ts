@@ -58,7 +58,6 @@ export const SearchDisqualifiedOfficersSchema = {
                 description: 'The ETag of the resource',
               },
             },
-            type: 'object',
           },
         ],
         required: ['kind', 'total_results', 'start_index', 'items_per_page'],
@@ -86,7 +85,7 @@ export const SearchDisqualifiedOfficersSchema = {
                         'A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member).',
                     },
                     links: {
-                      type: 'array',
+                      type: 'object',
                       description: 'The URL of the search result.',
                       items: {
                         title: 'LinksModel',
@@ -97,7 +96,6 @@ export const SearchDisqualifiedOfficersSchema = {
                               'The URL of the resource being returned by the search item.',
                           },
                         },
-                        type: 'object',
                       },
                     },
                     description: {
@@ -110,7 +108,7 @@ export const SearchDisqualifiedOfficersSchema = {
                         'Summary information for the result showing additional details that have matched.',
                     },
                     matches: {
-                      type: 'array',
+                      type: 'object',
                       description:
                         'A list of members and arrays of character offset defining substrings that matched the search terms.',
                       items: {
@@ -141,11 +139,9 @@ export const SearchDisqualifiedOfficersSchema = {
                               'An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms.',
                           },
                         },
-                        type: 'object',
                       },
                     },
                   },
-                  type: 'object',
                 },
               ],
               required: [
@@ -176,7 +172,7 @@ export const SearchDisqualifiedOfficersSchema = {
                     'An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations.',
                 },
                 address: {
-                  type: 'array',
+                  type: 'object',
                   description:
                     'The address of the disqualified officer as provided by the disqualifying authority.',
                   items: {
@@ -211,20 +207,18 @@ export const SearchDisqualifiedOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
               },
-              type: 'object',
             },
           },
-          type: 'array',
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type SearchDisqualifiedOfficersResponse = FromSchema<typeof SearchDisqualifiedOfficersSchema['schema']['response']['200']>
-export type SearchDisqualifiedOfficersResponse = any // temporary until schemas can be fixed
+export type SearchDisqualifiedOfficersResponse = FromSchema<
+  typeof SearchDisqualifiedOfficersSchema['schema']['response']['200']
+>
+//export type SearchDisqualifiedOfficersResponse = any // temporary until schemas can be fixed

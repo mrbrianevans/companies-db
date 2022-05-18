@@ -51,7 +51,7 @@ export const GetCompanyProfileSchema = {
                 accounting_reference_date: {
                   description:
                     'The Accounting Reference Date (ARD) of the company.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'accountingReferenceDate',
                     type: 'object',
@@ -71,7 +71,7 @@ export const GetCompanyProfileSchema = {
                 },
                 last_accounts: {
                   description: 'The last company accounts filed.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'lastAccounts',
                     properties: {
@@ -105,7 +105,7 @@ export const GetCompanyProfileSchema = {
                         ],
                       },
                     },
-                    type: 'object',
+                    type: 'string',
                     required: ['type', 'made_up_to'],
                   },
                 },
@@ -127,7 +127,7 @@ export const GetCompanyProfileSchema = {
                 },
               },
             },
-            type: 'array',
+            type: 'object',
           },
           annual_return: {
             description:
@@ -161,7 +161,7 @@ export const GetCompanyProfileSchema = {
                 },
               },
             },
-            type: 'array',
+            type: 'object',
           },
           can_file: {
             description: 'Flag indicating whether this company can file.',
@@ -198,9 +198,8 @@ export const GetCompanyProfileSchema = {
                   type: 'boolean',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           company_name: {
             description: 'The name of the company.',
@@ -261,7 +260,7 @@ export const GetCompanyProfileSchema = {
               properties: {
                 originating_registry: {
                   description: 'Company origin informations',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'originatingRegistry',
                     properties: {
@@ -276,7 +275,6 @@ export const GetCompanyProfileSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 registration_number: {
@@ -320,9 +318,8 @@ export const GetCompanyProfileSchema = {
                               type: 'integer',
                             },
                           },
-                          type: 'object',
                         },
-                        type: 'array',
+                        type: 'object',
                       },
                       account_period_to: {
                         description:
@@ -341,9 +338,8 @@ export const GetCompanyProfileSchema = {
                               type: 'integer',
                             },
                           },
-                          type: 'object',
                         },
-                        type: 'array',
+                        type: 'object',
                       },
                       must_file_within: {
                         description:
@@ -357,14 +353,12 @@ export const GetCompanyProfileSchema = {
                               type: 'integer',
                             },
                           },
-                          type: 'object',
                         },
-                        type: 'array',
+                        type: 'object',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 business_activity: {
                   description: 'Type of business undertaken by the company.',
@@ -395,14 +389,12 @@ export const GetCompanyProfileSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           last_full_members_list_date: {
             description: 'The date of last full members list update.',
@@ -460,9 +452,8 @@ export const GetCompanyProfileSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           service_address: {
             description:
@@ -503,9 +494,8 @@ export const GetCompanyProfileSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           sic_codes: {
             description: 'SIC codes for this company.',
@@ -536,7 +526,6 @@ export const GetCompanyProfileSchema = {
                 },
               },
               required: ['name', 'effective_from', 'ceased_on'],
-              type: 'object',
             },
             type: 'array',
           },
@@ -645,9 +634,7 @@ export const GetCompanyProfileSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
           },
           links: {
             description:
@@ -676,16 +663,16 @@ export const GetCompanyProfileSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetCompanyProfileResponse = FromSchema<typeof GetCompanyProfileSchema['schema']['response']['200']>
-export type GetCompanyProfileResponse = any // temporary until schemas can be fixed
+export type GetCompanyProfileResponse = FromSchema<
+  typeof GetCompanyProfileSchema['schema']['response']['200']
+>
+//export type GetCompanyProfileResponse = any // temporary until schemas can be fixed

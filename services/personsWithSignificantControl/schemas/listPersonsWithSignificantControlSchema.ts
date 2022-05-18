@@ -108,9 +108,8 @@ export const ListPersonsWithSignificantControlSchema = {
                       },
                     },
                     required: ['month', 'year'],
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 name: {
                   description: 'Name of the person with significant control.',
@@ -144,9 +143,8 @@ export const ListPersonsWithSignificantControlSchema = {
                       },
                     },
                     required: ['surname'],
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 links: {
                   description:
@@ -165,9 +163,8 @@ export const ListPersonsWithSignificantControlSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 nationality: {
                   description:
@@ -206,9 +203,8 @@ export const ListPersonsWithSignificantControlSchema = {
                       },
                     },
                     required: ['legal_authority', 'legal_form'],
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 ceased: {
                   description:
@@ -274,9 +270,8 @@ export const ListPersonsWithSignificantControlSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 natures_of_control: {
                   description:
@@ -287,7 +282,6 @@ export const ListPersonsWithSignificantControlSchema = {
                   type: 'array',
                 },
               },
-              type: 'object',
             },
             type: 'array',
           },
@@ -328,11 +322,9 @@ export const ListPersonsWithSignificantControlSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
-          type: 'array',
         },
         required: [
           'items_per_page',
@@ -343,11 +335,12 @@ export const ListPersonsWithSignificantControlSchema = {
           'ceased_count',
           'links',
         ],
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type ListPersonsWithSignificantControlResponse = FromSchema<typeof ListPersonsWithSignificantControlSchema['schema']['response']['200']>
-export type ListPersonsWithSignificantControlResponse = any // temporary until schemas can be fixed
+export type ListPersonsWithSignificantControlResponse = FromSchema<
+  typeof ListPersonsWithSignificantControlSchema['schema']['response']['200']
+>
+//export type ListPersonsWithSignificantControlResponse = any // temporary until schemas can be fixed

@@ -1,5 +1,5 @@
 {
-  "name": "officers",
+  "name": "officers-service",
   "description": "Officers",
   "type": "module",
   "scripts": {

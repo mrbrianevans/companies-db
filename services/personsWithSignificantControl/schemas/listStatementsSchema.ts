@@ -122,14 +122,12 @@ export const ListStatementsSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           start_index: {
             description:
@@ -168,11 +166,9 @@ export const ListStatementsSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
-          type: 'array',
         },
         required: [
           'items_per_page',
@@ -183,11 +179,12 @@ export const ListStatementsSchema = {
           'ceased_count',
           'links',
         ],
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type ListStatementsResponse = FromSchema<typeof ListStatementsSchema['schema']['response']['200']>
-export type ListStatementsResponse = any // temporary until schemas can be fixed
+export type ListStatementsResponse = FromSchema<
+  typeof ListStatementsSchema['schema']['response']['200']
+>
+//export type ListStatementsResponse = any // temporary until schemas can be fixed

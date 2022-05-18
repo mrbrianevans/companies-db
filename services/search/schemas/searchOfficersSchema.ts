@@ -58,7 +58,6 @@ export const SearchOfficersSchema = {
                 description: 'The ETag of the resource',
               },
             },
-            type: 'object',
           },
         ],
         required: ['kind'],
@@ -86,7 +85,7 @@ export const SearchOfficersSchema = {
                         'A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member).',
                     },
                     links: {
-                      type: 'array',
+                      type: 'object',
                       description: 'The URL of the search result.',
                       items: {
                         title: 'LinksModel',
@@ -97,7 +96,6 @@ export const SearchOfficersSchema = {
                               'The URL of the resource being returned by the search item.',
                           },
                         },
-                        type: 'object',
                       },
                     },
                     description: {
@@ -110,7 +108,7 @@ export const SearchOfficersSchema = {
                         'Summary information for the result showing additional details that have matched.',
                     },
                     matches: {
-                      type: 'array',
+                      type: 'object',
                       description:
                         'A list of members and arrays of character offset defining substrings that matched the search terms.',
                       items: {
@@ -141,11 +139,9 @@ export const SearchOfficersSchema = {
                               'An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms.',
                           },
                         },
-                        type: 'object',
                       },
                     },
                   },
-                  type: 'object',
                 },
               ],
               required: [
@@ -177,9 +173,7 @@ export const SearchOfficersSchema = {
                         type: 'integer',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
                 },
                 appointment_count: {
                   type: 'integer',
@@ -196,7 +190,7 @@ export const SearchOfficersSchema = {
                     'An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations.',
                 },
                 address: {
-                  type: 'array',
+                  type: 'object',
                   description: 'The service address of the officer.',
                   items: {
                     title: 'OfficerAddress',
@@ -238,20 +232,18 @@ export const SearchOfficersSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
               },
-              type: 'object',
             },
           },
-          type: 'array',
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type SearchOfficersResponse = FromSchema<typeof SearchOfficersSchema['schema']['response']['200']>
-export type SearchOfficersResponse = any // temporary until schemas can be fixed
+export type SearchOfficersResponse = FromSchema<
+  typeof SearchOfficersSchema['schema']['response']['200']
+>
+//export type SearchOfficersResponse = any // temporary until schemas can be fixed

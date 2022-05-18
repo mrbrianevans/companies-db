@@ -127,7 +127,6 @@ export const SearchDissolvedCompaniesSchema = {
                           description: 'The postal code e.g CF14 3UZ',
                         },
                       },
-                      type: 'object',
                     },
                     previous_company_names: {
                       type: 'array',
@@ -156,7 +155,6 @@ export const SearchDissolvedCompaniesSchema = {
                             description: 'The previous name of the company',
                           },
                         },
-                        type: 'object',
                       },
                     },
                     matched_previous_company_name: {
@@ -184,10 +182,8 @@ export const SearchDissolvedCompaniesSchema = {
                           description: 'The previous name of the company',
                         },
                       },
-                      type: 'object',
                     },
                   },
-                  type: 'object',
                 },
               },
               kind: {
@@ -268,7 +264,6 @@ export const SearchDissolvedCompaniesSchema = {
                             description: 'The postal code e.g CF14 3UZ',
                           },
                         },
-                        type: 'object',
                       },
                       previous_company_names: {
                         type: 'array',
@@ -297,7 +292,6 @@ export const SearchDissolvedCompaniesSchema = {
                               description: 'The previous name of the company',
                             },
                           },
-                          type: 'object',
                         },
                       },
                       matched_previous_company_name: {
@@ -325,10 +319,8 @@ export const SearchDissolvedCompaniesSchema = {
                             description: 'The previous name of the company',
                           },
                         },
-                        type: 'object',
                       },
                     },
-                    type: 'object',
                   },
                   {
                     description:
@@ -341,9 +333,7 @@ export const SearchDissolvedCompaniesSchema = {
                 description:
                   'The number of hits returned on a best-match or previous-company-names search',
               },
-              type: 'array',
             },
-            type: 'object',
           },
         ],
       },
@@ -351,5 +341,7 @@ export const SearchDissolvedCompaniesSchema = {
   },
 } as const
 
-// export type SearchDissolvedCompaniesResponse = FromSchema<typeof SearchDissolvedCompaniesSchema['schema']['response']['200']>
-export type SearchDissolvedCompaniesResponse = any // temporary until schemas can be fixed
+export type SearchDissolvedCompaniesResponse = FromSchema<
+  typeof SearchDissolvedCompaniesSchema['schema']['response']['200']
+>
+//export type SearchDissolvedCompaniesResponse = any // temporary until schemas can be fixed

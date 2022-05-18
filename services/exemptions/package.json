@@ -1,5 +1,5 @@
 {
-  "name": "exemptions",
+  "name": "exemptions-service",
   "description": "Exemptions",
   "type": "module",
   "scripts": {

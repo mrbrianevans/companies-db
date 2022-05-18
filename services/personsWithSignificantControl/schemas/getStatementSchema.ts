@@ -97,16 +97,16 @@ export const GetStatementSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetStatementResponse = FromSchema<typeof GetStatementSchema['schema']['response']['200']>
-export type GetStatementResponse = any // temporary until schemas can be fixed
+export type GetStatementResponse = FromSchema<
+  typeof GetStatementSchema['schema']['response']['200']
+>
+//export type GetStatementResponse = any // temporary until schemas can be fixed

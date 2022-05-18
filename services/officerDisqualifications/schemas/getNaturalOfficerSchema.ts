@@ -68,7 +68,7 @@ export const GetNaturalOfficerSchema = {
           links: {
             description:
               'Links to other resources associated with this officer disqualification resource.',
-            type: 'array',
+            type: 'object',
             items: {
               title: 'links',
               properties: {
@@ -78,7 +78,6 @@ export const GetNaturalOfficerSchema = {
                 },
               },
               required: ['self'],
-              type: 'object',
             },
           },
           disqualifications: {
@@ -94,7 +93,7 @@ export const GetNaturalOfficerSchema = {
                 address: {
                   description:
                     'The address of the disqualified officer as provided by the disqualifying authority.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'address',
                     properties: {
@@ -127,7 +126,6 @@ export const GetNaturalOfficerSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 company_names: {
@@ -192,12 +190,11 @@ export const GetNaturalOfficerSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 reason: {
                   description: 'The reason for the disqualification.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'reason',
                     properties: {
@@ -223,7 +220,6 @@ export const GetNaturalOfficerSchema = {
                       },
                     },
                     required: ['description_identifier', 'act'],
-                    type: 'object',
                   },
                 },
               },
@@ -234,7 +230,6 @@ export const GetNaturalOfficerSchema = {
                 'disqualified_until',
                 'reason',
               ],
-              type: 'object',
             },
           },
           permissions_to_act: {
@@ -269,15 +264,15 @@ export const GetNaturalOfficerSchema = {
                   format: 'date',
                 },
               },
-              type: 'object',
             },
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetNaturalOfficerResponse = FromSchema<typeof GetNaturalOfficerSchema['schema']['response']['200']>
-export type GetNaturalOfficerResponse = any // temporary until schemas can be fixed
+export type GetNaturalOfficerResponse = FromSchema<
+  typeof GetNaturalOfficerSchema['schema']['response']['200']
+>
+//export type GetNaturalOfficerResponse = any // temporary until schemas can be fixed

@@ -228,7 +228,6 @@ export const AdvancedCompanySearchSchema = {
                           type: 'string',
                         },
                       },
-                      type: 'object',
                     },
                     sic_codes: {
                       items: {
@@ -238,7 +237,6 @@ export const AdvancedCompanySearchSchema = {
                       description: 'SIC codes for this company',
                     },
                   },
-                  type: 'object',
                 },
               },
               kind: {
@@ -399,7 +397,6 @@ export const AdvancedCompanySearchSchema = {
                             type: 'string',
                           },
                         },
-                        type: 'object',
                       },
                       sic_codes: {
                         items: {
@@ -409,7 +406,6 @@ export const AdvancedCompanySearchSchema = {
                         description: 'SIC codes for this company',
                       },
                     },
-                    type: 'object',
                   },
                   {
                     description:
@@ -422,9 +418,7 @@ export const AdvancedCompanySearchSchema = {
                 description:
                   'The number of matches found using advanced search',
               },
-              type: 'array',
             },
-            type: 'object',
           },
         ],
       },
@@ -432,5 +426,7 @@ export const AdvancedCompanySearchSchema = {
   },
 } as const
 
-// export type AdvancedCompanySearchResponse = FromSchema<typeof AdvancedCompanySearchSchema['schema']['response']['200']>
-export type AdvancedCompanySearchResponse = any // temporary until schemas can be fixed
+export type AdvancedCompanySearchResponse = FromSchema<
+  typeof AdvancedCompanySearchSchema['schema']['response']['200']
+>
+//export type AdvancedCompanySearchResponse = any // temporary until schemas can be fixed

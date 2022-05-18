@@ -54,9 +54,8 @@ export const ListOfficerAppointmentsSchema = {
                 },
               },
               required: ['month', 'year'],
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           etag: {
             description: 'The ETag of the resource.',
@@ -115,9 +114,8 @@ export const ListOfficerAppointmentsSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 appointed_before: {
                   description:
@@ -152,9 +150,8 @@ export const ListOfficerAppointmentsSchema = {
                       },
                     },
                     required: ['company_number'],
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 name: {
                   description: 'The full name of the officer.',
@@ -179,7 +176,6 @@ export const ListOfficerAppointmentsSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                   type: 'array',
                 },
@@ -213,9 +209,8 @@ export const ListOfficerAppointmentsSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
-                  type: 'array',
+                  type: 'object',
                 },
                 is_pre_1992_appointment: {
                   description:
@@ -225,7 +220,7 @@ export const ListOfficerAppointmentsSchema = {
                 links: {
                   description:
                     'Links to other resources associated with this officer appointment item.',
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'appointmentLinkTypes',
                     required: ['company'],
@@ -236,13 +231,12 @@ export const ListOfficerAppointmentsSchema = {
                         type: 'string',
                       },
                     },
-                    type: 'object',
                   },
                 },
                 name_elements: {
                   description:
                     "A document encapsulating the separate elements of a natural officer's name.",
-                  type: 'array',
+                  type: 'object',
                   items: {
                     title: 'nameElements',
                     properties: {
@@ -268,7 +262,6 @@ export const ListOfficerAppointmentsSchema = {
                       },
                     },
                     required: ['surname'],
-                    type: 'object',
                   },
                 },
                 nationality: {
@@ -318,7 +311,6 @@ export const ListOfficerAppointmentsSchema = {
                 'name',
                 'officer_role',
               ],
-              type: 'object',
             },
           },
           items_per_page: {
@@ -342,9 +334,8 @@ export const ListOfficerAppointmentsSchema = {
                   type: 'string',
                 },
               },
-              type: 'object',
             },
-            type: 'array',
+            type: 'object',
           },
           name: {
             description: 'The corporate or natural officer name.',
@@ -360,7 +351,6 @@ export const ListOfficerAppointmentsSchema = {
               'The total number of officer appointments in this result set.',
             type: 'integer',
           },
-          type: 'array',
         },
         required: [
           'etag',
@@ -373,11 +363,12 @@ export const ListOfficerAppointmentsSchema = {
           'start_index',
           'total_results',
         ],
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type ListOfficerAppointmentsResponse = FromSchema<typeof ListOfficerAppointmentsSchema['schema']['response']['200']>
-export type ListOfficerAppointmentsResponse = any // temporary until schemas can be fixed
+export type ListOfficerAppointmentsResponse = FromSchema<
+  typeof ListOfficerAppointmentsSchema['schema']['response']['200']
+>
+//export type ListOfficerAppointmentsResponse = any // temporary until schemas can be fixed

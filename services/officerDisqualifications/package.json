@@ -1,5 +1,5 @@
 {
-  "name": "officerDisqualifications",
+  "name": "officer-disqualifications-service",
   "description": "Officer disqualifications",
   "type": "module",
   "scripts": {

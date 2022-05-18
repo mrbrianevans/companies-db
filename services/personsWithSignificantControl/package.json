@@ -1,5 +1,5 @@
 {
-  "name": "personsWithSignificantControl",
+  "name": "persons-with-significant-control-service",
   "description": "Persons with significant control",
   "type": "module",
   "scripts": {

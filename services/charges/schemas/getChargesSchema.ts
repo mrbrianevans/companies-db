@@ -63,7 +63,6 @@ export const GetChargesSchema = {
                   description: 'Details of the charge classification',
                 },
               },
-              type: 'object',
             },
           },
           charge_number: {
@@ -172,7 +171,6 @@ export const GetChargesSchema = {
                     'The chargor is acting as a bare trustee for the property',
                 },
               },
-              type: 'object',
             },
           },
           secured_details: {
@@ -195,7 +193,6 @@ export const GetChargesSchema = {
                     'Details of the amount or obligation secured by the charge',
                 },
               },
-              type: 'object',
             },
           },
           scottish_alterations: {
@@ -224,7 +221,6 @@ export const GetChargesSchema = {
                     'The charge has provisions restricting the creation of further charges',
                 },
               },
-              type: 'object',
             },
             description: 'Information about alterations for Scottish companies',
           },
@@ -244,7 +240,6 @@ export const GetChargesSchema = {
                   description: 'The name of the person entitled.',
                 },
               },
-              type: 'object',
             },
           },
           transactions: {
@@ -288,11 +283,9 @@ export const GetChargesSchema = {
                           'Link to the insolvency case related to this filing',
                       },
                     },
-                    type: 'object',
                   },
                 },
               },
-              type: 'object',
             },
           },
           insolvency_cases: {
@@ -320,11 +313,9 @@ export const GetChargesSchema = {
                         description: 'Link to the insolvency case data',
                       },
                     },
-                    type: 'object',
                   },
                 },
               },
-              type: 'object',
             },
           },
           links: {
@@ -339,15 +330,15 @@ export const GetChargesSchema = {
                   description: 'Link to the this charge data',
                 },
               },
-              type: 'object',
             },
           },
         },
-        type: 'object',
       },
     },
   },
 } as const
 
-// export type GetChargesResponse = FromSchema<typeof GetChargesSchema['schema']['response']['200']>
-export type GetChargesResponse = any // temporary until schemas can be fixed
+export type GetChargesResponse = FromSchema<
+  typeof GetChargesSchema['schema']['response']['200']
+>
+//export type GetChargesResponse = any // temporary until schemas can be fixed

@@ -8,6 +8,6 @@ COPY controllers controllers/
 COPY service service/
 COPY schemas schemas/
 RUN npm exec tsc -- -b --clean
-RUN ls && ls schemas && npm run build
+RUN npm run build
 EXPOSE 3000
 CMD ["npm", "run", "start"]
