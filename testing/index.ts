@@ -2,11 +2,10 @@ import testData from './testData.json' assert { type: 'json' }
 import autocannon from "autocannon";
 import dotenv from 'dotenv'
 import {getCompanyProfileRequests} from "./companyProfile.js";
+import {baseUrl} from "./url";
+import {headers} from "./headers";
 dotenv.config({path: '../.env'})
 
-const baseUrl = 'localhost:3000'
-// const baseUrl =  'https://api.company-information.service.gov.uk/'
-const headers =  {Authorization: 'Basic '+Buffer.from(process.env.RESTAPIKEY+':').toString('base64')}
 
 const requests = getCompanyProfileRequests(testData)
 const results = await autocannon({url: baseUrl , headers, amount: 200, requests })
