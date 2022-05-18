@@ -1,17 +1,17 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getFilingHistoryParams {
+export interface GetFilingHistoryParams {
   /** The company number that the single filing is required for. */
   company_number: string;
   /** The transaction id that the filing history is required for. */
   transaction_id: string
 }
 
-export interface getFilingHistoryQueryString {
+export interface GetFilingHistoryQueryString {
 
 }
 
-export const getFilingHistorySchema = {
+export const GetFilingHistorySchema = {
   schema: {
     "params": {
       "type": "object",
@@ -66,7 +66,8 @@ export const getFilingHistorySchema = {
                   "type": "string",
                   "description": "A description of the annotation.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file."
                 }
-              }
+              },
+              "type": "object"
             },
             "type": "array"
           },
@@ -93,7 +94,8 @@ export const getFilingHistorySchema = {
                   "description": "The type of the associated filing.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
             "type": "array"
           },
@@ -133,7 +135,7 @@ export const getFilingHistorySchema = {
           },
           "links": {
             "description": "Links to other resources associated with this filing history item.",
-            "type": "object",
+            "type": "array",
             "items": {
               "title": "filingHistoryItemLinks",
               "properties": {
@@ -145,7 +147,8 @@ export const getFilingHistorySchema = {
                   "description": "Link to the document metadata associated with this filing history item. See the Document API documentation for more details.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "pages": {
@@ -199,7 +202,8 @@ export const getFilingHistorySchema = {
                   "description": "The type of the associated filing.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
             "type": "array"
           },
@@ -221,5 +225,5 @@ export const getFilingHistorySchema = {
   }
 } as const
 
-export type getFilingHistoryResponse = FromSchema<typeof getFilingHistorySchema['schema']['response']['200']>
+export type GetFilingHistoryResponse = FromSchema<typeof GetFilingHistorySchema['schema']['response']['200']>
 

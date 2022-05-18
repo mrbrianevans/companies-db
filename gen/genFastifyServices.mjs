@@ -61,8 +61,23 @@ await fastify.listen(3000)
         await mkdir(resolve(SERVICES_DIR, tag.name, 'schemas'), {recursive: true})
     }
 }
-function camelCase(input){
-    return input.trim().replaceAll(/\s(\w)(\w*)/g, (all, letter, rest)=>{
+
+const isObject = obj => obj !== null && typeof obj === 'object';
+
+// sets the "type" attribute of schemas for arrays and objects correctly
+function correctObjectTypes(schema) {
+    if (!isObject(schema)) return
+    else if ('properties' in schema) schema.type = 'object'
+    else if ('items' in schema) schema.type = 'array'
+    for (const schemaElement in schema) {
+        if (isObject(schema[schemaElement])) {
+            correctObjectTypes(schema[schemaElement])
+        }
+    }
+}
+
+function camelCase(input) {
+    return input.trim().replaceAll(/\s(\w)(\w*)/g, (all, letter, rest) => {
         return letter.toUpperCase() + rest
     })
 }
@@ -82,8 +97,9 @@ async function createRoutes(paths, responsePaths){
         const responsePath = path.replace('company_number','companyNumber')
         const {get: {responses}} = responsePaths[responsePath] ?? responsePaths[path] // these are sometimes different
         const op = camelCase(operationName ?? 'get')
-        const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op, Name = name
-        if(responses?.[200]?.schema) responses[200].schema.type = 'object'
+        const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op,
+            Name = name.replace(/^\w/, l => l.toUpperCase())
+        if (responses?.[200]?.schema) correctObjectTypes(responses[200].schema)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', Name + 'Schema.ts'), `
 import { FromSchema } from "json-schema-to-ts";
 

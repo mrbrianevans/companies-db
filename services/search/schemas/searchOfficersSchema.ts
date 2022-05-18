@@ -1,10 +1,10 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface searchOfficersParams {
+export interface SearchOfficersParams {
 
 }
 
-export interface searchOfficersQueryString {
+export interface SearchOfficersQueryString {
   /** The term being searched for. */
   q: string;
   /** The number of search results to return per page. */
@@ -13,7 +13,7 @@ export interface searchOfficersQueryString {
   start_index?: number
 }
 
-export const searchOfficersSchema = {
+export const SearchOfficersSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -53,7 +53,8 @@ export const searchOfficersSchema = {
                 "type": "string",
                 "description": "The ETag of the resource"
               }
-            }
+            },
+            "type": "object"
           }
         ],
         "required": [
@@ -84,7 +85,7 @@ export const searchOfficersSchema = {
                       "description": "A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member)."
                     },
                     "links": {
-                      "type": "object",
+                      "type": "array",
                       "description": "The URL of the search result.",
                       "items": {
                         "title": "LinksModel",
@@ -93,7 +94,8 @@ export const searchOfficersSchema = {
                             "type": "string",
                             "description": "The URL of the resource being returned by the search item."
                           }
-                        }
+                        },
+                        "type": "object"
                       }
                     },
                     "description": {
@@ -105,7 +107,7 @@ export const searchOfficersSchema = {
                       "description": "Summary information for the result showing additional details that have matched."
                     },
                     "matches": {
-                      "type": "object",
+                      "type": "array",
                       "description": "A list of members and arrays of character offset defining substrings that matched the search terms.",
                       "items": {
                         "title": "MatchesModel",
@@ -131,10 +133,12 @@ export const searchOfficersSchema = {
                             "type": "array",
                             "description": "An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms."
                           }
-                        }
+                        },
+                        "type": "object"
                       }
                     }
-                  }
+                  },
+                  "type": "object"
                 }
               ],
               "required": [
@@ -170,8 +174,10 @@ export const searchOfficersSchema = {
                         "description": "The year the officer was born in.",
                         "type": "integer"
                       }
-                    }
-                  }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "appointment_count": {
                   "type": "integer",
@@ -189,7 +195,7 @@ export const searchOfficersSchema = {
                   "description": "An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations."
                 },
                 "address": {
-                  "type": "object",
+                  "type": "array",
                   "description": "The service address of the officer.",
                   "items": {
                     "title": "OfficerAddress",
@@ -230,12 +236,15 @@ export const searchOfficersSchema = {
                         "description": "The region. For example Surrey.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 }
-              }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "array"
         },
         "type": "object"
       }
@@ -243,5 +252,5 @@ export const searchOfficersSchema = {
   }
 } as const
 
-export type searchOfficersResponse = FromSchema<typeof searchOfficersSchema['schema']['response']['200']>
+export type SearchOfficersResponse = FromSchema<typeof SearchOfficersSchema['schema']['response']['200']>
 

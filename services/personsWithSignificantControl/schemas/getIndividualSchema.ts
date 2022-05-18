@@ -1,17 +1,17 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getIndividualParams {
+export interface GetIndividualParams {
   /** The company number of the person with significant control details being requested. */
   company_number: string;
   /** The id of the person with significant control details being requested. */
   psc_id: string
 }
 
-export interface getIndividualQueryString {
+export interface GetIndividualQueryString {
 
 }
 
-export const getIndividualSchema = {
+export const GetIndividualSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -95,9 +95,10 @@ export const getIndividualSchema = {
               "required": [
                 "month",
                 "year"
-              ]
+              ],
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "name": {
             "description": "Name of the person with significant control.",
@@ -127,9 +128,10 @@ export const getIndividualSchema = {
               },
               "required": [
                 "surname"
-              ]
+              ],
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "links": {
             "description": "A set of URLs related to the resource, including self.",
@@ -147,9 +149,10 @@ export const getIndividualSchema = {
                   "description": "The URL of the statement linked to this person with significant control.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "nationality": {
             "description": "The nationality of the person with significant control.",
@@ -201,9 +204,10 @@ export const getIndividualSchema = {
                   "description": "The region. For example Surrey.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "natures_of_control": {
             "description": "Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n",
@@ -216,5 +220,5 @@ export const getIndividualSchema = {
   }
 } as const
 
-export type getIndividualResponse = FromSchema<typeof getIndividualSchema['schema']['response']['200']>
+export type GetIndividualResponse = FromSchema<typeof GetIndividualSchema['schema']['response']['200']>
 

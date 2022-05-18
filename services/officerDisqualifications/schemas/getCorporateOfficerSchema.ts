@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getCorporateOfficerParams {
+export interface GetCorporateOfficerParams {
   /** The disqualified officer id. */
   officer_id: string
 }
 
-export interface getCorporateOfficerQueryString {
+export interface GetCorporateOfficerQueryString {
 
 }
 
-export const getCorporateOfficerSchema = {
+export const GetCorporateOfficerSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -62,7 +62,7 @@ export const getCorporateOfficerSchema = {
           },
           "links": {
             "description": "Links to other resources associated with this officer disqualification resource.",
-            "type": "object",
+            "type": "array",
             "items": {
               "title": "links",
               "properties": {
@@ -73,7 +73,8 @@ export const getCorporateOfficerSchema = {
               },
               "required": [
                 "self"
-              ]
+              ],
+              "type": "object"
             }
           },
           "disqualifications": {
@@ -88,7 +89,7 @@ export const getCorporateOfficerSchema = {
                 },
                 "address": {
                   "description": "The address of the disqualified officer as provided by the disqualifying authority.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "address",
                     "properties": {
@@ -120,7 +121,8 @@ export const getCorporateOfficerSchema = {
                         "description": "The region. For example Surrey.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "company_names": {
@@ -177,12 +179,13 @@ export const getCorporateOfficerSchema = {
                         "description": "The name of the court that handled the variation case.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "reason": {
                   "description": "The reason for the disqualification.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "reason",
                     "properties": {
@@ -206,7 +209,8 @@ export const getCorporateOfficerSchema = {
                     "required": [
                       "description_identifier",
                       "act"
-                    ]
+                    ],
+                    "type": "object"
                   }
                 }
               },
@@ -216,7 +220,8 @@ export const getCorporateOfficerSchema = {
                 "disqualified_from",
                 "disqualified_until",
                 "reason"
-              ]
+              ],
+              "type": "object"
             }
           },
           "permissions_to_act": {
@@ -250,7 +255,8 @@ export const getCorporateOfficerSchema = {
                   "type": "string",
                   "format": "date"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },
@@ -260,5 +266,5 @@ export const getCorporateOfficerSchema = {
   }
 } as const
 
-export type getCorporateOfficerResponse = FromSchema<typeof getCorporateOfficerSchema['schema']['response']['200']>
+export type GetCorporateOfficerResponse = FromSchema<typeof GetCorporateOfficerSchema['schema']['response']['200']>
 

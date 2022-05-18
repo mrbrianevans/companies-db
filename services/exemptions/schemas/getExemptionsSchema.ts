@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getExemptionsParams {
+export interface GetExemptionsParams {
   /** The company number that the exemptions list is quired for. */
   company_number: string
 }
 
-export interface getExemptionsQueryString {
+export interface GetExemptionsQueryString {
 
 }
 
-export const getExemptionsSchema = {
+export const GetExemptionsSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -48,7 +48,8 @@ export const getExemptionsSchema = {
               },
               "required": [
                 "self"
-              ]
+              ],
+              "type": "object"
             },
             "type": "array"
           },
@@ -89,7 +90,8 @@ export const getExemptionsSchema = {
                           },
                           "required": [
                             "exempt_from"
-                          ]
+                          ],
+                          "type": "object"
                         }
                       },
                       "exemption_type": {
@@ -98,13 +100,16 @@ export const getExemptionsSchema = {
                         "enum": [
                           "psc-exempt-as-trading-on-regulated-market"
                         ]
-                      }
+                      },
+                      "type": "array"
                     },
                     "required": [
                       "exemption_type",
                       "items"
-                    ]
-                  }
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "psc_exempt_as_shares_admitted_on_market": {
                   "description": "If present the company has been or is exempt from keeping a PSC register, as it has voting shares admitted to trading on a market listed in the Register of People with Significant Control Regulations 2016.",
@@ -132,7 +137,8 @@ export const getExemptionsSchema = {
                           },
                           "required": [
                             "exempt_from"
-                          ]
+                          ],
+                          "type": "object"
                         }
                       },
                       "exemption_type": {
@@ -141,9 +147,12 @@ export const getExemptionsSchema = {
                           "psc-exempt-as-shares-admitted-on-market"
                         ],
                         "type": "string"
-                      }
-                    }
-                  }
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "disclosure_transparency_rules_chapter_five_applies": {
                   "description": "If present the company has been or is exempt from keeping a PSC register, because it is a DTR issuer and the shares are admitted to trading on a regulated market.",
@@ -166,7 +175,8 @@ export const getExemptionsSchema = {
                           },
                           "required": [
                             "exempt_from"
-                          ]
+                          ],
+                          "type": "object"
                         },
                         "type": "array"
                       },
@@ -176,16 +186,21 @@ export const getExemptionsSchema = {
                           "disclosure-transparency-rules-chapter-five-applies"
                         ],
                         "type": "string"
-                      }
+                      },
+                      "type": "array"
                     },
                     "required": [
                       "exemption_type",
                       "items"
-                    ]
-                  }
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
                 }
-              }
-            }
+              },
+              "type": "object"
+            },
+            "type": "array"
           }
         },
         "type": "object"
@@ -194,5 +209,5 @@ export const getExemptionsSchema = {
   }
 } as const
 
-export type getExemptionsResponse = FromSchema<typeof getExemptionsSchema['schema']['response']['200']>
+export type GetExemptionsResponse = FromSchema<typeof GetExemptionsSchema['schema']['response']['200']>
 

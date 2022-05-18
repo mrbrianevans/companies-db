@@ -1,11 +1,11 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface listStatementsParams {
+export interface ListStatementsParams {
   /** The company number of the persons with significant control statements list being requested. */
   company_number: string
 }
 
-export interface listStatementsQueryString {
+export interface ListStatementsQueryString {
   /** The id of the legal person with significant control details being requested. */
   items_per_page: number;
   /** The offset into the entire result set that this page starts. */
@@ -18,7 +18,7 @@ export interface listStatementsQueryString {
   register_view: undefined
 }
 
-export const listStatementsSchema = {
+export const ListStatementsSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -123,13 +123,15 @@ export const listStatementsSchema = {
                         "description": "The URL of the person with significant control linked to this statement.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "start_index": {
             "description": "The offset into the entire result set that this page starts.",
@@ -163,10 +165,12 @@ export const listStatementsSchema = {
                   "description": "The URL of the persons with significant control statements list resource.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
-          }
+            "type": "array"
+          },
+          "type": "array"
         },
         "required": [
           "items_per_page",
@@ -183,5 +187,5 @@ export const listStatementsSchema = {
   }
 } as const
 
-export type listStatementsResponse = FromSchema<typeof listStatementsSchema['schema']['response']['200']>
+export type ListStatementsResponse = FromSchema<typeof ListStatementsSchema['schema']['response']['200']>
 

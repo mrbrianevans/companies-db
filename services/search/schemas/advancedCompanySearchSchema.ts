@@ -1,10 +1,10 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface advancedCompanySearchParams {
+export interface AdvancedCompanySearchParams {
 
 }
 
-export interface advancedCompanySearchQueryString {
+export interface AdvancedCompanySearchQueryString {
   /** The company name (must contain) advanced search filter */
   company_name?: string;
   /** The company status advanced search filter. To search using multiple values, use a comma delimited list or multiple of the same key i.e. company_status=xxx&company_status=yyy */
@@ -31,7 +31,7 @@ export interface advancedCompanySearchQueryString {
   start_index?: string
 }
 
-export const advancedCompanySearchSchema = {
+export const AdvancedCompanySearchSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -210,7 +210,8 @@ export const advancedCompanySearchSchema = {
                           ],
                           "type": "string"
                         }
-                      }
+                      },
+                      "type": "object"
                     },
                     "sic_codes": {
                       "items": {
@@ -219,7 +220,8 @@ export const advancedCompanySearchSchema = {
                       "type": "array",
                       "description": "SIC codes for this company"
                     }
-                  }
+                  },
+                  "type": "object"
                 }
               },
               "kind": {
@@ -375,7 +377,8 @@ export const advancedCompanySearchSchema = {
                             ],
                             "type": "string"
                           }
-                        }
+                        },
+                        "type": "object"
                       },
                       "sic_codes": {
                         "items": {
@@ -384,7 +387,8 @@ export const advancedCompanySearchSchema = {
                         "type": "array",
                         "description": "SIC codes for this company"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
                   {
                     "description": "The best matching company in an advanced search results"
@@ -394,8 +398,10 @@ export const advancedCompanySearchSchema = {
               "hits": {
                 "type": "string",
                 "description": "The number of matches found using advanced search"
-              }
-            }
+              },
+              "type": "array"
+            },
+            "type": "object"
           }
         ]
       }
@@ -403,5 +409,5 @@ export const advancedCompanySearchSchema = {
   }
 } as const
 
-export type advancedCompanySearchResponse = FromSchema<typeof advancedCompanySearchSchema['schema']['response']['200']>
+export type AdvancedCompanySearchResponse = FromSchema<typeof AdvancedCompanySearchSchema['schema']['response']['200']>
 

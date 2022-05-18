@@ -1,11 +1,11 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface listPersonsWithSignificantControlParams {
+export interface ListPersonsWithSignificantControlParams {
   /** The company number of the persons with significant control list being requested. */
   company_number: string
 }
 
-export interface listPersonsWithSignificantControlQueryString {
+export interface ListPersonsWithSignificantControlQueryString {
   /** The number of persons with significant control to return per page. */
   items_per_page: string;
   /** The offset into the entire result set that this page starts. */
@@ -19,7 +19,7 @@ export interface listPersonsWithSignificantControlQueryString {
   register_view: string
 }
 
-export const listPersonsWithSignificantControlSchema = {
+export const ListPersonsWithSignificantControlSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -105,9 +105,10 @@ export const listPersonsWithSignificantControlSchema = {
                     "required": [
                       "month",
                       "year"
-                    ]
+                    ],
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "name": {
                   "description": "Name of the person with significant control.",
@@ -137,9 +138,10 @@ export const listPersonsWithSignificantControlSchema = {
                     },
                     "required": [
                       "surname"
-                    ]
+                    ],
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "links": {
                   "description": "A set of URLs related to the resource, including self.",
@@ -157,9 +159,10 @@ export const listPersonsWithSignificantControlSchema = {
                         "description": "The URL of the statement linked to this person with significant control.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "nationality": {
                   "description": "The nationality of the person with significant control.",
@@ -194,9 +197,10 @@ export const listPersonsWithSignificantControlSchema = {
                     "required": [
                       "legal_authority",
                       "legal_form"
-                    ]
+                    ],
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "ceased": {
                   "description": "Presence of that indicator means the super secure person status is ceased <br />",
@@ -264,9 +268,10 @@ export const listPersonsWithSignificantControlSchema = {
                         "description": "The region. For example Surrey.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "natures_of_control": {
                   "description": "Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n",
@@ -275,7 +280,8 @@ export const listPersonsWithSignificantControlSchema = {
                   },
                   "type": "array"
                 }
-              }
+              },
+              "type": "object"
             },
             "type": "array"
           },
@@ -311,10 +317,12 @@ export const listPersonsWithSignificantControlSchema = {
                   "description": "The URL of the persons with significant control list resource.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
-          }
+            "type": "array"
+          },
+          "type": "array"
         },
         "required": [
           "items_per_page",
@@ -331,5 +339,5 @@ export const listPersonsWithSignificantControlSchema = {
   }
 } as const
 
-export type listPersonsWithSignificantControlResponse = FromSchema<typeof listPersonsWithSignificantControlSchema['schema']['response']['200']>
+export type ListPersonsWithSignificantControlResponse = FromSchema<typeof ListPersonsWithSignificantControlSchema['schema']['response']['200']>
 

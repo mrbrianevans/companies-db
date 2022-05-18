@@ -1,10 +1,10 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface searchDissolvedCompaniesParams {
+export interface SearchDissolvedCompaniesParams {
 
 }
 
-export interface searchDissolvedCompaniesQueryString {
+export interface SearchDissolvedCompaniesQueryString {
   /** The company name being searched for */
   q: string;
   /** Determines type of search. Options are alphabetical, best-match, previous-name-dissolved */
@@ -19,7 +19,7 @@ export interface searchDissolvedCompaniesQueryString {
   start_index?: string
 }
 
-export const searchDissolvedCompaniesSchema = {
+export const SearchDissolvedCompaniesSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -112,7 +112,8 @@ export const searchDissolvedCompaniesSchema = {
                           "type": "string",
                           "description": "The postal code e.g CF14 3UZ"
                         }
-                      }
+                      },
+                      "type": "object"
                     },
                     "previous_company_names": {
                       "type": "array",
@@ -137,7 +138,8 @@ export const searchDissolvedCompaniesSchema = {
                             "type": "string",
                             "description": "The previous name of the company"
                           }
-                        }
+                        },
+                        "type": "object"
                       }
                     },
                     "matched_previous_company_name": {
@@ -161,9 +163,11 @@ export const searchDissolvedCompaniesSchema = {
                           "type": "string",
                           "description": "The previous name of the company"
                         }
-                      }
+                      },
+                      "type": "object"
                     }
-                  }
+                  },
+                  "type": "object"
                 }
               },
               "kind": {
@@ -238,7 +242,8 @@ export const searchDissolvedCompaniesSchema = {
                             "type": "string",
                             "description": "The postal code e.g CF14 3UZ"
                           }
-                        }
+                        },
+                        "type": "object"
                       },
                       "previous_company_names": {
                         "type": "array",
@@ -263,7 +268,8 @@ export const searchDissolvedCompaniesSchema = {
                               "type": "string",
                               "description": "The previous name of the company"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
                       },
                       "matched_previous_company_name": {
@@ -287,9 +293,11 @@ export const searchDissolvedCompaniesSchema = {
                             "type": "string",
                             "description": "The previous name of the company"
                           }
-                        }
+                        },
+                        "type": "object"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
                   {
                     "description": "The best matching company in dissolved search results"
@@ -299,8 +307,10 @@ export const searchDissolvedCompaniesSchema = {
               "hits": {
                 "type": "string",
                 "description": "The number of hits returned on a best-match or previous-company-names search"
-              }
-            }
+              },
+              "type": "array"
+            },
+            "type": "object"
           }
         ]
       }
@@ -308,5 +318,5 @@ export const searchDissolvedCompaniesSchema = {
   }
 } as const
 
-export type searchDissolvedCompaniesResponse = FromSchema<typeof searchDissolvedCompaniesSchema['schema']['response']['200']>
+export type SearchDissolvedCompaniesResponse = FromSchema<typeof SearchDissolvedCompaniesSchema['schema']['response']['200']>
 

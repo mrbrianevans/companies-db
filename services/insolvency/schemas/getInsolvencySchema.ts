@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getInsolvencyParams {
+export interface GetInsolvencyParams {
   /** The company number that the insolvency list is required for. */
   company_number: string
 }
 
-export interface getInsolvencyQueryString {
+export interface GetInsolvencyQueryString {
 
 }
 
-export const getInsolvencySchema = {
+export const GetInsolvencySchema = {
   schema: {
     "params": {
       "type": "object",
@@ -104,7 +104,8 @@ export const getInsolvencySchema = {
                         "format": "date",
                         "description": "The case date, described by `date_type`."
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "notes": {
@@ -162,7 +163,8 @@ export const getInsolvencySchema = {
                               "type": "string",
                               "description": "The country."
                             }
-                          }
+                          },
+                          "type": "object"
                         }
                       },
                       "appointed_on": {
@@ -189,11 +191,12 @@ export const getInsolvencySchema = {
                           "interim-liquidator"
                         ]
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "links": {
-                  "type": "object",
+                  "type": "array",
                   "description": "The practitioners for the case.",
                   "items": {
                     "title": "links",
@@ -202,14 +205,16 @@ export const getInsolvencySchema = {
                         "type": "string",
                         "description": "The link to the charge this case is lodged against."
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "number": {
                   "type": "integer",
                   "description": "The case number."
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "status": {
@@ -235,5 +240,5 @@ export const getInsolvencySchema = {
   }
 } as const
 
-export type getInsolvencyResponse = FromSchema<typeof getInsolvencySchema['schema']['response']['200']>
+export type GetInsolvencyResponse = FromSchema<typeof GetInsolvencySchema['schema']['response']['200']>
 

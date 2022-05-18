@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getUKEstablishmentsParams {
+export interface GetUKEstablishmentsParams {
   /** Company number */
   company_number: string
 }
 
-export interface getUKEstablishmentsQueryString {
+export interface GetUKEstablishmentsQueryString {
 
 }
 
-export const getUKEstablishmentsSchema = {
+export const GetUKEstablishmentsSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -48,7 +48,7 @@ export const getUKEstablishmentsSchema = {
             ]
           },
           "links": {
-            "type": "object",
+            "type": "array",
             "description": "UK Establishment Resources related to this company.",
             "items": {
               "title": "self_links",
@@ -60,7 +60,8 @@ export const getUKEstablishmentsSchema = {
                   "type": "string",
                   "description": "Link to this company."
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "items": {
@@ -93,7 +94,7 @@ export const getUKEstablishmentsSchema = {
                 },
                 "links": {
                   "description": "Resources related to this company.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "links",
                     "required": [
@@ -104,12 +105,15 @@ export const getUKEstablishmentsSchema = {
                         "type": "string",
                         "description": "The link to the company."
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 }
-              }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "array"
         },
         "type": "object"
       }
@@ -117,5 +121,5 @@ export const getUKEstablishmentsSchema = {
   }
 } as const
 
-export type getUKEstablishmentsResponse = FromSchema<typeof getUKEstablishmentsSchema['schema']['response']['200']>
+export type GetUKEstablishmentsResponse = FromSchema<typeof GetUKEstablishmentsSchema['schema']['response']['200']>
 

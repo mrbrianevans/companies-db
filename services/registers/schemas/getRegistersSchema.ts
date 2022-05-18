@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getRegistersParams {
+export interface GetRegistersParams {
   /** The company number of the register information to return. */
   company_number: string
 }
 
-export interface getRegistersQueryString {
+export interface GetRegistersQueryString {
 
 }
 
-export const getRegistersSchema = {
+export const GetRegistersSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -39,7 +39,7 @@ export const getRegistersSchema = {
         ],
         "properties": {
           "links": {
-            "type": "object",
+            "type": "array",
             "description": "A set of URLs related to the resource, including self.",
             "items": {
               "title": "linksType",
@@ -51,7 +51,8 @@ export const getRegistersSchema = {
                   "description": "The URL of the resource.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "company_number": {
@@ -130,17 +131,19 @@ export const getRegistersSchema = {
                                     "description": "The URL of the transaction for the resource.",
                                     "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               },
-                              "type": "object"
+                              "type": "array"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
                         "type": "array"
                       },
                       "links": {
                         "description": "A set of URLs related to the resource.",
-                        "type": "object",
+                        "type": "array",
                         "items": {
                           "title": "linksDirectorsRegister",
                           "properties": {
@@ -148,11 +151,15 @@ export const getRegistersSchema = {
                               "description": "The URL for the resource.",
                               "type": "string"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
-                      }
-                    }
-                  }
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "secretaries": {
                   "description": "List of registered company secretaries.",
@@ -206,17 +213,19 @@ export const getRegistersSchema = {
                                     "description": "The URL of the transaction for the resource.",
                                     "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               },
-                              "type": "object"
+                              "type": "array"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
                         "type": "array"
                       },
                       "links": {
                         "description": "A set of URLs related to the resource.",
-                        "type": "object",
+                        "type": "array",
                         "items": {
                           "title": "linksSecretaryRegister",
                           "properties": {
@@ -224,11 +233,15 @@ export const getRegistersSchema = {
                               "description": "The URL for the resource.",
                               "type": "string"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
-                      }
-                    }
-                  }
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "persons_with_significant_control": {
                   "description": "List of registered company persons with significant control.",
@@ -282,17 +295,19 @@ export const getRegistersSchema = {
                                     "description": "The URL of the transaction for the resource.",
                                     "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               },
-                              "type": "object"
+                              "type": "array"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
                         "type": "array"
                       },
                       "links": {
                         "description": "A set of URLs related to the resource.",
-                        "type": "object",
+                        "type": "array",
                         "items": {
                           "title": "linksPersonsWithSignificantControlRegister",
                           "properties": {
@@ -300,11 +315,15 @@ export const getRegistersSchema = {
                               "description": "The URL for the resource.",
                               "type": "string"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
-                      }
-                    }
-                  }
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "usual_residential_address": {
                   "description": "List of register addresses.",
@@ -358,17 +377,19 @@ export const getRegistersSchema = {
                                     "description": "The URL of the transaction for the resource.",
                                     "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               },
-                              "type": "object"
+                              "type": "array"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
                         "type": "array"
                       },
                       "links": {
                         "description": "A set of URLs related to the resource.",
-                        "type": "object",
+                        "type": "array",
                         "items": {
                           "title": "linksListUsualResidentialAddress",
                           "properties": {
@@ -376,11 +397,15 @@ export const getRegistersSchema = {
                               "description": "The URL for the resource.",
                               "type": "string"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
-                      }
-                    }
-                  }
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "llp_usual_residential_address": {
                   "description": "List of register addresses.",
@@ -430,11 +455,13 @@ export const getRegistersSchema = {
                                     "description": "The URL of the transaction for the resource.",
                                     "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               },
-                              "type": "object"
+                              "type": "array"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
                         "type": "array"
                       },
@@ -447,16 +474,20 @@ export const getRegistersSchema = {
                               "description": "The URL for the resource.",
                               "type": "string"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
-                        "type": "object"
-                      }
+                        "type": "array"
+                      },
+                      "type": "array"
                     },
                     "required": [
                       "register_type",
                       "items"
-                    ]
-                  }
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "members": {
                   "description": "List of registered company members..",
@@ -510,17 +541,19 @@ export const getRegistersSchema = {
                                     "description": "The URL of the transaction for the resource.",
                                     "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               },
-                              "type": "object"
+                              "type": "array"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
                         "type": "array"
                       },
                       "links": {
                         "description": "A set of URLs related to the resource.",
-                        "type": "object",
+                        "type": "array",
                         "items": {
                           "title": "linksListMembers",
                           "properties": {
@@ -528,11 +561,15 @@ export const getRegistersSchema = {
                               "description": "The URL for the resource.",
                               "type": "string"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
-                      }
-                    }
-                  }
+                      },
+                      "type": "array"
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "llp_members": {
                   "description": "List of registered llp members.",
@@ -582,11 +619,13 @@ export const getRegistersSchema = {
                                     "description": "The URL of the transaction for the resource.",
                                     "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               },
-                              "type": "object"
+                              "type": "array"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
                         "type": "array"
                       },
@@ -599,19 +638,24 @@ export const getRegistersSchema = {
                               "description": "The URL for the resource.",
                               "type": "string"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
-                        "type": "object"
-                      }
+                        "type": "array"
+                      },
+                      "type": "array"
                     },
                     "required": [
                       "register_type",
                       "items"
-                    ]
-                  }
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
                 }
               }
-            }
+            },
+            "type": "array"
           },
           "etag": {
             "description": "The ETag of the resource.",
@@ -623,5 +667,5 @@ export const getRegistersSchema = {
   }
 } as const
 
-export type getRegistersResponse = FromSchema<typeof getRegistersSchema['schema']['response']['200']>
+export type GetRegistersResponse = FromSchema<typeof GetRegistersSchema['schema']['response']['200']>
 

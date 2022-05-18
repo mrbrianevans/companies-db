@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getRegisteredOfficeAddressParams {
+export interface GetRegisteredOfficeAddressParams {
   /** Company number for registered office address */
   company_number: string
 }
 
-export interface getRegisteredOfficeAddressQueryString {
+export interface GetRegisteredOfficeAddressQueryString {
 
 }
 
-export const getRegisteredOfficeAddressSchema = {
+export const GetRegisteredOfficeAddressSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -52,7 +52,7 @@ export const getRegisteredOfficeAddressSchema = {
             "readOnly": true
           },
           "links": {
-            "type": "object",
+            "type": "array",
             "description": "Links to the related resources",
             "items": {
               "required": [
@@ -65,7 +65,8 @@ export const getRegisteredOfficeAddressSchema = {
                   "type": "string",
                   "format": "uri"
                 }
-              }
+              },
+              "type": "object"
             },
             "readOnly": true
           },
@@ -116,5 +117,5 @@ export const getRegisteredOfficeAddressSchema = {
   }
 } as const
 
-export type getRegisteredOfficeAddressResponse = FromSchema<typeof getRegisteredOfficeAddressSchema['schema']['response']['200']>
+export type GetRegisteredOfficeAddressResponse = FromSchema<typeof GetRegisteredOfficeAddressSchema['schema']['response']['200']>
 

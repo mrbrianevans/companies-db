@@ -1,14 +1,14 @@
 import {FastifyPluginAsync} from "fastify";
 import {advancedCompanySearch} from "../service/advancedCompanySearch.js";
 import {
-  advancedCompanySearchParams,
-  advancedCompanySearchQueryString,
-  advancedCompanySearchSchema as schema
-} from "../schemas/advancedCompanySearchSchema.js";
+  AdvancedCompanySearchParams,
+  AdvancedCompanySearchQueryString,
+  AdvancedCompanySearchSchema as schema
+} from "../schemas/AdvancedCompanySearchSchema.js";
 
 
 export const advancedCompanySearchController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: advancedCompanySearchParams, Querystring: advancedCompanySearchQueryString }>('/advanced-search/companies', schema, (req, res) => {
+  fastify.get<{ Params: AdvancedCompanySearchParams, Querystring: AdvancedCompanySearchQueryString }>('/advanced-search/companies', schema, (req, res) => {
     const {} = req.params
     const {, , , , , , , , , , , }
     = req.query

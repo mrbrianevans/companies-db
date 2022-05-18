@@ -1,17 +1,17 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getChargesParams {
+export interface GetChargesParams {
   /** The company number of the company with the charge. */
   company_number: string;
   /** The charge id of the charge being requested. */
   charge_id: string
 }
 
-export interface getChargesQueryString {
+export interface GetChargesQueryString {
 
 }
 
-export const getChargesSchema = {
+export const GetChargesSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -76,7 +76,8 @@ export const getChargesSchema = {
                   "type": "string",
                   "description": "Details of the charge classification"
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "charge_number": {
@@ -180,7 +181,8 @@ export const getChargesSchema = {
                   "type": "boolean",
                   "description": "The chargor is acting as a bare trustee for the property"
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "secured_details": {
@@ -205,7 +207,8 @@ export const getChargesSchema = {
                   "type": "string",
                   "description": "Details of the amount or obligation secured by the charge"
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "scottish_alterations": {
@@ -235,7 +238,8 @@ export const getChargesSchema = {
                   "type": "boolean",
                   "description": "The charge has provisions restricting the creation of further charges"
                 }
-              }
+              },
+              "type": "object"
             },
             "description": "Information about alterations for Scottish companies"
           },
@@ -256,7 +260,8 @@ export const getChargesSchema = {
                   "type": "string",
                   "description": "The name of the person entitled."
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "transactions": {
@@ -296,10 +301,12 @@ export const getChargesSchema = {
                         "type": "string",
                         "description": "Link to the insolvency case related to this filing"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "insolvency_cases": {
@@ -326,10 +333,12 @@ export const getChargesSchema = {
                         "type": "string",
                         "description": "Link to the insolvency case data"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 }
-              }
+              },
+              "type": "object"
             }
           },
           "links": {
@@ -345,7 +354,8 @@ export const getChargesSchema = {
                   "type": "string",
                   "description": "Link to the this charge data"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },
@@ -355,5 +365,5 @@ export const getChargesSchema = {
   }
 } as const
 
-export type getChargesResponse = FromSchema<typeof getChargesSchema['schema']['response']['200']>
+export type GetChargesResponse = FromSchema<typeof GetChargesSchema['schema']['response']['200']>
 

@@ -1,14 +1,14 @@
 import {FastifyPluginAsync} from "fastify";
 import {listOfficerAppointments} from "../service/listOfficerAppointments.js";
 import {
-  listOfficerAppointmentsParams,
-  listOfficerAppointmentsQueryString,
-  listOfficerAppointmentsSchema as schema
-} from "../schemas/listOfficerAppointmentsSchema.js";
+  ListOfficerAppointmentsParams,
+  ListOfficerAppointmentsQueryString,
+  ListOfficerAppointmentsSchema as schema
+} from "../schemas/ListOfficerAppointmentsSchema.js";
 
 
 export const listOfficerAppointmentsController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: listOfficerAppointmentsParams, Querystring: listOfficerAppointmentsQueryString }>('/officers/:officer_id/appointments', schema, (req, res) => {
+  fastify.get<{ Params: ListOfficerAppointmentsParams, Querystring: ListOfficerAppointmentsQueryString }>('/officers/:officer_id/appointments', schema, (req, res) => {
     const {officer_id} = req.params
     const {, }
     = req.query

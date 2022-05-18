@@ -1,14 +1,14 @@
 import {FastifyPluginAsync} from "fastify";
 import {searchCompanies} from "../service/searchCompanies.js";
 import {
-  searchCompaniesParams,
-  searchCompaniesQueryString,
-  searchCompaniesSchema as schema
-} from "../schemas/searchCompaniesSchema.js";
+  SearchCompaniesParams,
+  SearchCompaniesQueryString,
+  SearchCompaniesSchema as schema
+} from "../schemas/SearchCompaniesSchema.js";
 
 
 export const searchCompaniesController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: searchCompaniesParams, Querystring: searchCompaniesQueryString }>('/search/companies', schema, (req, res) => {
+  fastify.get<{ Params: SearchCompaniesParams, Querystring: SearchCompaniesQueryString }>('/search/companies', schema, (req, res) => {
     const {} = req.params
     const {, , , }
     = req.query

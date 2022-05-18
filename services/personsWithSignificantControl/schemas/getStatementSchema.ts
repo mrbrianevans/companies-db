@@ -1,17 +1,17 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getStatementParams {
+export interface GetStatementParams {
   /** The company number of the persons with significant control statements list being requested. */
   company_number: string;
   /** The id of the person with significant control statement details being requested. */
   statement_id: string
 }
 
-export interface getStatementQueryString {
+export interface GetStatementQueryString {
 
 }
 
-export const getStatementSchema = {
+export const GetStatementSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -105,9 +105,10 @@ export const getStatementSchema = {
                   "description": "The URL of the person with significant control linked to this statement.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           }
         },
         "type": "object"
@@ -116,5 +117,5 @@ export const getStatementSchema = {
   }
 } as const
 
-export type getStatementResponse = FromSchema<typeof getStatementSchema['schema']['response']['200']>
+export type GetStatementResponse = FromSchema<typeof GetStatementSchema['schema']['response']['200']>
 

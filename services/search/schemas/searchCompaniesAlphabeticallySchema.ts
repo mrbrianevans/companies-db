@@ -1,10 +1,10 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface searchCompaniesAlphabeticallyParams {
+export interface SearchCompaniesAlphabeticallyParams {
 
 }
 
-export interface searchCompaniesAlphabeticallyQueryString {
+export interface SearchCompaniesAlphabeticallyQueryString {
   /** The company name being searched for */
   q: string;
   /** The ordered_alpha_key_with_id used for paging */
@@ -15,7 +15,7 @@ export interface searchCompaniesAlphabeticallyQueryString {
   size?: string
 }
 
-export const searchCompaniesAlphabeticallySchema = {
+export const SearchCompaniesAlphabeticallySchema = {
   schema: {
     "params": {
       "type": "object",
@@ -89,7 +89,8 @@ export const searchCompaniesAlphabeticallySchema = {
                       "type": "string",
                       "description": "The type of company associated with the company"
                     }
-                  }
+                  },
+                  "type": "object"
                 }
               },
               "kind": {
@@ -148,14 +149,17 @@ export const searchCompaniesAlphabeticallySchema = {
                         "type": "string",
                         "description": "The type of company associated with the company"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
                   {
                     "description": "The best matching company in alphabetical search results"
                   }
                 ]
-              }
-            }
+              },
+              "type": "array"
+            },
+            "type": "object"
           }
         ]
       }
@@ -163,5 +167,5 @@ export const searchCompaniesAlphabeticallySchema = {
   }
 } as const
 
-export type searchCompaniesAlphabeticallyResponse = FromSchema<typeof searchCompaniesAlphabeticallySchema['schema']['response']['200']>
+export type SearchCompaniesAlphabeticallyResponse = FromSchema<typeof SearchCompaniesAlphabeticallySchema['schema']['response']['200']>
 

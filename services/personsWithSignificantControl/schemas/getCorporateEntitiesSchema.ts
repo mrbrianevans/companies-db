@@ -1,17 +1,17 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getCorporateEntitiesParams {
+export interface GetCorporateEntitiesParams {
   /** The company number of the corporate entity with significant control details being requested. */
   company_number: string;
   /** The id of the corporate entity with significant control details being requested. */
   psc_id: string
 }
 
-export interface getCorporateEntitiesQueryString {
+export interface GetCorporateEntitiesQueryString {
 
 }
 
-export const getCorporateEntitiesSchema = {
+export const GetCorporateEntitiesSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -87,9 +87,10 @@ export const getCorporateEntitiesSchema = {
                   "description": "The URL of the statement linked to this person with significant control.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "address": {
             "description": "The address of the person with significant control.",
@@ -137,9 +138,10 @@ export const getCorporateEntitiesSchema = {
                   "description": "The region. For example Surrey.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "identification": {
             "description": "",
@@ -170,9 +172,10 @@ export const getCorporateEntitiesSchema = {
               "required": [
                 "legal_authority",
                 "legal_form"
-              ]
+              ],
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "natures_of_control": {
             "description": "Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n",
@@ -185,5 +188,5 @@ export const getCorporateEntitiesSchema = {
   }
 } as const
 
-export type getCorporateEntitiesResponse = FromSchema<typeof getCorporateEntitiesSchema['schema']['response']['200']>
+export type GetCorporateEntitiesResponse = FromSchema<typeof GetCorporateEntitiesSchema['schema']['response']['200']>
 

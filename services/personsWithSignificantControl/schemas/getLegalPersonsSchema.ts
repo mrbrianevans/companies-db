@@ -1,17 +1,17 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getLegalPersonsParams {
+export interface GetLegalPersonsParams {
   /** The company number of the legal person with significant control details being requested. */
   company_number: string;
   /** The id of the legal person with significant control details being requested. */
   psc_id: string
 }
 
-export interface getLegalPersonsQueryString {
+export interface GetLegalPersonsQueryString {
 
 }
 
-export const getLegalPersonsSchema = {
+export const GetLegalPersonsSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -87,9 +87,10 @@ export const getLegalPersonsSchema = {
                   "description": "The URL of the statement linked to this person with significant control.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "address": {
             "description": "The address of the person with significant control.",
@@ -137,9 +138,10 @@ export const getLegalPersonsSchema = {
                   "description": "The region. For example Surrey.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "identification": {
             "description": "",
@@ -158,9 +160,10 @@ export const getLegalPersonsSchema = {
               "required": [
                 "legal_authority",
                 "legal_form"
-              ]
+              ],
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "natures_of_control": {
             "description": "Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n",
@@ -173,5 +176,5 @@ export const getLegalPersonsSchema = {
   }
 } as const
 
-export type getLegalPersonsResponse = FromSchema<typeof getLegalPersonsSchema['schema']['response']['200']>
+export type GetLegalPersonsResponse = FromSchema<typeof GetLegalPersonsSchema['schema']['response']['200']>
 

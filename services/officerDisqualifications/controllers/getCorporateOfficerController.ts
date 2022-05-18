@@ -1,14 +1,14 @@
 import {FastifyPluginAsync} from "fastify";
 import {getCorporateOfficer} from "../service/getCorporateOfficer.js";
 import {
-  getCorporateOfficerParams,
-  getCorporateOfficerQueryString,
-  getCorporateOfficerSchema as schema
-} from "../schemas/getCorporateOfficerSchema.js";
+  GetCorporateOfficerParams,
+  GetCorporateOfficerQueryString,
+  GetCorporateOfficerSchema as schema
+} from "../schemas/GetCorporateOfficerSchema.js";
 
 
 export const getCorporateOfficerController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: getCorporateOfficerParams, Querystring: getCorporateOfficerQueryString }>('/disqualified-officers/corporate/:officer_id', schema, (req, res) => {
+  fastify.get<{ Params: GetCorporateOfficerParams, Querystring: GetCorporateOfficerQueryString }>('/disqualified-officers/corporate/:officer_id', schema, (req, res) => {
     const {officer_id} = req.params
     const {} = req.query
     return getCorporateOfficer(officer_id)

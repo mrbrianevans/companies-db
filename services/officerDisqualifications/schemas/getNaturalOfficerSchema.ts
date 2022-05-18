@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getNaturalOfficerParams {
+export interface GetNaturalOfficerParams {
   /** The disqualified officer's id. */
   officer_id: string
 }
 
-export interface getNaturalOfficerQueryString {
+export interface GetNaturalOfficerQueryString {
 
 }
 
-export const getNaturalOfficerSchema = {
+export const GetNaturalOfficerSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -79,7 +79,7 @@ export const getNaturalOfficerSchema = {
           },
           "links": {
             "description": "Links to other resources associated with this officer disqualification resource.",
-            "type": "object",
+            "type": "array",
             "items": {
               "title": "links",
               "properties": {
@@ -90,7 +90,8 @@ export const getNaturalOfficerSchema = {
               },
               "required": [
                 "self"
-              ]
+              ],
+              "type": "object"
             }
           },
           "disqualifications": {
@@ -105,7 +106,7 @@ export const getNaturalOfficerSchema = {
                 },
                 "address": {
                   "description": "The address of the disqualified officer as provided by the disqualifying authority.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "address",
                     "properties": {
@@ -137,7 +138,8 @@ export const getNaturalOfficerSchema = {
                         "description": "The region. For example Surrey.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "company_names": {
@@ -194,12 +196,13 @@ export const getNaturalOfficerSchema = {
                         "description": "The name of the court that handled the variation case.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "reason": {
                   "description": "The reason for the disqualification.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "reason",
                     "properties": {
@@ -223,7 +226,8 @@ export const getNaturalOfficerSchema = {
                     "required": [
                       "description_identifier",
                       "act"
-                    ]
+                    ],
+                    "type": "object"
                   }
                 }
               },
@@ -233,7 +237,8 @@ export const getNaturalOfficerSchema = {
                 "disqualified_from",
                 "disqualified_until",
                 "reason"
-              ]
+              ],
+              "type": "object"
             }
           },
           "permissions_to_act": {
@@ -267,7 +272,8 @@ export const getNaturalOfficerSchema = {
                   "type": "string",
                   "format": "date"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },
@@ -277,5 +283,5 @@ export const getNaturalOfficerSchema = {
   }
 } as const
 
-export type getNaturalOfficerResponse = FromSchema<typeof getNaturalOfficerSchema['schema']['response']['200']>
+export type GetNaturalOfficerResponse = FromSchema<typeof GetNaturalOfficerSchema['schema']['response']['200']>
 

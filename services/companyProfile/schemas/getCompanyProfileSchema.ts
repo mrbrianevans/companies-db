@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getCompanyProfileParams {
+export interface GetCompanyProfileParams {
   /** The company number of the basic information to return. */
   company_number: string
 }
 
-export interface getCompanyProfileQueryString {
+export interface GetCompanyProfileQueryString {
 
 }
 
-export const getCompanyProfileSchema = {
+export const GetCompanyProfileSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -54,7 +54,7 @@ export const getCompanyProfileSchema = {
               "properties": {
                 "accounting_reference_date": {
                   "description": "The Accounting Reference Date (ARD) of the company.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "accountingReferenceDate",
                     "type": "object",
@@ -76,7 +76,7 @@ export const getCompanyProfileSchema = {
                 },
                 "last_accounts": {
                   "description": "The last company accounts filed.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "lastAccounts",
                     "properties": {
@@ -108,7 +108,7 @@ export const getCompanyProfileSchema = {
                         ]
                       }
                     },
-                    "type": "string",
+                    "type": "object",
                     "required": [
                       "type",
                       "made_up_to"
@@ -131,7 +131,7 @@ export const getCompanyProfileSchema = {
                 }
               }
             },
-            "type": "object"
+            "type": "array"
           },
           "annual_return": {
             "description": "Annual return information. This member is only returned if a confirmation statement has not be filed.",
@@ -160,7 +160,7 @@ export const getCompanyProfileSchema = {
                 }
               }
             },
-            "type": "object"
+            "type": "array"
           },
           "can_file": {
             "description": "Flag indicating whether this company can file.",
@@ -194,9 +194,10 @@ export const getCompanyProfileSchema = {
                   "description": "Flag indicating if the confirmation statement is overdue",
                   "type": "boolean"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "company_name": {
             "description": "The name of the company.",
@@ -253,7 +254,7 @@ export const getCompanyProfileSchema = {
               "properties": {
                 "originating_registry": {
                   "description": "Company origin informations",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "originatingRegistry",
                     "properties": {
@@ -265,7 +266,8 @@ export const getCompanyProfileSchema = {
                         "description": "Identity of register in country of incorporation.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "registration_number": {
@@ -302,9 +304,10 @@ export const getCompanyProfileSchema = {
                               "description": "Month in which accounting period starts under parent law.",
                               "type": "integer"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
-                        "type": "object"
+                        "type": "array"
                       },
                       "account_period_to": {
                         "description": "Date account period ends under parent law.",
@@ -319,9 +322,10 @@ export const getCompanyProfileSchema = {
                               "description": "Month in which accounting period ends under parent law.",
                               "type": "integer"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
-                        "type": "object"
+                        "type": "array"
                       },
                       "must_file_within": {
                         "description": "Time allowed from period end for disclosure of accounts under parent law.",
@@ -332,13 +336,15 @@ export const getCompanyProfileSchema = {
                               "description": "Number of months within which to file.",
                               "type": "integer"
                             }
-                          }
+                          },
+                          "type": "object"
                         },
-                        "type": "object"
+                        "type": "array"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "business_activity": {
                   "description": "Type of business undertaken by the company.",
@@ -366,13 +372,15 @@ export const getCompanyProfileSchema = {
                         ],
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "last_full_members_list_date": {
             "description": "The date of last full members list update.",
@@ -429,9 +437,10 @@ export const getCompanyProfileSchema = {
                   "description": "The region e.g Surrey.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "service_address": {
             "description": "The correspondence address of a Registered overseas entity",
@@ -470,9 +479,10 @@ export const getCompanyProfileSchema = {
                   "description": "The region e.g Surrey.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "sic_codes": {
             "description": "SIC codes for this company.",
@@ -505,7 +515,8 @@ export const getCompanyProfileSchema = {
                 "name",
                 "effective_from",
                 "ceased_on"
-              ]
+              ],
+              "type": "object"
             },
             "type": "array"
           },
@@ -606,8 +617,10 @@ export const getCompanyProfileSchema = {
                   "description": "Parent company name.",
                   "type": "string"
                 }
-              }
-            }
+              },
+              "type": "object"
+            },
+            "type": "array"
           },
           "links": {
             "description": "A set of URLs related to the resource, including self.",
@@ -633,9 +646,10 @@ export const getCompanyProfileSchema = {
                   "description": "The URL of the registers resource for this company",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           }
         },
         "type": "object"
@@ -644,5 +658,5 @@ export const getCompanyProfileSchema = {
   }
 } as const
 
-export type getCompanyProfileResponse = FromSchema<typeof getCompanyProfileSchema['schema']['response']['200']>
+export type GetCompanyProfileResponse = FromSchema<typeof GetCompanyProfileSchema['schema']['response']['200']>
 

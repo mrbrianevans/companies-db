@@ -1,17 +1,17 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface getSuperSecurePersonParams {
+export interface GetSuperSecurePersonParams {
   /** The company number of the super secure person with significant control details being requested. */
   company_number: string;
   /** The id of the super secure person with significant control details being requested. */
   super_secure_id: string
 }
 
-export interface getSuperSecurePersonQueryString {
+export interface GetSuperSecurePersonQueryString {
 
 }
 
-export const getSuperSecurePersonSchema = {
+export const GetSuperSecurePersonSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -76,9 +76,10 @@ export const getSuperSecurePersonSchema = {
                   "description": "The URL of the resource.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           }
         },
         "type": "object"
@@ -87,5 +88,5 @@ export const getSuperSecurePersonSchema = {
   }
 } as const
 
-export type getSuperSecurePersonResponse = FromSchema<typeof getSuperSecurePersonSchema['schema']['response']['200']>
+export type GetSuperSecurePersonResponse = FromSchema<typeof GetSuperSecurePersonSchema['schema']['response']['200']>
 

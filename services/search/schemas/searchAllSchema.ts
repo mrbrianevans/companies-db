@@ -1,10 +1,10 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface searchAllParams {
+export interface SearchAllParams {
 
 }
 
-export interface searchAllQueryString {
+export interface SearchAllQueryString {
   /** The term being searched for. */
   q: string;
   /** The number of search results to return per page. */
@@ -13,7 +13,7 @@ export interface searchAllQueryString {
   start_index?: number
 }
 
-export const searchAllSchema = {
+export const SearchAllSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -53,7 +53,8 @@ export const searchAllSchema = {
                 "type": "string",
                 "description": "The ETag of the resource"
               }
-            }
+            },
+            "type": "object"
           }
         ],
         "properties": {
@@ -81,7 +82,7 @@ export const searchAllSchema = {
                       "description": "A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member)."
                     },
                     "links": {
-                      "type": "object",
+                      "type": "array",
                       "description": "The URL of the search result.",
                       "items": {
                         "title": "LinksModel",
@@ -90,7 +91,8 @@ export const searchAllSchema = {
                             "type": "string",
                             "description": "The URL of the resource being returned by the search item."
                           }
-                        }
+                        },
+                        "type": "object"
                       }
                     },
                     "description": {
@@ -102,7 +104,7 @@ export const searchAllSchema = {
                       "description": "Summary information for the result showing additional details that have matched."
                     },
                     "matches": {
-                      "type": "object",
+                      "type": "array",
                       "description": "A list of members and arrays of character offset defining substrings that matched the search terms.",
                       "items": {
                         "title": "MatchesModel",
@@ -128,10 +130,12 @@ export const searchAllSchema = {
                             "type": "array",
                             "description": "An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms."
                           }
-                        }
+                        },
+                        "type": "object"
                       }
                     }
-                  }
+                  },
+                  "type": "object"
                 }
               ],
               "required": [
@@ -178,7 +182,7 @@ export const searchAllSchema = {
                 },
                 "address": {
                   "description": "The address of the company's registered office.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "registeredOfficeAddress",
                     "required": [
@@ -226,12 +230,15 @@ export const searchAllSchema = {
                         "description": "The region e.g Surrey.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 }
-              }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "array"
         },
         "type": "object"
       }
@@ -239,5 +246,5 @@ export const searchAllSchema = {
   }
 } as const
 
-export type searchAllResponse = FromSchema<typeof searchAllSchema['schema']['response']['200']>
+export type SearchAllResponse = FromSchema<typeof SearchAllSchema['schema']['response']['200']>
 

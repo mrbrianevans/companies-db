@@ -1,14 +1,14 @@
 import {FastifyPluginAsync} from "fastify";
 import {listStatements} from "../service/listStatements.js";
 import {
-  listStatementsParams,
-  listStatementsQueryString,
-  listStatementsSchema as schema
-} from "../schemas/listStatementsSchema.js";
+  ListStatementsParams,
+  ListStatementsQueryString,
+  ListStatementsSchema as schema
+} from "../schemas/ListStatementsSchema.js";
 
 
 export const listStatementsController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: listStatementsParams, Querystring: listStatementsQueryString }>('/company/:company_number/persons-with-significant-control-statements', schema, (req, res) => {
+  fastify.get<{ Params: ListStatementsParams, Querystring: ListStatementsQueryString }>('/company/:company_number/persons-with-significant-control-statements', schema, (req, res) => {
     const {company_number} = req.params
     const {, ,
   }

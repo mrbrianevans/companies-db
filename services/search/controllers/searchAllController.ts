@@ -1,10 +1,10 @@
 import {FastifyPluginAsync} from "fastify";
 import {searchAll} from "../service/searchAll.js";
-import {searchAllParams, searchAllQueryString, searchAllSchema as schema} from "../schemas/searchAllSchema.js";
+import {SearchAllParams, SearchAllQueryString, SearchAllSchema as schema} from "../schemas/SearchAllSchema.js";
 
 
 export const searchAllController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: searchAllParams, Querystring: searchAllQueryString }>('/search', schema, (req, res) => {
+  fastify.get<{ Params: SearchAllParams, Querystring: SearchAllQueryString }>('/search', schema, (req, res) => {
     const {} = req.params
     const {, ,
   }

@@ -1,15 +1,15 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface listChargesParams {
+export interface ListChargesParams {
   /** The company number that the charge list is required for. */
   company_number: string
 }
 
-export interface listChargesQueryString {
+export interface ListChargesQueryString {
 
 }
 
-export const listChargesSchema = {
+export const ListChargesSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -100,7 +100,8 @@ export const listChargesSchema = {
                         "type": "string",
                         "description": "Details of the charge classification"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "charge_number": {
@@ -204,7 +205,8 @@ export const listChargesSchema = {
                         "type": "boolean",
                         "description": "The chargor is acting as a bare trustee for the property"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "secured_details": {
@@ -229,7 +231,8 @@ export const listChargesSchema = {
                         "type": "string",
                         "description": "Details of the amount or obligation secured by the charge"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "scottish_alterations": {
@@ -259,7 +262,8 @@ export const listChargesSchema = {
                         "type": "boolean",
                         "description": "The charge has provisions restricting the creation of further charges"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
                   "description": "Information about alterations for Scottish companies"
                 },
@@ -280,7 +284,8 @@ export const listChargesSchema = {
                         "type": "string",
                         "description": "The name of the person entitled."
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "transactions": {
@@ -320,10 +325,12 @@ export const listChargesSchema = {
                               "type": "string",
                               "description": "Link to the insolvency case related to this filing"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "insolvency_cases": {
@@ -350,10 +357,12 @@ export const listChargesSchema = {
                               "type": "string",
                               "description": "Link to the insolvency case data"
                             }
-                          }
+                          },
+                          "type": "object"
                         }
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "links": {
@@ -369,12 +378,15 @@ export const listChargesSchema = {
                         "type": "string",
                         "description": "Link to the this charge data"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 }
-              }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "array"
         },
         "type": "object"
       }
@@ -382,5 +394,5 @@ export const listChargesSchema = {
   }
 } as const
 
-export type listChargesResponse = FromSchema<typeof listChargesSchema['schema']['response']['200']>
+export type ListChargesResponse = FromSchema<typeof ListChargesSchema['schema']['response']['200']>
 

@@ -1,18 +1,18 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface listOfficerAppointmentsParams {
+export interface ListOfficerAppointmentsParams {
   /** The officer id of the appointment list being requested. */
   officer_id: string
 }
 
-export interface listOfficerAppointmentsQueryString {
+export interface ListOfficerAppointmentsQueryString {
   /** The number of appointments to return per page. */
   items_per_page?: number;
   /** The first row of data to retrieve, starting at 0. Use this parameter as a pagination mechanism along with the items_per_page parameter. */
   start_index?: number
 }
 
-export const listOfficerAppointmentsSchema = {
+export const ListOfficerAppointmentsSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -55,9 +55,10 @@ export const listOfficerAppointmentsSchema = {
               "required": [
                 "month",
                 "year"
-              ]
+              ],
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "etag": {
             "description": "The ETag of the resource.",
@@ -114,9 +115,10 @@ export const listOfficerAppointmentsSchema = {
                         "description": "The region. For example Surrey.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "appointed_before": {
                   "description": "The date the officer was appointed before. Only present when the `is_pre_1992_appointment` attribute is `true`.",
@@ -148,9 +150,10 @@ export const listOfficerAppointmentsSchema = {
                     },
                     "required": [
                       "company_number"
-                    ]
+                    ],
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "name": {
                   "description": "The full name of the officer.",
@@ -173,7 +176,8 @@ export const listOfficerAppointmentsSchema = {
                         "description": "Former surnames of the officer.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
                   "type": "array"
                 },
@@ -206,9 +210,10 @@ export const listOfficerAppointmentsSchema = {
                         "description": "Company registration number.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   },
-                  "type": "object"
+                  "type": "array"
                 },
                 "is_pre_1992_appointment": {
                   "description": "Indicator representing if the officer was appointed before their appointment date.",
@@ -216,7 +221,7 @@ export const listOfficerAppointmentsSchema = {
                 },
                 "links": {
                   "description": "Links to other resources associated with this officer appointment item.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "appointmentLinkTypes",
                     "required": [
@@ -227,12 +232,13 @@ export const listOfficerAppointmentsSchema = {
                         "description": "Link to the company profile resource that this appointment is associated with.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 },
                 "name_elements": {
                   "description": "A document encapsulating the separate elements of a natural officer's name.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "nameElements",
                     "properties": {
@@ -259,7 +265,8 @@ export const listOfficerAppointmentsSchema = {
                     },
                     "required": [
                       "surname"
-                    ]
+                    ],
+                    "type": "object"
                   }
                 },
                 "nationality": {
@@ -308,7 +315,8 @@ export const listOfficerAppointmentsSchema = {
                 "links",
                 "name",
                 "officer_role"
-              ]
+              ],
+              "type": "object"
             }
           },
           "items_per_page": {
@@ -333,9 +341,10 @@ export const listOfficerAppointmentsSchema = {
                   "description": "Link to this officer appointment resource.",
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             },
-            "type": "object"
+            "type": "array"
           },
           "name": {
             "description": "The corporate or natural officer name.",
@@ -348,7 +357,8 @@ export const listOfficerAppointmentsSchema = {
           "total_results": {
             "description": "The total number of officer appointments in this result set.",
             "type": "integer"
-          }
+          },
+          "type": "array"
         },
         "required": [
           "etag",
@@ -367,5 +377,5 @@ export const listOfficerAppointmentsSchema = {
   }
 } as const
 
-export type listOfficerAppointmentsResponse = FromSchema<typeof listOfficerAppointmentsSchema['schema']['response']['200']>
+export type ListOfficerAppointmentsResponse = FromSchema<typeof ListOfficerAppointmentsSchema['schema']['response']['200']>
 

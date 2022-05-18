@@ -1,10 +1,10 @@
 import {FromSchema} from "json-schema-to-ts";
 
-export interface searchCompaniesParams {
+export interface SearchCompaniesParams {
 
 }
 
-export interface searchCompaniesQueryString {
+export interface SearchCompaniesQueryString {
   /** The term being searched for. */
   q: string;
   /** The number of search results to return per page. */
@@ -15,7 +15,7 @@ export interface searchCompaniesQueryString {
   restrictions?: string
 }
 
-export const searchCompaniesSchema = {
+export const SearchCompaniesSchema = {
   schema: {
     "params": {
       "type": "object",
@@ -55,7 +55,8 @@ export const searchCompaniesSchema = {
                 "type": "string",
                 "description": "The ETag of the resource"
               }
-            }
+            },
+            "type": "object"
           }
         ],
         "properties": {
@@ -83,7 +84,7 @@ export const searchCompaniesSchema = {
                       "description": "A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member)."
                     },
                     "links": {
-                      "type": "object",
+                      "type": "array",
                       "description": "The URL of the search result.",
                       "items": {
                         "title": "LinksModel",
@@ -92,7 +93,8 @@ export const searchCompaniesSchema = {
                             "type": "string",
                             "description": "The URL of the resource being returned by the search item."
                           }
-                        }
+                        },
+                        "type": "object"
                       }
                     },
                     "description": {
@@ -104,7 +106,7 @@ export const searchCompaniesSchema = {
                       "description": "Summary information for the result showing additional details that have matched."
                     },
                     "matches": {
-                      "type": "object",
+                      "type": "array",
                       "description": "A list of members and arrays of character offset defining substrings that matched the search terms.",
                       "items": {
                         "title": "MatchesModel",
@@ -130,10 +132,12 @@ export const searchCompaniesSchema = {
                             "type": "array",
                             "description": "An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms."
                           }
-                        }
+                        },
+                        "type": "object"
                       }
                     }
-                  }
+                  },
+                  "type": "object"
                 }
               ],
               "required": [
@@ -239,7 +243,7 @@ export const searchCompaniesSchema = {
                 },
                 "address": {
                   "description": "The address of the company's registered office.",
-                  "type": "object",
+                  "type": "array",
                   "items": {
                     "title": "registeredOfficeAddress",
                     "required": [
@@ -287,12 +291,15 @@ export const searchCompaniesSchema = {
                         "description": "The region e.g Surrey.",
                         "type": "string"
                       }
-                    }
+                    },
+                    "type": "object"
                   }
                 }
-              }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "array"
         },
         "type": "object"
       }
@@ -300,5 +307,5 @@ export const searchCompaniesSchema = {
   }
 } as const
 
-export type searchCompaniesResponse = FromSchema<typeof searchCompaniesSchema['schema']['response']['200']>
+export type SearchCompaniesResponse = FromSchema<typeof SearchCompaniesSchema['schema']['response']['200']>
 
