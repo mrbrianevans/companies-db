@@ -1,0 +1,32 @@
+:80 {
+    # proxy to microservices
+    reverse_proxy /company/*/persons-with-significant-control/super-secure/* persons-with-significant-control:3000
+    reverse_proxy /company/*/persons-with-significant-control-statements/* persons-with-significant-control:3000
+    reverse_proxy /company/*/persons-with-significant-control-statements persons-with-significant-control:3000
+    reverse_proxy /company/*/persons-with-significant-control/legal-person/* persons-with-significant-control:3000
+    reverse_proxy /company/*/persons-with-significant-control/corporate-entity/* persons-with-significant-control:3000
+    reverse_proxy /company/*/persons-with-significant-control/individual/* persons-with-significant-control:3000
+    reverse_proxy /company/*/persons-with-significant-control persons-with-significant-control:3000
+    reverse_proxy /company/*/uk-establishments ukestablishments:3000
+    reverse_proxy /company/*/insolvency insolvency:3000
+    reverse_proxy /company/*/charges/* charges:3000
+    reverse_proxy /company/*/charges charges:3000
+    reverse_proxy /officers/*/appointments officer-appointments:3000
+    reverse_proxy /disqualified-officers/corporate/* officer-disqualifications:3000
+    reverse_proxy /disqualified-officers/natural/* officer-disqualifications:3000
+    reverse_proxy /company/*/exemptions exemptions:3000
+    reverse_proxy /company/*/filing-history filing-history:3000
+    reverse_proxy /company/*/filing-history/* filing-history:3000
+    reverse_proxy /company/*/registers registers:3000
+    reverse_proxy /company/*/appointments/* officers:3000
+    reverse_proxy /company/*/officers officers:3000
+    reverse_proxy /advanced-search/companies search:3000
+    reverse_proxy /alphabetic-search/companies search:3000
+    reverse_proxy /dissolved-search/companies search:3000
+    reverse_proxy /search/disqualified-officers search:3000
+    reverse_proxy /search/officers search:3000
+    reverse_proxy /search/companies search:3000
+    reverse_proxy /search search:3000
+    reverse_proxy /company/* company-profile:3000
+    reverse_proxy /company/*/registered-office-address registered-office-address:3000
+}

@@ -1,17 +1,21 @@
-import {FastifyPluginAsync} from "fastify";
-import {searchDisqualifiedOfficers} from "../service/searchDisqualifiedOfficers.js";
+import { FastifyPluginAsync } from 'fastify'
+import { searchDisqualifiedOfficers } from '../service/searchDisqualifiedOfficers.js'
 import {
-  SearchDisqualifiedOfficersParams,
+  SearchDisqualifiedOfficersSchema as schema,
   SearchDisqualifiedOfficersQueryString,
-  SearchDisqualifiedOfficersSchema as schema
-} from "../schemas/SearchDisqualifiedOfficersSchema.js";
+  SearchDisqualifiedOfficersParams,
+} from '../schemas/SearchDisqualifiedOfficersSchema.js'
 
-
-export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: SearchDisqualifiedOfficersParams, Querystring: SearchDisqualifiedOfficersQueryString }>('/search/disqualified-officers', schema, (req, res) => {
+export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
+  fastify,
+  opts
+) => {
+  fastify.get<{
+    Params: SearchDisqualifiedOfficersParams
+    Querystring: SearchDisqualifiedOfficersQueryString
+  }>('/search/disqualified-officers', schema, (req, res) => {
     const {} = req.params
-    const {q, items_per_page, start_index} = req.query
+    const { q, items_per_page, start_index } = req.query
     return searchDisqualifiedOfficers(q, items_per_page, start_index)
   })
 }
-

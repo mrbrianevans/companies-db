@@ -2,53 +2,64 @@
 "services":
   "registered-office-address":
     "build": "registeredOfficeAddress"
-    "ports":
-      - "3000:3001"
+    "networks":
+      - "microservices"
   "company-profile":
     "build": "companyProfile"
-    "ports":
-      - "3000:3002"
+    "networks":
+      - "microservices"
   "search":
     "build": "search"
-    "ports":
-      - "3000:3003"
+    "networks":
+      - "microservices"
   "officers":
     "build": "officers"
-    "ports":
-      - "3000:3004"
+    "networks":
+      - "microservices"
   "registers":
     "build": "registers"
-    "ports":
-      - "3000:3005"
+    "networks":
+      - "microservices"
   "charges":
     "build": "charges"
-    "ports":
-      - "3000:3006"
+    "networks":
+      - "microservices"
   "filing-history":
     "build": "filingHistory"
-    "ports":
-      - "3000:3007"
+    "networks":
+      - "microservices"
   "insolvency":
     "build": "insolvency"
-    "ports":
-      - "3000:3008"
+    "networks":
+      - "microservices"
   "exemptions":
     "build": "exemptions"
-    "ports":
-      - "3000:3009"
+    "networks":
+      - "microservices"
   "officer-disqualifications":
     "build": "officerDisqualifications"
-    "ports":
-      - "3000:3010"
+    "networks":
+      - "microservices"
   "officer-appointments":
     "build": "officerAppointments"
-    "ports":
-      - "3000:3011"
+    "networks":
+      - "microservices"
   "ukestablishments":
     "build": "UKEstablishments"
-    "ports":
-      - "3000:3012"
+    "networks":
+      - "microservices"
   "persons-with-significant-control":
     "build": "personsWithSignificantControl"
+    "networks":
+      - "microservices"
+  "gateway":
+    "image": "caddy"
+    "volumes":
+      - "./Caddyfile:/etc/caddy/Caddyfile"
     "ports":
-      - "3000:3013"
+      - "3000:80"
+    "networks":
+      - "microservices"
+"networks":
+  "microservices":
+    "driver": "bridge"

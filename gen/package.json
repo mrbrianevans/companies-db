@@ -1,0 +1,16 @@
+{
+  "name": "gen",
+  "version": "1.0.0",
+  "description": "Generates microservice stubs based on apispec.yaml",
+  "main": "index.js",
+  "scripts": {
+    "start": "zx genFastifyServices.mjs"
+  },
+  "keywords": [],
+  "author": "Brian Evans",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^2.6.2",
+    "zx": "^6.1.0"
+  }
+}

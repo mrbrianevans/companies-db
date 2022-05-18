@@ -1,10 +1,10 @@
 import Fastify from 'fastify'
 // --- import controllers ---
-import {getInsolvencyController} from './controllers/getInsolvencyController.js'
+import { getInsolvencyController } from './controllers/getInsolvencyController.js'
 
-const fastify = Fastify({logger: true})
+const fastify = Fastify({ logger: true })
 
 // --- register controllers ---
 fastify.register(getInsolvencyController)
 
-await fastify.listen(3000)
+await fastify.listen(3000, '::')

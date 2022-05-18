@@ -1,13 +1,18 @@
 import {mkdir, readFile, writeFile} from 'node:fs/promises'
 import {resolve} from "path";
+import prettier from 'prettier'
 
-// todo:
-    // read app-spec.yaml
+const prettyTs = code => prettier.format(code, {
+    semi: false,
+    parser: 'typescript',
+    singleQuote: true
+})
+// read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
 // for each path:
 // create a controller, using the parameters for path params and query params. Can just copy {schema}
 // create a service, export an async function with arguments for all the parameters
-
+// create a monolith that links all the microservices
 
 const SERVICES_DIR = resolve('../services')
 console.log({SERVICES_DIR})
@@ -19,22 +24,32 @@ const kebabCase = (str) => str.replaceAll(/([A-Z]*)([A-Z])([a-z]*)/g, (all) => '
 
 async function createTagDirectories(tags) {
     await mkdir(resolve(SERVICES_DIR), {recursive: true})
+    await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), `:80 {
+    # proxy to microservices
+}
+`)
     await writeFile(resolve(SERVICES_DIR, 'docker-compose.yaml'), YAML.stringify({
         version: '3',
         services: Object.fromEntries(tags.map((tag, i) => [kebabCase(tag.name), {
             build: tag.name,
-            ports: [`3000:${3001 + i}`]
-        }]))
+            // ports: [`${3001 + i}:3000`],
+            networks: ['microservices']
+        }]).concat([['gateway', {
+            image: 'caddy',
+            volumes: ['./Caddyfile:/etc/caddy/Caddyfile'],
+            ports: ['3000:80'], networks: ['microservices']
+        }]])),
+        networks: {microservices: {driver: 'bridge'}}
     }, {defaultStringType: 'QUOTE_DOUBLE'}))
-    await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), `import Fastify from 'fastify'
+    await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(`import Fastify from 'fastify'
 // --- import controllers ---
 
 const fastify = Fastify({logger: true})
 
 // --- register controllers ---
 
-await fastify.listen(3000)
-`)
+await fastify.listen(3000, '::')
+`))
     await writeFile(resolve(SERVICES_DIR, 'package.json'), JSON.stringify({
             "name": "services",
             "description": "Run all services in a monolith process",
@@ -107,15 +122,15 @@ await fastify.listen(3000)
             "include": ["**/*.ts"]
         }
         await writeFile(resolve(SERVICES_DIR, tag.name, 'tsconfig.json'), JSON.stringify(tsconfig, null, 2))
-        await writeFile(resolve(SERVICES_DIR, tag.name, 'index.ts'), `import Fastify from 'fastify'
+        await writeFile(resolve(SERVICES_DIR, tag.name, 'index.ts'), prettyTs(`import Fastify from 'fastify'
 // --- import controllers ---
 
 const fastify = Fastify({logger: true})
 
 // --- register controllers ---
 
-await fastify.listen(3000)
-`)
+await fastify.listen(3000, '::')
+`))
         await writeFile(resolve(SERVICES_DIR, tag.name, 'Dockerfile'), `FROM node:18
 
 WORKDIR /service
@@ -127,6 +142,7 @@ COPY service service/
 COPY schemas schemas/
 RUN npm exec tsc -- -b --clean
 RUN ls && ls schemas && npm run build
+EXPOSE 3000
 CMD ["npm", "run", "start"]
 `)
         await mkdir(resolve(SERVICES_DIR, tag.name, 'controllers'), {recursive: true})
@@ -180,7 +196,7 @@ async function createRoutes(paths, responsePaths) {
         const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op,
             Name = name.replace(/^\w/, l => l.toUpperCase())
         if (responses?.[200]?.schema) correctObjectTypes(responses[200].schema)
-        await writeFile(resolve(SERVICES_DIR, tag, 'schemas', Name + 'Schema.ts'), `
+        await writeFile(resolve(SERVICES_DIR, tag, 'schemas', Name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
 export interface ${Name}Params {
@@ -210,8 +226,8 @@ export const ${Name}Schema = {
 // export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['response']['200']>
 export type ${Name}Response = any // temporary until schemas can be fixed
         
-        `)
-        await writeFile(resolve(SERVICES_DIR, tag, 'controllers', name + 'Controller.ts'), `
+        `))
+        await writeFile(resolve(SERVICES_DIR, tag, 'controllers', name + 'Controller.ts'), prettyTs(`
 import {FastifyPluginAsync} from "fastify";
 import {${name}} from "../service/${name}.js";
 import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${Name}Schema.js";
@@ -226,12 +242,12 @@ export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
   })
 }
 
-        `)
+        `))
 function convertSchemaToTypedef(){
 
 }
         // write service stub
-        await writeFile(resolve(SERVICES_DIR, tag, 'service', name + '.ts'), `
+        await writeFile(resolve(SERVICES_DIR, tag, 'service', name + '.ts'), prettyTs(`
 import type { ${Name}Response } from "../schemas/${Name}Schema.js";
 
 /**
@@ -245,17 +261,22 @@ export async function ${name}(${processParams(parameters, true)}): Promise<${Nam
 }
 
 
-`)
+`))
         // inject register to index fastify listener
         const index = await readFile(resolve(SERVICES_DIR, tag, 'index.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
 fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}
 import { ${name}Controller } from '${['.', 'controllers', name + 'Controller.js'].join('/')}'`))
-        await writeFile(resolve(SERVICES_DIR, tag, 'index.ts'), index)
+        await writeFile(resolve(SERVICES_DIR, tag, 'index.ts'), prettyTs(index))
 
         const monolith = await readFile(resolve(SERVICES_DIR, 'monolith.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
 fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}
 import { ${name}Controller } from '${['.', tag, 'controllers', name + 'Controller.js'].join('/')}'`))
-        await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), monolith)
+        await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(monolith))
+
+
+        const caddyfile = await readFile(resolve(SERVICES_DIR, 'Caddyfile')).then(String).then(caddyfile => caddyfile.replace(`# proxy to microservices`, marker => `${marker}
+    reverse_proxy ${path.replace(/\{(.*?)}/g, '*')} ${kebabCase(tag)}:3000`))
+        await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), caddyfile)
     }
 }
 

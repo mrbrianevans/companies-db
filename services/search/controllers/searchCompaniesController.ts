@@ -1,17 +1,21 @@
-import {FastifyPluginAsync} from "fastify";
-import {searchCompanies} from "../service/searchCompanies.js";
+import { FastifyPluginAsync } from 'fastify'
+import { searchCompanies } from '../service/searchCompanies.js'
 import {
-  SearchCompaniesParams,
+  SearchCompaniesSchema as schema,
   SearchCompaniesQueryString,
-  SearchCompaniesSchema as schema
-} from "../schemas/SearchCompaniesSchema.js";
+  SearchCompaniesParams,
+} from '../schemas/SearchCompaniesSchema.js'
 
-
-export const searchCompaniesController: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.get<{ Params: SearchCompaniesParams, Querystring: SearchCompaniesQueryString }>('/search/companies', schema, (req, res) => {
+export const searchCompaniesController: FastifyPluginAsync = async (
+  fastify,
+  opts
+) => {
+  fastify.get<{
+    Params: SearchCompaniesParams
+    Querystring: SearchCompaniesQueryString
+  }>('/search/companies', schema, (req, res) => {
     const {} = req.params
-    const {q, items_per_page, start_index, restrictions} = req.query
+    const { q, items_per_page, start_index, restrictions } = req.query
     return searchCompanies(q, items_per_page, start_index, restrictions)
   })
 }
-

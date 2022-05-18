@@ -9,4 +9,5 @@ COPY service service/
 COPY schemas schemas/
 RUN npm exec tsc -- -b --clean
 RUN ls && ls schemas && npm run build
+EXPOSE 3000
 CMD ["npm", "run", "start"]
