@@ -5,7 +5,8 @@ import prettier from 'prettier'
 const prettyTs = code => prettier.format(code, {
     semi: false,
     parser: 'typescript',
-    singleQuote: true
+    singleQuote: true,
+    // trailingComma: 'none'
 })
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -59,7 +60,8 @@ await fastify.listen(3000, '::')
             "scripts": {
                 "start": "node monolith | pino-pretty -c -t",
                 "build": "tsc -b",
-                "watch": "tsc -b -w"
+                "watch": "tsc -b -w",
+                "clean": "tsc -b --clean"
             },
             "devDependencies": {
                 "@types/node": "^17.0.34",
@@ -94,7 +96,8 @@ await fastify.listen(3000, '::')
             "scripts": {
                 "start": "node index | pino-pretty -c -t",
                 "build": "tsc -b",
-                "watch": "tsc -b -w"
+                "watch": "tsc -b -w",
+                "clean": "tsc -b --clean"
             },
             "version": "1.0.0",
             "dependencies": {
@@ -165,11 +168,36 @@ function correctObjectTypes(schema) {
         }
     }
 }
+function flattenItemsRecursive(schema, skip) {
+    if (!isObject(schema)) return
+    else if ('properties' in schema) {
+        schema.type = 'object'
+        for (const property in schema.properties) {
+            if (isObject(schema.properties[property])) {
+                flattenItemsRecursive(schema.properties[property], property)
+            }
+        }
+    }
+    else if ('items' in schema) {
+        if (schema.items.title !== skip) {
+            schema.type = 'object'
+            for (const item in schema.items) {
+                flattenItemsRecursive(schema.items[item])
+                schema[item] = schema.items[item]
+            }
+            delete schema.items
+        }else{
+            flattenItemsRecursive(schema.items)
+        }
+    }
+}
 // remove erroneous items key, and bring its children up a level
 function flattenItems(schema){
     if (!isObject(schema)) return
     else if ('items' in schema) {
+        schema.type = 'object'
         for (const item in schema.items) {
+            flattenItems(schema.items[item])
             schema[item] = schema.items[item]
         }
         delete schema.items
@@ -206,8 +234,8 @@ async function createRoutes(paths, responsePaths) {
         const op = camelCase(operationName ?? 'get')
         const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op,
             Name = name.replace(/^\w/, l => l.toUpperCase())
-        if (responses?.[200]?.schema) flattenItems(responses[200].schema)
-        await writeFile(resolve(SERVICES_DIR, tag, 'schemas', Name + 'Schema.ts'), prettyTs(`
+        if (responses?.[200]?.schema) flattenItemsRecursive(responses[200].schema)
+        await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
 export interface ${Name}Params {
@@ -269,8 +297,9 @@ const logger = pino()
 const headers =  {Authorization: 'Basic '+Buffer.from(process.env.RESTAPIKEY+':').toString('base64')}
 
 export async function reflect(path){
- const res = await fetch(apiUrl+path, {headers})
-  logger.info({path, status: res.status},'Requesting official API')
+  logger.info({path, apiUrl, keySet: Boolean(process.env.RESTAPIKEY)}, "Outgoing request to Official API")
+  const res = await fetch(apiUrl + path, { headers })
+  logger.info({ path, status: res.status }, 'Requested official API - response status')
  return await res.json()
 }
 export async function auth(headers) {

@@ -54,19 +54,18 @@ export const GetSuperSecurePersonSchema = {
           links: {
             description:
               'A set of URLs related to the resource, including self.',
-            items: {
-              title: 'superSecureLinksType',
-              required: ['self'],
-              properties: {
-                self: {
-                  description: 'The URL of the resource.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'superSecureLinksType',
+            required: ['self'],
+            properties: {
+              self: {
+                description: 'The URL of the resource.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
         },
+        type: 'object',
       },
     },
   },

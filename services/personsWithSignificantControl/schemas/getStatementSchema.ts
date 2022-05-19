@@ -83,24 +83,23 @@ export const GetStatementSchema = {
           links: {
             description:
               'A set of URLs related to the resource, including self.',
-            items: {
-              title: 'statementLinksType',
-              required: ['self'],
-              properties: {
-                self: {
-                  description: 'The URL of the resource.',
-                  type: 'string',
-                },
-                person_with_significant_control: {
-                  description:
-                    'The URL of the person with significant control linked to this statement.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'statementLinksType',
+            required: ['self'],
+            properties: {
+              self: {
+                description: 'The URL of the resource.',
+                type: 'string',
+              },
+              person_with_significant_control: {
+                description:
+                  'The URL of the person with significant control linked to this statement.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
         },
+        type: 'object',
       },
     },
   },

@@ -69,103 +69,97 @@ export const GetCorporateEntitiesSchema = {
           links: {
             description:
               'A set of URLs related to the resource, including self.',
-            items: {
-              title: 'pscLinksType',
-              required: ['self'],
-              properties: {
-                self: {
-                  description: 'The URL of the resource.',
-                  type: 'string',
-                },
-                statement: {
-                  description:
-                    'The URL of the statement linked to this person with significant control.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'pscLinksType',
+            required: ['self'],
+            properties: {
+              self: {
+                description: 'The URL of the resource.',
+                type: 'string',
+              },
+              statement: {
+                description:
+                  'The URL of the statement linked to this person with significant control.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
           address: {
             description: 'The address of the person with significant control.',
-            items: {
-              title: 'pscAddress',
-              required: ['address_line_1', 'postal_code', 'premises'],
-              properties: {
-                address_line_1: {
-                  description: 'The first line of the address.',
-                  type: 'string',
-                },
-                address_line_2: {
-                  description: 'The second line of the address.',
-                  type: 'string',
-                },
-                care_of: {
-                  description: 'Care of name.',
-                  type: 'string',
-                },
-                country: {
-                  description: 'The country. For example, UK.',
-                  type: 'string',
-                },
-                locality: {
-                  description: 'The locality. For example London.',
-                  type: 'string',
-                },
-                po_box: {
-                  description: 'The post-officer box number.',
-                  type: 'string',
-                },
-                postal_code: {
-                  description: 'The postal code. For example CF14 3UZ.',
-                  type: 'string',
-                },
-                premises: {
-                  description: 'The property name or number.',
-                  type: 'string',
-                },
-                region: {
-                  description: 'The region. For example Surrey.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'pscAddress',
+            required: ['address_line_1', 'postal_code', 'premises'],
+            properties: {
+              address_line_1: {
+                description: 'The first line of the address.',
+                type: 'string',
+              },
+              address_line_2: {
+                description: 'The second line of the address.',
+                type: 'string',
+              },
+              care_of: {
+                description: 'Care of name.',
+                type: 'string',
+              },
+              country: {
+                description: 'The country. For example, UK.',
+                type: 'string',
+              },
+              locality: {
+                description: 'The locality. For example London.',
+                type: 'string',
+              },
+              po_box: {
+                description: 'The post-officer box number.',
+                type: 'string',
+              },
+              postal_code: {
+                description: 'The postal code. For example CF14 3UZ.',
+                type: 'string',
+              },
+              premises: {
+                description: 'The property name or number.',
+                type: 'string',
+              },
+              region: {
+                description: 'The region. For example Surrey.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
           identification: {
             description: '',
-            items: {
-              title: 'corporateEntityIdent',
-              properties: {
-                legal_authority: {
-                  description:
-                    'The legal authority supervising the corporate entity with significant control.',
-                  type: 'string',
-                },
-                legal_form: {
-                  description:
-                    'The legal form of the corporate entity with significant control as defined by its country of registration.',
-                  type: 'string',
-                },
-                place_registered: {
-                  description:
-                    'The place the corporate entity with significant control is registered.',
-                  type: 'string',
-                },
-                registration_number: {
-                  description:
-                    'The registration number of the corporate entity with significant control.',
-                  type: 'string',
-                },
-                country_registered: {
-                  description:
-                    'The country or state the corporate entity with significant control is registered in.',
-                  type: 'string',
-                },
-              },
-              required: ['legal_authority', 'legal_form'],
-            },
             type: 'object',
+            title: 'corporateEntityIdent',
+            properties: {
+              legal_authority: {
+                description:
+                  'The legal authority supervising the corporate entity with significant control.',
+                type: 'string',
+              },
+              legal_form: {
+                description:
+                  'The legal form of the corporate entity with significant control as defined by its country of registration.',
+                type: 'string',
+              },
+              place_registered: {
+                description:
+                  'The place the corporate entity with significant control is registered.',
+                type: 'string',
+              },
+              registration_number: {
+                description:
+                  'The registration number of the corporate entity with significant control.',
+                type: 'string',
+              },
+              country_registered: {
+                description:
+                  'The country or state the corporate entity with significant control is registered in.',
+                type: 'string',
+              },
+            },
+            required: ['legal_authority', 'legal_form'],
           },
           natures_of_control: {
             description:
@@ -173,6 +167,7 @@ export const GetCorporateEntitiesSchema = {
             type: 'array',
           },
         },
+        type: 'object',
       },
     },
   },

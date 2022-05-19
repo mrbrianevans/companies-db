@@ -73,25 +73,23 @@ export const GetIndividualSchema = {
           date_of_birth: {
             description:
               'The date of birth of the person with significant control.',
-            items: {
-              title: 'dateOfBirth',
-              properties: {
-                day: {
-                  description: 'The day of the date of birth.',
-                  type: 'integer',
-                },
-                month: {
-                  description: 'The month of date of birth.',
-                  type: 'integer',
-                },
-                year: {
-                  description: 'The year of date of birth.',
-                  type: 'integer',
-                },
-              },
-              required: ['month', 'year'],
-            },
             type: 'object',
+            title: 'dateOfBirth',
+            properties: {
+              day: {
+                description: 'The day of the date of birth.',
+                type: 'integer',
+              },
+              month: {
+                description: 'The month of date of birth.',
+                type: 'integer',
+              },
+              year: {
+                description: 'The year of date of birth.',
+                type: 'integer',
+              },
+            },
+            required: ['month', 'year'],
           },
           name: {
             description: 'Name of the person with significant control.',
@@ -100,52 +98,48 @@ export const GetIndividualSchema = {
           name_elements: {
             description:
               "A document encapsulating the seperate elements of a person with significant control's name.",
-            items: {
-              title: 'nameElements',
-              properties: {
-                forename: {
-                  description:
-                    'The forename of the person with significant control.',
-                  type: 'string',
-                },
-                title: {
-                  description: 'Title of the person with significant control.',
-                  type: 'string',
-                },
-                other_forenames: {
-                  description:
-                    'Other forenames of the person with significant control.',
-                  type: 'string',
-                },
-                surname: {
-                  description:
-                    'The surname of the person with significant control.',
-                  type: 'string',
-                },
-              },
-              required: ['surname'],
-            },
             type: 'object',
+            title: 'nameElements',
+            properties: {
+              forename: {
+                description:
+                  'The forename of the person with significant control.',
+                type: 'string',
+              },
+              title: {
+                description: 'Title of the person with significant control.',
+                type: 'string',
+              },
+              other_forenames: {
+                description:
+                  'Other forenames of the person with significant control.',
+                type: 'string',
+              },
+              surname: {
+                description:
+                  'The surname of the person with significant control.',
+                type: 'string',
+              },
+            },
+            required: ['surname'],
           },
           links: {
             description:
               'A set of URLs related to the resource, including self.',
-            items: {
-              title: 'pscLinksType',
-              required: ['self'],
-              properties: {
-                self: {
-                  description: 'The URL of the resource.',
-                  type: 'string',
-                },
-                statement: {
-                  description:
-                    'The URL of the statement linked to this person with significant control.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'pscLinksType',
+            required: ['self'],
+            properties: {
+              self: {
+                description: 'The URL of the resource.',
+                type: 'string',
+              },
+              statement: {
+                description:
+                  'The URL of the statement linked to this person with significant control.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
           nationality: {
             description:
@@ -155,49 +149,47 @@ export const GetIndividualSchema = {
           address: {
             description:
               'The service address of the person with significant control. If given, this address will be shown on the public record instead of the residential address.',
-            items: {
-              title: 'pscAddress',
-              required: ['address_line_1', 'postal_code', 'premises'],
-              properties: {
-                address_line_1: {
-                  description: 'The first line of the address.',
-                  type: 'string',
-                },
-                address_line_2: {
-                  description: 'The second line of the address.',
-                  type: 'string',
-                },
-                care_of: {
-                  description: 'Care of name.',
-                  type: 'string',
-                },
-                country: {
-                  description: 'The country. For example, UK.',
-                  type: 'string',
-                },
-                locality: {
-                  description: 'The locality. For example London.',
-                  type: 'string',
-                },
-                po_box: {
-                  description: 'The post-officer box number.',
-                  type: 'string',
-                },
-                postal_code: {
-                  description: 'The postal code. For example CF14 3UZ.',
-                  type: 'string',
-                },
-                premises: {
-                  description: 'The property name or number.',
-                  type: 'string',
-                },
-                region: {
-                  description: 'The region. For example Surrey.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'pscAddress',
+            required: ['address_line_1', 'postal_code', 'premises'],
+            properties: {
+              address_line_1: {
+                description: 'The first line of the address.',
+                type: 'string',
+              },
+              address_line_2: {
+                description: 'The second line of the address.',
+                type: 'string',
+              },
+              care_of: {
+                description: 'Care of name.',
+                type: 'string',
+              },
+              country: {
+                description: 'The country. For example, UK.',
+                type: 'string',
+              },
+              locality: {
+                description: 'The locality. For example London.',
+                type: 'string',
+              },
+              po_box: {
+                description: 'The post-officer box number.',
+                type: 'string',
+              },
+              postal_code: {
+                description: 'The postal code. For example CF14 3UZ.',
+                type: 'string',
+              },
+              premises: {
+                description: 'The property name or number.',
+                type: 'string',
+              },
+              region: {
+                description: 'The region. For example Surrey.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
           natures_of_control: {
             description:
@@ -205,6 +197,7 @@ export const GetIndividualSchema = {
             type: 'array',
           },
         },
+        type: 'object',
       },
     },
   },

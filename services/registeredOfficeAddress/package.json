@@ -1,6 +1,6 @@
 {
-  "name": "persons-with-significant-control-service",
-  "description": "Persons with significant control",
+  "name": "registered-office-address-service",
+  "description": "Registered office address",
   "type": "module",
   "scripts": {
     "start": "node index | pino-pretty -c -t",

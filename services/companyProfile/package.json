@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node index | pino-pretty -c -t",
     "build": "tsc -b",
-    "watch": "tsc -b -w"
+    "watch": "tsc -b -w",
+    "clean": "tsc -b --clean"
   },
   "version": "1.0.0",
   "dependencies": {

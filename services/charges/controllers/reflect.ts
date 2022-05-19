@@ -7,8 +7,15 @@ const headers = {
 }
 
 export async function reflect(path) {
+  logger.info(
+    { path, apiUrl, keySet: Boolean(process.env.RESTAPIKEY) },
+    'Outgoing request to Official API'
+  )
   const res = await fetch(apiUrl + path, { headers })
-  logger.info({ path, status: res.status }, 'Requesting official API')
+  logger.info(
+    { path, status: res.status },
+    'Requested official API - response status'
+  )
   return await res.json()
 }
 export async function auth(headers) {

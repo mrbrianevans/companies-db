@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node monolith | pino-pretty -c -t",
     "build": "tsc -b",
-    "watch": "tsc -b -w"
+    "watch": "tsc -b -w",
+    "clean": "tsc -b --clean"
   },
   "devDependencies": {
     "@types/node": "^17.0.34",

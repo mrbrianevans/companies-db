@@ -46,22 +46,20 @@ export const GetChargesSchema = {
               'The charge code is a replacement of the mortgage description',
           },
           classification: {
-            type: 'array',
+            type: 'object',
             description: 'Classification information',
-            items: {
-              title: 'classificationDesc',
-              required: ['type', 'description'],
-              properties: {
-                type: {
-                  enum: ['charge-description', 'nature-of-charge'],
-                  type: 'string',
-                  description:
-                    'The type of charge classication.\n For enumeration descriptions see `classificationDesc` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)',
-                },
-                description: {
-                  type: 'string',
-                  description: 'Details of the charge classification',
-                },
+            title: 'classificationDesc',
+            required: ['type', 'description'],
+            properties: {
+              type: {
+                enum: ['charge-description', 'nature-of-charge'],
+                type: 'string',
+                description:
+                  'The type of charge classication.\n For enumeration descriptions see `classificationDesc` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)',
+              },
+              description: {
+                type: 'string',
+                description: 'Details of the charge classification',
               },
             },
           },
@@ -127,102 +125,96 @@ export const GetChargesSchema = {
             description: 'The date the charge was satisfied',
           },
           particulars: {
-            type: 'array',
+            type: 'object',
             description: 'Details of charge or undertaking',
-            items: {
-              title: 'particularDesc',
-              required: ['type', 'description'],
-              properties: {
-                type: {
-                  enum: [
-                    'short-particulars',
-                    'charged-property-description',
-                    'charged-property-or-undertaking-description',
-                    'brief-description',
-                  ],
-                  type: 'string',
-                  description:
-                    'The type of charge particulars.\n For enumeration descriptions see `particular-description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)',
-                },
-                description: {
-                  type: 'string',
-                  description: 'Details of charge particulars',
-                },
-                contains_floating_charge: {
-                  type: 'boolean',
-                  description: 'The charge contains a floating charge',
-                },
-                contains_fixed_charge: {
-                  type: 'boolean',
-                  description: 'The charge contains a fixed charge',
-                },
-                floating_charge_covers_all: {
-                  type: 'boolean',
-                  description:
-                    'The floating charge covers all the property or undertaking or the company',
-                },
-                contains_negative_pledge: {
-                  type: 'boolean',
-                  description: 'The charge contains a negative pledge',
-                },
-                chargor_acting_as_bare_trustee: {
-                  type: 'boolean',
-                  description:
-                    'The chargor is acting as a bare trustee for the property',
-                },
+            title: 'particularDesc',
+            required: ['type', 'description'],
+            properties: {
+              type: {
+                enum: [
+                  'short-particulars',
+                  'charged-property-description',
+                  'charged-property-or-undertaking-description',
+                  'brief-description',
+                ],
+                type: 'string',
+                description:
+                  'The type of charge particulars.\n For enumeration descriptions see `particular-description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)',
+              },
+              description: {
+                type: 'string',
+                description: 'Details of charge particulars',
+              },
+              contains_floating_charge: {
+                type: 'boolean',
+                description: 'The charge contains a floating charge',
+              },
+              contains_fixed_charge: {
+                type: 'boolean',
+                description: 'The charge contains a fixed charge',
+              },
+              floating_charge_covers_all: {
+                type: 'boolean',
+                description:
+                  'The floating charge covers all the property or undertaking or the company',
+              },
+              contains_negative_pledge: {
+                type: 'boolean',
+                description: 'The charge contains a negative pledge',
+              },
+              chargor_acting_as_bare_trustee: {
+                type: 'boolean',
+                description:
+                  'The chargor is acting as a bare trustee for the property',
               },
             },
           },
           secured_details: {
-            type: 'array',
+            type: 'object',
             description:
               'Information about what is secured against this charge',
-            items: {
-              title: 'securedDetailsDesc',
-              required: ['type', 'description'],
-              properties: {
-                type: {
-                  enum: ['amount-secured', 'obligations-secured'],
-                  type: 'string',
-                  description:
-                    'The type of secured details.\n For enumeration descriptions see `secured-details-description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)',
-                },
-                description: {
-                  type: 'string',
-                  description:
-                    'Details of the amount or obligation secured by the charge',
-                },
+            title: 'securedDetailsDesc',
+            required: ['type', 'description'],
+            properties: {
+              type: {
+                enum: ['amount-secured', 'obligations-secured'],
+                type: 'string',
+                description:
+                  'The type of secured details.\n For enumeration descriptions see `secured-details-description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)',
+              },
+              description: {
+                type: 'string',
+                description:
+                  'Details of the amount or obligation secured by the charge',
               },
             },
           },
           scottish_alterations: {
-            type: 'array',
-            items: {
-              title: 'alterationsDesc',
-              required: ['type', 'description'],
-              properties: {
-                type: {
-                  type: 'string',
-                },
-                description: {
-                  type: 'string',
-                },
-                has_alterations_to_order: {
-                  type: 'boolean',
-                  description: 'The charge has alterations to order',
-                },
-                has_alterations_to_prohibitions: {
-                  type: 'boolean',
-                  description: 'The charge has alterations to prohibitions',
-                },
-                has_alterations_to_provisions: {
-                  type: 'boolean',
-                  description:
-                    'The charge has provisions restricting the creation of further charges',
-                },
+            type: 'object',
+            description: 'Information about alterations for Scottish companies',
+            title: 'alterationsDesc',
+            required: ['type', 'description'],
+            properties: {
+              type: {
+                type: 'string',
+              },
+              description: {
+                type: 'string',
+              },
+              has_alterations_to_order: {
+                type: 'boolean',
+                description: 'The charge has alterations to order',
+              },
+              has_alterations_to_prohibitions: {
+                type: 'boolean',
+                description: 'The charge has alterations to prohibitions',
+              },
+              has_alterations_to_provisions: {
+                type: 'boolean',
+                description:
+                  'The charge has provisions restricting the creation of further charges',
               },
             },
-            description: 'Information about alterations for Scottish companies',
           },
           more_than_four_persons_entitled: {
             type: 'boolean',
@@ -240,6 +232,7 @@ export const GetChargesSchema = {
                   description: 'The name of the person entitled.',
                 },
               },
+              type: 'object',
             },
           },
           transactions: {
@@ -268,24 +261,23 @@ export const GetChargesSchema = {
                   description: 'The insolvency case related to this filing',
                 },
                 links: {
-                  type: 'array',
+                  type: 'object',
                   description: 'The resources related to this filing',
-                  items: {
-                    title: 'transaction_links',
-                    properties: {
-                      filing: {
-                        type: 'string',
-                        description: 'Link to the charge filing data',
-                      },
-                      insolvency_case: {
-                        type: 'string',
-                        description:
-                          'Link to the insolvency case related to this filing',
-                      },
+                  title: 'transaction_links',
+                  properties: {
+                    filing: {
+                      type: 'string',
+                      description: 'Link to the charge filing data',
+                    },
+                    insolvency_case: {
+                      type: 'string',
+                      description:
+                        'Link to the insolvency case related to this filing',
                     },
                   },
                 },
               },
+              type: 'object',
             },
           },
           insolvency_cases: {
@@ -303,36 +295,34 @@ export const GetChargesSchema = {
                   description: 'The id of the insolvency filing',
                 },
                 links: {
-                  type: 'array',
+                  type: 'object',
                   description: 'The resources related to this insolvency case',
-                  items: {
-                    title: 'insolvency_case_links',
-                    properties: {
-                      case: {
-                        type: 'string',
-                        description: 'Link to the insolvency case data',
-                      },
+                  title: 'insolvency_case_links',
+                  properties: {
+                    case: {
+                      type: 'string',
+                      description: 'Link to the insolvency case data',
                     },
                   },
                 },
               },
+              type: 'object',
             },
           },
           links: {
-            type: 'array',
+            type: 'object',
             description: 'The resources related to this charge',
-            items: {
-              title: 'charge_links',
-              required: ['self'],
-              properties: {
-                self: {
-                  type: 'string',
-                  description: 'Link to the this charge data',
-                },
+            title: 'charge_links',
+            required: ['self'],
+            properties: {
+              self: {
+                type: 'string',
+                description: 'Link to the this charge data',
               },
             },
           },
         },
+        type: 'object',
       },
     },
   },

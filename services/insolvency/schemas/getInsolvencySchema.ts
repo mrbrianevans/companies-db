@@ -33,167 +33,165 @@ export const GetInsolvencySchema = {
             type: 'string',
           },
           cases: {
-            type: 'array',
+            type: 'object',
             description: 'List of insolvency cases.',
-            items: {
-              title: 'case',
-              required: ['type', 'dates', 'practitioners'],
-              properties: {
-                type: {
-                  type: 'string',
-                  enum: [
-                    'compulsory-liquidation',
-                    'creditors-voluntary-liquidation',
-                    'members-voluntary-liquidation',
-                    'in-administration',
-                    'corporate-voluntary-arrangement',
-                    'corporate-voluntary-arrangement-moratorium',
-                    'administration-order',
-                    'receiver-manager',
-                    'administrative-receiver',
-                    'receivership',
-                    'foreign-insolvency',
-                  ],
-                  description:
-                    'The type of case.\n For enumeration descriptions see `insolvency_case_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
-                },
-                dates: {
-                  type: 'array',
-                  description: 'The dates specific to the case.',
-                  items: {
-                    title: 'caseDates',
-                    required: ['type', 'date'],
-                    properties: {
-                      type: {
-                        type: 'string',
-                        description:
-                          'Describes what date is represented by the associated `date` element.\n For enumeration descriptions see `insolvency_case_date_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
-                        enum: [
-                          'instrumented-on',
-                          'administration-started-on',
-                          'administration-discharged-on',
-                          'administration-ended-on',
-                          'concluded-winding-up-on',
-                          'petitioned-on',
-                          'ordered-to-wind-up-on',
-                          'due-to-be-dissolved-on',
-                          'case-end-on',
-                          'wound-up-on',
-                          'voluntary-arrangement-started-on',
-                          'voluntary-arrangement-ended-on',
-                          'moratorium-started-on',
-                          'moratorium-ended-on',
-                          'declaration-solvent-on',
-                        ],
-                      },
-                      date: {
-                        type: 'string',
-                        format: 'date',
-                        description: 'The case date, described by `date_type`.',
-                      },
+            title: 'case',
+            required: ['type', 'dates', 'practitioners'],
+            properties: {
+              type: {
+                type: 'string',
+                enum: [
+                  'compulsory-liquidation',
+                  'creditors-voluntary-liquidation',
+                  'members-voluntary-liquidation',
+                  'in-administration',
+                  'corporate-voluntary-arrangement',
+                  'corporate-voluntary-arrangement-moratorium',
+                  'administration-order',
+                  'receiver-manager',
+                  'administrative-receiver',
+                  'receivership',
+                  'foreign-insolvency',
+                ],
+                description:
+                  'The type of case.\n For enumeration descriptions see `insolvency_case_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
+              },
+              dates: {
+                type: 'array',
+                description: 'The dates specific to the case.',
+                items: {
+                  title: 'caseDates',
+                  required: ['type', 'date'],
+                  properties: {
+                    type: {
+                      type: 'string',
+                      description:
+                        'Describes what date is represented by the associated `date` element.\n For enumeration descriptions see `insolvency_case_date_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
+                      enum: [
+                        'instrumented-on',
+                        'administration-started-on',
+                        'administration-discharged-on',
+                        'administration-ended-on',
+                        'concluded-winding-up-on',
+                        'petitioned-on',
+                        'ordered-to-wind-up-on',
+                        'due-to-be-dissolved-on',
+                        'case-end-on',
+                        'wound-up-on',
+                        'voluntary-arrangement-started-on',
+                        'voluntary-arrangement-ended-on',
+                        'moratorium-started-on',
+                        'moratorium-ended-on',
+                        'declaration-solvent-on',
+                      ],
+                    },
+                    date: {
+                      type: 'string',
+                      format: 'date',
+                      description: 'The case date, described by `date_type`.',
                     },
                   },
                 },
-                notes: {
-                  type: 'array',
-                  description: 'The dates specific to the case.',
-                  items: {
-                    type: 'string',
-                  },
+              },
+              notes: {
+                type: 'array',
+                description: 'The dates specific to the case.',
+                items: {
+                  type: 'string',
                 },
-                practitioners: {
-                  type: 'array',
-                  description: 'The practitioners for the case.',
-                  items: {
-                    title: 'practitioners',
-                    required: ['name', 'address'],
-                    properties: {
-                      name: {
-                        description: 'The name of the practitioner.',
-                        type: 'string',
-                      },
-                      address: {
-                        type: 'array',
-                        description: "The practitioners' address.",
-                        items: {
-                          title: 'practitionerAddress',
-                          required: ['address_line_1', 'postal_code'],
-                          properties: {
-                            address_line_1: {
-                              type: 'string',
-                              description: 'The first line of the address.',
-                            },
-                            address_line_2: {
-                              type: 'string',
-                              description: 'The second line of the address.',
-                            },
-                            locality: {
-                              type: 'string',
-                              description: 'The locality. For example London.',
-                            },
-                            region: {
-                              type: 'string',
-                              description: 'The region. For example Surrey.',
-                            },
-                            postal_code: {
-                              type: 'string',
-                              description:
-                                'The postal code. For example CF14 3UZ.',
-                            },
-                            country: {
-                              type: 'string',
-                              description: 'The country.',
-                            },
+              },
+              practitioners: {
+                type: 'array',
+                description: 'The practitioners for the case.',
+                items: {
+                  title: 'practitioners',
+                  required: ['name', 'address'],
+                  properties: {
+                    name: {
+                      description: 'The name of the practitioner.',
+                      type: 'string',
+                    },
+                    address: {
+                      type: 'array',
+                      description: "The practitioners' address.",
+                      items: {
+                        title: 'practitionerAddress',
+                        required: ['address_line_1', 'postal_code'],
+                        properties: {
+                          address_line_1: {
+                            type: 'string',
+                            description: 'The first line of the address.',
+                          },
+                          address_line_2: {
+                            type: 'string',
+                            description: 'The second line of the address.',
+                          },
+                          locality: {
+                            type: 'string',
+                            description: 'The locality. For example London.',
+                          },
+                          region: {
+                            type: 'string',
+                            description: 'The region. For example Surrey.',
+                          },
+                          postal_code: {
+                            type: 'string',
+                            description:
+                              'The postal code. For example CF14 3UZ.',
+                          },
+                          country: {
+                            type: 'string',
+                            description: 'The country.',
                           },
                         },
                       },
-                      appointed_on: {
-                        type: 'string',
-                        format: 'date',
-                        description:
-                          'The date the practitioner was appointed on.',
-                      },
-                      ceased_to_act_on: {
-                        type: 'string',
-                        format: 'date',
-                        description:
-                          'The date the practitioner ceased to act for the case.',
-                      },
-                      role: {
-                        type: 'string',
-                        description: 'The type of role.',
-                        enum: [
-                          'final-liquidator',
-                          'receiver',
-                          'receiver-manager',
-                          'proposed-liquidator',
-                          'provisional-liquidator',
-                          'administrative-receiver',
-                          'practitioner',
-                          'interim-liquidator',
-                        ],
-                      },
+                    },
+                    appointed_on: {
+                      type: 'string',
+                      format: 'date',
+                      description:
+                        'The date the practitioner was appointed on.',
+                    },
+                    ceased_to_act_on: {
+                      type: 'string',
+                      format: 'date',
+                      description:
+                        'The date the practitioner ceased to act for the case.',
+                    },
+                    role: {
+                      type: 'string',
+                      description: 'The type of role.',
+                      enum: [
+                        'final-liquidator',
+                        'receiver',
+                        'receiver-manager',
+                        'proposed-liquidator',
+                        'provisional-liquidator',
+                        'administrative-receiver',
+                        'practitioner',
+                        'interim-liquidator',
+                      ],
                     },
                   },
                 },
-                links: {
-                  type: 'object',
-                  description: 'The practitioners for the case.',
-                  items: {
-                    title: 'links',
-                    properties: {
-                      charge: {
-                        type: 'string',
-                        description:
-                          'The link to the charge this case is lodged against.',
-                      },
+              },
+              links: {
+                type: 'object',
+                description: 'The practitioners for the case.',
+                items: {
+                  title: 'links',
+                  properties: {
+                    charge: {
+                      type: 'string',
+                      description:
+                        'The link to the charge this case is lodged against.',
                     },
                   },
                 },
-                number: {
-                  type: 'integer',
-                  description: 'The case number.',
-                },
+              },
+              number: {
+                type: 'integer',
+                description: 'The case number.',
               },
             },
           },
@@ -214,6 +212,7 @@ export const GetInsolvencySchema = {
             ],
           },
         },
+        type: 'object',
       },
     },
   },

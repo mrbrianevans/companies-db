@@ -39,129 +39,120 @@ export const GetCompanyProfileSchema = {
         properties: {
           accounts: {
             description: 'Company accounts information.',
-            items: {
-              title: 'accountsInformation',
-              type: 'object',
-              required: [
-                'overdue',
-                'next_made_up_to',
-                'accounting_reference_date',
-              ],
-              properties: {
-                accounting_reference_date: {
-                  description:
-                    'The Accounting Reference Date (ARD) of the company.',
+            type: 'object',
+            title: 'accountsInformation',
+            required: [
+              'overdue',
+              'next_made_up_to',
+              'accounting_reference_date',
+            ],
+            properties: {
+              accounting_reference_date: {
+                description:
+                  'The Accounting Reference Date (ARD) of the company.',
+                type: 'object',
+                items: {
+                  title: 'accountingReferenceDate',
                   type: 'object',
-                  items: {
-                    title: 'accountingReferenceDate',
-                    type: 'object',
-                    required: ['day', 'month'],
-                    properties: {
-                      day: {
-                        type: 'integer',
-                        description: 'The Accounting Reference Date (ARD) day.',
-                      },
-                      month: {
-                        type: 'integer',
-                        description:
-                          'The Accounting Reference Date (ARD) month.',
-                      },
+                  required: ['day', 'month'],
+                  properties: {
+                    day: {
+                      type: 'integer',
+                      description: 'The Accounting Reference Date (ARD) day.',
+                    },
+                    month: {
+                      type: 'integer',
+                      description: 'The Accounting Reference Date (ARD) month.',
                     },
                   },
-                },
-                last_accounts: {
-                  description: 'The last company accounts filed.',
-                  type: 'object',
-                  items: {
-                    title: 'lastAccounts',
-                    properties: {
-                      made_up_to: {
-                        type: 'string',
-                        format: 'date',
-                        description:
-                          'The date the last company accounts were made up to.',
-                      },
-                      type: {
-                        description:
-                          'The type of the last company accounts filed.  \n For enumeration descriptions see `account_type` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).    ',
-                        enum: [
-                          'null',
-                          'full',
-                          'small',
-                          'medium',
-                          'group',
-                          'dormant',
-                          'interim',
-                          'initial',
-                          'total-exemption-full',
-                          'total-exemption-small',
-                          'partial-exemption',
-                          'audit-exemption-subsidiary',
-                          'filing-exemption-subsidiary',
-                          'micro-entity',
-                          'no-accounts-type-available',
-                          'audited-abridged',
-                          'unaudited-abridged',
-                        ],
-                      },
-                    },
-                    type: 'string',
-                    required: ['type', 'made_up_to'],
-                  },
-                },
-                next_due: {
-                  description: 'The date the next company accounts are due.',
-                  type: 'string',
-                  format: 'date',
-                },
-                next_made_up_to: {
-                  description:
-                    'The date the next company accounts should be made up to.',
-                  type: 'string',
-                  format: 'date',
-                },
-                overdue: {
-                  type: 'boolean',
-                  description:
-                    'Flag indicating if the company accounts are overdue.',
                 },
               },
+              last_accounts: {
+                description: 'The last company accounts filed.',
+                type: 'object',
+                items: {
+                  title: 'lastAccounts',
+                  properties: {
+                    made_up_to: {
+                      type: 'string',
+                      format: 'date',
+                      description:
+                        'The date the last company accounts were made up to.',
+                    },
+                    type: {
+                      description:
+                        'The type of the last company accounts filed.  \n For enumeration descriptions see `account_type` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).    ',
+                      enum: [
+                        'null',
+                        'full',
+                        'small',
+                        'medium',
+                        'group',
+                        'dormant',
+                        'interim',
+                        'initial',
+                        'total-exemption-full',
+                        'total-exemption-small',
+                        'partial-exemption',
+                        'audit-exemption-subsidiary',
+                        'filing-exemption-subsidiary',
+                        'micro-entity',
+                        'no-accounts-type-available',
+                        'audited-abridged',
+                        'unaudited-abridged',
+                      ],
+                    },
+                  },
+                  type: 'string',
+                  required: ['type', 'made_up_to'],
+                },
+              },
+              next_due: {
+                description: 'The date the next company accounts are due.',
+                type: 'string',
+                format: 'date',
+              },
+              next_made_up_to: {
+                description:
+                  'The date the next company accounts should be made up to.',
+                type: 'string',
+                format: 'date',
+              },
+              overdue: {
+                type: 'boolean',
+                description:
+                  'Flag indicating if the company accounts are overdue.',
+              },
             },
-            type: 'object',
           },
           annual_return: {
             description:
               'Annual return information. This member is only returned if a confirmation statement has not be filed.',
-            items: {
-              title: 'annualReturnInformation',
-              type: 'object',
-              properties: {
-                last_made_up_to: {
-                  description:
-                    'The date the last annual return was made up to.',
-                  type: 'string',
-                  format: 'date',
-                },
-                next_due: {
-                  description:
-                    'The date the next annual return is due. This member will only be returned if a confirmation statement has not been filed and the date is before 28th July 2016, otherwise refer to `confirmation_statement.next_due`',
-                  type: 'string',
-                  format: 'date',
-                },
-                next_made_up_to: {
-                  description:
-                    'The date the next annual return should be made up to. This member will only be returned if a confirmation statement has not been filed and the date is before 30th July 2016, otherwise refer to `confirmation_statement.next_made_up_to`',
-                  type: 'string',
-                  format: 'date',
-                },
-                overdue: {
-                  description:
-                    'Flag indicating if the annual return is overdue.',
-                  type: 'boolean',
-                },
+            type: 'object',
+            title: 'annualReturnInformation',
+            properties: {
+              last_made_up_to: {
+                description: 'The date the last annual return was made up to.',
+                type: 'string',
+                format: 'date',
+              },
+              next_due: {
+                description:
+                  'The date the next annual return is due. This member will only be returned if a confirmation statement has not been filed and the date is before 28th July 2016, otherwise refer to `confirmation_statement.next_due`',
+                type: 'string',
+                format: 'date',
+              },
+              next_made_up_to: {
+                description:
+                  'The date the next annual return should be made up to. This member will only be returned if a confirmation statement has not been filed and the date is before 30th July 2016, otherwise refer to `confirmation_statement.next_made_up_to`',
+                type: 'string',
+                format: 'date',
+              },
+              overdue: {
+                description: 'Flag indicating if the annual return is overdue.',
+                type: 'boolean',
               },
             },
-            type: 'object',
           },
           can_file: {
             description: 'Flag indicating whether this company can file.',
@@ -170,36 +161,34 @@ export const GetCompanyProfileSchema = {
           confirmation_statement: {
             description:
               'Confirmation statement information (N.B. refers to the Annual Update where type is registered-overseas-entity)',
-            items: {
-              title: 'confirmationOfStatementInformation',
-              required: ['next_made_up_to', 'next_due'],
-              properties: {
-                last_made_up_to: {
-                  description:
-                    'The date to which the company last made a confirmation statement.',
-                  type: 'string',
-                  format: 'date',
-                },
-                next_due: {
-                  description:
-                    'The date by which the next confimation statement must be received.',
-                  type: 'string',
-                  format: 'date',
-                },
-                next_made_up_to: {
-                  description:
-                    'The date to which the company must next make a confirmation statement.',
-                  type: 'string',
-                  format: 'date',
-                },
-                overdue: {
-                  description:
-                    'Flag indicating if the confirmation statement is overdue',
-                  type: 'boolean',
-                },
+            type: 'object',
+            title: 'confirmationOfStatementInformation',
+            required: ['next_made_up_to', 'next_due'],
+            properties: {
+              last_made_up_to: {
+                description:
+                  'The date to which the company last made a confirmation statement.',
+                type: 'string',
+                format: 'date',
+              },
+              next_due: {
+                description:
+                  'The date by which the next confimation statement must be received.',
+                type: 'string',
+                format: 'date',
+              },
+              next_made_up_to: {
+                description:
+                  'The date to which the company must next make a confirmation statement.',
+                type: 'string',
+                format: 'date',
+              },
+              overdue: {
+                description:
+                  'Flag indicating if the confirmation statement is overdue',
+                type: 'boolean',
               },
             },
-            type: 'object',
           },
           company_name: {
             description: 'The name of the company.',
@@ -255,146 +244,141 @@ export const GetCompanyProfileSchema = {
           },
           foreign_company_details: {
             description: 'Foreign company details.',
-            items: {
-              title: 'foreignCompanyDetails',
-              properties: {
-                originating_registry: {
-                  description: 'Company origin informations',
-                  type: 'object',
-                  items: {
-                    title: 'originatingRegistry',
-                    properties: {
-                      country: {
-                        description:
-                          'Country in which company was incorporated.',
-                        type: 'string',
-                      },
-                      name: {
-                        description:
-                          'Identity of register in country of incorporation.',
-                        type: 'string',
-                      },
+            type: 'object',
+            title: 'foreignCompanyDetails',
+            properties: {
+              originating_registry: {
+                description: 'Company origin informations',
+                type: 'object',
+                items: {
+                  title: 'originatingRegistry',
+                  properties: {
+                    country: {
+                      description: 'Country in which company was incorporated.',
+                      type: 'string',
+                    },
+                    name: {
+                      description:
+                        'Identity of register in country of incorporation.',
+                      type: 'string',
                     },
                   },
-                },
-                registration_number: {
-                  description:
-                    'Registration number in company of incorporation.',
-                  type: 'string',
-                },
-                governed_by: {
-                  description:
-                    'Law governing the company in country of incorporation.',
-                  type: 'string',
-                },
-                company_type: {
-                  description:
-                    'Legal form of the company in the country of incorporation.',
-                  type: 'string',
-                },
-                is_a_credit_finance_institution: {
-                  description: 'Is it a financial or credit institution.',
-                  type: 'boolean',
-                },
-                accounts: {
-                  description: 'Foreign company account information.',
-                  items: {
-                    title: 'accountInformation',
-                    properties: {
-                      'account_period_from:': {
-                        description:
-                          'Date account period starts under parent law.',
-                        items: {
-                          title: 'accountPeriodFrom',
-                          properties: {
-                            day: {
-                              description:
-                                'Day on which accounting period starts under parent law.',
-                              type: 'integer',
-                            },
-                            month: {
-                              description:
-                                'Month in which accounting period starts under parent law.',
-                              type: 'integer',
-                            },
-                          },
-                        },
-                        type: 'object',
-                      },
-                      account_period_to: {
-                        description:
-                          'Date account period ends under parent law.',
-                        items: {
-                          title: 'accountPeriodTo',
-                          properties: {
-                            day: {
-                              description:
-                                'Day on which accounting period ends under parent law.',
-                              type: 'integer',
-                            },
-                            month: {
-                              description:
-                                'Month in which accounting period ends under parent law.',
-                              type: 'integer',
-                            },
-                          },
-                        },
-                        type: 'object',
-                      },
-                      must_file_within: {
-                        description:
-                          'Time allowed from period end for disclosure of accounts under parent law.',
-                        items: {
-                          title: 'fileWithin',
-                          properties: {
-                            months: {
-                              description:
-                                'Number of months within which to file.',
-                              type: 'integer',
-                            },
-                          },
-                        },
-                        type: 'object',
-                      },
-                    },
-                  },
-                  type: 'object',
-                },
-                business_activity: {
-                  description: 'Type of business undertaken by the company.',
-                  type: 'string',
-                },
-                accounting_requirement: {
-                  description: 'Accounts requirement.',
-                  items: {
-                    title: 'accountsRequired',
-                    properties: {
-                      foreign_account_type: {
-                        description:
-                          'Type of accounting requirement that applies.  \n For enumeration descriptions see `foreign_account_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
-                        enum: [
-                          'accounting-requirements-of-originating-country-apply',
-                          'accounting-requirements-of-originating-country-do-not-apply',
-                        ],
-                        type: 'string',
-                      },
-                      terms_of_account_publication: {
-                        description:
-                          'Describes how the publication date is derived.  \n For enumeration descriptions see `terms_of_account_publication` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
-                        enum: [
-                          'accounts-publication-date-supplied-by-company',
-                          'accounting-publication-date-does-not-need-to-be-supplied-by-company',
-                          'accounting-reference-date-allocated-by-companies-house',
-                        ],
-                        type: 'string',
-                      },
-                    },
-                  },
-                  type: 'object',
                 },
               },
+              registration_number: {
+                description: 'Registration number in company of incorporation.',
+                type: 'string',
+              },
+              governed_by: {
+                description:
+                  'Law governing the company in country of incorporation.',
+                type: 'string',
+              },
+              company_type: {
+                description:
+                  'Legal form of the company in the country of incorporation.',
+                type: 'string',
+              },
+              is_a_credit_finance_institution: {
+                description: 'Is it a financial or credit institution.',
+                type: 'boolean',
+              },
+              accounts: {
+                description: 'Foreign company account information.',
+                items: {
+                  title: 'accountInformation',
+                  properties: {
+                    'account_period_from:': {
+                      description:
+                        'Date account period starts under parent law.',
+                      items: {
+                        title: 'accountPeriodFrom',
+                        properties: {
+                          day: {
+                            description:
+                              'Day on which accounting period starts under parent law.',
+                            type: 'integer',
+                          },
+                          month: {
+                            description:
+                              'Month in which accounting period starts under parent law.',
+                            type: 'integer',
+                          },
+                        },
+                      },
+                      type: 'object',
+                    },
+                    account_period_to: {
+                      description: 'Date account period ends under parent law.',
+                      items: {
+                        title: 'accountPeriodTo',
+                        properties: {
+                          day: {
+                            description:
+                              'Day on which accounting period ends under parent law.',
+                            type: 'integer',
+                          },
+                          month: {
+                            description:
+                              'Month in which accounting period ends under parent law.',
+                            type: 'integer',
+                          },
+                        },
+                      },
+                      type: 'object',
+                    },
+                    must_file_within: {
+                      description:
+                        'Time allowed from period end for disclosure of accounts under parent law.',
+                      items: {
+                        title: 'fileWithin',
+                        properties: {
+                          months: {
+                            description:
+                              'Number of months within which to file.',
+                            type: 'integer',
+                          },
+                        },
+                      },
+                      type: 'object',
+                    },
+                  },
+                },
+                type: 'object',
+              },
+              business_activity: {
+                description: 'Type of business undertaken by the company.',
+                type: 'string',
+              },
+              accounting_requirement: {
+                description: 'Accounts requirement.',
+                items: {
+                  title: 'accountsRequired',
+                  properties: {
+                    foreign_account_type: {
+                      description:
+                        'Type of accounting requirement that applies.  \n For enumeration descriptions see `foreign_account_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
+                      enum: [
+                        'accounting-requirements-of-originating-country-apply',
+                        'accounting-requirements-of-originating-country-do-not-apply',
+                      ],
+                      type: 'string',
+                    },
+                    terms_of_account_publication: {
+                      description:
+                        'Describes how the publication date is derived.  \n For enumeration descriptions see `terms_of_account_publication` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
+                      enum: [
+                        'accounts-publication-date-supplied-by-company',
+                        'accounting-publication-date-does-not-need-to-be-supplied-by-company',
+                        'accounting-reference-date-allocated-by-companies-house',
+                      ],
+                      type: 'string',
+                    },
+                  },
+                },
+                type: 'object',
+              },
             },
-            type: 'object',
           },
           last_full_members_list_date: {
             description: 'The date of last full members list update.',
@@ -403,131 +387,122 @@ export const GetCompanyProfileSchema = {
           },
           registered_office_address: {
             description: "The address of the company's registered office.",
-            items: {
-              title: 'registeredOfficeAddress',
-              properties: {
-                care_of: {
-                  description: 'The care of name.',
-                  type: 'string',
-                },
-                address_line_1: {
-                  description: 'The first line of the address.',
-                  type: 'string',
-                },
-                address_line_2: {
-                  description: 'The second line of the address.',
-                  type: 'string',
-                },
-                country: {
-                  description: 'The country.',
-                  enum: [
-                    'Wales',
-                    'England',
-                    'Scotland',
-                    'Great Britain',
-                    'Not specified',
-                    'United Kingdom',
-                    'Northern Ireland',
-                  ],
-                  type: 'string',
-                },
-                locality: {
-                  description: 'The locality e.g London.',
-                  type: 'string',
-                },
-                po_box: {
-                  description: 'The post-office box number.',
-                  type: 'string',
-                },
-                postal_code: {
-                  description: 'The postal code e.g CF14 3UZ.',
-                  type: 'string',
-                },
-                premises: {
-                  description: 'The property name or number.',
-                  type: 'string',
-                },
-                region: {
-                  description: 'The region e.g Surrey.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'registeredOfficeAddress',
+            properties: {
+              care_of: {
+                description: 'The care of name.',
+                type: 'string',
+              },
+              address_line_1: {
+                description: 'The first line of the address.',
+                type: 'string',
+              },
+              address_line_2: {
+                description: 'The second line of the address.',
+                type: 'string',
+              },
+              country: {
+                description: 'The country.',
+                enum: [
+                  'Wales',
+                  'England',
+                  'Scotland',
+                  'Great Britain',
+                  'Not specified',
+                  'United Kingdom',
+                  'Northern Ireland',
+                ],
+                type: 'string',
+              },
+              locality: {
+                description: 'The locality e.g London.',
+                type: 'string',
+              },
+              po_box: {
+                description: 'The post-office box number.',
+                type: 'string',
+              },
+              postal_code: {
+                description: 'The postal code e.g CF14 3UZ.',
+                type: 'string',
+              },
+              premises: {
+                description: 'The property name or number.',
+                type: 'string',
+              },
+              region: {
+                description: 'The region e.g Surrey.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
           service_address: {
             description:
               'The correspondence address of a Registered overseas entity',
-            items: {
-              title: 'serviceAddress',
-              properties: {
-                care_of: {
-                  description: 'The care of name.',
-                  type: 'string',
-                },
-                address_line_1: {
-                  description: 'The first line of the address.',
-                  type: 'string',
-                },
-                address_line_2: {
-                  description: 'The second line of the address.',
-                  type: 'string',
-                },
-                country: {
-                  description: 'The country e.g. United Kingdom.',
-                  type: 'string',
-                },
-                locality: {
-                  description: 'The locality e.g London.',
-                  type: 'string',
-                },
-                po_box: {
-                  description: 'The post-office box number.',
-                  type: 'string',
-                },
-                postal_code: {
-                  description: 'The postal code e.g CF14 3UZ.',
-                  type: 'string',
-                },
-                region: {
-                  description: 'The region e.g Surrey.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'serviceAddress',
+            properties: {
+              care_of: {
+                description: 'The care of name.',
+                type: 'string',
+              },
+              address_line_1: {
+                description: 'The first line of the address.',
+                type: 'string',
+              },
+              address_line_2: {
+                description: 'The second line of the address.',
+                type: 'string',
+              },
+              country: {
+                description: 'The country e.g. United Kingdom.',
+                type: 'string',
+              },
+              locality: {
+                description: 'The locality e.g London.',
+                type: 'string',
+              },
+              po_box: {
+                description: 'The post-office box number.',
+                type: 'string',
+              },
+              postal_code: {
+                description: 'The postal code e.g CF14 3UZ.',
+                type: 'string',
+              },
+              region: {
+                description: 'The region e.g Surrey.',
+                type: 'string',
               },
             },
-            type: 'object',
           },
           sic_codes: {
             description: 'SIC codes for this company.',
-            type: 'array',
-            items: {
-              type: 'string',
-            },
+            type: 'string',
           },
           previous_company_names: {
             description: 'The previous names of this company.',
-            items: {
-              title: 'previousCompanyNames',
-              properties: {
-                name: {
-                  description: 'The previous company name',
-                  type: 'string',
-                },
-                effective_from: {
-                  description:
-                    'The date from which the company name was effective.',
-                  type: 'string',
-                  format: 'date',
-                },
-                ceased_on: {
-                  description: 'The date on which the company name ceased.',
-                  type: 'string',
-                  format: 'date',
-                },
+            type: 'object',
+            title: 'previousCompanyNames',
+            properties: {
+              name: {
+                description: 'The previous company name',
+                type: 'string',
               },
-              required: ['name', 'effective_from', 'ceased_on'],
+              effective_from: {
+                description:
+                  'The date from which the company name was effective.',
+                type: 'string',
+                format: 'date',
+              },
+              ceased_on: {
+                description: 'The date on which the company name ceased.',
+                type: 'string',
+                format: 'date',
+              },
             },
-            type: 'array',
+            required: ['name', 'effective_from', 'ceased_on'],
           },
           company_status: {
             description:
@@ -617,56 +592,54 @@ export const GetCompanyProfileSchema = {
           },
           branch_company_details: {
             description: 'UK branch of a foreign company.',
-            items: {
-              title: 'branchCompanyDetails',
-              properties: {
-                business_activity: {
-                  description:
-                    'Type of business undertaken by the UK establishment.',
-                  type: 'string',
-                },
-                parent_company_number: {
-                  description: 'Parent company number.',
-                  type: 'string',
-                },
-                parent_company_name: {
-                  description: 'Parent company name.',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'branchCompanyDetails',
+            properties: {
+              business_activity: {
+                description:
+                  'Type of business undertaken by the UK establishment.',
+                type: 'string',
+              },
+              parent_company_number: {
+                description: 'Parent company number.',
+                type: 'string',
+              },
+              parent_company_name: {
+                description: 'Parent company name.',
+                type: 'string',
               },
             },
           },
           links: {
             description:
               'A set of URLs related to the resource, including self.',
-            items: {
-              title: 'linksType',
-              required: ['self'],
-              properties: {
-                self: {
-                  description: 'The URL of the resource.',
-                  type: 'string',
-                },
-                persons_with_significant_control: {
-                  description:
-                    'The URL of the persons with significant control list resource.',
-                  type: 'string',
-                },
-                persons_with_significant_control_statements: {
-                  description:
-                    'The URL of the persons with significant control statements list resource.',
-                  type: 'string',
-                },
-                registers: {
-                  description:
-                    'The URL of the registers resource for this company',
-                  type: 'string',
-                },
+            type: 'object',
+            title: 'linksType',
+            required: ['self'],
+            properties: {
+              self: {
+                description: 'The URL of the resource.',
+                type: 'string',
+              },
+              persons_with_significant_control: {
+                description:
+                  'The URL of the persons with significant control list resource.',
+                type: 'string',
+              },
+              persons_with_significant_control_statements: {
+                description:
+                  'The URL of the persons with significant control statements list resource.',
+                type: 'string',
+              },
+              registers: {
+                description:
+                  'The URL of the registers resource for this company',
+                type: 'string',
               },
             },
-            type: 'object',
           },
         },
+        type: 'object',
       },
     },
   },
