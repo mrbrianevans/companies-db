@@ -6,6 +6,10 @@ const headers = {
     'Basic ' + Buffer.from(process.env.RESTAPIKEY + ':').toString('base64')
 }
 
+if (!process.env.AUTH_URL) logger.error('AUTH_URL environment variable not set')
+if (!process.env.RESTAPIKEY)
+  logger.error('RESTAPIKEY environment variable not set')
+
 export async function reflect(path) {
   logger.info(
     { path, apiUrl, keySet: Boolean(process.env.RESTAPIKEY) },
@@ -19,8 +23,8 @@ export async function reflect(path) {
   return await res.json()
 }
 export async function auth(headers) {
-  const ratelimit = await fetch('http://auth-service:3000', { headers }).then(
-    (r) => r.json()
+  const ratelimit = await fetch(process.env.AUTH_URL, { headers }).then((r) =>
+    r.json()
   )
   logger.info({ ratelimit }, 'Fetched ratelimit from auth service')
   return ratelimit

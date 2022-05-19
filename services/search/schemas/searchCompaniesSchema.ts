@@ -147,17 +147,7 @@ export const SearchCompaniesSchema = {
                 }
               }
             ],
-            required: [
-              'kind',
-              'title',
-              'address_snippet',
-              'links',
-              'company_number',
-              'date_of_creation',
-              'company_type',
-              'company_status',
-              'address'
-            ],
+            required: [],
             properties: {
               kind: {
                 type: 'string',
@@ -253,7 +243,7 @@ export const SearchCompaniesSchema = {
                 type: 'object',
                 items: {
                   title: 'registeredOfficeAddress',
-                  required: ['address_line_1'],
+                  required: [],
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',

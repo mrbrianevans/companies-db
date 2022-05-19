@@ -31,19 +31,7 @@ export const GetIndividualSchema = {
     response: {
       '200': {
         title: 'individual',
-        required: [
-          'etag',
-          'notified_on',
-          'kind',
-          'country_of_residence',
-          'date_of_birth',
-          'name',
-          'name_elements',
-          'links',
-          'nationality',
-          'address',
-          'natures_of_control'
-        ],
+        required: [],
         properties: {
           etag: {
             description: 'The ETag of the resource.',
@@ -89,7 +77,7 @@ export const GetIndividualSchema = {
                 type: 'integer'
               }
             },
-            required: ['month', 'year']
+            required: []
           },
           name: {
             description: 'Name of the person with significant control.',
@@ -121,14 +109,14 @@ export const GetIndividualSchema = {
                 type: 'string'
               }
             },
-            required: ['surname']
+            required: []
           },
           links: {
             description:
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'pscLinksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',
@@ -151,7 +139,7 @@ export const GetIndividualSchema = {
               'The service address of the person with significant control. If given, this address will be shown on the public record instead of the residential address.',
             type: 'object',
             title: 'pscAddress',
-            required: ['address_line_1', 'postal_code', 'premises'],
+            required: [],
             properties: {
               address_line_1: {
                 description: 'The first line of the address.',

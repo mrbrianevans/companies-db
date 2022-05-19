@@ -68,7 +68,7 @@ export const AdvancedCompanySearchSchema = {
       '200': {
         title: 'A list of companies',
         type: 'object',
-        required: ['top_hit', 'items', 'kind', 'hits'],
+        required: [],
         allOf: [
           {
             properties: {

@@ -31,13 +31,13 @@ export const GetFilingHistorySchema = {
     response: {
       '200': {
         title: 'filingHistoryItem',
-        required: ['category', 'date', 'description', 'type', 'transaction_id'],
+        required: [],
         properties: {
           annotations: {
             description: 'Annotations for the filing',
             type: 'object',
             title: 'annotation',
-            required: ['date', 'description'],
+            required: [],
             properties: {
               annotation: {
                 description: 'The annotation text.',
@@ -59,7 +59,7 @@ export const GetFilingHistorySchema = {
             description: 'Any filings associated with the current item',
             type: 'object',
             title: 'associatedFiling',
-            required: ['date', 'description', 'type'],
+            required: [],
             properties: {
               date: {
                 description: 'The date the associated filing was processed.',
@@ -142,13 +142,7 @@ export const GetFilingHistorySchema = {
             description: 'Resolutions for the filing',
             type: 'object',
             title: 'resolution',
-            required: [
-              'category',
-              'description',
-              'receive_date',
-              'subcategory',
-              'type'
-            ],
+            required: [],
             properties: {
               category: {
                 description: 'The category of the resolution filed.',

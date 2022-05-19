@@ -26,7 +26,7 @@ export const GetInsolvencySchema = {
     response: {
       '200': {
         title: 'companyInsolvency',
-        required: ['etag', 'cases', 'status'],
+        required: [],
         properties: {
           etag: {
             description: 'The ETag of the resource.',
@@ -36,7 +36,7 @@ export const GetInsolvencySchema = {
             type: 'object',
             description: 'List of insolvency cases.',
             title: 'case',
-            required: ['type', 'dates', 'practitioners'],
+            required: [],
             properties: {
               type: {
                 type: 'string',
@@ -61,7 +61,7 @@ export const GetInsolvencySchema = {
                 description: 'The dates specific to the case.',
                 items: {
                   title: 'caseDates',
-                  required: ['type', 'date'],
+                  required: [],
                   properties: {
                     type: {
                       type: 'string',
@@ -105,7 +105,7 @@ export const GetInsolvencySchema = {
                 description: 'The practitioners for the case.',
                 items: {
                   title: 'practitioners',
-                  required: ['name', 'address'],
+                  required: [],
                   properties: {
                     name: {
                       description: 'The name of the practitioner.',
@@ -116,7 +116,7 @@ export const GetInsolvencySchema = {
                       description: "The practitioners' address.",
                       items: {
                         title: 'practitionerAddress',
-                        required: ['address_line_1', 'postal_code'],
+                        required: [],
                         properties: {
                           address_line_1: {
                             type: 'string',

@@ -1,4 +1,4 @@
-import type { SearchDisqualifiedOfficersResponse } from '../schemas/SearchDisqualifiedOfficersSchema.js'
+import type { SearchDisqualifiedOfficersResponse } from '../schemas/searchDisqualifiedOfficersSchema.js'
 
 /**
  * Search disqualified officers.

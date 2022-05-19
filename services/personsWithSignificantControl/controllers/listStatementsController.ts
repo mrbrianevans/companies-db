@@ -5,7 +5,7 @@ import {
   ListStatementsSchema as schema,
   ListStatementsQueryString,
   ListStatementsParams
-} from '../schemas/ListStatementsSchema.js'
+} from '../schemas/listStatementsSchema.js'
 
 export const listStatementsController: FastifyPluginAsync = async (
   fastify,

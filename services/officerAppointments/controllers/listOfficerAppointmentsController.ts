@@ -5,7 +5,7 @@ import {
   ListOfficerAppointmentsSchema as schema,
   ListOfficerAppointmentsQueryString,
   ListOfficerAppointmentsParams
-} from '../schemas/ListOfficerAppointmentsSchema.js'
+} from '../schemas/listOfficerAppointmentsSchema.js'
 
 export const listOfficerAppointmentsController: FastifyPluginAsync = async (
   fastify,

@@ -1,4 +1,4 @@
-import type { GetNaturalOfficerResponse } from '../schemas/GetNaturalOfficerSchema.js'
+import type { GetNaturalOfficerResponse } from '../schemas/getNaturalOfficerSchema.js'
 
 /**
  * Get natural officers disqualifications.

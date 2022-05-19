@@ -143,7 +143,7 @@ export const SearchAllSchema = {
                 }
               }
             ],
-            required: ['kind', 'title', 'address_snippet', 'links', 'address'],
+            required: [],
             properties: {
               kind: {
                 type: 'string',
@@ -186,7 +186,7 @@ export const SearchAllSchema = {
                 type: 'object',
                 items: {
                   title: 'registeredOfficeAddress',
-                  required: ['address_line_1'],
+                  required: [],
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',

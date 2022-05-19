@@ -27,14 +27,14 @@ export const GetRegistersSchema = {
       '200': {
         title: 'companyRegister',
         type: 'object',
-        required: ['links', 'company_number', 'kind', 'registers'],
+        required: [],
         properties: {
           links: {
             type: 'object',
             description:
               'A set of URLs related to the resource, including self.',
             title: 'linksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',
@@ -56,19 +56,13 @@ export const GetRegistersSchema = {
               title: 'registers',
               description: 'Registered company information',
               type: 'object',
-              required: [
-                'directors',
-                'secretaries',
-                'persons_with_significant_control',
-                'usual_residential_address',
-                'members'
-              ],
+              required: [],
               properties: {
                 directors: {
                   description: 'List of registered company directors.',
                   type: 'object',
                   title: 'registerListDirectors',
-                  required: ['register_type', 'items'],
+                  required: [],
                   properties: {
                     register_type: {
                       description: 'The register type.',
@@ -78,7 +72,7 @@ export const GetRegistersSchema = {
                     items: {
                       type: 'object',
                       title: 'registeredItems',
-                      required: ['register_moved_to', 'moved_on', 'links'],
+                      required: [],
                       properties: {
                         moved_on: {
                           description: 'The date registered on',
@@ -99,7 +93,7 @@ export const GetRegistersSchema = {
                           description: 'A set of URLs related to the resource.',
                           items: {
                             title: 'linksItems',
-                            required: ['filing'],
+                            required: [],
                             properties: {
                               filing: {
                                 description:
@@ -131,7 +125,7 @@ export const GetRegistersSchema = {
                   description: 'List of registered company secretaries.',
                   type: 'object',
                   title: 'registerListSecretaries',
-                  required: ['register_type', 'items'],
+                  required: [],
                   properties: {
                     register_type: {
                       description: 'The register type.',
@@ -141,7 +135,7 @@ export const GetRegistersSchema = {
                     items: {
                       type: 'object',
                       title: 'registeredItems',
-                      required: ['register_moved_to', 'moved_on', 'links'],
+                      required: [],
                       properties: {
                         moved_on: {
                           description: 'The date registered on',
@@ -162,7 +156,7 @@ export const GetRegistersSchema = {
                           description: 'A set of URLs related to the resource.',
                           items: {
                             title: 'linksItems',
-                            required: ['filing'],
+                            required: [],
                             properties: {
                               filing: {
                                 description:
@@ -195,7 +189,7 @@ export const GetRegistersSchema = {
                     'List of registered company persons with significant control.',
                   type: 'object',
                   title: 'registerListPersonsWithSignificantControl',
-                  required: ['register_type', 'items'],
+                  required: [],
                   properties: {
                     register_type: {
                       description: 'The register type.',
@@ -205,7 +199,7 @@ export const GetRegistersSchema = {
                     items: {
                       type: 'object',
                       title: 'registeredItems',
-                      required: ['register_moved_to', 'moved_on', 'links'],
+                      required: [],
                       properties: {
                         moved_on: {
                           description: 'The date registered on',
@@ -226,7 +220,7 @@ export const GetRegistersSchema = {
                           description: 'A set of URLs related to the resource.',
                           items: {
                             title: 'linksItems',
-                            required: ['filing'],
+                            required: [],
                             properties: {
                               filing: {
                                 description:
@@ -258,7 +252,7 @@ export const GetRegistersSchema = {
                   description: 'List of register addresses.',
                   type: 'object',
                   title: 'registerListUsualResidentialAddress',
-                  required: ['register_type', 'items'],
+                  required: [],
                   properties: {
                     register_type: {
                       description: 'The register type.',
@@ -268,7 +262,7 @@ export const GetRegistersSchema = {
                     items: {
                       type: 'object',
                       title: 'registeredItems',
-                      required: ['register_moved_to', 'moved_on', 'links'],
+                      required: [],
                       properties: {
                         moved_on: {
                           description: 'The date registered on',
@@ -289,7 +283,7 @@ export const GetRegistersSchema = {
                           description: 'A set of URLs related to the resource.',
                           items: {
                             title: 'linksItems',
-                            required: ['filing'],
+                            required: [],
                             properties: {
                               filing: {
                                 description:
@@ -330,7 +324,7 @@ export const GetRegistersSchema = {
                     items: {
                       type: 'object',
                       title: 'registeredItems',
-                      required: ['register_moved_to', 'moved_on', 'links'],
+                      required: [],
                       properties: {
                         moved_on: {
                           description: 'The date registered on',
@@ -351,7 +345,7 @@ export const GetRegistersSchema = {
                           description: 'A set of URLs related to the resource.',
                           items: {
                             title: 'linksItems',
-                            required: ['filing'],
+                            required: [],
                             properties: {
                               filing: {
                                 description:
@@ -378,13 +372,13 @@ export const GetRegistersSchema = {
                       type: 'object'
                     }
                   },
-                  required: ['register_type', 'items']
+                  required: []
                 },
                 members: {
                   description: 'List of registered company members..',
                   type: 'object',
                   title: 'registerListMembers',
-                  required: ['register_type', 'items'],
+                  required: [],
                   properties: {
                     register_type: {
                       description: 'The register type.',
@@ -394,7 +388,7 @@ export const GetRegistersSchema = {
                     items: {
                       type: 'object',
                       title: 'registeredItems',
-                      required: ['register_moved_to', 'moved_on', 'links'],
+                      required: [],
                       properties: {
                         moved_on: {
                           description: 'The date registered on',
@@ -415,7 +409,7 @@ export const GetRegistersSchema = {
                           description: 'A set of URLs related to the resource.',
                           items: {
                             title: 'linksItems',
-                            required: ['filing'],
+                            required: [],
                             properties: {
                               filing: {
                                 description:
@@ -456,7 +450,7 @@ export const GetRegistersSchema = {
                     items: {
                       type: 'object',
                       title: 'registeredItems',
-                      required: ['register_moved_to', 'moved_on', 'links'],
+                      required: [],
                       properties: {
                         moved_on: {
                           description: 'The date registered on',
@@ -477,7 +471,7 @@ export const GetRegistersSchema = {
                           description: 'A set of URLs related to the resource.',
                           items: {
                             title: 'linksItems',
-                            required: ['filing'],
+                            required: [],
                             properties: {
                               filing: {
                                 description:
@@ -504,7 +498,7 @@ export const GetRegistersSchema = {
                       type: 'object'
                     }
                   },
-                  required: ['register_type', 'items']
+                  required: []
                 }
               }
             }

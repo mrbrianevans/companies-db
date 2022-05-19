@@ -5,7 +5,7 @@ import {
   GetStatementSchema as schema,
   GetStatementQueryString,
   GetStatementParams
-} from '../schemas/GetStatementSchema.js'
+} from '../schemas/getStatementSchema.js'
 
 export const getStatementController: FastifyPluginAsync = async (
   fastify,

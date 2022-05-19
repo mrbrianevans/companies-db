@@ -1,4 +1,4 @@
-import type { GetSuperSecurePersonResponse } from '../schemas/GetSuperSecurePersonSchema.js'
+import type { GetSuperSecurePersonResponse } from '../schemas/getSuperSecurePersonSchema.js'
 
 /**
  * Get the super secure person with significant control.

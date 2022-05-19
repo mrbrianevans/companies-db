@@ -1,4 +1,4 @@
-import type { GetRegisteredOfficeAddressResponse } from '../schemas/GetRegisteredOfficeAddressSchema.js'
+import type { GetRegisteredOfficeAddressResponse } from '../schemas/getRegisteredOfficeAddressSchema.js'
 
 /**
  * Registered Office Address.
@@ -9,5 +9,5 @@ export async function getRegisteredOfficeAddress(
   company_number: string
 ): Promise<GetRegisteredOfficeAddressResponse> {
   //todo: Write logic for function here, access database, return response
-  return Promise.resolve(null)
+  return {}
 }

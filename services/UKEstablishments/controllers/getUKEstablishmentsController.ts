@@ -5,7 +5,7 @@ import {
   GetUKEstablishmentsSchema as schema,
   GetUKEstablishmentsQueryString,
   GetUKEstablishmentsParams
-} from '../schemas/GetUKEstablishmentsSchema.js'
+} from '../schemas/getUKEstablishmentsSchema.js'
 
 export const getUKEstablishmentsController: FastifyPluginAsync = async (
   fastify,

@@ -1,4 +1,4 @@
-import type { GetIndividualResponse } from '../schemas/GetIndividualSchema.js'
+import type { GetIndividualResponse } from '../schemas/getIndividualSchema.js'
 
 /**
  * Get the individual person with significant control.

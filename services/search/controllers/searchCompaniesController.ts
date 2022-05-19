@@ -5,7 +5,7 @@ import {
   SearchCompaniesSchema as schema,
   SearchCompaniesQueryString,
   SearchCompaniesParams
-} from '../schemas/SearchCompaniesSchema.js'
+} from '../schemas/searchCompaniesSchema.js'
 
 export const searchCompaniesController: FastifyPluginAsync = async (
   fastify,

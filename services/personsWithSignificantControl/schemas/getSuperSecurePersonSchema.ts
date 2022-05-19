@@ -31,7 +31,7 @@ export const GetSuperSecurePersonSchema = {
     response: {
       '200': {
         title: 'superSecure',
-        required: ['etag', 'kind', 'description', 'links'],
+        required: [],
         properties: {
           etag: {
             description: 'The ETag of the resource.',
@@ -56,7 +56,7 @@ export const GetSuperSecurePersonSchema = {
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'superSecureLinksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',

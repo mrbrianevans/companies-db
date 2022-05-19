@@ -58,14 +58,7 @@ export const ListPersonsWithSignificantControlSchema = {
             description: 'The list of persons with significant control.',
             type: 'object',
             title: 'listSummary',
-            required: [
-              'etag',
-              'name',
-              'links',
-              'address',
-              'notified_on',
-              'natures_of_control'
-            ],
+            required: [],
             properties: {
               etag: {
                 description: 'The ETag of the resource.',
@@ -107,7 +100,7 @@ export const ListPersonsWithSignificantControlSchema = {
                       type: 'integer'
                     }
                   },
-                  required: ['month', 'year']
+                  required: []
                 },
                 type: 'object'
               },
@@ -142,7 +135,7 @@ export const ListPersonsWithSignificantControlSchema = {
                       type: 'string'
                     }
                   },
-                  required: ['surname']
+                  required: []
                 },
                 type: 'object'
               },
@@ -151,7 +144,7 @@ export const ListPersonsWithSignificantControlSchema = {
                   'A set of URLs related to the resource, including self.',
                 items: {
                   title: 'pscLinksType',
-                  required: ['self'],
+                  required: [],
                   properties: {
                     self: {
                       description: 'The URL of the resource.',
@@ -202,7 +195,7 @@ export const ListPersonsWithSignificantControlSchema = {
                       type: 'string'
                     }
                   },
-                  required: ['legal_authority', 'legal_form']
+                  required: []
                 },
                 type: 'object'
               },
@@ -231,7 +224,7 @@ export const ListPersonsWithSignificantControlSchema = {
                   'The service address of the person with significant control. If given, this address will be shown on the public record instead of the residential address.',
                 items: {
                   title: 'pscAddress',
-                  required: ['address_line_1', 'postal_code', 'premises'],
+                  required: [],
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
@@ -308,7 +301,7 @@ export const ListPersonsWithSignificantControlSchema = {
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'pscListLinksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',
@@ -322,15 +315,7 @@ export const ListPersonsWithSignificantControlSchema = {
             }
           }
         },
-        required: [
-          'items_per_page',
-          'items',
-          'start_index',
-          'total_results',
-          'active_count',
-          'ceased_count',
-          'links'
-        ],
+        required: [],
         type: 'object'
       }
     }

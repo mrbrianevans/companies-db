@@ -31,7 +31,7 @@ export const GetChargesSchema = {
     response: {
       '200': {
         title: 'chargeDetails',
-        required: ['etag', 'status', 'classification', 'charge_number'],
+        required: [],
         properties: {
           etag: {
             type: 'string'
@@ -49,7 +49,7 @@ export const GetChargesSchema = {
             type: 'object',
             description: 'Classification information',
             title: 'classificationDesc',
-            required: ['type', 'description'],
+            required: [],
             properties: {
               type: {
                 enum: ['charge-description', 'nature-of-charge'],
@@ -128,7 +128,7 @@ export const GetChargesSchema = {
             type: 'object',
             description: 'Details of charge or undertaking',
             title: 'particularDesc',
-            required: ['type', 'description'],
+            required: [],
             properties: {
               type: {
                 enum: [
@@ -174,7 +174,7 @@ export const GetChargesSchema = {
             description:
               'Information about what is secured against this charge',
             title: 'securedDetailsDesc',
-            required: ['type', 'description'],
+            required: [],
             properties: {
               type: {
                 enum: ['amount-secured', 'obligations-secured'],
@@ -193,7 +193,7 @@ export const GetChargesSchema = {
             type: 'object',
             description: 'Information about alterations for Scottish companies',
             title: 'alterationsDesc',
-            required: ['type', 'description'],
+            required: [],
             properties: {
               type: {
                 type: 'string'
@@ -225,7 +225,7 @@ export const GetChargesSchema = {
             description: 'People that are entitled to the charge',
             items: {
               title: 'persons_entitled',
-              required: ['name'],
+              required: [],
               properties: {
                 name: {
                   type: 'string',
@@ -313,7 +313,7 @@ export const GetChargesSchema = {
             type: 'object',
             description: 'The resources related to this charge',
             title: 'charge_links',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 type: 'string',

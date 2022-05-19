@@ -31,7 +31,7 @@ export const GetStatementSchema = {
     response: {
       '200': {
         title: 'statement',
-        required: ['etag', 'kind', 'notified_on', 'statement', 'links'],
+        required: [],
         properties: {
           etag: {
             description: 'The ETag of the resource.',
@@ -85,7 +85,7 @@ export const GetStatementSchema = {
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'statementLinksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',

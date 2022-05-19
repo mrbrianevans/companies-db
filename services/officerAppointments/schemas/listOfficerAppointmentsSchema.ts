@@ -53,7 +53,7 @@ export const ListOfficerAppointmentsSchema = {
                 type: 'integer'
               }
             },
-            required: ['month', 'year']
+            required: []
           },
           etag: {
             description: 'The ETag of the resource.',
@@ -146,7 +146,7 @@ export const ListOfficerAppointmentsSchema = {
                       type: 'string'
                     }
                   },
-                  required: ['company_number']
+                  required: []
                 },
                 type: 'object'
               },
@@ -219,7 +219,7 @@ export const ListOfficerAppointmentsSchema = {
                 type: 'object',
                 items: {
                   title: 'appointmentLinkTypes',
-                  required: ['company'],
+                  required: [],
                   properties: {
                     company: {
                       description:
@@ -257,7 +257,7 @@ export const ListOfficerAppointmentsSchema = {
                       type: 'string'
                     }
                   },
-                  required: ['surname']
+                  required: []
                 }
               },
               nationality: {
@@ -300,13 +300,7 @@ export const ListOfficerAppointmentsSchema = {
                 format: 'date'
               }
             },
-            required: [
-              'address',
-              'appointed_to',
-              'links',
-              'name',
-              'officer_role'
-            ]
+            required: []
           },
           items_per_page: {
             description:
@@ -322,7 +316,7 @@ export const ListOfficerAppointmentsSchema = {
               'Links to other resources associated with this officer appointment resource.',
             type: 'object',
             title: 'officerLinkTypes',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'Link to this officer appointment resource.',
@@ -345,17 +339,7 @@ export const ListOfficerAppointmentsSchema = {
             type: 'integer'
           }
         },
-        required: [
-          'etag',
-          'is_corporate_officer',
-          'items',
-          'items_per_page',
-          'kind',
-          'links',
-          'name',
-          'start_index',
-          'total_results'
-        ],
+        required: [],
         type: 'object'
       }
     }

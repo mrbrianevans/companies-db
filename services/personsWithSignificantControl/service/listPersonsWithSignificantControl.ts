@@ -1,4 +1,4 @@
-import type { ListPersonsWithSignificantControlResponse } from '../schemas/ListPersonsWithSignificantControlSchema.js'
+import type { ListPersonsWithSignificantControlResponse } from '../schemas/listPersonsWithSignificantControlSchema.js'
 
 /**
  * List the company persons with significant control.

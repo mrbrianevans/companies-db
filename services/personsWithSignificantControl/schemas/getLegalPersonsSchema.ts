@@ -31,16 +31,7 @@ export const GetLegalPersonsSchema = {
     response: {
       '200': {
         title: 'legalPerson',
-        required: [
-          'etag',
-          'notified_on',
-          'kind',
-          'name',
-          'links',
-          'address',
-          'identification',
-          'natures_of_control'
-        ],
+        required: [],
         properties: {
           etag: {
             description: 'The ETag of the resource.',
@@ -71,7 +62,7 @@ export const GetLegalPersonsSchema = {
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'pscLinksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',
@@ -88,7 +79,7 @@ export const GetLegalPersonsSchema = {
             description: 'The address of the person with significant control.',
             type: 'object',
             title: 'pscAddress',
-            required: ['address_line_1', 'postal_code', 'premises'],
+            required: [],
             properties: {
               address_line_1: {
                 description: 'The first line of the address.',
@@ -144,7 +135,7 @@ export const GetLegalPersonsSchema = {
                 type: 'string'
               }
             },
-            required: ['legal_authority', 'legal_form']
+            required: []
           },
           natures_of_control: {
             description:

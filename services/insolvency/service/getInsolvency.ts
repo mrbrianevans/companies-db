@@ -1,4 +1,4 @@
-import type { GetInsolvencyResponse } from '../schemas/GetInsolvencySchema.js'
+import type { GetInsolvencyResponse } from '../schemas/getInsolvencySchema.js'
 
 /**
  * .

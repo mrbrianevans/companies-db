@@ -1,4 +1,4 @@
-import type { GetOfficersResponse } from '../schemas/GetOfficersSchema.js'
+import type { GetOfficersResponse } from '../schemas/getOfficersSchema.js'
 
 /**
  * Get a company officer appointment.

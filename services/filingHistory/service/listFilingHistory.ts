@@ -1,4 +1,4 @@
-import type { ListFilingHistoryResponse } from '../schemas/ListFilingHistorySchema.js'
+import type { ListFilingHistoryResponse } from '../schemas/listFilingHistorySchema.js'
 
 /**
  * filingHistoryList resource.

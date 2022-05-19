@@ -26,26 +26,13 @@ export const GetCompanyProfileSchema = {
     response: {
       '200': {
         title: 'companyProfile',
-        required: [
-          'company_name',
-          'jurisdiction',
-          'company_number',
-          'company_status',
-          'type',
-          'date_of_creation',
-          'can_file',
-          'links'
-        ],
+        required: [],
         properties: {
           accounts: {
             description: 'Company accounts information.',
             type: 'object',
             title: 'accountsInformation',
-            required: [
-              'overdue',
-              'next_made_up_to',
-              'accounting_reference_date'
-            ],
+            required: [],
             properties: {
               accounting_reference_date: {
                 description:
@@ -54,7 +41,7 @@ export const GetCompanyProfileSchema = {
                 items: {
                   title: 'accountingReferenceDate',
                   type: 'object',
-                  required: ['day', 'month'],
+                  required: [],
                   properties: {
                     day: {
                       type: 'integer',
@@ -104,7 +91,7 @@ export const GetCompanyProfileSchema = {
                     }
                   },
                   type: 'string',
-                  required: ['type', 'made_up_to']
+                  required: []
                 }
               },
               next_due: {
@@ -163,7 +150,7 @@ export const GetCompanyProfileSchema = {
               'Confirmation statement information (N.B. refers to the Annual Update where type is registered-overseas-entity)',
             type: 'object',
             title: 'confirmationOfStatementInformation',
-            required: ['next_made_up_to', 'next_due'],
+            required: [],
             properties: {
               last_made_up_to: {
                 description:
@@ -502,7 +489,7 @@ export const GetCompanyProfileSchema = {
                 format: 'date'
               }
             },
-            required: ['name', 'effective_from', 'ceased_on']
+            required: []
           },
           company_status: {
             description:
@@ -615,7 +602,7 @@ export const GetCompanyProfileSchema = {
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'linksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',

@@ -1,4 +1,4 @@
-import type { GetExemptionsResponse } from '../schemas/GetExemptionsSchema.js'
+import type { GetExemptionsResponse } from '../schemas/getExemptionsSchema.js'
 
 /**
  * .

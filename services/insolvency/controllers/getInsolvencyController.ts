@@ -5,7 +5,7 @@ import {
   GetInsolvencySchema as schema,
   GetInsolvencyQueryString,
   GetInsolvencyParams
-} from '../schemas/GetInsolvencySchema.js'
+} from '../schemas/getInsolvencySchema.js'
 
 export const getInsolvencyController: FastifyPluginAsync = async (
   fastify,

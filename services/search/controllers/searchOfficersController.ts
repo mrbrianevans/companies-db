@@ -5,7 +5,7 @@ import {
   SearchOfficersSchema as schema,
   SearchOfficersQueryString,
   SearchOfficersParams
-} from '../schemas/SearchOfficersSchema.js'
+} from '../schemas/searchOfficersSchema.js'
 
 export const searchOfficersController: FastifyPluginAsync = async (
   fastify,

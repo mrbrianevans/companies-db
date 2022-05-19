@@ -1,4 +1,4 @@
-import type { SearchAllResponse } from '../schemas/SearchAllSchema.js'
+import type { SearchAllResponse } from '../schemas/searchAllSchema.js'
 
 /**
  * Search All.

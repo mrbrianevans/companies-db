@@ -5,7 +5,7 @@ import {
   GetCorporateEntitiesSchema as schema,
   GetCorporateEntitiesQueryString,
   GetCorporateEntitiesParams
-} from '../schemas/GetCorporateEntitiesSchema.js'
+} from '../schemas/getCorporateEntitiesSchema.js'
 
 export const getCorporateEntitiesController: FastifyPluginAsync = async (
   fastify,

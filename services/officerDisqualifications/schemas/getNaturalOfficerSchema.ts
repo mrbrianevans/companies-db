@@ -26,7 +26,7 @@ export const GetNaturalOfficerSchema = {
     response: {
       '200': {
         title: 'naturalDisqualification',
-        required: ['disqualifications', 'etag', 'kind', 'links', 'surname'],
+        required: [],
         properties: {
           date_of_birth: {
             description: "The disqualified officer's date of birth.",
@@ -77,7 +77,7 @@ export const GetNaturalOfficerSchema = {
                   type: 'string'
                 }
               },
-              required: ['self'],
+              required: [],
               type: 'object'
             }
           },
@@ -219,24 +219,18 @@ export const GetNaturalOfficerSchema = {
                       type: 'string'
                     }
                   },
-                  required: ['description_identifier', 'act']
+                  required: []
                 }
               }
             },
-            required: [
-              'address',
-              'disqualification_type',
-              'disqualified_from',
-              'disqualified_until',
-              'reason'
-            ]
+            required: []
           },
           permissions_to_act: {
             description:
               'Permissions to act that have been granted for the disqualified officer.',
             type: 'object',
             title: 'permission_to_act',
-            required: ['expires_on', 'granted_on'],
+            required: [],
             properties: {
               company_names: {
                 description:

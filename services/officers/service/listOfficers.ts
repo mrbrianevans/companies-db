@@ -1,4 +1,4 @@
-import type { ListOfficersResponse } from '../schemas/ListOfficersSchema.js'
+import type { ListOfficersResponse } from '../schemas/listOfficersSchema.js'
 
 /**
  * Company Officers.

@@ -1,4 +1,4 @@
-import type { ListOfficerAppointmentsResponse } from '../schemas/ListOfficerAppointmentsSchema.js'
+import type { ListOfficerAppointmentsResponse } from '../schemas/listOfficerAppointmentsSchema.js'
 
 /**
  * Officer Appointment List.

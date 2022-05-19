@@ -26,7 +26,7 @@ export const GetExemptionsSchema = {
     response: {
       '200': {
         title: 'companyExemptions',
-        required: ['links', 'kind', 'etag', 'exemptions'],
+        required: [],
         properties: {
           links: {
             description:
@@ -38,7 +38,7 @@ export const GetExemptionsSchema = {
                 type: 'string'
               }
             },
-            required: ['self']
+            required: []
           },
           kind: {
             type: 'string',
@@ -73,7 +73,7 @@ export const GetExemptionsSchema = {
                             format: 'date'
                           }
                         },
-                        required: ['exempt_from']
+                        required: []
                       }
                     },
                     exemption_type: {
@@ -82,14 +82,14 @@ export const GetExemptionsSchema = {
                       enum: ['psc-exempt-as-trading-on-regulated-market']
                     }
                   },
-                  required: ['exemption_type', 'items']
+                  required: []
                 }
               },
               psc_exempt_as_shares_admitted_on_market: {
                 description:
                   'If present the company has been or is exempt from keeping a PSC register, as it has voting shares admitted to trading on a market listed in the Register of People with Significant Control Regulations 2016.',
                 items: {
-                  required: ['exemption_type', 'items'],
+                  required: [],
                   properties: {
                     items: {
                       description: 'List of dates',
@@ -107,7 +107,7 @@ export const GetExemptionsSchema = {
                             format: 'date'
                           }
                         },
-                        required: ['exempt_from']
+                        required: []
                       }
                     },
                     exemption_type: {
@@ -138,7 +138,7 @@ export const GetExemptionsSchema = {
                             format: 'date'
                           }
                         },
-                        required: ['exempt_from']
+                        required: []
                       },
                       type: 'array'
                     },
@@ -150,7 +150,7 @@ export const GetExemptionsSchema = {
                       type: 'string'
                     }
                   },
-                  required: ['exemption_type', 'items']
+                  required: []
                 }
               }
             }

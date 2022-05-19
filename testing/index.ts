@@ -2,8 +2,8 @@ import testData from './testData.json' assert { type: 'json' }
 import autocannon from "autocannon";
 import dotenv from 'dotenv'
 import {getCompanyProfileRequests} from "./companyProfile.js";
-import {baseUrl} from "./url";
-import {headers} from "./headers";
+import {baseUrl} from "./url.js";
+import {headers} from "./headers.js";
 dotenv.config({path: '../.env'})
 
 

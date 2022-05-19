@@ -26,7 +26,7 @@ export const GetUKEstablishmentsSchema = {
     response: {
       '200': {
         title: 'companyUKEstablishments',
-        required: ['etag', 'kind', 'items'],
+        required: [],
         properties: {
           etag: {
             type: 'string',
@@ -41,7 +41,7 @@ export const GetUKEstablishmentsSchema = {
             type: 'object',
             description: 'UK Establishment Resources related to this company.',
             title: 'self_links',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 type: 'string',
@@ -53,12 +53,7 @@ export const GetUKEstablishmentsSchema = {
             type: 'object',
             description: 'List of UK Establishment companies.',
             title: 'companyDetails',
-            required: [
-              'company_number',
-              'company_name',
-              'company_status',
-              'links'
-            ],
+            required: [],
             properties: {
               company_number: {
                 type: 'string',
@@ -81,7 +76,7 @@ export const GetUKEstablishmentsSchema = {
                 type: 'object',
                 items: {
                   title: 'links',
-                  required: ['company'],
+                  required: [],
                   properties: {
                     company: {
                       type: 'string',

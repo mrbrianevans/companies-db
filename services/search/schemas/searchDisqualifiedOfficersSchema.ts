@@ -60,7 +60,7 @@ export const SearchDisqualifiedOfficersSchema = {
             }
           }
         ],
-        required: ['kind', 'total_results', 'start_index', 'items_per_page'],
+        required: [],
         properties: {
           kind: {
             type: 'string',
@@ -143,13 +143,7 @@ export const SearchDisqualifiedOfficersSchema = {
                 }
               }
             ],
-            required: [
-              'kind',
-              'title',
-              'description',
-              'address',
-              'address_snippet'
-            ],
+            required: [],
             properties: {
               kind: {
                 type: 'string',

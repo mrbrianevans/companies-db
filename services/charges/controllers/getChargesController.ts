@@ -5,7 +5,7 @@ import {
   GetChargesSchema as schema,
   GetChargesQueryString,
   GetChargesParams
-} from '../schemas/GetChargesSchema.js'
+} from '../schemas/getChargesSchema.js'
 
 export const getChargesController: FastifyPluginAsync = async (
   fastify,

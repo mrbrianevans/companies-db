@@ -1,4 +1,4 @@
-import type { GetStatementResponse } from '../schemas/GetStatementSchema.js'
+import type { GetStatementResponse } from '../schemas/getStatementSchema.js'
 
 /**
  * Get the person with significant control statement.

@@ -43,14 +43,7 @@ export const ListFilingHistorySchema = {
     response: {
       '200': {
         title: 'filingHistoryList',
-        required: [
-          'etag',
-          'items',
-          'items_per_page',
-          'kind',
-          'start_index',
-          'total_count'
-        ],
+        required: [],
         properties: {
           filing_history_status: {
             description: 'The status of this filing history.',
@@ -65,19 +58,13 @@ export const ListFilingHistorySchema = {
             description: 'The filing history items.',
             type: 'object',
             title: 'filingHistoryItem',
-            required: [
-              'category',
-              'date',
-              'description',
-              'type',
-              'transaction_id'
-            ],
+            required: [],
             properties: {
               annotations: {
                 description: 'Annotations for the filing',
                 items: {
                   title: 'annotation',
-                  required: ['date', 'description'],
+                  required: [],
                   properties: {
                     annotation: {
                       description: 'The annotation text.',
@@ -101,7 +88,7 @@ export const ListFilingHistorySchema = {
                 description: 'Any filings associated with the current item',
                 items: {
                   title: 'associatedFiling',
-                  required: ['date', 'description', 'type'],
+                  required: [],
                   properties: {
                     date: {
                       description:
@@ -189,13 +176,7 @@ export const ListFilingHistorySchema = {
                 description: 'Resolutions for the filing',
                 items: {
                   title: 'resolution',
-                  required: [
-                    'category',
-                    'description',
-                    'receive_date',
-                    'subcategory',
-                    'type'
-                  ],
+                  required: [],
                   properties: {
                     category: {
                       description: 'The category of the resolution filed.',

@@ -1,4 +1,4 @@
-import type { GetCorporateOfficerResponse } from '../schemas/GetCorporateOfficerSchema.js'
+import type { GetCorporateOfficerResponse } from '../schemas/getCorporateOfficerSchema.js'
 
 /**
  * Get a corporate officers disqualifications.

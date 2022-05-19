@@ -1,4 +1,4 @@
-import type { GetRegistersResponse } from '../schemas/GetRegistersSchema.js'
+import type { GetRegistersResponse } from '../schemas/getRegistersSchema.js'
 
 /**
  * Company registers.

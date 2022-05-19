@@ -5,7 +5,7 @@ import {
   SearchAllSchema as schema,
   SearchAllQueryString,
   SearchAllParams
-} from '../schemas/SearchAllSchema.js'
+} from '../schemas/searchAllSchema.js'
 
 export const searchAllController: FastifyPluginAsync = async (
   fastify,

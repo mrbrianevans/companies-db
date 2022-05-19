@@ -1,4 +1,4 @@
-import type { GetUKEstablishmentsResponse } from '../schemas/GetUKEstablishmentsSchema.js'
+import type { GetUKEstablishmentsResponse } from '../schemas/getUKEstablishmentsSchema.js'
 
 /**
  * Company UK Establishments.

@@ -1,4 +1,4 @@
-import type { GetCorporateEntitiesResponse } from '../schemas/GetCorporateEntitiesSchema.js'
+import type { GetCorporateEntitiesResponse } from '../schemas/getCorporateEntitiesSchema.js'
 
 /**
  * Get the corporate entity with significant control.

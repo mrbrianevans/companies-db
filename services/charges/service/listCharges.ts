@@ -1,4 +1,4 @@
-import type { ListChargesResponse } from '../schemas/ListChargesSchema.js'
+import type { ListChargesResponse } from '../schemas/listChargesSchema.js'
 
 /**
  * Charges.

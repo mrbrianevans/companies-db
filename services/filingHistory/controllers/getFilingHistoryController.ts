@@ -5,7 +5,7 @@ import {
   GetFilingHistorySchema as schema,
   GetFilingHistoryQueryString,
   GetFilingHistoryParams
-} from '../schemas/GetFilingHistorySchema.js'
+} from '../schemas/getFilingHistorySchema.js'
 
 export const getFilingHistoryController: FastifyPluginAsync = async (
   fastify,

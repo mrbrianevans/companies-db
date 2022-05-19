@@ -5,7 +5,7 @@ import {
   GetRegisteredOfficeAddressSchema as schema,
   GetRegisteredOfficeAddressQueryString,
   GetRegisteredOfficeAddressParams
-} from '../schemas/GetRegisteredOfficeAddressSchema.js'
+} from '../schemas/getRegisteredOfficeAddressSchema.js'
 
 export const getRegisteredOfficeAddressController: FastifyPluginAsync = async (
   fastify,

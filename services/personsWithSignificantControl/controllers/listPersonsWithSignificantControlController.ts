@@ -5,7 +5,7 @@ import {
   ListPersonsWithSignificantControlSchema as schema,
   ListPersonsWithSignificantControlQueryString,
   ListPersonsWithSignificantControlParams
-} from '../schemas/ListPersonsWithSignificantControlSchema.js'
+} from '../schemas/listPersonsWithSignificantControlSchema.js'
 
 export const listPersonsWithSignificantControlController: FastifyPluginAsync =
   async (fastify, opts) => {

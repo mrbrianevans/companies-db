@@ -60,7 +60,7 @@ export const SearchOfficersSchema = {
             }
           }
         ],
-        required: ['kind'],
+        required: [],
         properties: {
           kind: {
             type: 'string',
@@ -143,14 +143,7 @@ export const SearchOfficersSchema = {
                 }
               }
             ],
-            required: [
-              'appointment_count',
-              'description',
-              'kind',
-              'title',
-              'address_snippet',
-              'address'
-            ],
+            required: [],
             properties: {
               kind: {
                 type: 'string',
@@ -161,7 +154,7 @@ export const SearchOfficersSchema = {
                 description: 'The officer date of birth details.',
                 items: {
                   title: 'OfficerDateOfBirth',
-                  required: ['month', 'year'],
+                  required: [],
                   properties: {
                     month: {
                       description: 'The month the officer was born in.',

@@ -31,16 +31,7 @@ export const GetCorporateEntitiesSchema = {
     response: {
       '200': {
         title: 'corporateEntity',
-        required: [
-          'etag',
-          'notified_on',
-          'kind',
-          'name',
-          'links',
-          'address',
-          'identification',
-          'natures_of_control'
-        ],
+        required: [],
         properties: {
           etag: {
             description: 'The ETag of the resource.',
@@ -71,7 +62,7 @@ export const GetCorporateEntitiesSchema = {
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'pscLinksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',
@@ -88,7 +79,7 @@ export const GetCorporateEntitiesSchema = {
             description: 'The address of the person with significant control.',
             type: 'object',
             title: 'pscAddress',
-            required: ['address_line_1', 'postal_code', 'premises'],
+            required: [],
             properties: {
               address_line_1: {
                 description: 'The first line of the address.',
@@ -159,7 +150,7 @@ export const GetCorporateEntitiesSchema = {
                 type: 'string'
               }
             },
-            required: ['legal_authority', 'legal_form']
+            required: []
           },
           natures_of_control: {
             description:

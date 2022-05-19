@@ -5,7 +5,7 @@ import {
   GetNaturalOfficerSchema as schema,
   GetNaturalOfficerQueryString,
   GetNaturalOfficerParams
-} from '../schemas/GetNaturalOfficerSchema.js'
+} from '../schemas/getNaturalOfficerSchema.js'
 
 export const getNaturalOfficerController: FastifyPluginAsync = async (
   fastify,

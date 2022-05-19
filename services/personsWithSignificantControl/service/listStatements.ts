@@ -1,4 +1,4 @@
-import type { ListStatementsResponse } from '../schemas/ListStatementsSchema.js'
+import type { ListStatementsResponse } from '../schemas/listStatementsSchema.js'
 
 /**
  * List the company persons with significant control statements.

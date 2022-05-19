@@ -5,7 +5,7 @@ import {
   GetIndividualSchema as schema,
   GetIndividualQueryString,
   GetIndividualParams
-} from '../schemas/GetIndividualSchema.js'
+} from '../schemas/getIndividualSchema.js'
 
 export const getIndividualController: FastifyPluginAsync = async (
   fastify,

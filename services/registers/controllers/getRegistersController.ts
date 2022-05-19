@@ -5,7 +5,7 @@ import {
   GetRegistersSchema as schema,
   GetRegistersQueryString,
   GetRegistersParams
-} from '../schemas/GetRegistersSchema.js'
+} from '../schemas/getRegistersSchema.js'
 
 export const getRegistersController: FastifyPluginAsync = async (
   fastify,

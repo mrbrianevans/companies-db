@@ -5,7 +5,7 @@ import {
   GetCorporateOfficerSchema as schema,
   GetCorporateOfficerQueryString,
   GetCorporateOfficerParams
-} from '../schemas/GetCorporateOfficerSchema.js'
+} from '../schemas/getCorporateOfficerSchema.js'
 
 export const getCorporateOfficerController: FastifyPluginAsync = async (
   fastify,

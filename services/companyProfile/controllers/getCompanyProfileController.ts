@@ -5,7 +5,7 @@ import {
   GetCompanyProfileSchema as schema,
   GetCompanyProfileQueryString,
   GetCompanyProfileParams
-} from '../schemas/GetCompanyProfileSchema.js'
+} from '../schemas/getCompanyProfileSchema.js'
 
 export const getCompanyProfileController: FastifyPluginAsync = async (
   fastify,

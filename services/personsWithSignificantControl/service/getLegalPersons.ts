@@ -1,4 +1,4 @@
-import type { GetLegalPersonsResponse } from '../schemas/GetLegalPersonsSchema.js'
+import type { GetLegalPersonsResponse } from '../schemas/getLegalPersonsSchema.js'
 
 /**
  * Get the legal person with significant control.

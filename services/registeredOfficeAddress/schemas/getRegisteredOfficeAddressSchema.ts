@@ -27,7 +27,7 @@ export const GetRegisteredOfficeAddressSchema = {
       '200': {
         title: 'registeredOfficeAddress',
         type: 'object',
-        required: ['premises', 'address_line_1', 'locality', 'country'],
+        required: [],
         properties: {
           etag: {
             type: 'string',
@@ -44,7 +44,7 @@ export const GetRegisteredOfficeAddressSchema = {
             type: 'object',
             description: 'Links to the related resources',
             readOnly: true,
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'URL to this resource.',

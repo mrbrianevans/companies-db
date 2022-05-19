@@ -26,7 +26,7 @@ export const ListChargesSchema = {
     response: {
       '200': {
         title: 'chargeList',
-        required: ['etag', 'items'],
+        required: [],
         properties: {
           etag: {
             description: 'The ETag of the resource.',
@@ -53,7 +53,7 @@ export const ListChargesSchema = {
             type: 'object',
             description: 'List of charges',
             title: 'chargeDetails',
-            required: ['etag', 'status', 'classification', 'charge_number'],
+            required: [],
             properties: {
               etag: {
                 type: 'string'
@@ -72,7 +72,7 @@ export const ListChargesSchema = {
                 description: 'Classification information',
                 items: {
                   title: 'classificationDesc',
-                  required: ['type', 'description'],
+                  required: [],
                   properties: {
                     type: {
                       enum: ['charge-description', 'nature-of-charge'],
@@ -155,7 +155,7 @@ export const ListChargesSchema = {
                 description: 'Details of charge or undertaking',
                 items: {
                   title: 'particularDesc',
-                  required: ['type', 'description'],
+                  required: [],
                   properties: {
                     type: {
                       enum: [
@@ -203,7 +203,7 @@ export const ListChargesSchema = {
                   'Information about what is secured against this charge',
                 items: {
                   title: 'securedDetailsDesc',
-                  required: ['type', 'description'],
+                  required: [],
                   properties: {
                     type: {
                       enum: ['amount-secured', 'obligations-secured'],
@@ -223,7 +223,7 @@ export const ListChargesSchema = {
                 type: 'array',
                 items: {
                   title: 'alterationsDesc',
-                  required: ['type', 'description'],
+                  required: [],
                   properties: {
                     type: {
                       type: 'string'
@@ -258,7 +258,7 @@ export const ListChargesSchema = {
                 description: 'People that are entitled to the charge',
                 items: {
                   title: 'persons_entitled',
-                  required: ['name'],
+                  required: [],
                   properties: {
                     name: {
                       type: 'string',
@@ -351,7 +351,7 @@ export const ListChargesSchema = {
                 description: 'The resources related to this charge',
                 items: {
                   title: 'charge_links',
-                  required: ['self'],
+                  required: [],
                   properties: {
                     self: {
                       type: 'string',

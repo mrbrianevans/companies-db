@@ -5,7 +5,7 @@ import {
   ListFilingHistorySchema as schema,
   ListFilingHistoryQueryString,
   ListFilingHistoryParams
-} from '../schemas/ListFilingHistorySchema.js'
+} from '../schemas/listFilingHistorySchema.js'
 
 export const listFilingHistoryController: FastifyPluginAsync = async (
   fastify,

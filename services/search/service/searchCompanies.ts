@@ -1,4 +1,4 @@
-import type { SearchCompaniesResponse } from '../schemas/SearchCompaniesSchema.js'
+import type { SearchCompaniesResponse } from '../schemas/searchCompaniesSchema.js'
 
 /**
  * Search companies.

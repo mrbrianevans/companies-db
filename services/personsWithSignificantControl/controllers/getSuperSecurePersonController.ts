@@ -5,7 +5,7 @@ import {
   GetSuperSecurePersonSchema as schema,
   GetSuperSecurePersonQueryString,
   GetSuperSecurePersonParams
-} from '../schemas/GetSuperSecurePersonSchema.js'
+} from '../schemas/getSuperSecurePersonSchema.js'
 
 export const getSuperSecurePersonController: FastifyPluginAsync = async (
   fastify,

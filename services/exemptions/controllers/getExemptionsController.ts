@@ -5,7 +5,7 @@ import {
   GetExemptionsSchema as schema,
   GetExemptionsQueryString,
   GetExemptionsParams
-} from '../schemas/GetExemptionsSchema.js'
+} from '../schemas/getExemptionsSchema.js'
 
 export const getExemptionsController: FastifyPluginAsync = async (
   fastify,

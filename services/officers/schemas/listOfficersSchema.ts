@@ -74,7 +74,7 @@ export const ListOfficersSchema = {
                 description: 'The correspondence address of the officer.',
                 items: {
                   title: 'address',
-                  required: ['address_line_1', 'locality'],
+                  required: [],
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
@@ -126,7 +126,7 @@ export const ListOfficersSchema = {
                   'The contact at the `corporate-managing-officer` of a `registered-overseas-entity`.',
                 items: {
                   title: 'contactDetails',
-                  required: ['address_line_1', 'locality', 'name'],
+                  required: [],
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
@@ -194,7 +194,7 @@ export const ListOfficersSchema = {
                       type: 'integer'
                     }
                   },
-                  required: ['month', 'year']
+                  required: []
                 },
                 type: 'object'
               },
@@ -203,7 +203,7 @@ export const ListOfficersSchema = {
                   'Links to other resources associated with this officer list item.',
                 items: {
                   title: 'itemLinkTypes',
-                  required: ['self', 'officer'],
+                  required: [],
                   properties: {
                     self: {
                       description:
@@ -215,7 +215,7 @@ export const ListOfficersSchema = {
                         'Links to other officer resources associated with this officer list item.',
                       items: {
                         title: 'officerLinkTypes',
-                        required: ['appointments'],
+                        required: [],
                         properties: {
                           appointments: {
                             description:
@@ -282,7 +282,7 @@ export const ListOfficersSchema = {
                   'The principal/registered office address of a `corporate-managing-officer` of a `registered-overseas-entity`.',
                 items: {
                   title: 'address',
-                  required: ['address_line_1', 'locality'],
+                  required: [],
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
@@ -391,13 +391,7 @@ export const ListOfficersSchema = {
                 type: 'object'
               }
             },
-            required: [
-              'address',
-              'appointed_on',
-              'links',
-              'name',
-              'officer_role'
-            ]
+            required: []
           },
           items_per_page: {
             description: 'The number of officers to return per page.',
@@ -412,7 +406,7 @@ export const ListOfficersSchema = {
               'Links to other resources associated with this officer list resource.',
             type: 'object',
             title: 'linkTypes',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'Link to this officer list resource.',
@@ -434,17 +428,7 @@ export const ListOfficersSchema = {
             type: 'integer'
           }
         },
-        required: [
-          'etag',
-          'items_per_page',
-          'kind',
-          'links',
-          'items',
-          'start_index',
-          'total_results',
-          'active_count',
-          'resigned_count'
-        ],
+        required: [],
         type: 'object'
       }
     }

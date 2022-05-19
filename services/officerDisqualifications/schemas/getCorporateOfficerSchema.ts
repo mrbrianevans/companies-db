@@ -26,7 +26,7 @@ export const GetCorporateOfficerSchema = {
     response: {
       '200': {
         title: 'corporateDisqualification',
-        required: ['disqualifications', 'etag', 'kind', 'links', 'name'],
+        required: [],
         properties: {
           company_number: {
             description: 'The registration number of the disqualified officer.',
@@ -61,7 +61,7 @@ export const GetCorporateOfficerSchema = {
                   type: 'string'
                 }
               },
-              required: ['self'],
+              required: [],
               type: 'object'
             }
           },
@@ -203,24 +203,18 @@ export const GetCorporateOfficerSchema = {
                       type: 'string'
                     }
                   },
-                  required: ['description_identifier', 'act']
+                  required: []
                 }
               }
             },
-            required: [
-              'address',
-              'disqualification_type',
-              'disqualified_from',
-              'disqualified_until',
-              'reason'
-            ]
+            required: []
           },
           permissions_to_act: {
             description:
               'Permissions that the disqualified officer has to act outside of their disqualification.',
             type: 'object',
             title: 'permission_to_act',
-            required: ['expires_on', 'granted_on'],
+            required: [],
             properties: {
               company_names: {
                 description:

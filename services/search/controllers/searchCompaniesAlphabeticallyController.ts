@@ -5,7 +5,7 @@ import {
   SearchCompaniesAlphabeticallySchema as schema,
   SearchCompaniesAlphabeticallyQueryString,
   SearchCompaniesAlphabeticallyParams
-} from '../schemas/SearchCompaniesAlphabeticallySchema.js'
+} from '../schemas/searchCompaniesAlphabeticallySchema.js'
 
 export const searchCompaniesAlphabeticallyController: FastifyPluginAsync =
   async (fastify, opts) => {

@@ -1,4 +1,4 @@
-import type { AdvancedCompanySearchResponse } from '../schemas/AdvancedCompanySearchSchema.js'
+import type { AdvancedCompanySearchResponse } from '../schemas/advancedCompanySearchSchema.js'
 
 /**
  * Advanced search for a company.

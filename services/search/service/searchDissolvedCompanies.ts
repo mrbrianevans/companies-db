@@ -1,4 +1,4 @@
-import type { SearchDissolvedCompaniesResponse } from '../schemas/SearchDissolvedCompaniesSchema.js'
+import type { SearchDissolvedCompaniesResponse } from '../schemas/searchDissolvedCompaniesSchema.js'
 
 /**
  * Search for a dissolved company.

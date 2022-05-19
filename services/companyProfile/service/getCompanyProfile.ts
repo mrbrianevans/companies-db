@@ -1,4 +1,4 @@
-import type { GetCompanyProfileResponse } from '../schemas/GetCompanyProfileSchema.js'
+import type { GetCompanyProfileResponse } from '../schemas/getCompanyProfileSchema.js'
 
 /**
  * Company profile.

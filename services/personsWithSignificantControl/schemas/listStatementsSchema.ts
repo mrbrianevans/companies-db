@@ -56,7 +56,7 @@ export const ListStatementsSchema = {
               'The list of persons with significant control statements.',
             type: 'object',
             title: 'statement',
-            required: ['etag', 'kind', 'notified_on', 'statement', 'links'],
+            required: [],
             properties: {
               etag: {
                 description: 'The ETag of the resource.',
@@ -110,7 +110,7 @@ export const ListStatementsSchema = {
                   'A set of URLs related to the resource, including self.',
                 items: {
                   title: 'statementLinksType',
-                  required: ['self'],
+                  required: [],
                   properties: {
                     self: {
                       description: 'The URL of the resource.',
@@ -152,7 +152,7 @@ export const ListStatementsSchema = {
               'A set of URLs related to the resource, including self.',
             type: 'object',
             title: 'statementListLinksType',
-            required: ['self'],
+            required: [],
             properties: {
               self: {
                 description: 'The URL of the resource.',
@@ -166,15 +166,7 @@ export const ListStatementsSchema = {
             }
           }
         },
-        required: [
-          'items_per_page',
-          'items',
-          'start_index',
-          'total_results',
-          'active_count',
-          'ceased_count',
-          'links'
-        ],
+        required: [],
         type: 'object'
       }
     }

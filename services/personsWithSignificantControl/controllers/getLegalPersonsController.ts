@@ -5,7 +5,7 @@ import {
   GetLegalPersonsSchema as schema,
   GetLegalPersonsQueryString,
   GetLegalPersonsParams
-} from '../schemas/GetLegalPersonsSchema.js'
+} from '../schemas/getLegalPersonsSchema.js'
 
 export const getLegalPersonsController: FastifyPluginAsync = async (
   fastify,

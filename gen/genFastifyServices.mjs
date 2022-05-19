@@ -157,17 +157,7 @@ CMD ["npm", "run", "start"]
 
 const isObject = obj => obj !== null && typeof obj === 'object';
 
-// sets the "type" attribute of schemas for arrays and objects correctly. modifies input
-function correctObjectTypes(schema) {
-    if (!isObject(schema)) return
-    else if ('properties' in schema) schema.type = 'object'
-    else if ('items' in schema) schema.type = 'array'
-    for (const schemaElement in schema) {
-        if (isObject(schema[schemaElement])) {
-            correctObjectTypes(schema[schemaElement])
-        }
-    }
-}
+// fixes the schema where type=array has been used, but is supposed to be type=object
 function flattenItemsRecursive(schema, skip) {
     if (!isObject(schema)) return
     else if ('properties' in schema) {
@@ -191,16 +181,13 @@ function flattenItemsRecursive(schema, skip) {
         }
     }
 }
-// remove erroneous items key, and bring its children up a level
-function flattenItems(schema){
+function removeSchemaRequirements(schema){
     if (!isObject(schema)) return
-    else if ('items' in schema) {
-        schema.type = 'object'
-        for (const item in schema.items) {
-            flattenItems(schema.items[item])
-            schema[item] = schema.items[item]
-        }
-        delete schema.items
+    if ('required' in schema) schema.required = []
+    if ('items' in schema) removeSchemaRequirements(schema.items)
+    else if ('properties' in schema) {
+        for (const property in schema.properties)
+                removeSchemaRequirements(schema.properties[property])
     }
 }
 
@@ -235,6 +222,7 @@ async function createRoutes(paths, responsePaths) {
         const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op,
             Name = name.replace(/^\w/, l => l.toUpperCase())
         if (responses?.[200]?.schema) flattenItemsRecursive(responses[200].schema)
+        removeSchemaRequirements(responses?.[200]?.schema)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
@@ -270,7 +258,7 @@ export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['respons
 import {FastifyPluginAsync} from "fastify";
 import {${name}} from "../service/${name}.js";
 import { reflect, auth } from "./reflect.js";
-import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${Name}Schema.js";
+import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${name}Schema.js";
 
 
 
@@ -296,6 +284,9 @@ const logger = pino()
         const apiUrl = 'https://api.company-information.service.gov.uk'
 const headers =  {Authorization: 'Basic '+Buffer.from(process.env.RESTAPIKEY+':').toString('base64')}
 
+if(!process.env.AUTH_URL) logger.error('AUTH_URL environment variable not set')
+if(!process.env.RESTAPIKEY) logger.error('RESTAPIKEY environment variable not set')
+
 export async function reflect(path){
   logger.info({path, apiUrl, keySet: Boolean(process.env.RESTAPIKEY)}, "Outgoing request to Official API")
   const res = await fetch(apiUrl + path, { headers })
@@ -303,14 +294,14 @@ export async function reflect(path){
  return await res.json()
 }
 export async function auth(headers) {
-  const ratelimit = await fetch('http://auth-service:3000', { headers }).then(r=>r.json())
+  const ratelimit = await fetch(process.env.AUTH_URL, { headers }).then(r=>r.json())
   logger.info({ratelimit}, 'Fetched ratelimit from auth service')
   return ratelimit
 }
         `))
         // write service stub
         await writeFile(resolve(SERVICES_DIR, tag, 'service', name + '.ts'), prettyTs(`
-import type { ${Name}Response } from "../schemas/${Name}Schema.js";
+import type { ${Name}Response } from "../schemas/${name}Schema.js";
 
 /**
  * ${summary??''}.

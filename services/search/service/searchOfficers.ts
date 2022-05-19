@@ -1,4 +1,4 @@
-import type { SearchOfficersResponse } from '../schemas/SearchOfficersSchema.js'
+import type { SearchOfficersResponse } from '../schemas/searchOfficersSchema.js'
 
 /**
  * Search company officers.

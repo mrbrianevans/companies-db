@@ -5,7 +5,7 @@ import {
   ListOfficersSchema as schema,
   ListOfficersQueryString,
   ListOfficersParams
-} from '../schemas/ListOfficersSchema.js'
+} from '../schemas/listOfficersSchema.js'
 
 export const listOfficersController: FastifyPluginAsync = async (
   fastify,
