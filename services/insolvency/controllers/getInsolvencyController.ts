@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetInsolvencySchema as schema,
   GetInsolvencyQueryString,
-  GetInsolvencyParams,
+  GetInsolvencyParams
 } from '../schemas/GetInsolvencySchema.js'
 
 export const getInsolvencyController: FastifyPluginAsync = async (

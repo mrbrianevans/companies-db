@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   AdvancedCompanySearchSchema as schema,
   AdvancedCompanySearchQueryString,
-  AdvancedCompanySearchParams,
+  AdvancedCompanySearchParams
 } from '../schemas/AdvancedCompanySearchSchema.js'
 
 export const advancedCompanySearchController: FastifyPluginAsync = async (
@@ -28,7 +28,7 @@ export const advancedCompanySearchController: FastifyPluginAsync = async (
       location,
       sic_codes,
       size,
-      start_index,
+      start_index
     } = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
     res.header('X-Ratelimit-Limit', ratelimit.limit)

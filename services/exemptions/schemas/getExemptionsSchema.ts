@@ -13,15 +13,15 @@ export const GetExemptionsSchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number'],
+      required: ['company_number']
     },
     querystring: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -35,18 +35,18 @@ export const GetExemptionsSchema = {
             properties: {
               self: {
                 description: 'The URL of this resource.',
-                type: 'string',
-              },
+                type: 'string'
+              }
             },
-            required: ['self'],
+            required: ['self']
           },
           kind: {
             type: 'string',
-            enum: ['exemptions'],
+            enum: ['exemptions']
           },
           etag: {
             type: 'string',
-            description: 'The ETag of the resource.',
+            description: 'The ETag of the resource.'
           },
           exemptions: {
             description: 'Exemptions information.',
@@ -65,25 +65,25 @@ export const GetExemptionsSchema = {
                           exempt_from: {
                             description: 'Exemption valid from.',
                             type: 'string',
-                            format: 'date',
+                            format: 'date'
                           },
                           exempt_to: {
                             description: 'Exemption valid to.',
                             type: 'string',
-                            format: 'date',
-                          },
+                            format: 'date'
+                          }
                         },
-                        required: ['exempt_from'],
-                      },
+                        required: ['exempt_from']
+                      }
                     },
                     exemption_type: {
                       description: 'The exemption type.',
                       type: 'string',
-                      enum: ['psc-exempt-as-trading-on-regulated-market'],
-                    },
+                      enum: ['psc-exempt-as-trading-on-regulated-market']
+                    }
                   },
-                  required: ['exemption_type', 'items'],
-                },
+                  required: ['exemption_type', 'items']
+                }
               },
               psc_exempt_as_shares_admitted_on_market: {
                 description:
@@ -99,24 +99,24 @@ export const GetExemptionsSchema = {
                           exempt_from: {
                             description: 'Exemption valid from.',
                             type: 'string',
-                            format: 'date',
+                            format: 'date'
                           },
                           exempt_to: {
                             description: 'Exemption valid to.',
                             type: 'string',
-                            format: 'date',
-                          },
+                            format: 'date'
+                          }
                         },
-                        required: ['exempt_from'],
-                      },
+                        required: ['exempt_from']
+                      }
                     },
                     exemption_type: {
                       description: 'The exemption type.',
                       enum: ['psc-exempt-as-shares-admitted-on-market'],
-                      type: 'string',
-                    },
-                  },
-                },
+                      type: 'string'
+                    }
+                  }
+                }
               },
               disclosure_transparency_rules_chapter_five_applies: {
                 description:
@@ -130,36 +130,36 @@ export const GetExemptionsSchema = {
                           exempt_from: {
                             description: 'Exemption valid from.',
                             type: 'string',
-                            format: 'date',
+                            format: 'date'
                           },
                           exempt_to: {
                             description: 'Exemption valid to.',
                             type: 'string',
-                            format: 'date',
-                          },
+                            format: 'date'
+                          }
                         },
-                        required: ['exempt_from'],
+                        required: ['exempt_from']
                       },
-                      type: 'array',
+                      type: 'array'
                     },
                     exemption_type: {
                       description: 'The exemption type.',
                       enum: [
-                        'disclosure-transparency-rules-chapter-five-applies',
+                        'disclosure-transparency-rules-chapter-five-applies'
                       ],
-                      type: 'string',
-                    },
+                      type: 'string'
+                    }
                   },
-                  required: ['exemption_type', 'items'],
-                },
-              },
-            },
-          },
+                  required: ['exemption_type', 'items']
+                }
+              }
+            }
+          }
         },
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type GetExemptionsResponse = FromSchema<

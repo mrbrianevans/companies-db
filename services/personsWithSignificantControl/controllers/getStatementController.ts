@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetStatementSchema as schema,
   GetStatementQueryString,
-  GetStatementParams,
+  GetStatementParams
 } from '../schemas/GetStatementSchema.js'
 
 export const getStatementController: FastifyPluginAsync = async (

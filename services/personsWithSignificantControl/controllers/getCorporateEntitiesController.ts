@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetCorporateEntitiesSchema as schema,
   GetCorporateEntitiesQueryString,
-  GetCorporateEntitiesParams,
+  GetCorporateEntitiesParams
 } from '../schemas/GetCorporateEntitiesSchema.js'
 
 export const getCorporateEntitiesController: FastifyPluginAsync = async (

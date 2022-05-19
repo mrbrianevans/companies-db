@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetRegistersSchema as schema,
   GetRegistersQueryString,
-  GetRegistersParams,
+  GetRegistersParams
 } from '../schemas/GetRegistersSchema.js'
 
 export const getRegistersController: FastifyPluginAsync = async (

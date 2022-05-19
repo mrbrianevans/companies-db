@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetSuperSecurePersonSchema as schema,
   GetSuperSecurePersonQueryString,
-  GetSuperSecurePersonParams,
+  GetSuperSecurePersonParams
 } from '../schemas/GetSuperSecurePersonSchema.js'
 
 export const getSuperSecurePersonController: FastifyPluginAsync = async (

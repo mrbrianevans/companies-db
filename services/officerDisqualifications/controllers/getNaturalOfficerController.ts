@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetNaturalOfficerSchema as schema,
   GetNaturalOfficerQueryString,
-  GetNaturalOfficerParams,
+  GetNaturalOfficerParams
 } from '../schemas/GetNaturalOfficerSchema.js'
 
 export const getNaturalOfficerController: FastifyPluginAsync = async (

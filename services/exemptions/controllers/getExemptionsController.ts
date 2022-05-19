@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetExemptionsSchema as schema,
   GetExemptionsQueryString,
-  GetExemptionsParams,
+  GetExemptionsParams
 } from '../schemas/GetExemptionsSchema.js'
 
 export const getExemptionsController: FastifyPluginAsync = async (

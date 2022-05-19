@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetCompanyProfileSchema as schema,
   GetCompanyProfileQueryString,
-  GetCompanyProfileParams,
+  GetCompanyProfileParams
 } from '../schemas/GetCompanyProfileSchema.js'
 
 export const getCompanyProfileController: FastifyPluginAsync = async (

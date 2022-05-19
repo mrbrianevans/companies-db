@@ -13,15 +13,15 @@ export const GetCompanyProfileSchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number'],
+      required: ['company_number']
     },
     querystring: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -34,7 +34,7 @@ export const GetCompanyProfileSchema = {
           'type',
           'date_of_creation',
           'can_file',
-          'links',
+          'links'
         ],
         properties: {
           accounts: {
@@ -44,7 +44,7 @@ export const GetCompanyProfileSchema = {
             required: [
               'overdue',
               'next_made_up_to',
-              'accounting_reference_date',
+              'accounting_reference_date'
             ],
             properties: {
               accounting_reference_date: {
@@ -58,14 +58,14 @@ export const GetCompanyProfileSchema = {
                   properties: {
                     day: {
                       type: 'integer',
-                      description: 'The Accounting Reference Date (ARD) day.',
+                      description: 'The Accounting Reference Date (ARD) day.'
                     },
                     month: {
                       type: 'integer',
-                      description: 'The Accounting Reference Date (ARD) month.',
-                    },
-                  },
-                },
+                      description: 'The Accounting Reference Date (ARD) month.'
+                    }
+                  }
+                }
               },
               last_accounts: {
                 description: 'The last company accounts filed.',
@@ -77,7 +77,7 @@ export const GetCompanyProfileSchema = {
                       type: 'string',
                       format: 'date',
                       description:
-                        'The date the last company accounts were made up to.',
+                        'The date the last company accounts were made up to.'
                     },
                     type: {
                       description:
@@ -99,31 +99,31 @@ export const GetCompanyProfileSchema = {
                         'micro-entity',
                         'no-accounts-type-available',
                         'audited-abridged',
-                        'unaudited-abridged',
-                      ],
-                    },
+                        'unaudited-abridged'
+                      ]
+                    }
                   },
                   type: 'string',
-                  required: ['type', 'made_up_to'],
-                },
+                  required: ['type', 'made_up_to']
+                }
               },
               next_due: {
                 description: 'The date the next company accounts are due.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               next_made_up_to: {
                 description:
                   'The date the next company accounts should be made up to.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               overdue: {
                 type: 'boolean',
                 description:
-                  'Flag indicating if the company accounts are overdue.',
-              },
-            },
+                  'Flag indicating if the company accounts are overdue.'
+              }
+            }
           },
           annual_return: {
             description:
@@ -134,29 +134,29 @@ export const GetCompanyProfileSchema = {
               last_made_up_to: {
                 description: 'The date the last annual return was made up to.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               next_due: {
                 description:
                   'The date the next annual return is due. This member will only be returned if a confirmation statement has not been filed and the date is before 28th July 2016, otherwise refer to `confirmation_statement.next_due`',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               next_made_up_to: {
                 description:
                   'The date the next annual return should be made up to. This member will only be returned if a confirmation statement has not been filed and the date is before 30th July 2016, otherwise refer to `confirmation_statement.next_made_up_to`',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               overdue: {
                 description: 'Flag indicating if the annual return is overdue.',
-                type: 'boolean',
-              },
-            },
+                type: 'boolean'
+              }
+            }
           },
           can_file: {
             description: 'Flag indicating whether this company can file.',
-            type: 'boolean',
+            type: 'boolean'
           },
           confirmation_statement: {
             description:
@@ -169,30 +169,30 @@ export const GetCompanyProfileSchema = {
                 description:
                   'The date to which the company last made a confirmation statement.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               next_due: {
                 description:
                   'The date by which the next confimation statement must be received.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               next_made_up_to: {
                 description:
                   'The date to which the company must next make a confirmation statement.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               overdue: {
                 description:
                   'Flag indicating if the confirmation statement is overdue',
-                type: 'boolean',
-              },
-            },
+                type: 'boolean'
+              }
+            }
           },
           company_name: {
             description: 'The name of the company.',
-            type: 'string',
+            type: 'string'
           },
           jurisdiction: {
             description:
@@ -206,41 +206,41 @@ export const GetCompanyProfileSchema = {
               'european-union',
               'united-kingdom',
               'england',
-              'noneu',
-            ],
+              'noneu'
+            ]
           },
           company_number: {
             description: 'The number of the company.',
-            type: 'string',
+            type: 'string'
           },
           date_of_creation: {
             description: 'The date when the company was created.',
             type: 'string',
-            format: 'date',
+            format: 'date'
           },
           date_of_cessation: {
             description:
               'The date which the company was converted/closed, dissolved or removed. Please refer to company status to determine which.',
             type: 'string',
-            format: 'date',
+            format: 'date'
           },
           etag: {
             description: 'The ETag of the resource.',
-            type: 'string',
+            type: 'string'
           },
           has_been_liquidated: {
             description:
               'The flag indicating if the company has been liquidated in the past.',
-            type: 'boolean',
+            type: 'boolean'
           },
           has_charges: {
             description: 'The flag indicating if the company has any charges.',
-            type: 'boolean',
+            type: 'boolean'
           },
           is_community_interest_company: {
             description:
               'The flag indicating if the company is a Community Interest Company.',
-            type: 'boolean',
+            type: 'boolean'
           },
           foreign_company_details: {
             description: 'Foreign company details.',
@@ -255,33 +255,33 @@ export const GetCompanyProfileSchema = {
                   properties: {
                     country: {
                       description: 'Country in which company was incorporated.',
-                      type: 'string',
+                      type: 'string'
                     },
                     name: {
                       description:
                         'Identity of register in country of incorporation.',
-                      type: 'string',
-                    },
-                  },
-                },
+                      type: 'string'
+                    }
+                  }
+                }
               },
               registration_number: {
                 description: 'Registration number in company of incorporation.',
-                type: 'string',
+                type: 'string'
               },
               governed_by: {
                 description:
                   'Law governing the company in country of incorporation.',
-                type: 'string',
+                type: 'string'
               },
               company_type: {
                 description:
                   'Legal form of the company in the country of incorporation.',
-                type: 'string',
+                type: 'string'
               },
               is_a_credit_finance_institution: {
                 description: 'Is it a financial or credit institution.',
-                type: 'boolean',
+                type: 'boolean'
               },
               accounts: {
                 description: 'Foreign company account information.',
@@ -297,16 +297,16 @@ export const GetCompanyProfileSchema = {
                           day: {
                             description:
                               'Day on which accounting period starts under parent law.',
-                            type: 'integer',
+                            type: 'integer'
                           },
                           month: {
                             description:
                               'Month in which accounting period starts under parent law.',
-                            type: 'integer',
-                          },
-                        },
+                            type: 'integer'
+                          }
+                        }
                       },
-                      type: 'object',
+                      type: 'object'
                     },
                     account_period_to: {
                       description: 'Date account period ends under parent law.',
@@ -316,16 +316,16 @@ export const GetCompanyProfileSchema = {
                           day: {
                             description:
                               'Day on which accounting period ends under parent law.',
-                            type: 'integer',
+                            type: 'integer'
                           },
                           month: {
                             description:
                               'Month in which accounting period ends under parent law.',
-                            type: 'integer',
-                          },
-                        },
+                            type: 'integer'
+                          }
+                        }
                       },
-                      type: 'object',
+                      type: 'object'
                     },
                     must_file_within: {
                       description:
@@ -336,19 +336,19 @@ export const GetCompanyProfileSchema = {
                           months: {
                             description:
                               'Number of months within which to file.',
-                            type: 'integer',
-                          },
-                        },
+                            type: 'integer'
+                          }
+                        }
                       },
-                      type: 'object',
-                    },
-                  },
+                      type: 'object'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               business_activity: {
                 description: 'Type of business undertaken by the company.',
-                type: 'string',
+                type: 'string'
               },
               accounting_requirement: {
                 description: 'Accounts requirement.',
@@ -360,9 +360,9 @@ export const GetCompanyProfileSchema = {
                         'Type of accounting requirement that applies.  \n For enumeration descriptions see `foreign_account_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
                       enum: [
                         'accounting-requirements-of-originating-country-apply',
-                        'accounting-requirements-of-originating-country-do-not-apply',
+                        'accounting-requirements-of-originating-country-do-not-apply'
                       ],
-                      type: 'string',
+                      type: 'string'
                     },
                     terms_of_account_publication: {
                       description:
@@ -370,20 +370,20 @@ export const GetCompanyProfileSchema = {
                       enum: [
                         'accounts-publication-date-supplied-by-company',
                         'accounting-publication-date-does-not-need-to-be-supplied-by-company',
-                        'accounting-reference-date-allocated-by-companies-house',
+                        'accounting-reference-date-allocated-by-companies-house'
                       ],
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
-              },
-            },
+                type: 'object'
+              }
+            }
           },
           last_full_members_list_date: {
             description: 'The date of last full members list update.',
             type: 'string',
-            format: 'date',
+            format: 'date'
           },
           registered_office_address: {
             description: "The address of the company's registered office.",
@@ -392,15 +392,15 @@ export const GetCompanyProfileSchema = {
             properties: {
               care_of: {
                 description: 'The care of name.',
-                type: 'string',
+                type: 'string'
               },
               address_line_1: {
                 description: 'The first line of the address.',
-                type: 'string',
+                type: 'string'
               },
               address_line_2: {
                 description: 'The second line of the address.',
-                type: 'string',
+                type: 'string'
               },
               country: {
                 description: 'The country.',
@@ -411,31 +411,31 @@ export const GetCompanyProfileSchema = {
                   'Great Britain',
                   'Not specified',
                   'United Kingdom',
-                  'Northern Ireland',
+                  'Northern Ireland'
                 ],
-                type: 'string',
+                type: 'string'
               },
               locality: {
                 description: 'The locality e.g London.',
-                type: 'string',
+                type: 'string'
               },
               po_box: {
                 description: 'The post-office box number.',
-                type: 'string',
+                type: 'string'
               },
               postal_code: {
                 description: 'The postal code e.g CF14 3UZ.',
-                type: 'string',
+                type: 'string'
               },
               premises: {
                 description: 'The property name or number.',
-                type: 'string',
+                type: 'string'
               },
               region: {
                 description: 'The region e.g Surrey.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           service_address: {
             description:
@@ -445,41 +445,41 @@ export const GetCompanyProfileSchema = {
             properties: {
               care_of: {
                 description: 'The care of name.',
-                type: 'string',
+                type: 'string'
               },
               address_line_1: {
                 description: 'The first line of the address.',
-                type: 'string',
+                type: 'string'
               },
               address_line_2: {
                 description: 'The second line of the address.',
-                type: 'string',
+                type: 'string'
               },
               country: {
                 description: 'The country e.g. United Kingdom.',
-                type: 'string',
+                type: 'string'
               },
               locality: {
                 description: 'The locality e.g London.',
-                type: 'string',
+                type: 'string'
               },
               po_box: {
                 description: 'The post-office box number.',
-                type: 'string',
+                type: 'string'
               },
               postal_code: {
                 description: 'The postal code e.g CF14 3UZ.',
-                type: 'string',
+                type: 'string'
               },
               region: {
                 description: 'The region e.g Surrey.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           sic_codes: {
             description: 'SIC codes for this company.',
-            type: 'string',
+            type: 'string'
           },
           previous_company_names: {
             description: 'The previous names of this company.',
@@ -488,21 +488,21 @@ export const GetCompanyProfileSchema = {
             properties: {
               name: {
                 description: 'The previous company name',
-                type: 'string',
+                type: 'string'
               },
               effective_from: {
                 description:
                   'The date from which the company name was effective.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               ceased_on: {
                 description: 'The date on which the company name ceased.',
                 type: 'string',
-                format: 'date',
-              },
+                format: 'date'
+              }
             },
-            required: ['name', 'effective_from', 'ceased_on'],
+            required: ['name', 'effective_from', 'ceased_on']
           },
           company_status: {
             description:
@@ -520,8 +520,8 @@ export const GetCompanyProfileSchema = {
               'registered',
               'removed',
               'closed',
-              'open',
-            ],
+              'open'
+            ]
           },
           company_status_detail: {
             description:
@@ -531,9 +531,9 @@ export const GetCompanyProfileSchema = {
               'active-proposal-to-strike-off',
               'petition-to-restore-dissolved',
               'transformed-to-se',
-              'converted-to-plc',
+              'converted-to-plc'
             ],
-            type: 'string',
+            type: 'string'
           },
           type: {
             description:
@@ -571,24 +571,24 @@ export const GetCompanyProfileSchema = {
               'charitable-incorporated-organisation',
               'scottish-charitable-incorporated-organisation',
               'further-education-or-sixth-form-college-corporation',
-              'registered-overseas-entity',
+              'registered-overseas-entity'
             ],
-            type: 'string',
+            type: 'string'
           },
           has_insolvency_history: {
             description:
               'The flag indicating if the company has insolvency history.',
-            type: 'boolean',
+            type: 'boolean'
           },
           undeliverable_registered_office_address: {
             description:
               'Flag indicating whether post can be delivered to the registered office.',
-            type: 'boolean',
+            type: 'boolean'
           },
           registered_office_is_in_dispute: {
             description:
               'Flag indicating registered office address as been replaced.',
-            type: 'boolean',
+            type: 'boolean'
           },
           branch_company_details: {
             description: 'UK branch of a foreign company.',
@@ -598,17 +598,17 @@ export const GetCompanyProfileSchema = {
               business_activity: {
                 description:
                   'Type of business undertaken by the UK establishment.',
-                type: 'string',
+                type: 'string'
               },
               parent_company_number: {
                 description: 'Parent company number.',
-                type: 'string',
+                type: 'string'
               },
               parent_company_name: {
                 description: 'Parent company name.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           links: {
             description:
@@ -619,30 +619,30 @@ export const GetCompanyProfileSchema = {
             properties: {
               self: {
                 description: 'The URL of the resource.',
-                type: 'string',
+                type: 'string'
               },
               persons_with_significant_control: {
                 description:
                   'The URL of the persons with significant control list resource.',
-                type: 'string',
+                type: 'string'
               },
               persons_with_significant_control_statements: {
                 description:
                   'The URL of the persons with significant control statements list resource.',
-                type: 'string',
+                type: 'string'
               },
               registers: {
                 description:
                   'The URL of the registers resource for this company',
-                type: 'string',
-              },
-            },
-          },
+                type: 'string'
+              }
+            }
+          }
         },
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type GetCompanyProfileResponse = FromSchema<

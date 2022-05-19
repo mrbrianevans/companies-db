@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetOfficersSchema as schema,
   GetOfficersQueryString,
-  GetOfficersParams,
+  GetOfficersParams
 } from '../schemas/GetOfficersSchema.js'
 
 export const getOfficersController: FastifyPluginAsync = async (

@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   SearchOfficersSchema as schema,
   SearchOfficersQueryString,
-  SearchOfficersParams,
+  SearchOfficersParams
 } from '../schemas/SearchOfficersSchema.js'
 
 export const searchOfficersController: FastifyPluginAsync = async (

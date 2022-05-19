@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetFilingHistorySchema as schema,
   GetFilingHistoryQueryString,
-  GetFilingHistoryParams,
+  GetFilingHistoryParams
 } from '../schemas/GetFilingHistorySchema.js'
 
 export const getFilingHistoryController: FastifyPluginAsync = async (

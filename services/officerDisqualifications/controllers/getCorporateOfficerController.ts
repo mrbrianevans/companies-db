@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetCorporateOfficerSchema as schema,
   GetCorporateOfficerQueryString,
-  GetCorporateOfficerParams,
+  GetCorporateOfficerParams
 } from '../schemas/GetCorporateOfficerSchema.js'
 
 export const getCorporateOfficerController: FastifyPluginAsync = async (

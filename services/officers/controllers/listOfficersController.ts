@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   ListOfficersSchema as schema,
   ListOfficersQueryString,
-  ListOfficersParams,
+  ListOfficersParams
 } from '../schemas/ListOfficersSchema.js'
 
 export const listOfficersController: FastifyPluginAsync = async (
@@ -21,7 +21,7 @@ export const listOfficersController: FastifyPluginAsync = async (
       register_type,
       register_view,
       start_index,
-      order_by,
+      order_by
     } = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
     res.header('X-Ratelimit-Limit', ratelimit.limit)

@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   ListFilingHistorySchema as schema,
   ListFilingHistoryQueryString,
-  ListFilingHistoryParams,
+  ListFilingHistoryParams
 } from '../schemas/ListFilingHistorySchema.js'
 
 export const listFilingHistoryController: FastifyPluginAsync = async (

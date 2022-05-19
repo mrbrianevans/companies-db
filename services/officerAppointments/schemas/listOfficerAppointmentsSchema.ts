@@ -18,22 +18,22 @@ export const ListOfficerAppointmentsSchema = {
       type: 'object',
       properties: {
         officer_id: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['officer_id'],
+      required: ['officer_id']
     },
     querystring: {
       type: 'object',
       properties: {
         items_per_page: {
-          type: 'integer',
+          type: 'integer'
         },
         start_index: {
-          type: 'integer',
-        },
+          type: 'integer'
+        }
       },
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -46,23 +46,23 @@ export const ListOfficerAppointmentsSchema = {
             properties: {
               month: {
                 description: 'The month the officer was born in.',
-                type: 'integer',
+                type: 'integer'
               },
               year: {
                 description: 'The year the officer was born in.',
-                type: 'integer',
-              },
+                type: 'integer'
+              }
             },
-            required: ['month', 'year'],
+            required: ['month', 'year']
           },
           etag: {
             description: 'The ETag of the resource.',
-            type: 'string',
+            type: 'string'
           },
           is_corporate_officer: {
             description:
               'Indicator representing if the officer is a corporate body.',
-            type: 'boolean',
+            type: 'boolean'
           },
           items: {
             description: 'The list of officer appointments.',
@@ -76,54 +76,54 @@ export const ListOfficerAppointmentsSchema = {
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     address_line_2: {
                       description: 'The second line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     care_of: {
                       description: 'The care of name.',
-                      type: 'string',
+                      type: 'string'
                     },
                     country: {
                       description: 'The country. For example, UK.',
-                      type: 'string',
+                      type: 'string'
                     },
                     locality: {
                       description: 'The locality. For example London.',
-                      type: 'string',
+                      type: 'string'
                     },
                     po_box: {
                       description: 'The post-office box number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     postal_code: {
                       description: 'The postal code. For example CF14 3UZ.',
-                      type: 'string',
+                      type: 'string'
                     },
                     premises: {
                       description: 'The property name or number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     region: {
                       description: 'The region. For example Surrey.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               appointed_before: {
                 description:
                   'The date the officer was appointed before. Only present when the `is_pre_1992_appointment` attribute is `true`.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               appointed_on: {
                 description: 'The date the officer was appointed.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               appointed_to: {
                 description: 'The company information of the appointment.',
@@ -133,30 +133,30 @@ export const ListOfficerAppointmentsSchema = {
                     company_name: {
                       description:
                         'The name of the company the officer is acting for.',
-                      type: 'string',
+                      type: 'string'
                     },
                     company_number: {
                       description:
                         'The number of the company the officer is acting for.',
-                      type: 'string',
+                      type: 'string'
                     },
                     company_status: {
                       description:
                         'The status of the company the officer is acting for.',
-                      type: 'string',
-                    },
+                      type: 'string'
+                    }
                   },
-                  required: ['company_number'],
+                  required: ['company_number']
                 },
-                type: 'object',
+                type: 'object'
               },
               name: {
                 description: 'The full name of the officer.',
-                type: 'string',
+                type: 'string'
               },
               country_of_residence: {
                 description: "The officer's country of residence.",
-                type: 'string',
+                type: 'string'
               },
               former_names: {
                 description: 'Former names for the officer, if there are any.',
@@ -165,15 +165,15 @@ export const ListOfficerAppointmentsSchema = {
                   properties: {
                     forenames: {
                       description: 'Former forenames of the officer.',
-                      type: 'string',
+                      type: 'string'
                     },
                     surname: {
                       description: 'Former surnames of the officer.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'array',
+                type: 'array'
               },
               identification: {
                 description:
@@ -184,34 +184,34 @@ export const ListOfficerAppointmentsSchema = {
                     identification_type: {
                       description: "The officer's identity type",
                       enum: ['eea', 'non-eea'],
-                      type: 'string',
+                      type: 'string'
                     },
                     legal_authority: {
                       description:
                         'The legal authority supervising the company.',
-                      type: 'string',
+                      type: 'string'
                     },
                     legal_form: {
                       description:
                         'The legal form of the company as defined by its country of registration.',
-                      type: 'string',
+                      type: 'string'
                     },
                     place_registered: {
                       description: 'Place registered.',
-                      type: 'string',
+                      type: 'string'
                     },
                     registration_number: {
                       description: 'Company registration number.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               is_pre_1992_appointment: {
                 description:
                   'Indicator representing if the officer was appointed before their appointment date.',
-                type: 'boolean',
+                type: 'boolean'
               },
               links: {
                 description:
@@ -224,10 +224,10 @@ export const ListOfficerAppointmentsSchema = {
                     company: {
                       description:
                         'Link to the company profile resource that this appointment is associated with.',
-                      type: 'string',
-                    },
-                  },
-                },
+                      type: 'string'
+                    }
+                  }
+                }
               },
               name_elements: {
                 description:
@@ -238,35 +238,35 @@ export const ListOfficerAppointmentsSchema = {
                   properties: {
                     forename: {
                       description: 'The forename of the officer.',
-                      type: 'string',
+                      type: 'string'
                     },
                     title: {
                       description: 'Title of the officer.',
-                      type: 'string',
+                      type: 'string'
                     },
                     other_forenames: {
                       description: 'Other forenames of the officer.',
-                      type: 'string',
+                      type: 'string'
                     },
                     surname: {
                       description: 'The surname of the officer.',
-                      type: 'string',
+                      type: 'string'
                     },
                     honours: {
                       description: 'Honours an officer might have.',
-                      type: 'string',
-                    },
+                      type: 'string'
+                    }
                   },
-                  required: ['surname'],
-                },
+                  required: ['surname']
+                }
               },
               nationality: {
                 description: "The officer's nationality.",
-                type: 'string',
+                type: 'string'
               },
               occupation: {
                 description: "The officer's occupation.",
-                type: 'string',
+                type: 'string'
               },
               officer_role: {
                 enum: [
@@ -290,32 +290,32 @@ export const ListOfficerAppointmentsSchema = {
                   'nominee-director',
                   'nominee-secretary',
                   'receiver-and-manager',
-                  'secretary',
+                  'secretary'
                 ],
-                type: 'string',
+                type: 'string'
               },
               resigned_on: {
                 description: 'The date the officer was resigned.',
                 type: 'string',
-                format: 'date',
-              },
+                format: 'date'
+              }
             },
             required: [
               'address',
               'appointed_to',
               'links',
               'name',
-              'officer_role',
-            ],
+              'officer_role'
+            ]
           },
           items_per_page: {
             description:
               'The number of officer appointments to return per page.',
-            type: 'integer',
+            type: 'integer'
           },
           kind: {
             enum: ['personal-appointment'],
-            type: 'string',
+            type: 'string'
           },
           links: {
             description:
@@ -326,24 +326,24 @@ export const ListOfficerAppointmentsSchema = {
             properties: {
               self: {
                 description: 'Link to this officer appointment resource.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           name: {
             description: 'The corporate or natural officer name.',
-            type: 'string',
+            type: 'string'
           },
           start_index: {
             description:
               'The first row of data to retrieve, starting at 0. Use this parameter as a pagination mechanism along with the `items_per_page` parameter.',
-            type: 'integer',
+            type: 'integer'
           },
           total_results: {
             description:
               'The total number of officer appointments in this result set.',
-            type: 'integer',
-          },
+            type: 'integer'
+          }
         },
         required: [
           'etag',
@@ -354,12 +354,12 @@ export const ListOfficerAppointmentsSchema = {
           'links',
           'name',
           'start_index',
-          'total_results',
+          'total_results'
         ],
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type ListOfficerAppointmentsResponse = FromSchema<

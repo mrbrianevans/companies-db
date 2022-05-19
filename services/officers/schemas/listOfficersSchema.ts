@@ -24,34 +24,34 @@ export const ListOfficersSchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number'],
+      required: ['company_number']
     },
     querystring: {
       type: 'object',
       properties: {
         items_per_page: {
-          type: 'integer',
+          type: 'integer'
         },
         register_type: {
           enum: ['directors', 'secretaries', 'llp-members'],
-          type: 'string',
+          type: 'string'
         },
         register_view: {
           enum: ['true', 'false'],
-          type: 'string',
+          type: 'string'
         },
         start_index: {
-          type: 'integer',
+          type: 'integer'
         },
         order_by: {
           enum: ['appointed_on', 'resigned_on', 'surname'],
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -59,11 +59,11 @@ export const ListOfficersSchema = {
         properties: {
           active_count: {
             description: 'The number of active officers in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           etag: {
             description: 'The ETag of the resource.',
-            type: 'string',
+            type: 'string'
           },
           items: {
             description: 'The list of officers.',
@@ -78,48 +78,48 @@ export const ListOfficersSchema = {
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     address_line_2: {
                       description: 'The second line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     care_of: {
                       description: 'The care of name.',
-                      type: 'string',
+                      type: 'string'
                     },
                     country: {
                       description: 'The country e.g. United Kingdom.',
-                      type: 'string',
+                      type: 'string'
                     },
                     locality: {
                       description: 'The locality e.g. London.',
-                      type: 'string',
+                      type: 'string'
                     },
                     po_box: {
                       description: 'The post-office box number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     postal_code: {
                       description: 'The postal code e.g. CF14 3UZ.',
-                      type: 'string',
+                      type: 'string'
                     },
                     premises: {
                       description: 'The property name or number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     region: {
                       description: 'The region e.g. Surrey.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               appointed_on: {
                 description: 'The date on which the officer was appointed.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               contact_details: {
                 description:
@@ -130,51 +130,51 @@ export const ListOfficersSchema = {
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     address_line_2: {
                       description: 'The second line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     care_of: {
                       description: 'The care of name.',
-                      type: 'string',
+                      type: 'string'
                     },
                     country: {
                       description: 'The country e.g. United Kingdom.',
-                      type: 'string',
+                      type: 'string'
                     },
                     locality: {
                       description: 'The locality e.g. London.',
-                      type: 'string',
+                      type: 'string'
                     },
                     name: {
                       description: 'The name of the contact.',
-                      type: 'string',
+                      type: 'string'
                     },
                     po_box: {
                       description: 'The post-office box number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     postal_code: {
                       description: 'The postal code e.g. CF14 3UZ.',
-                      type: 'string',
+                      type: 'string'
                     },
                     premises: {
                       description: 'The property name or number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     region: {
                       description: 'The region e.g. Surrey.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               country_of_residence: {
                 description: "The officer's country of residence.",
-                type: 'string',
+                type: 'string'
               },
               date_of_birth: {
                 description: 'Details of director date of birth.',
@@ -183,20 +183,20 @@ export const ListOfficersSchema = {
                   properties: {
                     day: {
                       description: 'The day of the date of birth.',
-                      type: 'integer',
+                      type: 'integer'
                     },
                     month: {
                       description: 'The month of date of birth.',
-                      type: 'integer',
+                      type: 'integer'
                     },
                     year: {
                       description: 'The year of date of birth.',
-                      type: 'integer',
-                    },
+                      type: 'integer'
+                    }
                   },
-                  required: ['month', 'year'],
+                  required: ['month', 'year']
                 },
-                type: 'object',
+                type: 'object'
               },
               links: {
                 description:
@@ -208,7 +208,7 @@ export const ListOfficersSchema = {
                     self: {
                       description:
                         'Link to this individual company officer appointment resource.',
-                      type: 'string',
+                      type: 'string'
                     },
                     officer: {
                       description:
@@ -220,27 +220,27 @@ export const ListOfficersSchema = {
                           appointments: {
                             description:
                               'Link to the officer appointment resource that this appointment is associated with.',
-                            type: 'string',
-                          },
-                        },
+                            type: 'string'
+                          }
+                        }
                       },
-                      type: 'object',
-                    },
-                  },
+                      type: 'object'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               name: {
                 description: 'Corporate or natural officer name.',
-                type: 'string',
+                type: 'string'
               },
               nationality: {
                 description: "The officer's nationality.",
-                type: 'string',
+                type: 'string'
               },
               occupation: {
                 description: "The officer's job title.",
-                type: 'string',
+                type: 'string'
               },
               officer_role: {
                 enum: [
@@ -273,9 +273,9 @@ export const ListOfficersSchema = {
                   'person-authorised-to-represent',
                   'person-authorised-to-represent-and-accept',
                   'receiver-and-manager',
-                  'secretary',
+                  'secretary'
                 ],
-                type: 'string',
+                type: 'string'
               },
               principal_office_address: {
                 description:
@@ -286,53 +286,53 @@ export const ListOfficersSchema = {
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     address_line_2: {
                       description: 'The second line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     care_of: {
                       description: 'The care of name.',
-                      type: 'string',
+                      type: 'string'
                     },
                     country: {
                       description: 'The country e.g. United Kingdom.',
-                      type: 'string',
+                      type: 'string'
                     },
                     locality: {
                       description: 'The locality e.g. London.',
-                      type: 'string',
+                      type: 'string'
                     },
                     po_box: {
                       description: 'The post-office box number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     postal_code: {
                       description: 'The postal code e.g. CF14 3UZ.',
-                      type: 'string',
+                      type: 'string'
                     },
                     premises: {
                       description: 'The property name or number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     region: {
                       description: 'The region e.g. Surrey.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               resigned_on: {
                 description: 'The date on which the officer resigned.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               responsibilities: {
                 description:
                   'The responsibilities of the managing officer of a `registered-overseas-entity`.',
-                type: 'string',
+                type: 'string'
               },
               former_names: {
                 description: 'Former names for the officer.',
@@ -341,15 +341,15 @@ export const ListOfficersSchema = {
                   properties: {
                     forenames: {
                       description: 'Former forenames of the officer.',
-                      type: 'string',
+                      type: 'string'
                     },
                     surname: {
                       description: 'Former surnames of the officer.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'array',
+                type: 'array'
               },
               identification: {
                 description:
@@ -364,48 +364,48 @@ export const ListOfficersSchema = {
                         'non-eea',
                         'uk-limited',
                         'other-corporate-body-or-firm',
-                        'registered-overseas-entity-corporate-managing-officer',
+                        'registered-overseas-entity-corporate-managing-officer'
                       ],
-                      type: 'string',
+                      type: 'string'
                     },
                     legal_authority: {
                       description:
                         'The legal authority supervising the company.',
-                      type: 'string',
+                      type: 'string'
                     },
                     legal_form: {
                       description:
                         'The legal form of the company as defined by its country of registration.',
-                      type: 'string',
+                      type: 'string'
                     },
                     place_registered: {
                       description: 'Place registered.',
-                      type: 'string',
+                      type: 'string'
                     },
                     registration_number: {
                       description: 'Company registration number.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
-              },
+                type: 'object'
+              }
             },
             required: [
               'address',
               'appointed_on',
               'links',
               'name',
-              'officer_role',
-            ],
+              'officer_role'
+            ]
           },
           items_per_page: {
             description: 'The number of officers to return per page.',
-            type: 'integer',
+            type: 'integer'
           },
           kind: {
             enum: ['officer-list'],
-            type: 'string',
+            type: 'string'
           },
           links: {
             description:
@@ -416,23 +416,23 @@ export const ListOfficersSchema = {
             properties: {
               self: {
                 description: 'Link to this officer list resource.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           resigned_count: {
             description: 'The number of resigned officers in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           start_index: {
             description:
               'The offset into the entire result set that this page starts.',
-            type: 'integer',
+            type: 'integer'
           },
           total_results: {
             description: 'The total number of officers in this result set.',
-            type: 'integer',
-          },
+            type: 'integer'
+          }
         },
         required: [
           'etag',
@@ -443,12 +443,12 @@ export const ListOfficersSchema = {
           'start_index',
           'total_results',
           'active_count',
-          'resigned_count',
+          'resigned_count'
         ],
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type ListOfficersResponse = FromSchema<

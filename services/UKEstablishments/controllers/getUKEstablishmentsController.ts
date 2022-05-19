@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetUKEstablishmentsSchema as schema,
   GetUKEstablishmentsQueryString,
-  GetUKEstablishmentsParams,
+  GetUKEstablishmentsParams
 } from '../schemas/GetUKEstablishmentsSchema.js'
 
 export const getUKEstablishmentsController: FastifyPluginAsync = async (

@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetLegalPersonsSchema as schema,
   GetLegalPersonsQueryString,
-  GetLegalPersonsParams,
+  GetLegalPersonsParams
 } from '../schemas/GetLegalPersonsSchema.js'
 
 export const getLegalPersonsController: FastifyPluginAsync = async (

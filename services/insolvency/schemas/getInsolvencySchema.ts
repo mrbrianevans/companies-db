@@ -13,15 +13,15 @@ export const GetInsolvencySchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number'],
+      required: ['company_number']
     },
     querystring: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -30,7 +30,7 @@ export const GetInsolvencySchema = {
         properties: {
           etag: {
             description: 'The ETag of the resource.',
-            type: 'string',
+            type: 'string'
           },
           cases: {
             type: 'object',
@@ -51,10 +51,10 @@ export const GetInsolvencySchema = {
                   'receiver-manager',
                   'administrative-receiver',
                   'receivership',
-                  'foreign-insolvency',
+                  'foreign-insolvency'
                 ],
                 description:
-                  'The type of case.\n For enumeration descriptions see `insolvency_case_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
+                  'The type of case.\n For enumeration descriptions see `insolvency_case_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).'
               },
               dates: {
                 type: 'array',
@@ -82,23 +82,23 @@ export const GetInsolvencySchema = {
                         'voluntary-arrangement-ended-on',
                         'moratorium-started-on',
                         'moratorium-ended-on',
-                        'declaration-solvent-on',
-                      ],
+                        'declaration-solvent-on'
+                      ]
                     },
                     date: {
                       type: 'string',
                       format: 'date',
-                      description: 'The case date, described by `date_type`.',
-                    },
-                  },
-                },
+                      description: 'The case date, described by `date_type`.'
+                    }
+                  }
+                }
               },
               notes: {
                 type: 'array',
                 description: 'The dates specific to the case.',
                 items: {
-                  type: 'string',
-                },
+                  type: 'string'
+                }
               },
               practitioners: {
                 type: 'array',
@@ -109,7 +109,7 @@ export const GetInsolvencySchema = {
                   properties: {
                     name: {
                       description: 'The name of the practitioner.',
-                      type: 'string',
+                      type: 'string'
                     },
                     address: {
                       type: 'array',
@@ -120,43 +120,42 @@ export const GetInsolvencySchema = {
                         properties: {
                           address_line_1: {
                             type: 'string',
-                            description: 'The first line of the address.',
+                            description: 'The first line of the address.'
                           },
                           address_line_2: {
                             type: 'string',
-                            description: 'The second line of the address.',
+                            description: 'The second line of the address.'
                           },
                           locality: {
                             type: 'string',
-                            description: 'The locality. For example London.',
+                            description: 'The locality. For example London.'
                           },
                           region: {
                             type: 'string',
-                            description: 'The region. For example Surrey.',
+                            description: 'The region. For example Surrey.'
                           },
                           postal_code: {
                             type: 'string',
                             description:
-                              'The postal code. For example CF14 3UZ.',
+                              'The postal code. For example CF14 3UZ.'
                           },
                           country: {
                             type: 'string',
-                            description: 'The country.',
-                          },
-                        },
-                      },
+                            description: 'The country.'
+                          }
+                        }
+                      }
                     },
                     appointed_on: {
                       type: 'string',
                       format: 'date',
-                      description:
-                        'The date the practitioner was appointed on.',
+                      description: 'The date the practitioner was appointed on.'
                     },
                     ceased_to_act_on: {
                       type: 'string',
                       format: 'date',
                       description:
-                        'The date the practitioner ceased to act for the case.',
+                        'The date the practitioner ceased to act for the case.'
                     },
                     role: {
                       type: 'string',
@@ -169,11 +168,11 @@ export const GetInsolvencySchema = {
                         'provisional-liquidator',
                         'administrative-receiver',
                         'practitioner',
-                        'interim-liquidator',
-                      ],
-                    },
-                  },
-                },
+                        'interim-liquidator'
+                      ]
+                    }
+                  }
+                }
               },
               links: {
                 type: 'object',
@@ -184,16 +183,16 @@ export const GetInsolvencySchema = {
                     charge: {
                       type: 'string',
                       description:
-                        'The link to the charge this case is lodged against.',
-                    },
-                  },
-                },
+                        'The link to the charge this case is lodged against.'
+                    }
+                  }
+                }
               },
               number: {
                 type: 'integer',
-                description: 'The case number.',
-              },
-            },
+                description: 'The case number.'
+              }
+            }
           },
           status: {
             type: 'string',
@@ -208,14 +207,14 @@ export const GetInsolvencySchema = {
               'administrative-receiver',
               'administration-order',
               'receivership',
-              'in-administration',
-            ],
-          },
+              'in-administration'
+            ]
+          }
         },
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type GetInsolvencyResponse = FromSchema<

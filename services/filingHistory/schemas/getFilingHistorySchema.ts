@@ -15,18 +15,18 @@ export const GetFilingHistorySchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
+          type: 'string'
         },
         transaction_id: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number', 'transaction_id'],
+      required: ['company_number', 'transaction_id']
     },
     querystring: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -41,19 +41,19 @@ export const GetFilingHistorySchema = {
             properties: {
               annotation: {
                 description: 'The annotation text.',
-                type: 'string',
+                type: 'string'
               },
               date: {
                 type: 'string',
                 format: 'date',
-                description: 'The date the annotation was added.',
+                description: 'The date the annotation was added.'
               },
               description: {
                 type: 'string',
                 description:
-                  'A description of the annotation.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
-              },
-            },
+                  'A description of the annotation.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.'
+              }
+            }
           },
           associated_filings: {
             description: 'Any filings associated with the current item',
@@ -64,26 +64,26 @@ export const GetFilingHistorySchema = {
               date: {
                 description: 'The date the associated filing was processed.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               description: {
                 type: 'string',
                 description:
-                  'A description of the associated filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
+                  'A description of the associated filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.'
               },
               type: {
                 description: 'The type of the associated filing.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           barcode: {
             description: 'The barcode of the document.',
-            type: 'string',
+            type: 'string'
           },
           transaction_id: {
             description: 'The transaction ID of the filing.',
-            type: 'string',
+            type: 'string'
           },
           category: {
             description: 'The category of the document filed.',
@@ -98,19 +98,19 @@ export const GetFilingHistorySchema = {
               'miscellaneous',
               'mortgage',
               'officers',
-              'resolution',
+              'resolution'
             ],
-            type: 'string',
+            type: 'string'
           },
           date: {
             description: 'The date the filing was processed.',
             type: 'string',
-            format: 'date',
+            format: 'date'
           },
           description: {
             description:
               'A description of the filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
-            type: 'string',
+            type: 'string'
           },
           links: {
             description:
@@ -120,23 +120,23 @@ export const GetFilingHistorySchema = {
             properties: {
               self: {
                 description: 'Link to this filing history item.',
-                type: 'string',
+                type: 'string'
               },
               document_metadata: {
                 description:
                   'Link to the document metadata associated with this filing history item. See the Document API documentation for more details.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           pages: {
             description:
               'Number of pages within the PDF document (links.document_metadata)',
-            type: 'integer',
+            type: 'integer'
           },
           paper_filed: {
             description: 'If true, indicates this is a paper filing.',
-            type: 'boolean',
+            type: 'boolean'
           },
           resolutions: {
             description: 'Resolutions for the filing',
@@ -147,53 +147,53 @@ export const GetFilingHistorySchema = {
               'description',
               'receive_date',
               'subcategory',
-              'type',
+              'type'
             ],
             properties: {
               category: {
                 description: 'The category of the resolution filed.',
                 enum: ['miscellaneous'],
-                type: 'string',
+                type: 'string'
               },
               description: {
                 description:
                   'A description of the associated filing.\n For enumeration descriptions see `description` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
-                type: 'string',
+                type: 'string'
               },
               document_id: {
                 description: 'The document id of the resolution.',
-                type: 'string',
+                type: 'string'
               },
               receive_date: {
                 description: 'The date the resolution was processed.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               subcategory: {
                 description: 'The sub-category of the document filed.',
                 enum: ['resolution'],
-                type: 'string',
+                type: 'string'
               },
               type: {
                 description: 'The type of the associated filing.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           subcategory: {
             description: 'The sub-category of the document filed.',
             enum: ['resolution'],
-            type: 'string',
+            type: 'string'
           },
           type: {
             description: 'The type of filing.',
-            type: 'string',
-          },
+            type: 'string'
+          }
         },
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type GetFilingHistoryResponse = FromSchema<

@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   ListChargesSchema as schema,
   ListChargesQueryString,
-  ListChargesParams,
+  ListChargesParams
 } from '../schemas/ListChargesSchema.js'
 
 export const listChargesController: FastifyPluginAsync = async (

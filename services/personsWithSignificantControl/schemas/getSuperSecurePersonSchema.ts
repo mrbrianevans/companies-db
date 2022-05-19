@@ -15,18 +15,18 @@ export const GetSuperSecurePersonSchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
+          type: 'string'
         },
         super_secure_id: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number', 'super_secure_id'],
+      required: ['company_number', 'super_secure_id']
     },
     querystring: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -35,21 +35,21 @@ export const GetSuperSecurePersonSchema = {
         properties: {
           etag: {
             description: 'The ETag of the resource.',
-            type: 'string',
+            type: 'string'
           },
           kind: {
             enum: ['super-secure-person-with-significant-control'],
-            type: 'string',
+            type: 'string'
           },
           description: {
             description: 'Description of the super secure legal statement \n',
             enum: ['super-secure-persons-with-significant-control'],
-            type: 'string',
+            type: 'string'
           },
           ceased: {
             description:
               'Presence of that indicator means the super secure person status is ceased \n',
-            type: 'boolean',
+            type: 'boolean'
           },
           links: {
             description:
@@ -60,15 +60,15 @@ export const GetSuperSecurePersonSchema = {
             properties: {
               self: {
                 description: 'The URL of the resource.',
-                type: 'string',
-              },
-            },
-          },
+                type: 'string'
+              }
+            }
+          }
         },
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type GetSuperSecurePersonResponse = FromSchema<

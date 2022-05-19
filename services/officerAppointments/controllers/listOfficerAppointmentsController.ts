@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   ListOfficerAppointmentsSchema as schema,
   ListOfficerAppointmentsQueryString,
-  ListOfficerAppointmentsParams,
+  ListOfficerAppointmentsParams
 } from '../schemas/ListOfficerAppointmentsSchema.js'
 
 export const listOfficerAppointmentsController: FastifyPluginAsync = async (

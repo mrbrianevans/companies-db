@@ -3,7 +3,7 @@ const logger = pino()
 const apiUrl = 'https://api.company-information.service.gov.uk'
 const headers = {
   Authorization:
-    'Basic ' + Buffer.from(process.env.RESTAPIKEY + ':').toString('base64'),
+    'Basic ' + Buffer.from(process.env.RESTAPIKEY + ':').toString('base64')
 }
 
 export async function reflect(path) {

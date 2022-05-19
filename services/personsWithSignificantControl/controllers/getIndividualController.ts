@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetIndividualSchema as schema,
   GetIndividualQueryString,
-  GetIndividualParams,
+  GetIndividualParams
 } from '../schemas/GetIndividualSchema.js'
 
 export const getIndividualController: FastifyPluginAsync = async (

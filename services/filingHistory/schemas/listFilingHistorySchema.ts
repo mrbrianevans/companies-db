@@ -20,25 +20,25 @@ export const ListFilingHistorySchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number'],
+      required: ['company_number']
     },
     querystring: {
       type: 'object',
       properties: {
         category: {
-          type: 'string',
+          type: 'string'
         },
         items_per_page: {
-          type: 'integer',
+          type: 'integer'
         },
         start_index: {
-          type: 'integer',
-        },
+          type: 'integer'
+        }
       },
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -49,17 +49,17 @@ export const ListFilingHistorySchema = {
           'items_per_page',
           'kind',
           'start_index',
-          'total_count',
+          'total_count'
         ],
         properties: {
           filing_history_status: {
             description: 'The status of this filing history.',
             type: 'string',
-            enum: ['filing-history-available'],
+            enum: ['filing-history-available']
           },
           etag: {
             description: 'The ETag of the resource.',
-            type: 'string',
+            type: 'string'
           },
           items: {
             description: 'The filing history items.',
@@ -70,7 +70,7 @@ export const ListFilingHistorySchema = {
               'date',
               'description',
               'type',
-              'transaction_id',
+              'transaction_id'
             ],
             properties: {
               annotations: {
@@ -81,21 +81,21 @@ export const ListFilingHistorySchema = {
                   properties: {
                     annotation: {
                       description: 'The annotation text.',
-                      type: 'string',
+                      type: 'string'
                     },
                     date: {
                       type: 'string',
                       format: 'date',
-                      description: 'The date the annotation was added.',
+                      description: 'The date the annotation was added.'
                     },
                     description: {
                       type: 'string',
                       description:
-                        'A description of the annotation.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
-                    },
-                  },
+                        'A description of the annotation.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.'
+                    }
+                  }
                 },
-                type: 'array',
+                type: 'array'
               },
               associated_filings: {
                 description: 'Any filings associated with the current item',
@@ -107,28 +107,28 @@ export const ListFilingHistorySchema = {
                       description:
                         'The date the associated filing was processed.',
                       type: 'string',
-                      format: 'date',
+                      format: 'date'
                     },
                     description: {
                       type: 'string',
                       description:
-                        'A description of the associated filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
+                        'A description of the associated filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.'
                     },
                     type: {
                       description: 'The type of the associated filing.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'array',
+                type: 'array'
               },
               barcode: {
                 description: 'The barcode of the document.',
-                type: 'string',
+                type: 'string'
               },
               transaction_id: {
                 description: 'The transaction ID of the filing.',
-                type: 'string',
+                type: 'string'
               },
               category: {
                 description: 'The category of the document filed.',
@@ -143,19 +143,19 @@ export const ListFilingHistorySchema = {
                   'miscellaneous',
                   'mortgage',
                   'officers',
-                  'resolution',
+                  'resolution'
                 ],
-                type: 'string',
+                type: 'string'
               },
               date: {
                 description: 'The date the filing was processed.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               description: {
                 description:
                   'A description of the filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
-                type: 'string',
+                type: 'string'
               },
               links: {
                 description:
@@ -166,24 +166,24 @@ export const ListFilingHistorySchema = {
                   properties: {
                     self: {
                       description: 'Link to this filing history item.',
-                      type: 'string',
+                      type: 'string'
                     },
                     document_metadata: {
                       description:
                         'Link to the document metadata associated with this filing history item. See the Document API documentation for more details.',
-                      type: 'string',
-                    },
-                  },
-                },
+                      type: 'string'
+                    }
+                  }
+                }
               },
               pages: {
                 description:
                   'Number of pages within the PDF document (links.document_metadata)',
-                type: 'integer',
+                type: 'integer'
               },
               paper_filed: {
                 description: 'If true, indicates this is a paper filing.',
-                type: 'boolean',
+                type: 'boolean'
               },
               resolutions: {
                 description: 'Resolutions for the filing',
@@ -194,77 +194,77 @@ export const ListFilingHistorySchema = {
                     'description',
                     'receive_date',
                     'subcategory',
-                    'type',
+                    'type'
                   ],
                   properties: {
                     category: {
                       description: 'The category of the resolution filed.',
                       enum: ['miscellaneous'],
-                      type: 'string',
+                      type: 'string'
                     },
                     description: {
                       description:
                         'A description of the associated filing.\n For enumeration descriptions see `description` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
-                      type: 'string',
+                      type: 'string'
                     },
                     document_id: {
                       description: 'The document id of the resolution.',
-                      type: 'string',
+                      type: 'string'
                     },
                     receive_date: {
                       description: 'The date the resolution was processed.',
                       type: 'string',
-                      format: 'date',
+                      format: 'date'
                     },
                     subcategory: {
                       description: 'The sub-category of the document filed.',
                       enum: ['resolution'],
-                      type: 'string',
+                      type: 'string'
                     },
                     type: {
                       description: 'The type of the associated filing.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'array',
+                type: 'array'
               },
               subcategory: {
                 description: 'The sub-category of the document filed.',
                 enum: ['resolution'],
-                type: 'string',
+                type: 'string'
               },
               type: {
                 description: 'The type of filing.',
-                type: 'string',
-              },
-            },
+                type: 'string'
+              }
+            }
           },
           items_per_page: {
             description:
               'The number of filing history items returned per page.',
-            type: 'integer',
+            type: 'integer'
           },
           kind: {
             description: 'Indicates this resource is a filing history.',
             enum: ['filing-history'],
-            type: 'string',
+            type: 'string'
           },
           start_index: {
             description:
               'The index into the entire result set that this result page starts.',
-            type: 'integer',
+            type: 'integer'
           },
           total_count: {
             description:
               'The total number of filing history items for this company.',
-            type: 'integer',
-          },
+            type: 'integer'
+          }
         },
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type ListFilingHistoryResponse = FromSchema<

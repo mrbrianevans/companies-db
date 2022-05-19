@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   SearchCompaniesAlphabeticallySchema as schema,
   SearchCompaniesAlphabeticallyQueryString,
-  SearchCompaniesAlphabeticallyParams,
+  SearchCompaniesAlphabeticallyParams
 } from '../schemas/SearchCompaniesAlphabeticallySchema.js'
 
 export const searchCompaniesAlphabeticallyController: FastifyPluginAsync =

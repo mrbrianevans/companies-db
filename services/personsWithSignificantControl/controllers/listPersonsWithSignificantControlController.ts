@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   ListPersonsWithSignificantControlSchema as schema,
   ListPersonsWithSignificantControlQueryString,
-  ListPersonsWithSignificantControlParams,
+  ListPersonsWithSignificantControlParams
 } from '../schemas/ListPersonsWithSignificantControlSchema.js'
 
 export const listPersonsWithSignificantControlController: FastifyPluginAsync =
@@ -19,7 +19,7 @@ export const listPersonsWithSignificantControlController: FastifyPluginAsync =
         const { company_number } = req.params
         const { items_per_page, start_index, register_view } = req.query
         const ratelimit = await auth({
-          Authorization: req.headers.authorization,
+          Authorization: req.headers.authorization
         })
         res.header('X-Ratelimit-Limit', ratelimit.limit)
         res.header('X-Ratelimit-Remain', ratelimit.remain)

@@ -6,7 +6,7 @@ const prettyTs = code => prettier.format(code, {
     semi: false,
     parser: 'typescript',
     singleQuote: true,
-    // trailingComma: 'none'
+    trailingComma: 'none'
 })
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir

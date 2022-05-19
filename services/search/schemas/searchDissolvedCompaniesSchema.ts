@@ -22,31 +22,31 @@ export const SearchDissolvedCompaniesSchema = {
     params: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     querystring: {
       type: 'object',
       properties: {
         q: {
-          type: 'string',
+          type: 'string'
         },
         search_type: {
-          type: 'string',
+          type: 'string'
         },
         search_above: {
-          type: 'string',
+          type: 'string'
         },
         search_below: {
-          type: 'string',
+          type: 'string'
         },
         size: {
-          type: 'string',
+          type: 'string'
         },
         start_index: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['q', 'search_type'],
+      required: ['q', 'search_type']
     },
     response: {
       '200': {
@@ -56,7 +56,7 @@ export const SearchDissolvedCompaniesSchema = {
           {
             properties: {
               etag: {
-                type: 'string',
+                type: 'string'
               },
               items: {
                 type: 'array',
@@ -66,42 +66,41 @@ export const SearchDissolvedCompaniesSchema = {
                     'company_name',
                     'company_number',
                     'date_of_cessation',
-                    'date_of_creation',
+                    'date_of_creation'
                   ],
                   properties: {
                     company_name: {
                       type: 'string',
                       description:
-                        'The company name associated with the dissolved company',
+                        'The company name associated with the dissolved company'
                     },
                     company_number: {
                       type: 'string',
-                      description:
-                        'The company number of the dissolved company',
+                      description: 'The company number of the dissolved company'
                     },
                     company_status: {
                       type: 'string',
-                      description: 'The status of the company',
+                      description: 'The status of the company'
                     },
                     ordered_alpha_key_with_id: {
                       type: 'string',
                       description:
-                        "The alphakey with it's id associated with the dissolved company",
+                        "The alphakey with it's id associated with the dissolved company"
                     },
                     kind: {
                       type: 'string',
                       enum: ['search-results#dissolved-company'],
-                      description: 'The type of search result',
+                      description: 'The type of search result'
                     },
                     date_of_cessation: {
                       type: 'string',
                       format: 'date',
-                      description: 'The date that the company was dissolved',
+                      description: 'The date that the company was dissolved'
                     },
                     date_of_creation: {
                       type: 'string',
                       format: 'date',
-                      description: 'The date that the company was incorporated',
+                      description: 'The date that the company was incorporated'
                     },
                     registered_office_address: {
                       title: 'Registered Office Address',
@@ -111,22 +110,22 @@ export const SearchDissolvedCompaniesSchema = {
                         address_line_1: {
                           type: 'string',
                           description:
-                            'The first line of the address e.g Crown Way',
+                            'The first line of the address e.g Crown Way'
                         },
                         address_line_2: {
                           type: 'string',
-                          description: 'The second line of the address',
+                          description: 'The second line of the address'
                         },
                         locality: {
                           type: 'string',
                           description:
-                            'The town associated to the ROA e.g Cardiff',
+                            'The town associated to the ROA e.g Cardiff'
                         },
                         postal_code: {
                           type: 'string',
-                          description: 'The postal code e.g CF14 3UZ',
-                        },
-                      },
+                          description: 'The postal code e.g CF14 3UZ'
+                        }
+                      }
                     },
                     previous_company_names: {
                       type: 'array',
@@ -136,26 +135,26 @@ export const SearchDissolvedCompaniesSchema = {
                           company_number: {
                             type: 'string',
                             description:
-                              'The company number of the dissolved company',
+                              'The company number of the dissolved company'
                           },
                           ceased_on: {
                             type: 'string',
                             format: 'date',
                             description:
-                              'The date that the company ceased being known under the company name',
+                              'The date that the company ceased being known under the company name'
                           },
                           effective_from: {
                             type: 'string',
                             format: 'date',
                             description:
-                              'The date that the company started being known under the company name',
+                              'The date that the company started being known under the company name'
                           },
                           name: {
                             type: 'string',
-                            description: 'The previous name of the company',
-                          },
-                        },
-                      },
+                            description: 'The previous name of the company'
+                          }
+                        }
+                      }
                     },
                     matched_previous_company_name: {
                       title: 'Previous company name',
@@ -163,36 +162,36 @@ export const SearchDissolvedCompaniesSchema = {
                         company_number: {
                           type: 'string',
                           description:
-                            'The company number of the dissolved company',
+                            'The company number of the dissolved company'
                         },
                         ceased_on: {
                           type: 'string',
                           format: 'date',
                           description:
-                            'The date that the company ceased being known under the company name',
+                            'The date that the company ceased being known under the company name'
                         },
                         effective_from: {
                           type: 'string',
                           format: 'date',
                           description:
-                            'The date that the company started being known under the company name',
+                            'The date that the company started being known under the company name'
                         },
                         name: {
                           type: 'string',
-                          description: 'The previous name of the company',
-                        },
-                      },
-                    },
-                  },
-                },
+                          description: 'The previous name of the company'
+                        }
+                      }
+                    }
+                  }
+                }
               },
               kind: {
                 type: 'string',
                 enum: [
                   'search#alphabetical-dissolved',
                   'search#dissolved',
-                  'search#previous-name-dissolved',
-                ],
+                  'search#previous-name-dissolved'
+                ]
               },
               top_hit: {
                 allOf: [
@@ -202,43 +201,43 @@ export const SearchDissolvedCompaniesSchema = {
                       'company_name',
                       'company_number',
                       'date_of_cessation',
-                      'date_of_creation',
+                      'date_of_creation'
                     ],
                     properties: {
                       company_name: {
                         type: 'string',
                         description:
-                          'The company name associated with the dissolved company',
+                          'The company name associated with the dissolved company'
                       },
                       company_number: {
                         type: 'string',
                         description:
-                          'The company number of the dissolved company',
+                          'The company number of the dissolved company'
                       },
                       company_status: {
                         type: 'string',
-                        description: 'The status of the company',
+                        description: 'The status of the company'
                       },
                       ordered_alpha_key_with_id: {
                         type: 'string',
                         description:
-                          "The alphakey with it's id associated with the dissolved company",
+                          "The alphakey with it's id associated with the dissolved company"
                       },
                       kind: {
                         type: 'string',
                         enum: ['search-results#dissolved-company'],
-                        description: 'The type of search result',
+                        description: 'The type of search result'
                       },
                       date_of_cessation: {
                         type: 'string',
                         format: 'date',
-                        description: 'The date that the company was dissolved',
+                        description: 'The date that the company was dissolved'
                       },
                       date_of_creation: {
                         type: 'string',
                         format: 'date',
                         description:
-                          'The date that the company was incorporated',
+                          'The date that the company was incorporated'
                       },
                       registered_office_address: {
                         title: 'Registered Office Address',
@@ -248,22 +247,22 @@ export const SearchDissolvedCompaniesSchema = {
                           address_line_1: {
                             type: 'string',
                             description:
-                              'The first line of the address e.g Crown Way',
+                              'The first line of the address e.g Crown Way'
                           },
                           address_line_2: {
                             type: 'string',
-                            description: 'The second line of the address',
+                            description: 'The second line of the address'
                           },
                           locality: {
                             type: 'string',
                             description:
-                              'The town associated to the ROA e.g Cardiff',
+                              'The town associated to the ROA e.g Cardiff'
                           },
                           postal_code: {
                             type: 'string',
-                            description: 'The postal code e.g CF14 3UZ',
-                          },
-                        },
+                            description: 'The postal code e.g CF14 3UZ'
+                          }
+                        }
                       },
                       previous_company_names: {
                         type: 'array',
@@ -273,26 +272,26 @@ export const SearchDissolvedCompaniesSchema = {
                             company_number: {
                               type: 'string',
                               description:
-                                'The company number of the dissolved company',
+                                'The company number of the dissolved company'
                             },
                             ceased_on: {
                               type: 'string',
                               format: 'date',
                               description:
-                                'The date that the company ceased being known under the company name',
+                                'The date that the company ceased being known under the company name'
                             },
                             effective_from: {
                               type: 'string',
                               format: 'date',
                               description:
-                                'The date that the company started being known under the company name',
+                                'The date that the company started being known under the company name'
                             },
                             name: {
                               type: 'string',
-                              description: 'The previous name of the company',
-                            },
-                          },
-                        },
+                              description: 'The previous name of the company'
+                            }
+                          }
+                        }
                       },
                       matched_previous_company_name: {
                         title: 'Previous company name',
@@ -300,45 +299,45 @@ export const SearchDissolvedCompaniesSchema = {
                           company_number: {
                             type: 'string',
                             description:
-                              'The company number of the dissolved company',
+                              'The company number of the dissolved company'
                           },
                           ceased_on: {
                             type: 'string',
                             format: 'date',
                             description:
-                              'The date that the company ceased being known under the company name',
+                              'The date that the company ceased being known under the company name'
                           },
                           effective_from: {
                             type: 'string',
                             format: 'date',
                             description:
-                              'The date that the company started being known under the company name',
+                              'The date that the company started being known under the company name'
                           },
                           name: {
                             type: 'string',
-                            description: 'The previous name of the company',
-                          },
-                        },
-                      },
-                    },
+                            description: 'The previous name of the company'
+                          }
+                        }
+                      }
+                    }
                   },
                   {
                     description:
-                      'The best matching company in dissolved search results',
-                  },
-                ],
+                      'The best matching company in dissolved search results'
+                  }
+                ]
               },
               hits: {
                 type: 'string',
                 description:
-                  'The number of hits returned on a best-match or previous-company-names search',
-              },
-            },
-          },
-        ],
-      },
-    },
-  },
+                  'The number of hits returned on a best-match or previous-company-names search'
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
 } as const
 
 export type SearchDissolvedCompaniesResponse = FromSchema<

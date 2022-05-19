@@ -18,25 +18,25 @@ export const SearchCompaniesAlphabeticallySchema = {
     params: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     querystring: {
       type: 'object',
       properties: {
         q: {
-          type: 'string',
+          type: 'string'
         },
         search_above: {
-          type: 'string',
+          type: 'string'
         },
         search_below: {
-          type: 'string',
+          type: 'string'
         },
         size: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['q'],
+      required: ['q']
     },
     response: {
       '200': {
@@ -54,31 +54,31 @@ export const SearchCompaniesAlphabeticallySchema = {
                     'company_number',
                     'company_status',
                     'company_type',
-                    'links',
+                    'links'
                   ],
                   properties: {
                     company_name: {
                       type: 'string',
                       description:
-                        'The company name associated with the company',
+                        'The company name associated with the company'
                     },
                     company_number: {
                       type: 'string',
-                      description: 'The company number of the company',
+                      description: 'The company number of the company'
                     },
                     company_status: {
                       type: 'string',
-                      description: 'The status of the company',
+                      description: 'The status of the company'
                     },
                     ordered_alpha_key_with_id: {
                       type: 'string',
                       description:
-                        "The alphakey with it's id associated with the company",
+                        "The alphakey with it's id associated with the company"
                     },
                     kind: {
                       type: 'string',
                       enum: ['search-results#alphabetical-search'],
-                      description: 'The type of search result',
+                      description: 'The type of search result'
                     },
                     links: {
                       type: 'object',
@@ -86,21 +86,21 @@ export const SearchCompaniesAlphabeticallySchema = {
                       properties: {
                         company_profile: {
                           type: 'string',
-                          description: 'The link to the company',
-                        },
-                      },
+                          description: 'The link to the company'
+                        }
+                      }
                     },
                     company_type: {
                       type: 'string',
                       description:
-                        'The type of company associated with the company',
-                    },
-                  },
-                },
+                        'The type of company associated with the company'
+                    }
+                  }
+                }
               },
               kind: {
                 type: 'string',
-                enum: ['search#alphabetical-search', 'search#enhanced-search'],
+                enum: ['search#alphabetical-search', 'search#enhanced-search']
               },
               top_hit: {
                 allOf: [
@@ -111,31 +111,31 @@ export const SearchCompaniesAlphabeticallySchema = {
                       'company_number',
                       'company_status',
                       'company_type',
-                      'links',
+                      'links'
                     ],
                     properties: {
                       company_name: {
                         type: 'string',
                         description:
-                          'The company name associated with the company',
+                          'The company name associated with the company'
                       },
                       company_number: {
                         type: 'string',
-                        description: 'The company number of the company',
+                        description: 'The company number of the company'
                       },
                       company_status: {
                         type: 'string',
-                        description: 'The status of the company',
+                        description: 'The status of the company'
                       },
                       ordered_alpha_key_with_id: {
                         type: 'string',
                         description:
-                          "The alphakey with it's id associated with the company",
+                          "The alphakey with it's id associated with the company"
                       },
                       kind: {
                         type: 'string',
                         enum: ['search-results#alphabetical-search'],
-                        description: 'The type of search result',
+                        description: 'The type of search result'
                       },
                       links: {
                         type: 'object',
@@ -143,29 +143,29 @@ export const SearchCompaniesAlphabeticallySchema = {
                         properties: {
                           company_profile: {
                             type: 'string',
-                            description: 'The link to the company',
-                          },
-                        },
+                            description: 'The link to the company'
+                          }
+                        }
                       },
                       company_type: {
                         type: 'string',
                         description:
-                          'The type of company associated with the company',
-                      },
-                    },
+                          'The type of company associated with the company'
+                      }
+                    }
                   },
                   {
                     description:
-                      'The best matching company in alphabetical search results',
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      },
-    },
-  },
+                      'The best matching company in alphabetical search results'
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
 } as const
 
 export type SearchCompaniesAlphabeticallyResponse = FromSchema<

@@ -25,25 +25,25 @@ export const ListPersonsWithSignificantControlSchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number'],
+      required: ['company_number']
     },
     querystring: {
       type: 'object',
       properties: {
         items_per_page: {
-          type: 'string',
+          type: 'string'
         },
         start_index: {
-          type: 'string',
+          type: 'string'
         },
         register_view: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['items_per_page', 'start_index', 'register_view'],
+      required: ['items_per_page', 'start_index', 'register_view']
     },
     response: {
       '200': {
@@ -52,7 +52,7 @@ export const ListPersonsWithSignificantControlSchema = {
           items_per_page: {
             description:
               'The number of persons with significant control to return per page.',
-            type: 'integer',
+            type: 'integer'
           },
           items: {
             description: 'The list of persons with significant control.',
@@ -64,29 +64,29 @@ export const ListPersonsWithSignificantControlSchema = {
               'links',
               'address',
               'notified_on',
-              'natures_of_control',
+              'natures_of_control'
             ],
             properties: {
               etag: {
                 description: 'The ETag of the resource.',
-                type: 'string',
+                type: 'string'
               },
               notified_on: {
                 description:
                   'The date that Companies House was notified about this person with significant control.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               ceased_on: {
                 description:
                   'The date that Companies House was notified about the cessation of this person with significant control.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               country_of_residence: {
                 description:
                   'The country of residence of the person with significant control.',
-                type: 'string',
+                type: 'string'
               },
               date_of_birth: {
                 description:
@@ -96,24 +96,24 @@ export const ListPersonsWithSignificantControlSchema = {
                   properties: {
                     day: {
                       description: 'The day of the date of birth.',
-                      type: 'integer',
+                      type: 'integer'
                     },
                     month: {
                       description: 'The month of date of birth.',
-                      type: 'integer',
+                      type: 'integer'
                     },
                     year: {
                       description: 'The year of date of birth.',
-                      type: 'integer',
-                    },
+                      type: 'integer'
+                    }
                   },
-                  required: ['month', 'year'],
+                  required: ['month', 'year']
                 },
-                type: 'object',
+                type: 'object'
               },
               name: {
                 description: 'Name of the person with significant control.',
-                type: 'string',
+                type: 'string'
               },
               name_elements: {
                 description:
@@ -124,27 +124,27 @@ export const ListPersonsWithSignificantControlSchema = {
                     forename: {
                       description:
                         'The forename of the person with significant control.',
-                      type: 'string',
+                      type: 'string'
                     },
                     title: {
                       description:
                         'Title of the person with significant control.',
-                      type: 'string',
+                      type: 'string'
                     },
                     other_forenames: {
                       description:
                         'Other forenames of the person with significant control.',
-                      type: 'string',
+                      type: 'string'
                     },
                     surname: {
                       description:
                         'The surname of the person with significant control.',
-                      type: 'string',
-                    },
+                      type: 'string'
+                    }
                   },
-                  required: ['surname'],
+                  required: ['surname']
                 },
-                type: 'object',
+                type: 'object'
               },
               links: {
                 description:
@@ -155,21 +155,21 @@ export const ListPersonsWithSignificantControlSchema = {
                   properties: {
                     self: {
                       description: 'The URL of the resource.',
-                      type: 'string',
+                      type: 'string'
                     },
                     statement: {
                       description:
                         'The URL of the statement linked to this person with significant control.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               nationality: {
                 description:
                   'The nationality of the person with significant control.',
-                type: 'string',
+                type: 'string'
               },
               identification: {
                 description: '',
@@ -179,52 +179,52 @@ export const ListPersonsWithSignificantControlSchema = {
                     legal_authority: {
                       description:
                         'The legal authority supervising the corporate entity or legal person with significant control.',
-                      type: 'string',
+                      type: 'string'
                     },
                     legal_form: {
                       description:
                         'The legal form of the corporate entity or legal person with significant control as defined by its country of registration.',
-                      type: 'string',
+                      type: 'string'
                     },
                     place_registered: {
                       description:
                         'The place the corporate entity with significant control is registered.',
-                      type: 'string',
+                      type: 'string'
                     },
                     registration_number: {
                       description:
                         'The registration number of the corporate entity with significant control.',
-                      type: 'string',
+                      type: 'string'
                     },
                     country_registered: {
                       description:
                         'The country or state the corporate entity with significant control is registered in.',
-                      type: 'string',
-                    },
+                      type: 'string'
+                    }
                   },
-                  required: ['legal_authority', 'legal_form'],
+                  required: ['legal_authority', 'legal_form']
                 },
-                type: 'object',
+                type: 'object'
               },
               ceased: {
                 description:
                   'Presence of that indicator means the super secure person status is ceased <br />',
-                type: 'boolean',
+                type: 'boolean'
               },
               description: {
                 description:
                   'Description of the super secure legal statement <br />',
                 enum: ['super-secure-persons-with-significant-control'],
-                type: 'string',
+                type: 'string'
               },
               kind: {
                 enum: [
                   'individual-person-with-significant-control',
                   'corporate-entity-person-with-significant-control',
                   'legal-person-with-significant-control',
-                  'super-secure-person-with-significant-control',
+                  'super-secure-person-with-significant-control'
                 ],
-                type: 'string',
+                type: 'string'
               },
               address: {
                 description:
@@ -235,73 +235,73 @@ export const ListPersonsWithSignificantControlSchema = {
                   properties: {
                     address_line_1: {
                       description: 'The first line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     address_line_2: {
                       description: 'The second line of the address.',
-                      type: 'string',
+                      type: 'string'
                     },
                     care_of: {
                       description: 'Care of name.',
-                      type: 'string',
+                      type: 'string'
                     },
                     country: {
                       description: 'The country. For example, UK.',
-                      type: 'string',
+                      type: 'string'
                     },
                     locality: {
                       description: 'The locality. For example London.',
-                      type: 'string',
+                      type: 'string'
                     },
                     po_box: {
                       description: 'The post-officer box number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     postal_code: {
                       description: 'The postal code. For example CF14 3UZ.',
-                      type: 'string',
+                      type: 'string'
                     },
                     premises: {
                       description: 'The property name or number.',
-                      type: 'string',
+                      type: 'string'
                     },
                     region: {
                       description: 'The region. For example Surrey.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
+                type: 'object'
               },
               natures_of_control: {
                 description:
                   'Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
                 items: {
-                  type: 'string',
+                  type: 'string'
                 },
-                type: 'array',
-              },
-            },
+                type: 'array'
+              }
+            }
           },
           start_index: {
             description:
               'The offset into the entire result set that this page starts.',
-            type: 'integer',
+            type: 'integer'
           },
           total_results: {
             description:
               'The total number of persons with significant control in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           active_count: {
             description:
               'The number of active persons with significant control in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           ceased_count: {
             description:
               'The number of ceased persons with significant control in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           links: {
             description:
@@ -312,15 +312,15 @@ export const ListPersonsWithSignificantControlSchema = {
             properties: {
               self: {
                 description: 'The URL of the resource.',
-                type: 'string',
+                type: 'string'
               },
               persons_with_significant_control_list: {
                 description:
                   'The URL of the persons with significant control list resource.',
-                type: 'string',
-              },
-            },
-          },
+                type: 'string'
+              }
+            }
+          }
         },
         required: [
           'items_per_page',
@@ -329,12 +329,12 @@ export const ListPersonsWithSignificantControlSchema = {
           'total_results',
           'active_count',
           'ceased_count',
-          'links',
+          'links'
         ],
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type ListPersonsWithSignificantControlResponse = FromSchema<

@@ -15,18 +15,18 @@ export const GetStatementSchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
+          type: 'string'
         },
         statement_id: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number', 'statement_id'],
+      required: ['company_number', 'statement_id']
     },
     querystring: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -35,32 +35,32 @@ export const GetStatementSchema = {
         properties: {
           etag: {
             description: 'The ETag of the resource.',
-            type: 'string',
+            type: 'string'
           },
           kind: {
             enum: ['persons-with-significant-control-statement'],
-            type: 'string',
+            type: 'string'
           },
           notified_on: {
             description:
               'The date that the person with significant control statement was processed by Companies House.',
             type: 'string',
-            format: 'date',
+            format: 'date'
           },
           ceased_on: {
             description:
               'The date that Companies House was notified about the cessation of this person with significant control.',
             type: 'string',
-            format: 'date',
+            format: 'date'
           },
           restrictions_notice_withdrawal_reason: {
             description:
               'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
             enum: [
               'restrictions-notice-withdrawn-by-court-order',
-              'restrictions-notice-withdrawn-by-company',
+              'restrictions-notice-withdrawn-by-company'
             ],
-            type: 'string',
+            type: 'string'
           },
           statement: {
             description:
@@ -72,13 +72,13 @@ export const GetStatementSchema = {
               'psc-details-not-confirmed',
               'psc-contacted-but-no-response',
               'restrictions-notice-issued-to-psc',
-              'psc-has-failed-to-confirm-changed-details',
+              'psc-has-failed-to-confirm-changed-details'
             ],
-            type: 'string',
+            type: 'string'
           },
           linked_psc_name: {
             description: 'The name of the psc linked to this statement.',
-            type: 'string',
+            type: 'string'
           },
           links: {
             description:
@@ -89,20 +89,20 @@ export const GetStatementSchema = {
             properties: {
               self: {
                 description: 'The URL of the resource.',
-                type: 'string',
+                type: 'string'
               },
               person_with_significant_control: {
                 description:
                   'The URL of the person with significant control linked to this statement.',
-                type: 'string',
-              },
-            },
-          },
+                type: 'string'
+              }
+            }
+          }
         },
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type GetStatementResponse = FromSchema<

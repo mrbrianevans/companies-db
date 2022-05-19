@@ -24,23 +24,23 @@ export const ListStatementsSchema = {
       type: 'object',
       properties: {
         company_number: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: ['company_number'],
+      required: ['company_number']
     },
     querystring: {
       type: 'object',
       properties: {
         items_per_page: {
-          type: 'integer',
+          type: 'integer'
         },
         start_index: {
-          type: 'integer',
+          type: 'integer'
         },
-        register_view: {},
+        register_view: {}
       },
-      required: ['items_per_page', 'start_index', 'register_view'],
+      required: ['items_per_page', 'start_index', 'register_view']
     },
     response: {
       '200': {
@@ -49,7 +49,7 @@ export const ListStatementsSchema = {
           items_per_page: {
             description:
               'The number of persons with significant control statements to return per page.',
-            type: 'integer',
+            type: 'integer'
           },
           items: {
             description:
@@ -60,32 +60,32 @@ export const ListStatementsSchema = {
             properties: {
               etag: {
                 description: 'The ETag of the resource.',
-                type: 'string',
+                type: 'string'
               },
               kind: {
                 enum: ['persons-with-significant-control-statement'],
-                type: 'string',
+                type: 'string'
               },
               notified_on: {
                 description:
                   'The date that the person with significant control statement was processed by Companies House.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               ceased_on: {
                 description:
                   'The date that Companies House was notified about the cessation of this person with significant control.',
                 type: 'string',
-                format: 'date',
+                format: 'date'
               },
               restrictions_notice_withdrawal_reason: {
                 description:
                   'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
                 enum: [
                   'restrictions-notice-withdrawn-by-court-order',
-                  'restrictions-notice-withdrawn-by-company',
+                  'restrictions-notice-withdrawn-by-company'
                 ],
-                type: 'string',
+                type: 'string'
               },
               statement: {
                 description:
@@ -97,13 +97,13 @@ export const ListStatementsSchema = {
                   'psc-details-not-confirmed',
                   'psc-contacted-but-no-response',
                   'restrictions-notice-issued-to-psc',
-                  'psc-has-failed-to-confirm-changed-details',
+                  'psc-has-failed-to-confirm-changed-details'
                 ],
-                type: 'string',
+                type: 'string'
               },
               linked_psc_name: {
                 description: 'The name of the psc linked to this statement.',
-                type: 'string',
+                type: 'string'
               },
               links: {
                 description:
@@ -114,38 +114,38 @@ export const ListStatementsSchema = {
                   properties: {
                     self: {
                       description: 'The URL of the resource.',
-                      type: 'string',
+                      type: 'string'
                     },
                     person_with_significant_control: {
                       description:
                         'The URL of the person with significant control linked to this statement.',
-                      type: 'string',
-                    },
-                  },
+                      type: 'string'
+                    }
+                  }
                 },
-                type: 'object',
-              },
-            },
+                type: 'object'
+              }
+            }
           },
           start_index: {
             description:
               'The offset into the entire result set that this page starts.',
-            type: 'integer',
+            type: 'integer'
           },
           total_results: {
             description:
               'The total number of persons with significant control statements in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           active_count: {
             description:
               'The number of active persons with significant control statements in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           ceased_count: {
             description:
               'The number of ceased persons with significant control statements in this result set.',
-            type: 'integer',
+            type: 'integer'
           },
           links: {
             description:
@@ -156,15 +156,15 @@ export const ListStatementsSchema = {
             properties: {
               self: {
                 description: 'The URL of the resource.',
-                type: 'string',
+                type: 'string'
               },
               persons_with_significant_control_statements_list: {
                 description:
                   'The URL of the persons with significant control statements list resource.',
-                type: 'string',
-              },
-            },
-          },
+                type: 'string'
+              }
+            }
+          }
         },
         required: [
           'items_per_page',
@@ -173,12 +173,12 @@ export const ListStatementsSchema = {
           'total_results',
           'active_count',
           'ceased_count',
-          'links',
+          'links'
         ],
-        type: 'object',
-      },
-    },
-  },
+        type: 'object'
+      }
+    }
+  }
 } as const
 
 export type ListStatementsResponse = FromSchema<

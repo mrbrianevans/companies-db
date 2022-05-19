@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   GetRegisteredOfficeAddressSchema as schema,
   GetRegisteredOfficeAddressQueryString,
-  GetRegisteredOfficeAddressParams,
+  GetRegisteredOfficeAddressParams
 } from '../schemas/GetRegisteredOfficeAddressSchema.js'
 
 export const getRegisteredOfficeAddressController: FastifyPluginAsync = async (

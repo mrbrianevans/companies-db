@@ -34,17 +34,17 @@ export const AdvancedCompanySearchSchema = {
     params: {
       type: 'object',
       properties: {},
-      required: [],
+      required: []
     },
     querystring: {
       type: 'object',
       properties: {
         company_name: {
-          type: 'string',
+          type: 'string'
         },
         company_status: {},
         company_subtype: {
-          type: 'string',
+          type: 'string'
         },
         company_type: {},
         dissolved_from: {},
@@ -52,17 +52,17 @@ export const AdvancedCompanySearchSchema = {
         incorporated_from: {},
         incorporated_to: {},
         location: {
-          type: 'string',
+          type: 'string'
         },
         sic_codes: {},
         size: {
-          type: 'string',
+          type: 'string'
         },
         start_index: {
-          type: 'string',
-        },
+          type: 'string'
+        }
       },
-      required: [],
+      required: []
     },
     response: {
       '200': {
@@ -73,7 +73,7 @@ export const AdvancedCompanySearchSchema = {
           {
             properties: {
               etag: {
-                type: 'string',
+                type: 'string'
               },
               items: {
                 type: 'array',
@@ -85,17 +85,17 @@ export const AdvancedCompanySearchSchema = {
                     'company_status',
                     'company_type',
                     'date_of_creation',
-                    'kind',
+                    'kind'
                   ],
                   properties: {
                     company_name: {
                       type: 'string',
                       description:
-                        'The company name associated with the company',
+                        'The company name associated with the company'
                     },
                     company_number: {
                       type: 'string',
-                      description: 'The company number of the company',
+                      description: 'The company number of the company'
                     },
                     company_status: {
                       description:
@@ -111,8 +111,8 @@ export const AdvancedCompanySearchSchema = {
                         'administration',
                         'liquidation',
                         'insolvency-proceedings',
-                        'voluntary-arrangement',
-                      ],
+                        'voluntary-arrangement'
+                      ]
                     },
                     company_type: {
                       description:
@@ -149,9 +149,9 @@ export const AdvancedCompanySearchSchema = {
                         'scottish-partnership',
                         'charitable-incorporated-organisation',
                         'scottish-charitable-incorporated-organisation',
-                        'further-education-or-sixth-form-college-corporation',
+                        'further-education-or-sixth-form-college-corporation'
                       ],
-                      type: 'string',
+                      type: 'string'
                     },
                     company_subtype: {
                       description:
@@ -159,13 +159,13 @@ export const AdvancedCompanySearchSchema = {
                       type: 'string',
                       enum: [
                         'community-interest-company',
-                        'private-fund-limited-partnership',
-                      ],
+                        'private-fund-limited-partnership'
+                      ]
                     },
                     kind: {
                       type: 'string',
                       enum: ['search-results#company'],
-                      description: 'The type of search result',
+                      description: 'The type of search result'
                     },
                     links: {
                       type: 'object',
@@ -173,19 +173,19 @@ export const AdvancedCompanySearchSchema = {
                       properties: {
                         company_profile: {
                           type: 'string',
-                          description: 'The link to the company',
-                        },
-                      },
+                          description: 'The link to the company'
+                        }
+                      }
                     },
                     date_of_cessation: {
                       type: 'string',
                       format: 'date',
-                      description: 'The date that the company was dissolved',
+                      description: 'The date that the company was dissolved'
                     },
                     date_of_creation: {
                       type: 'string',
                       format: 'date',
-                      description: 'The date that the company was incorporated',
+                      description: 'The date that the company was incorporated'
                     },
                     registered_office_address: {
                       title: 'Registered Office Address',
@@ -195,24 +195,24 @@ export const AdvancedCompanySearchSchema = {
                         address_line_1: {
                           type: 'string',
                           description:
-                            'The first line of the address e.g Crown Way',
+                            'The first line of the address e.g Crown Way'
                         },
                         address_line_2: {
                           type: 'string',
-                          description: 'The second line of the address',
+                          description: 'The second line of the address'
                         },
                         locality: {
                           type: 'string',
                           description:
-                            'The town associated to the ROA e.g Cardiff',
+                            'The town associated to the ROA e.g Cardiff'
                         },
                         postal_code: {
                           type: 'string',
-                          description: 'The postal code e.g CF14 3UZ',
+                          description: 'The postal code e.g CF14 3UZ'
                         },
                         region: {
                           description: 'The region e.g Surrey.',
-                          type: 'string',
+                          type: 'string'
                         },
                         country: {
                           description: 'The country.',
@@ -223,25 +223,25 @@ export const AdvancedCompanySearchSchema = {
                             'Great Britain',
                             'Not specified',
                             'United Kingdom',
-                            'Northern Ireland',
+                            'Northern Ireland'
                           ],
-                          type: 'string',
-                        },
-                      },
+                          type: 'string'
+                        }
+                      }
                     },
                     sic_codes: {
                       items: {
-                        type: 'string',
+                        type: 'string'
                       },
                       type: 'array',
-                      description: 'SIC codes for this company',
-                    },
-                  },
-                },
+                      description: 'SIC codes for this company'
+                    }
+                  }
+                }
               },
               kind: {
                 type: 'string',
-                enum: ['search#advanced-search'],
+                enum: ['search#advanced-search']
               },
               top_hit: {
                 allOf: [
@@ -253,17 +253,17 @@ export const AdvancedCompanySearchSchema = {
                       'company_status',
                       'company_type',
                       'date_of_creation',
-                      'kind',
+                      'kind'
                     ],
                     properties: {
                       company_name: {
                         type: 'string',
                         description:
-                          'The company name associated with the company',
+                          'The company name associated with the company'
                       },
                       company_number: {
                         type: 'string',
-                        description: 'The company number of the company',
+                        description: 'The company number of the company'
                       },
                       company_status: {
                         description:
@@ -279,8 +279,8 @@ export const AdvancedCompanySearchSchema = {
                           'administration',
                           'liquidation',
                           'insolvency-proceedings',
-                          'voluntary-arrangement',
-                        ],
+                          'voluntary-arrangement'
+                        ]
                       },
                       company_type: {
                         description:
@@ -317,9 +317,9 @@ export const AdvancedCompanySearchSchema = {
                           'scottish-partnership',
                           'charitable-incorporated-organisation',
                           'scottish-charitable-incorporated-organisation',
-                          'further-education-or-sixth-form-college-corporation',
+                          'further-education-or-sixth-form-college-corporation'
                         ],
-                        type: 'string',
+                        type: 'string'
                       },
                       company_subtype: {
                         description:
@@ -327,13 +327,13 @@ export const AdvancedCompanySearchSchema = {
                         type: 'string',
                         enum: [
                           'community-interest-company',
-                          'private-fund-limited-partnership',
-                        ],
+                          'private-fund-limited-partnership'
+                        ]
                       },
                       kind: {
                         type: 'string',
                         enum: ['search-results#company'],
-                        description: 'The type of search result',
+                        description: 'The type of search result'
                       },
                       links: {
                         type: 'object',
@@ -341,20 +341,20 @@ export const AdvancedCompanySearchSchema = {
                         properties: {
                           company_profile: {
                             type: 'string',
-                            description: 'The link to the company',
-                          },
-                        },
+                            description: 'The link to the company'
+                          }
+                        }
                       },
                       date_of_cessation: {
                         type: 'string',
                         format: 'date',
-                        description: 'The date that the company was dissolved',
+                        description: 'The date that the company was dissolved'
                       },
                       date_of_creation: {
                         type: 'string',
                         format: 'date',
                         description:
-                          'The date that the company was incorporated',
+                          'The date that the company was incorporated'
                       },
                       registered_office_address: {
                         title: 'Registered Office Address',
@@ -364,24 +364,24 @@ export const AdvancedCompanySearchSchema = {
                           address_line_1: {
                             type: 'string',
                             description:
-                              'The first line of the address e.g Crown Way',
+                              'The first line of the address e.g Crown Way'
                           },
                           address_line_2: {
                             type: 'string',
-                            description: 'The second line of the address',
+                            description: 'The second line of the address'
                           },
                           locality: {
                             type: 'string',
                             description:
-                              'The town associated to the ROA e.g Cardiff',
+                              'The town associated to the ROA e.g Cardiff'
                           },
                           postal_code: {
                             type: 'string',
-                            description: 'The postal code e.g CF14 3UZ',
+                            description: 'The postal code e.g CF14 3UZ'
                           },
                           region: {
                             description: 'The region e.g Surrey.',
-                            type: 'string',
+                            type: 'string'
                           },
                           country: {
                             description: 'The country.',
@@ -392,38 +392,37 @@ export const AdvancedCompanySearchSchema = {
                               'Great Britain',
                               'Not specified',
                               'United Kingdom',
-                              'Northern Ireland',
+                              'Northern Ireland'
                             ],
-                            type: 'string',
-                          },
-                        },
+                            type: 'string'
+                          }
+                        }
                       },
                       sic_codes: {
                         items: {
-                          type: 'string',
+                          type: 'string'
                         },
                         type: 'array',
-                        description: 'SIC codes for this company',
-                      },
-                    },
+                        description: 'SIC codes for this company'
+                      }
+                    }
                   },
                   {
                     description:
-                      'The best matching company in an advanced search results',
-                  },
-                ],
+                      'The best matching company in an advanced search results'
+                  }
+                ]
               },
               hits: {
                 type: 'string',
-                description:
-                  'The number of matches found using advanced search',
-              },
-            },
-          },
-        ],
-      },
-    },
-  },
+                description: 'The number of matches found using advanced search'
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
 } as const
 
 export type AdvancedCompanySearchResponse = FromSchema<

@@ -4,7 +4,7 @@ import { reflect, auth } from './reflect.js'
 import {
   SearchAllSchema as schema,
   SearchAllQueryString,
-  SearchAllParams,
+  SearchAllParams
 } from '../schemas/SearchAllSchema.js'
 
 export const searchAllController: FastifyPluginAsync = async (
