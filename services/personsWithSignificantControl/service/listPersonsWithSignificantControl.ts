@@ -7,9 +7,9 @@ import type { ListPersonsWithSignificantControlResponse } from '../schemas/listP
  */
 export async function listPersonsWithSignificantControl(
   company_number: string,
-  items_per_page: string,
-  start_index: string,
-  register_view: string
+  items_per_page?: string,
+  start_index?: string,
+  register_view?: string
 ): Promise<ListPersonsWithSignificantControlResponse> {
   //todo: Write logic for function here, access database, return response
   return Promise.resolve(null)

@@ -9,5 +9,5 @@ export async function getRegisteredOfficeAddress(
   company_number: string
 ): Promise<GetRegisteredOfficeAddressResponse> {
   //todo: Write logic for function here, access database, return response
-  return {}
+  return Promise.resolve(null)
 }

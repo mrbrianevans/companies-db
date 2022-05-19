@@ -7,15 +7,15 @@ export interface ListStatementsParams {
 
 export interface ListStatementsQueryString {
   /** The id of the legal person with significant control details being requested. */
-  items_per_page: number
+  items_per_page?: number
   /** The offset into the entire result set that this page starts. */
-  start_index: number
+  start_index?: number
   /** Display register specific information. If register is held at
 Companies House and register_view is set to true, only statements which
 are active or were withdrawn during election period are shown. Accepted
 values are: -`true`  \n -`false`  \n Defaults to false.
  */
-  register_view: undefined
+  register_view?: undefined
 }
 
 export const ListStatementsSchema = {
@@ -40,7 +40,7 @@ export const ListStatementsSchema = {
         },
         register_view: {}
       },
-      required: ['items_per_page', 'start_index', 'register_view']
+      required: []
     },
     response: {
       '200': {
@@ -54,61 +54,61 @@ export const ListStatementsSchema = {
           items: {
             description:
               'The list of persons with significant control statements.',
-            type: 'object',
-            title: 'statement',
-            required: [],
-            properties: {
-              etag: {
-                description: 'The ETag of the resource.',
-                type: 'string'
-              },
-              kind: {
-                enum: ['persons-with-significant-control-statement'],
-                type: 'string'
-              },
-              notified_on: {
-                description:
-                  'The date that the person with significant control statement was processed by Companies House.',
-                type: 'string',
-                format: 'date'
-              },
-              ceased_on: {
-                description:
-                  'The date that Companies House was notified about the cessation of this person with significant control.',
-                type: 'string',
-                format: 'date'
-              },
-              restrictions_notice_withdrawal_reason: {
-                description:
-                  'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
-                enum: [
-                  'restrictions-notice-withdrawn-by-court-order',
-                  'restrictions-notice-withdrawn-by-company'
-                ],
-                type: 'string'
-              },
-              statement: {
-                description:
-                  'Indicates the type of statement filed.\n For enumeration descriptions see `statement_description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
-                enum: [
-                  'no-individual-or-entity-with-signficant-control',
-                  'steps-to-find-psc-not-yet-completed',
-                  'psc-exists-but-not-identified',
-                  'psc-details-not-confirmed',
-                  'psc-contacted-but-no-response',
-                  'restrictions-notice-issued-to-psc',
-                  'psc-has-failed-to-confirm-changed-details'
-                ],
-                type: 'string'
-              },
-              linked_psc_name: {
-                description: 'The name of the psc linked to this statement.',
-                type: 'string'
-              },
-              links: {
-                description:
-                  'A set of URLs related to the resource, including self.',
-                items: {
+            items: {
+              title: 'statement',
+              required: [],
+              properties: {
+                etag: {
+                  description: 'The ETag of the resource.',
+                  type: 'string'
+                },
+                kind: {
+                  enum: ['persons-with-significant-control-statement'],
+                  type: 'string'
+                },
+                notified_on: {
+                  description:
+                    'The date that the person with significant control statement was processed by Companies House.',
+                  type: 'string',
+                  format: 'date'
+                },
+                ceased_on: {
+                  description:
+                    'The date that Companies House was notified about the cessation of this person with significant control.',
+                  type: 'string',
+                  format: 'date'
+                },
+                restrictions_notice_withdrawal_reason: {
+                  description:
+                    'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
+                  enum: [
+                    'restrictions-notice-withdrawn-by-court-order',
+                    'restrictions-notice-withdrawn-by-company'
+                  ],
+                  type: 'string'
+                },
+                statement: {
+                  description:
+                    'Indicates the type of statement filed.\n For enumeration descriptions see `statement_description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
+                  enum: [
+                    'no-individual-or-entity-with-signficant-control',
+                    'steps-to-find-psc-not-yet-completed',
+                    'psc-exists-but-not-identified',
+                    'psc-details-not-confirmed',
+                    'psc-contacted-but-no-response',
+                    'restrictions-notice-issued-to-psc',
+                    'psc-has-failed-to-confirm-changed-details'
+                  ],
+                  type: 'string'
+                },
+                linked_psc_name: {
+                  description: 'The name of the psc linked to this statement.',
+                  type: 'string'
+                },
+                links: {
+                  description:
+                    'A set of URLs related to the resource, including self.',
+                  type: 'object',
                   title: 'statementLinksType',
                   required: [],
                   properties: {
@@ -122,10 +122,11 @@ export const ListStatementsSchema = {
                       type: 'string'
                     }
                   }
-                },
-                type: 'object'
-              }
-            }
+                }
+              },
+              type: 'object'
+            },
+            type: 'object'
           },
           start_index: {
             description:

@@ -4,7 +4,7 @@ export interface SearchAllParams {}
 
 export interface SearchAllQueryString {
   /** The term being searched for. */
-  q: string
+  q?: string
   /** The number of search results to return per page. */
   items_per_page?: number
   /** The index of the first result item to return. */
@@ -31,7 +31,7 @@ export const SearchAllSchema = {
           type: 'integer'
         }
       },
-      required: ['q']
+      required: []
     },
     response: {
       '200': {
@@ -67,97 +67,99 @@ export const SearchAllSchema = {
             enum: ['search#all']
           },
           items: {
-            type: 'object',
+            type: 'array',
             description:
               'The results of the completed search. See `items.kind` for details of each specific result resource returned.,',
-            title: 'SearchItems',
-            allOf: [
-              {
-                properties: {
-                  title: {
-                    type: 'string',
-                    description: 'The title of the search result.'
-                  },
-                  address_snippet: {
-                    type: 'string',
-                    description:
-                      'A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member).'
-                  },
-                  links: {
-                    type: 'object',
-                    description: 'The URL of the search result.',
-                    items: {
-                      title: 'LinksModel',
-                      properties: {
-                        self: {
-                          type: 'string',
-                          description:
-                            'The URL of the resource being returned by the search item.'
+            items: {
+              title: 'SearchItems',
+              allOf: [
+                {
+                  properties: {
+                    title: {
+                      type: 'string',
+                      description: 'The title of the search result.'
+                    },
+                    address_snippet: {
+                      type: 'string',
+                      description:
+                        'A single line address. This will be the address that matched within the indexed document or the primary address otherwise (as returned by the `address` member).'
+                    },
+                    links: {
+                      type: 'object',
+                      description: 'The URL of the search result.',
+                      items: {
+                        title: 'LinksModel',
+                        properties: {
+                          self: {
+                            type: 'string',
+                            description:
+                              'The URL of the resource being returned by the search item.'
+                          }
                         }
                       }
-                    }
-                  },
-                  description: {
-                    type: 'string',
-                    description: 'The result description.'
-                  },
-                  snippet: {
-                    type: 'string',
-                    description:
-                      'Summary information for the result showing additional details that have matched.'
-                  },
-                  matches: {
-                    type: 'object',
-                    description:
-                      'A list of members and arrays of character offset defining substrings that matched the search terms.',
-                    items: {
-                      title: 'MatchesModel',
-                      properties: {
-                        title: {
-                          items: {
-                            type: 'integer'
+                    },
+                    description: {
+                      type: 'string',
+                      description: 'The result description.'
+                    },
+                    snippet: {
+                      type: 'string',
+                      description:
+                        'Summary information for the result showing additional details that have matched.'
+                    },
+                    matches: {
+                      type: 'object',
+                      description:
+                        'A list of members and arrays of character offset defining substrings that matched the search terms.',
+                      items: {
+                        title: 'MatchesModel',
+                        properties: {
+                          title: {
+                            items: {
+                              type: 'integer'
+                            },
+                            type: 'array',
+                            description:
+                              'An array of character offset into the `title` string. These always occur in pairs and define the start and end of substrings in the member `title` that matched the search terms. The first character of the string is index 1.'
                           },
-                          type: 'array',
-                          description:
-                            'An array of character offset into the `title` string. These always occur in pairs and define the start and end of substrings in the member `title` that matched the search terms. The first character of the string is index 1.'
-                        },
-                        snippet: {
-                          items: {
-                            type: 'integer'
+                          snippet: {
+                            items: {
+                              type: 'integer'
+                            },
+                            type: 'array',
+                            description:
+                              'An array of character offset into the `snippet` string. These always occur in pairs and define the start and end of substrings in the member `snippet` that matched the search terms. The first character of the string is index 1.'
                           },
-                          type: 'array',
-                          description:
-                            'An array of character offset into the `snippet` string. These always occur in pairs and define the start and end of substrings in the member `snippet` that matched the search terms. The first character of the string is index 1.'
-                        },
-                        address_snippet: {
-                          items: {
-                            type: 'integer'
-                          },
-                          type: 'array',
-                          description:
-                            'An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms.'
+                          address_snippet: {
+                            items: {
+                              type: 'integer'
+                            },
+                            type: 'array',
+                            description:
+                              'An array of character offset into the `address_snippet` string. These always occur in pairs and define the start and end of substrings in the member `address_snippet` that matched the search terms.'
+                          }
                         }
                       }
                     }
                   }
                 }
-              }
-            ],
-            required: [],
-            properties: {
-              kind: {
-                type: 'string',
-                description:
-                  'The type of search result. Refer to the full resource descriptions [CompanySearch resource](api/docs/company/company_number/CompanySearch-resource.html)  [OfficerSearch resource] (api/docs/company/company_number/OfficerSearch-resource.html) and [DisqualifiedOfficerSearch resource](api/docs/company/company_number/DisqualifiedOfficerSearch-resource.html) for the full list of members returned.',
-                enum: [
-                  'searchresults#company',
-                  'searchresults#officer',
-                  'searchresults#disqualified-officer'
-                ]
-              },
-              description_identifier: {
-                items: {
+              ],
+              required: [],
+              properties: {
+                kind: {
                   type: 'string',
+                  description:
+                    'The type of search result. Refer to the full resource descriptions [CompanySearch resource](api/docs/company/company_number/CompanySearch-resource.html)  [OfficerSearch resource] (api/docs/company/company_number/OfficerSearch-resource.html) and [DisqualifiedOfficerSearch resource](api/docs/company/company_number/DisqualifiedOfficerSearch-resource.html) for the full list of members returned.',
+                  enum: [
+                    'searchresults#company',
+                    'searchresults#officer',
+                    'searchresults#disqualified-officer'
+                  ]
+                },
+                description_identifier: {
+                  type: 'string',
+                  description:
+                    'An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations',
                   enum: [
                     'incorporated-on',
                     'registered-on',
@@ -177,14 +179,10 @@ export const SearchAllSchema = {
                     'born-on'
                   ]
                 },
-                type: 'array',
-                description:
-                  'An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations'
-              },
-              address: {
-                description: "The address of the company's registered office.",
-                type: 'object',
-                items: {
+                address: {
+                  description:
+                    "The address of the company's registered office.",
+                  type: 'object',
                   title: 'registeredOfficeAddress',
                   required: [],
                   properties: {
@@ -231,7 +229,8 @@ export const SearchAllSchema = {
                     }
                   }
                 }
-              }
+              },
+              type: 'object'
             }
           }
         },

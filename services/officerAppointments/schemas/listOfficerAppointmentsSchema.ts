@@ -66,68 +66,70 @@ export const ListOfficerAppointmentsSchema = {
           },
           items: {
             description: 'The list of officer appointments.',
-            type: 'object',
-            title: 'officerAppointmentSummary',
-            properties: {
-              address: {
-                description: 'The correspondence address of the officer.',
-                items: {
-                  title: 'address',
-                  properties: {
-                    address_line_1: {
-                      description: 'The first line of the address.',
-                      type: 'string'
+            type: 'array',
+            items: {
+              title: 'officerAppointmentSummary',
+              properties: {
+                address: {
+                  description: 'The correspondence address of the officer.',
+                  items: {
+                    title: 'address',
+                    properties: {
+                      address_line_1: {
+                        description: 'The first line of the address.',
+                        type: 'string'
+                      },
+                      address_line_2: {
+                        description: 'The second line of the address.',
+                        type: 'string'
+                      },
+                      care_of: {
+                        description: 'The care of name.',
+                        type: 'string'
+                      },
+                      country: {
+                        description: 'The country. For example, UK.',
+                        type: 'string'
+                      },
+                      locality: {
+                        description: 'The locality. For example London.',
+                        type: 'string'
+                      },
+                      po_box: {
+                        description: 'The post-office box number.',
+                        type: 'string'
+                      },
+                      postal_code: {
+                        description: 'The postal code. For example CF14 3UZ.',
+                        type: 'string'
+                      },
+                      premises: {
+                        description: 'The property name or number.',
+                        type: 'string'
+                      },
+                      region: {
+                        description: 'The region. For example Surrey.',
+                        type: 'string'
+                      }
                     },
-                    address_line_2: {
-                      description: 'The second line of the address.',
-                      type: 'string'
-                    },
-                    care_of: {
-                      description: 'The care of name.',
-                      type: 'string'
-                    },
-                    country: {
-                      description: 'The country. For example, UK.',
-                      type: 'string'
-                    },
-                    locality: {
-                      description: 'The locality. For example London.',
-                      type: 'string'
-                    },
-                    po_box: {
-                      description: 'The post-office box number.',
-                      type: 'string'
-                    },
-                    postal_code: {
-                      description: 'The postal code. For example CF14 3UZ.',
-                      type: 'string'
-                    },
-                    premises: {
-                      description: 'The property name or number.',
-                      type: 'string'
-                    },
-                    region: {
-                      description: 'The region. For example Surrey.',
-                      type: 'string'
-                    }
-                  }
+                    type: 'object'
+                  },
+                  type: 'object'
                 },
-                type: 'object'
-              },
-              appointed_before: {
-                description:
-                  'The date the officer was appointed before. Only present when the `is_pre_1992_appointment` attribute is `true`.',
-                type: 'string',
-                format: 'date'
-              },
-              appointed_on: {
-                description: 'The date the officer was appointed.',
-                type: 'string',
-                format: 'date'
-              },
-              appointed_to: {
-                description: 'The company information of the appointment.',
-                items: {
+                appointed_before: {
+                  description:
+                    'The date the officer was appointed before. Only present when the `is_pre_1992_appointment` attribute is `true`.',
+                  type: 'string',
+                  format: 'date'
+                },
+                appointed_on: {
+                  description: 'The date the officer was appointed.',
+                  type: 'string',
+                  format: 'date'
+                },
+                appointed_to: {
+                  description: 'The company information of the appointment.',
+                  type: 'object',
                   title: 'appointedTo',
                   properties: {
                     company_name: {
@@ -148,19 +150,18 @@ export const ListOfficerAppointmentsSchema = {
                   },
                   required: []
                 },
-                type: 'object'
-              },
-              name: {
-                description: 'The full name of the officer.',
-                type: 'string'
-              },
-              country_of_residence: {
-                description: "The officer's country of residence.",
-                type: 'string'
-              },
-              former_names: {
-                description: 'Former names for the officer, if there are any.',
-                items: {
+                name: {
+                  description: 'The full name of the officer.',
+                  type: 'string'
+                },
+                country_of_residence: {
+                  description: "The officer's country of residence.",
+                  type: 'string'
+                },
+                former_names: {
+                  description:
+                    'Former names for the officer, if there are any.',
+                  type: 'object',
                   title: 'formerNames',
                   properties: {
                     forenames: {
@@ -173,12 +174,10 @@ export const ListOfficerAppointmentsSchema = {
                     }
                   }
                 },
-                type: 'array'
-              },
-              identification: {
-                description:
-                  'Only one from `eea` or `non-eea` can be supplied, not both.',
-                items: {
+                identification: {
+                  description:
+                    'Only one from `eea` or `non-eea` can be supplied, not both.',
+                  type: 'object',
                   title: 'corporateIdent',
                   properties: {
                     identification_type: {
@@ -206,18 +205,15 @@ export const ListOfficerAppointmentsSchema = {
                     }
                   }
                 },
-                type: 'object'
-              },
-              is_pre_1992_appointment: {
-                description:
-                  'Indicator representing if the officer was appointed before their appointment date.',
-                type: 'boolean'
-              },
-              links: {
-                description:
-                  'Links to other resources associated with this officer appointment item.',
-                type: 'object',
-                items: {
+                is_pre_1992_appointment: {
+                  description:
+                    'Indicator representing if the officer was appointed before their appointment date.',
+                  type: 'boolean'
+                },
+                links: {
+                  description:
+                    'Links to other resources associated with this officer appointment item.',
+                  type: 'object',
                   title: 'appointmentLinkTypes',
                   required: [],
                   properties: {
@@ -227,13 +223,11 @@ export const ListOfficerAppointmentsSchema = {
                       type: 'string'
                     }
                   }
-                }
-              },
-              name_elements: {
-                description:
-                  "A document encapsulating the separate elements of a natural officer's name.",
-                type: 'object',
-                items: {
+                },
+                name_elements: {
+                  description:
+                    "A document encapsulating the separate elements of a natural officer's name.",
+                  type: 'object',
                   title: 'nameElements',
                   properties: {
                     forename: {
@@ -258,49 +252,50 @@ export const ListOfficerAppointmentsSchema = {
                     }
                   },
                   required: []
+                },
+                nationality: {
+                  description: "The officer's nationality.",
+                  type: 'string'
+                },
+                occupation: {
+                  description: "The officer's occupation.",
+                  type: 'string'
+                },
+                officer_role: {
+                  enum: [
+                    'cic-manager',
+                    'corporate-director',
+                    'corporate-llp-designated-member',
+                    'corporate-llp-member',
+                    'corporate-member-of-a-management',
+                    'corporate-member-of-a-supervisory-organ',
+                    'corporate-member-of-an-administrative-organ',
+                    'corporate-nominee-director',
+                    'corporate-nominee-secretary',
+                    'corporate-secretary',
+                    'director',
+                    'judicial-factor',
+                    'llp-designated-member',
+                    'llp-member',
+                    'member-of-a-management',
+                    'member-of-a-supervisory-organ',
+                    'member-of-an-administrative-organ',
+                    'nominee-director',
+                    'nominee-secretary',
+                    'receiver-and-manager',
+                    'secretary'
+                  ],
+                  type: 'string'
+                },
+                resigned_on: {
+                  description: 'The date the officer was resigned.',
+                  type: 'string',
+                  format: 'date'
                 }
               },
-              nationality: {
-                description: "The officer's nationality.",
-                type: 'string'
-              },
-              occupation: {
-                description: "The officer's occupation.",
-                type: 'string'
-              },
-              officer_role: {
-                enum: [
-                  'cic-manager',
-                  'corporate-director',
-                  'corporate-llp-designated-member',
-                  'corporate-llp-member',
-                  'corporate-member-of-a-management',
-                  'corporate-member-of-a-supervisory-organ',
-                  'corporate-member-of-an-administrative-organ',
-                  'corporate-nominee-director',
-                  'corporate-nominee-secretary',
-                  'corporate-secretary',
-                  'director',
-                  'judicial-factor',
-                  'llp-designated-member',
-                  'llp-member',
-                  'member-of-a-management',
-                  'member-of-a-supervisory-organ',
-                  'member-of-an-administrative-organ',
-                  'nominee-director',
-                  'nominee-secretary',
-                  'receiver-and-manager',
-                  'secretary'
-                ],
-                type: 'string'
-              },
-              resigned_on: {
-                description: 'The date the officer was resigned.',
-                type: 'string',
-                format: 'date'
-              }
-            },
-            required: []
+              required: [],
+              type: 'object'
+            }
           },
           items_per_page: {
             description:

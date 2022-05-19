@@ -50,41 +50,45 @@ export const GetUKEstablishmentsSchema = {
             }
           },
           items: {
-            type: 'object',
+            type: 'array',
             description: 'List of UK Establishment companies.',
-            title: 'companyDetails',
-            required: [],
-            properties: {
-              company_number: {
-                type: 'string',
-                description: 'The number of the company.'
-              },
-              company_name: {
-                type: 'string',
-                description: 'The name of the company.'
-              },
-              company_status: {
-                type: 'string',
-                description: 'Company status.'
-              },
-              locality: {
-                type: 'string',
-                description: 'The locality e.g London.'
-              },
-              links: {
-                description: 'Resources related to this company.',
-                type: 'object',
-                items: {
-                  title: 'links',
-                  required: [],
-                  properties: {
-                    company: {
-                      type: 'string',
-                      description: 'The link to the company.'
-                    }
+            items: {
+              title: 'companyDetails',
+              required: [],
+              properties: {
+                company_number: {
+                  type: 'string',
+                  description: 'The number of the company.'
+                },
+                company_name: {
+                  type: 'string',
+                  description: 'The name of the company.'
+                },
+                company_status: {
+                  type: 'string',
+                  description: 'Company status.'
+                },
+                locality: {
+                  type: 'string',
+                  description: 'The locality e.g London.'
+                },
+                links: {
+                  description: 'Resources related to this company.',
+                  type: 'object',
+                  items: {
+                    title: 'links',
+                    required: [],
+                    properties: {
+                      company: {
+                        type: 'string',
+                        description: 'The link to the company.'
+                      }
+                    },
+                    type: 'object'
                   }
                 }
-              }
+              },
+              type: 'object'
             }
           }
         },

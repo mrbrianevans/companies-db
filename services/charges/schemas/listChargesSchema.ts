@@ -50,27 +50,27 @@ export const ListChargesSchema = {
             description: 'Number of satisfied charges'
           },
           items: {
-            type: 'object',
+            type: 'array',
             description: 'List of charges',
-            title: 'chargeDetails',
-            required: [],
-            properties: {
-              etag: {
-                type: 'string'
-              },
-              id: {
-                type: 'string',
-                description: 'The id of the charge'
-              },
-              charge_code: {
-                type: 'string',
-                description:
-                  'The charge code is a replacement of the mortgage description'
-              },
-              classification: {
-                type: 'array',
-                description: 'Classification information',
-                items: {
+            items: {
+              title: 'chargeDetails',
+              required: [],
+              properties: {
+                etag: {
+                  type: 'string'
+                },
+                id: {
+                  type: 'string',
+                  description: 'The id of the charge'
+                },
+                charge_code: {
+                  type: 'string',
+                  description:
+                    'The charge code is a replacement of the mortgage description'
+                },
+                classification: {
+                  type: 'object',
+                  description: 'Classification information',
                   title: 'classificationDesc',
                   required: [],
                   properties: {
@@ -85,75 +85,73 @@ export const ListChargesSchema = {
                       description: 'Details of the charge classification'
                     }
                   }
-                }
-              },
-              charge_number: {
-                type: 'integer',
-                description:
-                  'The charge number is used to reference an individual charge'
-              },
-              status: {
-                enum: [
-                  'outstanding',
-                  'fully-satisfied',
-                  'part-satisfied',
-                  'satisfied'
-                ],
-                type: 'string',
-                description:
-                  'The status of the charge.\n For enumeration descriptions see `status` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
-              },
-              assests_ceased_released: {
-                enum: [
-                  'property-ceased-to-belong',
-                  'part-property-release-and-ceased-to-belong',
-                  'part-property-released',
-                  'part-property-ceased-to-belong',
-                  'whole-property-released',
-                  'multiple-filings',
-                  'whole-property-released-and-ceased-to-belong'
-                ],
-                type: 'string',
-                description:
-                  'Cease/release information about the charge.\n For enumeration descriptions see `assets-ceased-released` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
-              },
-              acquired_on: {
-                type: 'string',
-                format: 'date',
-                description:
-                  'The date the property or undertaking was acquired on'
-              },
-              delivered_on: {
-                type: 'string',
-                format: 'date',
-                description:
-                  'The date the charge was submitted to Companies House'
-              },
-              resolved_on: {
-                type: 'string',
-                format: 'date',
-                description: 'The date the issue was resolved on'
-              },
-              covering_instrument_date: {
-                type: 'string',
-                format: 'date',
-                description:
-                  'The date by which the series of debentures were created'
-              },
-              created_on: {
-                type: 'string',
-                format: 'date',
-                description: 'The date the charge was created'
-              },
-              satisfied_on: {
-                type: 'string',
-                format: 'date',
-                description: 'The date the charge was satisfied'
-              },
-              particulars: {
-                type: 'array',
-                description: 'Details of charge or undertaking',
-                items: {
+                },
+                charge_number: {
+                  type: 'integer',
+                  description:
+                    'The charge number is used to reference an individual charge'
+                },
+                status: {
+                  enum: [
+                    'outstanding',
+                    'fully-satisfied',
+                    'part-satisfied',
+                    'satisfied'
+                  ],
+                  type: 'string',
+                  description:
+                    'The status of the charge.\n For enumeration descriptions see `status` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
+                },
+                assests_ceased_released: {
+                  enum: [
+                    'property-ceased-to-belong',
+                    'part-property-release-and-ceased-to-belong',
+                    'part-property-released',
+                    'part-property-ceased-to-belong',
+                    'whole-property-released',
+                    'multiple-filings',
+                    'whole-property-released-and-ceased-to-belong'
+                  ],
+                  type: 'string',
+                  description:
+                    'Cease/release information about the charge.\n For enumeration descriptions see `assets-ceased-released` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
+                },
+                acquired_on: {
+                  type: 'string',
+                  format: 'date',
+                  description:
+                    'The date the property or undertaking was acquired on'
+                },
+                delivered_on: {
+                  type: 'string',
+                  format: 'date',
+                  description:
+                    'The date the charge was submitted to Companies House'
+                },
+                resolved_on: {
+                  type: 'string',
+                  format: 'date',
+                  description: 'The date the issue was resolved on'
+                },
+                covering_instrument_date: {
+                  type: 'string',
+                  format: 'date',
+                  description:
+                    'The date by which the series of debentures were created'
+                },
+                created_on: {
+                  type: 'string',
+                  format: 'date',
+                  description: 'The date the charge was created'
+                },
+                satisfied_on: {
+                  type: 'string',
+                  format: 'date',
+                  description: 'The date the charge was satisfied'
+                },
+                particulars: {
+                  type: 'object',
+                  description: 'Details of charge or undertaking',
                   title: 'particularDesc',
                   required: [],
                   properties: {
@@ -195,13 +193,11 @@ export const ListChargesSchema = {
                         'The chargor is acting as a bare trustee for the property'
                     }
                   }
-                }
-              },
-              secured_details: {
-                type: 'array',
-                description:
-                  'Information about what is secured against this charge',
-                items: {
+                },
+                secured_details: {
+                  type: 'object',
+                  description:
+                    'Information about what is secured against this charge',
                   title: 'securedDetailsDesc',
                   required: [],
                   properties: {
@@ -217,11 +213,11 @@ export const ListChargesSchema = {
                         'Details of the amount or obligation secured by the charge'
                     }
                   }
-                }
-              },
-              scottish_alterations: {
-                type: 'array',
-                items: {
+                },
+                scottish_alterations: {
+                  type: 'object',
+                  description:
+                    'Information about alterations for Scottish companies',
                   title: 'alterationsDesc',
                   required: [],
                   properties: {
@@ -246,57 +242,55 @@ export const ListChargesSchema = {
                     }
                   }
                 },
-                description:
-                  'Information about alterations for Scottish companies'
-              },
-              more_than_four_persons_entitled: {
-                type: 'boolean',
-                description: 'Charge has more than four person entitled'
-              },
-              persons_entitled: {
-                type: 'array',
-                description: 'People that are entitled to the charge',
-                items: {
-                  title: 'persons_entitled',
-                  required: [],
-                  properties: {
-                    name: {
-                      type: 'string',
-                      description: 'The name of the person entitled.'
-                    }
+                more_than_four_persons_entitled: {
+                  type: 'boolean',
+                  description: 'Charge has more than four person entitled'
+                },
+                persons_entitled: {
+                  type: 'array',
+                  description: 'People that are entitled to the charge',
+                  items: {
+                    title: 'persons_entitled',
+                    required: [],
+                    properties: {
+                      name: {
+                        type: 'string',
+                        description: 'The name of the person entitled.'
+                      }
+                    },
+                    type: 'object'
                   }
-                }
-              },
-              transactions: {
-                type: 'array',
-                description:
-                  'Transactions that have been filed for the charge.',
-                items: {
-                  title: 'transactions',
-                  properties: {
-                    filing_type: {
-                      type: 'string',
-                      description:
-                        'Filing type which created, updated or satisfied the charge'
-                    },
-                    transaction_id: {
-                      type: 'integer',
-                      description: 'The id of the filing'
-                    },
-                    delivered_on: {
-                      type: 'string',
-                      format: 'date',
-                      description:
-                        'The date the filing was submitted to Companies House'
-                    },
-                    insolvency_case_number: {
-                      type: 'integer',
-                      description: 'The insolvency case related to this filing'
-                    },
-                    links: {
-                      type: 'array',
-                      description: 'The resources related to this filing',
-                      items: {
+                },
+                transactions: {
+                  type: 'array',
+                  description:
+                    'Transactions that have been filed for the charge.',
+                  items: {
+                    title: 'transactions',
+                    properties: {
+                      filing_type: {
+                        type: 'string',
+                        description:
+                          'Filing type which created, updated or satisfied the charge'
+                      },
+                      transaction_id: {
+                        type: 'integer',
+                        description: 'The id of the filing'
+                      },
+                      delivered_on: {
+                        type: 'string',
+                        format: 'date',
+                        description:
+                          'The date the filing was submitted to Companies House'
+                      },
+                      insolvency_case_number: {
+                        type: 'integer',
+                        description:
+                          'The insolvency case related to this filing'
+                      },
+                      links: {
+                        type: 'object',
+                        description: 'The resources related to this filing',
                         title: 'transaction_links',
                         properties: {
                           filing: {
@@ -310,30 +304,29 @@ export const ListChargesSchema = {
                           }
                         }
                       }
-                    }
+                    },
+                    type: 'object'
                   }
-                }
-              },
-              insolvency_cases: {
-                type: 'array',
-                description:
-                  'Transactions that have been filed for the charge.',
-                items: {
-                  title: 'insolvency_cases',
-                  properties: {
-                    case_number: {
-                      type: 'integer',
-                      description: 'The number of this insolvency case'
-                    },
-                    transaction_id: {
-                      type: 'integer',
-                      description: 'The id of the insolvency filing'
-                    },
-                    links: {
-                      type: 'array',
-                      description:
-                        'The resources related to this insolvency case',
-                      items: {
+                },
+                insolvency_cases: {
+                  type: 'array',
+                  description:
+                    'Transactions that have been filed for the charge.',
+                  items: {
+                    title: 'insolvency_cases',
+                    properties: {
+                      case_number: {
+                        type: 'integer',
+                        description: 'The number of this insolvency case'
+                      },
+                      transaction_id: {
+                        type: 'integer',
+                        description: 'The id of the insolvency filing'
+                      },
+                      links: {
+                        type: 'object',
+                        description:
+                          'The resources related to this insolvency case',
                         title: 'insolvency_case_links',
                         properties: {
                           case: {
@@ -342,14 +335,13 @@ export const ListChargesSchema = {
                           }
                         }
                       }
-                    }
+                    },
+                    type: 'object'
                   }
-                }
-              },
-              links: {
-                type: 'array',
-                description: 'The resources related to this charge',
-                items: {
+                },
+                links: {
+                  type: 'object',
+                  description: 'The resources related to this charge',
                   title: 'charge_links',
                   required: [],
                   properties: {
@@ -359,7 +351,8 @@ export const ListChargesSchema = {
                     }
                   }
                 }
-              }
+              },
+              type: 'object'
             }
           }
         },

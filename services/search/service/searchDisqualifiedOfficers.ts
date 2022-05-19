@@ -6,7 +6,7 @@ import type { SearchDisqualifiedOfficersResponse } from '../schemas/searchDisqua
  * Search for disqualified officer information.
  */
 export async function searchDisqualifiedOfficers(
-  q: string,
+  q?: string,
   items_per_page?: number,
   start_index?: number
 ): Promise<SearchDisqualifiedOfficersResponse> {

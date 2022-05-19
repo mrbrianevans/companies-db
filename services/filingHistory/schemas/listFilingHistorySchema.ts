@@ -56,13 +56,13 @@ export const ListFilingHistorySchema = {
           },
           items: {
             description: 'The filing history items.',
-            type: 'object',
-            title: 'filingHistoryItem',
-            required: [],
-            properties: {
-              annotations: {
-                description: 'Annotations for the filing',
-                items: {
+            items: {
+              title: 'filingHistoryItem',
+              required: [],
+              properties: {
+                annotations: {
+                  description: 'Annotations for the filing',
+                  type: 'object',
                   title: 'annotation',
                   required: [],
                   properties: {
@@ -82,11 +82,9 @@ export const ListFilingHistorySchema = {
                     }
                   }
                 },
-                type: 'array'
-              },
-              associated_filings: {
-                description: 'Any filings associated with the current item',
-                items: {
+                associated_filings: {
+                  description: 'Any filings associated with the current item',
+                  type: 'object',
                   title: 'associatedFiling',
                   required: [],
                   properties: {
@@ -107,48 +105,45 @@ export const ListFilingHistorySchema = {
                     }
                   }
                 },
-                type: 'array'
-              },
-              barcode: {
-                description: 'The barcode of the document.',
-                type: 'string'
-              },
-              transaction_id: {
-                description: 'The transaction ID of the filing.',
-                type: 'string'
-              },
-              category: {
-                description: 'The category of the document filed.',
-                enum: [
-                  'accounts',
-                  'address',
-                  'annual-return',
-                  'capital',
-                  'change-of-name',
-                  'incorporation',
-                  'liquidation',
-                  'miscellaneous',
-                  'mortgage',
-                  'officers',
-                  'resolution'
-                ],
-                type: 'string'
-              },
-              date: {
-                description: 'The date the filing was processed.',
-                type: 'string',
-                format: 'date'
-              },
-              description: {
-                description:
-                  'A description of the filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
-                type: 'string'
-              },
-              links: {
-                description:
-                  'Links to other resources associated with this filing history item.',
-                type: 'object',
-                items: {
+                barcode: {
+                  description: 'The barcode of the document.',
+                  type: 'string'
+                },
+                transaction_id: {
+                  description: 'The transaction ID of the filing.',
+                  type: 'string'
+                },
+                category: {
+                  description: 'The category of the document filed.',
+                  enum: [
+                    'accounts',
+                    'address',
+                    'annual-return',
+                    'capital',
+                    'change-of-name',
+                    'incorporation',
+                    'liquidation',
+                    'miscellaneous',
+                    'mortgage',
+                    'officers',
+                    'resolution'
+                  ],
+                  type: 'string'
+                },
+                date: {
+                  description: 'The date the filing was processed.',
+                  type: 'string',
+                  format: 'date'
+                },
+                description: {
+                  description:
+                    'A description of the filing.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/filing_history_descriptions.yml) file.',
+                  type: 'string'
+                },
+                links: {
+                  description:
+                    'Links to other resources associated with this filing history item.',
+                  type: 'object',
                   title: 'filingHistoryItemLinks',
                   properties: {
                     self: {
@@ -161,20 +156,19 @@ export const ListFilingHistorySchema = {
                       type: 'string'
                     }
                   }
-                }
-              },
-              pages: {
-                description:
-                  'Number of pages within the PDF document (links.document_metadata)',
-                type: 'integer'
-              },
-              paper_filed: {
-                description: 'If true, indicates this is a paper filing.',
-                type: 'boolean'
-              },
-              resolutions: {
-                description: 'Resolutions for the filing',
-                items: {
+                },
+                pages: {
+                  description:
+                    'Number of pages within the PDF document (links.document_metadata)',
+                  type: 'integer'
+                },
+                paper_filed: {
+                  description: 'If true, indicates this is a paper filing.',
+                  type: 'boolean'
+                },
+                resolutions: {
+                  description: 'Resolutions for the filing',
+                  type: 'object',
                   title: 'resolution',
                   required: [],
                   properties: {
@@ -208,18 +202,19 @@ export const ListFilingHistorySchema = {
                     }
                   }
                 },
-                type: 'array'
+                subcategory: {
+                  description: 'The sub-category of the document filed.',
+                  enum: ['resolution'],
+                  type: 'string'
+                },
+                type: {
+                  description: 'The type of filing.',
+                  type: 'string'
+                }
               },
-              subcategory: {
-                description: 'The sub-category of the document filed.',
-                enum: ['resolution'],
-                type: 'string'
-              },
-              type: {
-                description: 'The type of filing.',
-                type: 'string'
-              }
-            }
+              type: 'object'
+            },
+            type: 'array'
           },
           items_per_page: {
             description:

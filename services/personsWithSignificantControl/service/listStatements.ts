@@ -7,9 +7,9 @@ import type { ListStatementsResponse } from '../schemas/listStatementsSchema.js'
  */
 export async function listStatements(
   company_number: string,
-  items_per_page: number,
-  start_index: number,
-  register_view: undefined
+  items_per_page?: number,
+  start_index?: number,
+  register_view?: undefined
 ): Promise<ListStatementsResponse> {
   //todo: Write logic for function here, access database, return response
   return Promise.resolve(null)
