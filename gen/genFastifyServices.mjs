@@ -1,13 +1,8 @@
 import {mkdir, readFile, writeFile} from 'node:fs/promises'
 import {resolve} from "path";
-import prettier from 'prettier'
+import {addCaddyFileEntry, newCaddyFile} from "./files/genCaddyFile.js";
+import {camelCase, kebabCase, prettyTs} from "./utils.js";
 
-const prettyTs = code => prettier.format(code, {
-    semi: false,
-    parser: 'typescript',
-    singleQuote: true,
-    trailingComma: 'none'
-})
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
 // for each path:
@@ -18,17 +13,10 @@ const prettyTs = code => prettier.format(code, {
 const SERVICES_DIR = resolve('../services')
 console.log({SERVICES_DIR})
 
-// this doesn't perfectly handle multiple capitals, such as APIKey or UKEstablishments, which should be api-key etc
-const kebabCase = (str) => str.replaceAll(/([A-Z]*)([A-Z])([a-z]*)/g, (all) => '-' + all.toLowerCase() + '-')
-    .replaceAll(/-+/g, '-')
-    .replaceAll(/(^-)|(-$)/g, '')
 
 async function createTagDirectories(tags) {
     await mkdir(resolve(SERVICES_DIR), {recursive: true})
-    await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), `:80 {
-    # proxy to microservices
-}
-`)
+    await newCaddyFile(SERVICES_DIR)
     await writeFile(resolve(SERVICES_DIR, 'docker-compose.yaml'), YAML.stringify({
         version: '3',
         services: Object.fromEntries(tags.map((tag, i) => [kebabCase(tag.name), {
@@ -169,7 +157,7 @@ function flattenItemsRecursive(schema, skip) {
         }
     }
     else if ('items' in schema) {
-        if (schema.items.title !== skip) {
+        if (schema.items.title !== skip && skip !== 'items') {
             schema.type = 'object'
             for (const item in schema.items) {
                 flattenItemsRecursive(schema.items[item])
@@ -189,12 +177,6 @@ function removeSchemaRequirements(schema){
         for (const property in schema.properties)
                 removeSchemaRequirements(schema.properties[property])
     }
-}
-
-function camelCase(input) {
-    return input.trim().replaceAll(/\s(\w)(\w*)/g, (all, letter, rest) => {
-        return letter.toUpperCase() + rest
-    })
 }
 
 const types = new Map()
@@ -223,6 +205,9 @@ async function createRoutes(paths, responsePaths) {
             Name = name.replace(/^\w/, l => l.toUpperCase())
         if (responses?.[200]?.schema) flattenItemsRecursive(responses[200].schema)
         removeSchemaRequirements(responses?.[200]?.schema)
+        for (const parameter of parameters) {
+            parameter.required = isPath(parameter) // query parameters are never required and path parameters are always required
+        }
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
@@ -327,9 +312,7 @@ import { ${name}Controller } from '${['.', tag, 'controllers', name + 'Controlle
         await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(monolith))
 
 
-        const caddyfile = await readFile(resolve(SERVICES_DIR, 'Caddyfile')).then(String).then(caddyfile => caddyfile.replace(`# proxy to microservices`, marker => `${marker}
-    reverse_proxy ${path.replace(/\{(.*?)}/g, '*')} ${kebabCase(tag)}:3000`))
-        await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), caddyfile)
+        await addCaddyFileEntry(SERVICES_DIR, path, tag)
     }
 }
 

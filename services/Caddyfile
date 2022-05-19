@@ -1,32 +1,236 @@
 :80 {
+    @authed header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
     # proxy to microservices
-    reverse_proxy /company/*/persons-with-significant-control/super-secure/* persons-with-significant-control:3000
-    reverse_proxy /company/*/persons-with-significant-control-statements/* persons-with-significant-control:3000
-    reverse_proxy /company/*/persons-with-significant-control-statements persons-with-significant-control:3000
-    reverse_proxy /company/*/persons-with-significant-control/legal-person/* persons-with-significant-control:3000
-    reverse_proxy /company/*/persons-with-significant-control/corporate-entity/* persons-with-significant-control:3000
-    reverse_proxy /company/*/persons-with-significant-control/individual/* persons-with-significant-control:3000
-    reverse_proxy /company/*/persons-with-significant-control persons-with-significant-control:3000
-    reverse_proxy /company/*/uk-establishments ukestablishments:3000
-    reverse_proxy /company/*/insolvency insolvency:3000
-    reverse_proxy /company/*/charges/* charges:3000
-    reverse_proxy /company/*/charges charges:3000
-    reverse_proxy /officers/*/appointments officer-appointments:3000
-    reverse_proxy /disqualified-officers/corporate/* officer-disqualifications:3000
-    reverse_proxy /disqualified-officers/natural/* officer-disqualifications:3000
-    reverse_proxy /company/*/exemptions exemptions:3000
-    reverse_proxy /company/*/filing-history filing-history:3000
-    reverse_proxy /company/*/filing-history/* filing-history:3000
-    reverse_proxy /company/*/registers registers:3000
-    reverse_proxy /company/*/appointments/* officers:3000
-    reverse_proxy /company/*/officers officers:3000
-    reverse_proxy /advanced-search/companies search:3000
-    reverse_proxy /alphabetic-search/companies search:3000
-    reverse_proxy /dissolved-search/companies search:3000
-    reverse_proxy /search/disqualified-officers search:3000
-    reverse_proxy /search/officers search:3000
-    reverse_proxy /search/companies search:3000
-    reverse_proxy /search search:3000
-    reverse_proxy /company/* company-profile:3000
-    reverse_proxy /company/*/registered-office-address registered-office-address:3000
+    @company-company_number-persons-with-significant-controlsuper-secure-super_secure_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/persons-with-significant-control\/super-secure\/.+$
+    }
+    reverse_proxy @company-company_number-persons-with-significant-controlsuper-secure-super_secure_id persons-with-significant-control:3000 {
+        header_down Service companies-persons-with-significant-control
+    }
+
+    @company-company_number-persons-with-significant-control-statements-statement_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/persons-with-significant-control-statements\/.+$
+    }
+    reverse_proxy @company-company_number-persons-with-significant-control-statements-statement_id persons-with-significant-control:3000 {
+        header_down Service companies-persons-with-significant-control
+    }
+
+    @company-company_number-persons-with-significant-control-statements {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/persons-with-significant-control-statements$
+    }
+    reverse_proxy @company-company_number-persons-with-significant-control-statements persons-with-significant-control:3000 {
+        header_down Service companies-persons-with-significant-control
+    }
+
+    @company-company_number-persons-with-significant-controllegal-person-psc_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/persons-with-significant-control\/legal-person\/.+$
+    }
+    reverse_proxy @company-company_number-persons-with-significant-controllegal-person-psc_id persons-with-significant-control:3000 {
+        header_down Service companies-persons-with-significant-control
+    }
+
+    @company-company_number-persons-with-significant-controlcorporate-entity-psc_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/persons-with-significant-control\/corporate-entity\/.+$
+    }
+    reverse_proxy @company-company_number-persons-with-significant-controlcorporate-entity-psc_id persons-with-significant-control:3000 {
+        header_down Service companies-persons-with-significant-control
+    }
+
+    @company-company_number-persons-with-significant-controlindividual-psc_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/persons-with-significant-control\/individual\/.+$
+    }
+    reverse_proxy @company-company_number-persons-with-significant-controlindividual-psc_id persons-with-significant-control:3000 {
+        header_down Service companies-persons-with-significant-control
+    }
+
+    @company-company_number-persons-with-significant-control {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/persons-with-significant-control$
+    }
+    reverse_proxy @company-company_number-persons-with-significant-control persons-with-significant-control:3000 {
+        header_down Service companies-persons-with-significant-control
+    }
+
+    @company-company_number-uk-establishments {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/uk-establishments$
+    }
+    reverse_proxy @company-company_number-uk-establishments ukestablishments:3000 {
+        header_down Service companies-ukestablishments
+    }
+
+    @company-company_number-insolvency {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/insolvency$
+    }
+    reverse_proxy @company-company_number-insolvency insolvency:3000 {
+        header_down Service companies-insolvency
+    }
+
+    @company-company_number-charges-charge_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/charges\/.+$
+    }
+    reverse_proxy @company-company_number-charges-charge_id charges:3000 {
+        header_down Service companies-charges
+    }
+
+    @company-company_number-charges {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/charges$
+    }
+    reverse_proxy @company-company_number-charges charges:3000 {
+        header_down Service companies-charges
+    }
+
+    @officers-officer_id-appointments {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/officers\/.+\/appointments$
+    }
+    reverse_proxy @officers-officer_id-appointments officer-appointments:3000 {
+        header_down Service companies-officer-appointments
+    }
+
+    @disqualified-officerscorporate-officer_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/disqualified-officers\/corporate\/.+$
+    }
+    reverse_proxy @disqualified-officerscorporate-officer_id officer-disqualifications:3000 {
+        header_down Service companies-officer-disqualifications
+    }
+
+    @disqualified-officersnatural-officer_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/disqualified-officers\/natural\/.+$
+    }
+    reverse_proxy @disqualified-officersnatural-officer_id officer-disqualifications:3000 {
+        header_down Service companies-officer-disqualifications
+    }
+
+    @company-company_number-exemptions {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/exemptions$
+    }
+    reverse_proxy @company-company_number-exemptions exemptions:3000 {
+        header_down Service companies-exemptions
+    }
+
+    @company-company_number-filing-history {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/filing-history$
+    }
+    reverse_proxy @company-company_number-filing-history filing-history:3000 {
+        header_down Service companies-filing-history
+    }
+
+    @company-company_number-filing-history-transaction_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/filing-history\/.+$
+    }
+    reverse_proxy @company-company_number-filing-history-transaction_id filing-history:3000 {
+        header_down Service companies-filing-history
+    }
+
+    @company-company_number-registers {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/registers$
+    }
+    reverse_proxy @company-company_number-registers registers:3000 {
+        header_down Service companies-registers
+    }
+
+    @company-company_number-appointments-appointment_id {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/appointments\/.+$
+    }
+    reverse_proxy @company-company_number-appointments-appointment_id officers:3000 {
+        header_down Service companies-officers
+    }
+
+    @company-company_number-officers {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/officers$
+    }
+    reverse_proxy @company-company_number-officers officers:3000 {
+        header_down Service companies-officers
+    }
+
+    @advanced-searchcompanies {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/advanced-search\/companies$
+    }
+    reverse_proxy @advanced-searchcompanies search:3000 {
+        header_down Service companies-search
+    }
+
+    @alphabetic-searchcompanies {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/alphabetic-search\/companies$
+    }
+    reverse_proxy @alphabetic-searchcompanies search:3000 {
+        header_down Service companies-search
+    }
+
+    @dissolved-searchcompanies {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/dissolved-search\/companies$
+    }
+    reverse_proxy @dissolved-searchcompanies search:3000 {
+        header_down Service companies-search
+    }
+
+    @searchdisqualified-officers {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/search\/disqualified-officers$
+    }
+    reverse_proxy @searchdisqualified-officers search:3000 {
+        header_down Service companies-search
+    }
+
+    @searchofficers {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/search\/officers$
+    }
+    reverse_proxy @searchofficers search:3000 {
+        header_down Service companies-search
+    }
+
+    @searchcompanies {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/search\/companies$
+    }
+    reverse_proxy @searchcompanies search:3000 {
+        header_down Service companies-search
+    }
+
+    @search {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/search$
+    }
+    reverse_proxy @search search:3000 {
+        header_down Service companies-search
+    }
+
+    @company-company_number {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+$
+    }
+    reverse_proxy @company-company_number company-profile:3000 {
+        header_down Service companies-company-profile
+    }
+
+    @company-company_number-registered-office-address {
+         header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+         path_regexp ^\/company\/[A-Z\d].+\/registered-office-address$
+    }
+    reverse_proxy @company-company_number-registered-office-address registered-office-address:3000 {
+        header_down Service companies-registered-office-address
+    }
+
 }

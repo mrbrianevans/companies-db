@@ -1,6 +1,7 @@
 {
   "name": "gen",
   "version": "1.0.0",
+  "type": "module",
   "description": "Generates microservice stubs based on apispec.yaml",
   "main": "index.js",
   "scripts": {
