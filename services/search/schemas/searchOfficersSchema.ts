@@ -173,7 +173,7 @@ export const SearchOfficersSchema = {
                     'The total number of appointments the officer has.'
                 },
                 description_identifiers: {
-                  type: 'string',
+                  type: 'array',
                   description:
                     'An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations.',
                   enum: ['appointment-count', 'born-on']

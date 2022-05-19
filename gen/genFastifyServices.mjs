@@ -2,6 +2,8 @@ import {mkdir, readFile, writeFile} from 'node:fs/promises'
 import {resolve} from "path";
 import {addCaddyFileEntry, newCaddyFile} from "./files/genCaddyFile.js";
 import {camelCase, kebabCase, prettyTs} from "./utils.js";
+import {addPathSystemTest, genSystemTest} from "./files/genSystemTest.js";
+import YAML from 'yaml'
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -11,11 +13,13 @@ import {camelCase, kebabCase, prettyTs} from "./utils.js";
 // create a monolith that links all the microservices
 
 const SERVICES_DIR = resolve('../services')
+const SYS_TEST_DIR = resolve('../testing/tests')
 console.log({SERVICES_DIR})
 
 
 async function createTagDirectories(tags) {
     await mkdir(resolve(SERVICES_DIR), {recursive: true})
+    await mkdir(resolve(SYS_TEST_DIR), {recursive: true})
     await newCaddyFile(SERVICES_DIR)
     await writeFile(resolve(SERVICES_DIR, 'docker-compose.yaml'), YAML.stringify({
         version: '3',
@@ -77,6 +81,7 @@ await fastify.listen(3000, '::')
     }, null, 2))
     for (const tag of tags) {
         await mkdir(resolve(SERVICES_DIR, tag.name), {recursive: true})
+        await genSystemTest(SYS_TEST_DIR, tag.name)
         await writeFile(resolve(SERVICES_DIR, tag.name, 'package.json'), JSON.stringify({
             "name": kebabCase(tag.name+'-service'),
             "description": tag.description,
@@ -160,11 +165,12 @@ function flattenItemsRecursive(schema, skip) {
         if (schema.items.title !== skip && skip !== 'items') {
             schema.type = 'object'
             for (const item in schema.items) {
-                flattenItemsRecursive(schema.items[item])
                 schema[item] = schema.items[item]
             }
+            flattenItemsRecursive(schema)
             delete schema.items
         }else{
+            schema.type = 'array'
             flattenItemsRecursive(schema.items)
         }
     }
@@ -208,6 +214,7 @@ async function createRoutes(paths, responsePaths) {
         for (const parameter of parameters) {
             parameter.required = isPath(parameter) // query parameters are never required and path parameters are always required
         }
+        await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responses?.[200]?.schema)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 

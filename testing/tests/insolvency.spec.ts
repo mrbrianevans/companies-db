@@ -1,0 +1,184 @@
+import * as TestRequests from '../getTestRequests'
+import { testRequests } from '../testRequests'
+fetch('http://localhost:3000').catch() //to remove warning about fetch being experimental from test results
+
+describe('insolvency-service', function () {
+  // tests for each path
+  it('getInsolvency: /company/{company_number}/insolvency', async function () {
+    const schema = {
+      title: 'companyInsolvency',
+      required: [],
+      properties: {
+        etag: { description: 'The ETag of the resource.', type: 'string' },
+        cases: {
+          type: 'object',
+          description: 'List of insolvency cases.',
+          title: 'case',
+          required: [],
+          properties: {
+            type: {
+              type: 'string',
+              enum: [
+                'compulsory-liquidation',
+                'creditors-voluntary-liquidation',
+                'members-voluntary-liquidation',
+                'in-administration',
+                'corporate-voluntary-arrangement',
+                'corporate-voluntary-arrangement-moratorium',
+                'administration-order',
+                'receiver-manager',
+                'administrative-receiver',
+                'receivership',
+                'foreign-insolvency'
+              ],
+              description:
+                'The type of case.\n For enumeration descriptions see `insolvency_case_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).'
+            },
+            dates: {
+              type: 'object',
+              description: 'The dates specific to the case.',
+              title: 'caseDates',
+              required: [],
+              properties: {
+                type: {
+                  type: 'string',
+                  description:
+                    'Describes what date is represented by the associated `date` element.\n For enumeration descriptions see `insolvency_case_date_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
+                  enum: [
+                    'instrumented-on',
+                    'administration-started-on',
+                    'administration-discharged-on',
+                    'administration-ended-on',
+                    'concluded-winding-up-on',
+                    'petitioned-on',
+                    'ordered-to-wind-up-on',
+                    'due-to-be-dissolved-on',
+                    'case-end-on',
+                    'wound-up-on',
+                    'voluntary-arrangement-started-on',
+                    'voluntary-arrangement-ended-on',
+                    'moratorium-started-on',
+                    'moratorium-ended-on',
+                    'declaration-solvent-on'
+                  ]
+                },
+                date: {
+                  type: 'string',
+                  format: 'date',
+                  description: 'The case date, described by `date_type`.'
+                }
+              }
+            },
+            notes: {
+              type: 'array',
+              description: 'The dates specific to the case.'
+            },
+            practitioners: {
+              type: 'array',
+              description: 'The practitioners for the case.',
+              items: {
+                title: 'practitioners',
+                required: [],
+                properties: {
+                  name: {
+                    description: 'The name of the practitioner.',
+                    type: 'string'
+                  },
+                  address: {
+                    type: 'object',
+                    description: "The practitioners' address.",
+                    title: 'practitionerAddress',
+                    required: [],
+                    properties: {
+                      address_line_1: {
+                        type: 'string',
+                        description: 'The first line of the address.'
+                      },
+                      address_line_2: {
+                        type: 'string',
+                        description: 'The second line of the address.'
+                      },
+                      locality: {
+                        type: 'string',
+                        description: 'The locality. For example London.'
+                      },
+                      region: {
+                        type: 'string',
+                        description: 'The region. For example Surrey.'
+                      },
+                      postal_code: {
+                        type: 'string',
+                        description: 'The postal code. For example CF14 3UZ.'
+                      },
+                      country: { type: 'string', description: 'The country.' }
+                    }
+                  },
+                  appointed_on: {
+                    type: 'string',
+                    format: 'date',
+                    description: 'The date the practitioner was appointed on.'
+                  },
+                  ceased_to_act_on: {
+                    type: 'string',
+                    format: 'date',
+                    description:
+                      'The date the practitioner ceased to act for the case.'
+                  },
+                  role: {
+                    type: 'string',
+                    description: 'The type of role.',
+                    enum: [
+                      'final-liquidator',
+                      'receiver',
+                      'receiver-manager',
+                      'proposed-liquidator',
+                      'provisional-liquidator',
+                      'administrative-receiver',
+                      'practitioner',
+                      'interim-liquidator'
+                    ]
+                  }
+                },
+                type: 'object'
+              }
+            },
+            links: {
+              type: 'array',
+              description: 'The practitioners for the case.',
+              items: {
+                title: 'links',
+                properties: {
+                  charge: {
+                    type: 'string',
+                    description:
+                      'The link to the charge this case is lodged against.'
+                  }
+                },
+                type: 'object'
+              }
+            },
+            number: { type: 'integer', description: 'The case number.' }
+          }
+        },
+        status: {
+          type: 'string',
+          description: 'Company insolvency status details',
+          enum: [
+            'live-propopsed-transfer-from-gb',
+            'voluntary-arrangement',
+            'voluntary-arrangement-receivership',
+            'live-receiver-manager-on-at-least-one-charge',
+            'receiver-manager-or-administrative-receiver',
+            'receiver-manager',
+            'administrative-receiver',
+            'administration-order',
+            'receivership',
+            'in-administration'
+          ]
+        }
+      },
+      type: 'object'
+    }
+    await testRequests(TestRequests.getInsolvencyReqs, schema)
+  })
+})

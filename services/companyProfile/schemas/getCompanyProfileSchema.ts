@@ -38,61 +38,55 @@ export const GetCompanyProfileSchema = {
                 description:
                   'The Accounting Reference Date (ARD) of the company.',
                 type: 'object',
-                items: {
-                  title: 'accountingReferenceDate',
-                  type: 'object',
-                  required: [],
-                  properties: {
-                    day: {
-                      type: 'integer',
-                      description: 'The Accounting Reference Date (ARD) day.'
-                    },
-                    month: {
-                      type: 'integer',
-                      description: 'The Accounting Reference Date (ARD) month.'
-                    }
+                title: 'accountingReferenceDate',
+                required: [],
+                properties: {
+                  day: {
+                    type: 'integer',
+                    description: 'The Accounting Reference Date (ARD) day.'
+                  },
+                  month: {
+                    type: 'integer',
+                    description: 'The Accounting Reference Date (ARD) month.'
                   }
                 }
               },
               last_accounts: {
                 description: 'The last company accounts filed.',
                 type: 'object',
-                items: {
-                  title: 'lastAccounts',
-                  properties: {
-                    made_up_to: {
-                      type: 'string',
-                      format: 'date',
-                      description:
-                        'The date the last company accounts were made up to.'
-                    },
-                    type: {
-                      description:
-                        'The type of the last company accounts filed.  \n For enumeration descriptions see `account_type` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).    ',
-                      enum: [
-                        'null',
-                        'full',
-                        'small',
-                        'medium',
-                        'group',
-                        'dormant',
-                        'interim',
-                        'initial',
-                        'total-exemption-full',
-                        'total-exemption-small',
-                        'partial-exemption',
-                        'audit-exemption-subsidiary',
-                        'filing-exemption-subsidiary',
-                        'micro-entity',
-                        'no-accounts-type-available',
-                        'audited-abridged',
-                        'unaudited-abridged'
-                      ]
-                    }
+                title: 'lastAccounts',
+                properties: {
+                  made_up_to: {
+                    type: 'string',
+                    format: 'date',
+                    description:
+                      'The date the last company accounts were made up to.'
                   },
-                  type: 'string',
-                  required: []
-                }
+                  type: {
+                    description:
+                      'The type of the last company accounts filed.  \n For enumeration descriptions see `account_type` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).    ',
+                    enum: [
+                      'null',
+                      'full',
+                      'small',
+                      'medium',
+                      'group',
+                      'dormant',
+                      'interim',
+                      'initial',
+                      'total-exemption-full',
+                      'total-exemption-small',
+                      'partial-exemption',
+                      'audit-exemption-subsidiary',
+                      'filing-exemption-subsidiary',
+                      'micro-entity',
+                      'no-accounts-type-available',
+                      'audited-abridged',
+                      'unaudited-abridged'
+                    ]
+                  }
+                },
+                required: []
               },
               next_due: {
                 description: 'The date the next company accounts are due.',
@@ -237,18 +231,16 @@ export const GetCompanyProfileSchema = {
               originating_registry: {
                 description: 'Company origin informations',
                 type: 'object',
-                items: {
-                  title: 'originatingRegistry',
-                  properties: {
-                    country: {
-                      description: 'Country in which company was incorporated.',
-                      type: 'string'
-                    },
-                    name: {
-                      description:
-                        'Identity of register in country of incorporation.',
-                      type: 'string'
-                    }
+                title: 'originatingRegistry',
+                properties: {
+                  country: {
+                    description: 'Country in which company was incorporated.',
+                    type: 'string'
+                  },
+                  name: {
+                    description:
+                      'Identity of register in country of incorporation.',
+                    type: 'string'
                   }
                 }
               },
@@ -272,66 +264,56 @@ export const GetCompanyProfileSchema = {
               },
               accounts: {
                 description: 'Foreign company account information.',
-                items: {
-                  title: 'accountInformation',
-                  properties: {
-                    'account_period_from:': {
-                      description:
-                        'Date account period starts under parent law.',
-                      items: {
-                        title: 'accountPeriodFrom',
-                        properties: {
-                          day: {
-                            description:
-                              'Day on which accounting period starts under parent law.',
-                            type: 'integer'
-                          },
-                          month: {
-                            description:
-                              'Month in which accounting period starts under parent law.',
-                            type: 'integer'
-                          }
-                        }
+                type: 'object',
+                title: 'accountInformation',
+                properties: {
+                  'account_period_from:': {
+                    description: 'Date account period starts under parent law.',
+                    type: 'object',
+                    title: 'accountPeriodFrom',
+                    properties: {
+                      day: {
+                        description:
+                          'Day on which accounting period starts under parent law.',
+                        type: 'integer'
                       },
-                      type: 'object'
-                    },
-                    account_period_to: {
-                      description: 'Date account period ends under parent law.',
-                      items: {
-                        title: 'accountPeriodTo',
-                        properties: {
-                          day: {
-                            description:
-                              'Day on which accounting period ends under parent law.',
-                            type: 'integer'
-                          },
-                          month: {
-                            description:
-                              'Month in which accounting period ends under parent law.',
-                            type: 'integer'
-                          }
-                        }
+                      month: {
+                        description:
+                          'Month in which accounting period starts under parent law.',
+                        type: 'integer'
+                      }
+                    }
+                  },
+                  account_period_to: {
+                    description: 'Date account period ends under parent law.',
+                    type: 'object',
+                    title: 'accountPeriodTo',
+                    properties: {
+                      day: {
+                        description:
+                          'Day on which accounting period ends under parent law.',
+                        type: 'integer'
                       },
-                      type: 'object'
-                    },
-                    must_file_within: {
-                      description:
-                        'Time allowed from period end for disclosure of accounts under parent law.',
-                      items: {
-                        title: 'fileWithin',
-                        properties: {
-                          months: {
-                            description:
-                              'Number of months within which to file.',
-                            type: 'integer'
-                          }
-                        }
-                      },
-                      type: 'object'
+                      month: {
+                        description:
+                          'Month in which accounting period ends under parent law.',
+                        type: 'integer'
+                      }
+                    }
+                  },
+                  must_file_within: {
+                    description:
+                      'Time allowed from period end for disclosure of accounts under parent law.',
+                    type: 'object',
+                    title: 'fileWithin',
+                    properties: {
+                      months: {
+                        description: 'Number of months within which to file.',
+                        type: 'integer'
+                      }
                     }
                   }
-                },
-                type: 'object'
+                }
               },
               business_activity: {
                 description: 'Type of business undertaken by the company.',
@@ -339,31 +321,29 @@ export const GetCompanyProfileSchema = {
               },
               accounting_requirement: {
                 description: 'Accounts requirement.',
-                items: {
-                  title: 'accountsRequired',
-                  properties: {
-                    foreign_account_type: {
-                      description:
-                        'Type of accounting requirement that applies.  \n For enumeration descriptions see `foreign_account_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
-                      enum: [
-                        'accounting-requirements-of-originating-country-apply',
-                        'accounting-requirements-of-originating-country-do-not-apply'
-                      ],
-                      type: 'string'
-                    },
-                    terms_of_account_publication: {
-                      description:
-                        'Describes how the publication date is derived.  \n For enumeration descriptions see `terms_of_account_publication` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
-                      enum: [
-                        'accounts-publication-date-supplied-by-company',
-                        'accounting-publication-date-does-not-need-to-be-supplied-by-company',
-                        'accounting-reference-date-allocated-by-companies-house'
-                      ],
-                      type: 'string'
-                    }
+                type: 'object',
+                title: 'accountsRequired',
+                properties: {
+                  foreign_account_type: {
+                    description:
+                      'Type of accounting requirement that applies.  \n For enumeration descriptions see `foreign_account_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
+                    enum: [
+                      'accounting-requirements-of-originating-country-apply',
+                      'accounting-requirements-of-originating-country-do-not-apply'
+                    ],
+                    type: 'string'
+                  },
+                  terms_of_account_publication: {
+                    description:
+                      'Describes how the publication date is derived.  \n For enumeration descriptions see `terms_of_account_publication` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).  ',
+                    enum: [
+                      'accounts-publication-date-supplied-by-company',
+                      'accounting-publication-date-does-not-need-to-be-supplied-by-company',
+                      'accounting-reference-date-allocated-by-companies-house'
+                    ],
+                    type: 'string'
                   }
-                },
-                type: 'object'
+                }
               }
             }
           },
@@ -466,7 +446,7 @@ export const GetCompanyProfileSchema = {
           },
           sic_codes: {
             description: 'SIC codes for this company.',
-            type: 'string'
+            type: 'array'
           },
           previous_company_names: {
             description: 'The previous names of this company.',

@@ -115,7 +115,7 @@ export const ListOfficersSchema = {
                     },
                     type: 'object'
                   },
-                  type: 'object'
+                  type: 'array'
                 },
                 appointed_on: {
                   description: 'The date on which the officer was appointed.',
@@ -210,18 +210,16 @@ export const ListOfficersSchema = {
                     officer: {
                       description:
                         'Links to other officer resources associated with this officer list item.',
-                      items: {
-                        title: 'officerLinkTypes',
-                        required: [],
-                        properties: {
-                          appointments: {
-                            description:
-                              'Link to the officer appointment resource that this appointment is associated with.',
-                            type: 'string'
-                          }
+                      type: 'object',
+                      title: 'officerLinkTypes',
+                      required: [],
+                      properties: {
+                        appointments: {
+                          description:
+                            'Link to the officer appointment resource that this appointment is associated with.',
+                          type: 'string'
                         }
-                      },
-                      type: 'object'
+                      }
                     }
                   }
                 },

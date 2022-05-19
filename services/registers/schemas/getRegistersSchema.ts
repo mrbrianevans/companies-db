@@ -70,28 +70,29 @@ export const GetRegistersSchema = {
                       type: 'string'
                     },
                     items: {
-                      type: 'object',
-                      title: 'registeredItems',
-                      required: [],
-                      properties: {
-                        moved_on: {
-                          description: 'The date registered on',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        register_moved_to: {
-                          description: 'Location of registration',
-                          type: 'string',
-                          enum: [
-                            'public-register',
-                            'registered-office',
-                            'single-alternative-inspection-location',
-                            'unspecified-location'
-                          ]
-                        },
-                        links: {
-                          description: 'A set of URLs related to the resource.',
-                          items: {
+                      items: {
+                        title: 'registeredItems',
+                        required: [],
+                        properties: {
+                          moved_on: {
+                            description: 'The date registered on',
+                            type: 'string',
+                            format: 'date'
+                          },
+                          register_moved_to: {
+                            description: 'Location of registration',
+                            type: 'string',
+                            enum: [
+                              'public-register',
+                              'registered-office',
+                              'single-alternative-inspection-location',
+                              'unspecified-location'
+                            ]
+                          },
+                          links: {
+                            description:
+                              'A set of URLs related to the resource.',
+                            type: 'object',
                             title: 'linksItems',
                             required: [],
                             properties: {
@@ -101,21 +102,20 @@ export const GetRegistersSchema = {
                                 type: 'string'
                               }
                             }
-                          },
-                          type: 'object'
-                        }
-                      }
+                          }
+                        },
+                        type: 'object'
+                      },
+                      type: 'array'
                     },
                     links: {
                       description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      items: {
-                        title: 'linksDirectorsRegister',
-                        properties: {
-                          directors_register: {
-                            description: 'The URL for the resource.',
-                            type: 'string'
-                          }
+                      title: 'linksDirectorsRegister',
+                      properties: {
+                        directors_register: {
+                          description: 'The URL for the resource.',
+                          type: 'string'
                         }
                       }
                     }
@@ -133,28 +133,29 @@ export const GetRegistersSchema = {
                       type: 'string'
                     },
                     items: {
-                      type: 'object',
-                      title: 'registeredItems',
-                      required: [],
-                      properties: {
-                        moved_on: {
-                          description: 'The date registered on',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        register_moved_to: {
-                          description: 'Location of registration',
-                          type: 'string',
-                          enum: [
-                            'public-register',
-                            'registered-office',
-                            'single-alternative-inspection-location',
-                            'unspecified-location'
-                          ]
-                        },
-                        links: {
-                          description: 'A set of URLs related to the resource.',
-                          items: {
+                      items: {
+                        title: 'registeredItems',
+                        required: [],
+                        properties: {
+                          moved_on: {
+                            description: 'The date registered on',
+                            type: 'string',
+                            format: 'date'
+                          },
+                          register_moved_to: {
+                            description: 'Location of registration',
+                            type: 'string',
+                            enum: [
+                              'public-register',
+                              'registered-office',
+                              'single-alternative-inspection-location',
+                              'unspecified-location'
+                            ]
+                          },
+                          links: {
+                            description:
+                              'A set of URLs related to the resource.',
+                            type: 'object',
                             title: 'linksItems',
                             required: [],
                             properties: {
@@ -164,21 +165,20 @@ export const GetRegistersSchema = {
                                 type: 'string'
                               }
                             }
-                          },
-                          type: 'object'
-                        }
-                      }
+                          }
+                        },
+                        type: 'object'
+                      },
+                      type: 'array'
                     },
                     links: {
                       description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      items: {
-                        title: 'linksSecretaryRegister',
-                        properties: {
-                          secretaries_register: {
-                            description: 'The URL for the resource.',
-                            type: 'string'
-                          }
+                      title: 'linksSecretaryRegister',
+                      properties: {
+                        secretaries_register: {
+                          description: 'The URL for the resource.',
+                          type: 'string'
                         }
                       }
                     }
@@ -197,28 +197,29 @@ export const GetRegistersSchema = {
                       type: 'string'
                     },
                     items: {
-                      type: 'object',
-                      title: 'registeredItems',
-                      required: [],
-                      properties: {
-                        moved_on: {
-                          description: 'The date registered on',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        register_moved_to: {
-                          description: 'Location of registration',
-                          type: 'string',
-                          enum: [
-                            'public-register',
-                            'registered-office',
-                            'single-alternative-inspection-location',
-                            'unspecified-location'
-                          ]
-                        },
-                        links: {
-                          description: 'A set of URLs related to the resource.',
-                          items: {
+                      items: {
+                        title: 'registeredItems',
+                        required: [],
+                        properties: {
+                          moved_on: {
+                            description: 'The date registered on',
+                            type: 'string',
+                            format: 'date'
+                          },
+                          register_moved_to: {
+                            description: 'Location of registration',
+                            type: 'string',
+                            enum: [
+                              'public-register',
+                              'registered-office',
+                              'single-alternative-inspection-location',
+                              'unspecified-location'
+                            ]
+                          },
+                          links: {
+                            description:
+                              'A set of URLs related to the resource.',
+                            type: 'object',
                             title: 'linksItems',
                             required: [],
                             properties: {
@@ -228,21 +229,20 @@ export const GetRegistersSchema = {
                                 type: 'string'
                               }
                             }
-                          },
-                          type: 'object'
-                        }
-                      }
+                          }
+                        },
+                        type: 'object'
+                      },
+                      type: 'array'
                     },
                     links: {
                       description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      items: {
-                        title: 'linksPersonsWithSignificantControlRegister',
-                        properties: {
-                          persons_with_significant_control_register: {
-                            description: 'The URL for the resource.',
-                            type: 'string'
-                          }
+                      title: 'linksPersonsWithSignificantControlRegister',
+                      properties: {
+                        persons_with_significant_control_register: {
+                          description: 'The URL for the resource.',
+                          type: 'string'
                         }
                       }
                     }
@@ -260,28 +260,29 @@ export const GetRegistersSchema = {
                       type: 'string'
                     },
                     items: {
-                      type: 'object',
-                      title: 'registeredItems',
-                      required: [],
-                      properties: {
-                        moved_on: {
-                          description: 'The date registered on',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        register_moved_to: {
-                          description: 'Location of registration',
-                          type: 'string',
-                          enum: [
-                            'public-register',
-                            'registered-office',
-                            'single-alternative-inspection-location',
-                            'unspecified-location'
-                          ]
-                        },
-                        links: {
-                          description: 'A set of URLs related to the resource.',
-                          items: {
+                      items: {
+                        title: 'registeredItems',
+                        required: [],
+                        properties: {
+                          moved_on: {
+                            description: 'The date registered on',
+                            type: 'string',
+                            format: 'date'
+                          },
+                          register_moved_to: {
+                            description: 'Location of registration',
+                            type: 'string',
+                            enum: [
+                              'public-register',
+                              'registered-office',
+                              'single-alternative-inspection-location',
+                              'unspecified-location'
+                            ]
+                          },
+                          links: {
+                            description:
+                              'A set of URLs related to the resource.',
+                            type: 'object',
                             title: 'linksItems',
                             required: [],
                             properties: {
@@ -291,21 +292,20 @@ export const GetRegistersSchema = {
                                 type: 'string'
                               }
                             }
-                          },
-                          type: 'object'
-                        }
-                      }
+                          }
+                        },
+                        type: 'object'
+                      },
+                      type: 'array'
                     },
                     links: {
                       description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      items: {
-                        title: 'linksListUsualResidentialAddress',
-                        properties: {
-                          usual_residential_address: {
-                            description: 'The URL for the resource.',
-                            type: 'string'
-                          }
+                      title: 'linksListUsualResidentialAddress',
+                      properties: {
+                        usual_residential_address: {
+                          description: 'The URL for the resource.',
+                          type: 'string'
                         }
                       }
                     }
@@ -322,28 +322,29 @@ export const GetRegistersSchema = {
                       type: 'string'
                     },
                     items: {
-                      type: 'object',
-                      title: 'registeredItems',
-                      required: [],
-                      properties: {
-                        moved_on: {
-                          description: 'The date registered on',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        register_moved_to: {
-                          description: 'Location of registration',
-                          type: 'string',
-                          enum: [
-                            'public-register',
-                            'registered-office',
-                            'single-alternative-inspection-location',
-                            'unspecified-location'
-                          ]
-                        },
-                        links: {
-                          description: 'A set of URLs related to the resource.',
-                          items: {
+                      items: {
+                        title: 'registeredItems',
+                        required: [],
+                        properties: {
+                          moved_on: {
+                            description: 'The date registered on',
+                            type: 'string',
+                            format: 'date'
+                          },
+                          register_moved_to: {
+                            description: 'Location of registration',
+                            type: 'string',
+                            enum: [
+                              'public-register',
+                              'registered-office',
+                              'single-alternative-inspection-location',
+                              'unspecified-location'
+                            ]
+                          },
+                          links: {
+                            description:
+                              'A set of URLs related to the resource.',
+                            type: 'object',
                             title: 'linksItems',
                             required: [],
                             properties: {
@@ -353,23 +354,22 @@ export const GetRegistersSchema = {
                                 type: 'string'
                               }
                             }
-                          },
-                          type: 'object'
-                        }
-                      }
+                          }
+                        },
+                        type: 'object'
+                      },
+                      type: 'array'
                     },
                     links: {
                       description: 'A set of URLs related to the resource.',
-                      items: {
-                        title: 'linksListLLPUsualResidentialAddress',
-                        properties: {
-                          llp_usual_residential_address: {
-                            description: 'The URL for the resource.',
-                            type: 'string'
-                          }
+                      type: 'object',
+                      title: 'linksListLLPUsualResidentialAddress',
+                      properties: {
+                        llp_usual_residential_address: {
+                          description: 'The URL for the resource.',
+                          type: 'string'
                         }
-                      },
-                      type: 'object'
+                      }
                     }
                   },
                   required: []
@@ -386,28 +386,29 @@ export const GetRegistersSchema = {
                       type: 'string'
                     },
                     items: {
-                      type: 'object',
-                      title: 'registeredItems',
-                      required: [],
-                      properties: {
-                        moved_on: {
-                          description: 'The date registered on',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        register_moved_to: {
-                          description: 'Location of registration',
-                          type: 'string',
-                          enum: [
-                            'public-register',
-                            'registered-office',
-                            'single-alternative-inspection-location',
-                            'unspecified-location'
-                          ]
-                        },
-                        links: {
-                          description: 'A set of URLs related to the resource.',
-                          items: {
+                      items: {
+                        title: 'registeredItems',
+                        required: [],
+                        properties: {
+                          moved_on: {
+                            description: 'The date registered on',
+                            type: 'string',
+                            format: 'date'
+                          },
+                          register_moved_to: {
+                            description: 'Location of registration',
+                            type: 'string',
+                            enum: [
+                              'public-register',
+                              'registered-office',
+                              'single-alternative-inspection-location',
+                              'unspecified-location'
+                            ]
+                          },
+                          links: {
+                            description:
+                              'A set of URLs related to the resource.',
+                            type: 'object',
                             title: 'linksItems',
                             required: [],
                             properties: {
@@ -417,21 +418,20 @@ export const GetRegistersSchema = {
                                 type: 'string'
                               }
                             }
-                          },
-                          type: 'object'
-                        }
-                      }
+                          }
+                        },
+                        type: 'object'
+                      },
+                      type: 'array'
                     },
                     links: {
                       description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      items: {
-                        title: 'linksListMembers',
-                        properties: {
-                          members: {
-                            description: 'The URL for the resource.',
-                            type: 'string'
-                          }
+                      title: 'linksListMembers',
+                      properties: {
+                        members: {
+                          description: 'The URL for the resource.',
+                          type: 'string'
                         }
                       }
                     }
@@ -448,28 +448,29 @@ export const GetRegistersSchema = {
                       type: 'string'
                     },
                     items: {
-                      type: 'object',
-                      title: 'registeredItems',
-                      required: [],
-                      properties: {
-                        moved_on: {
-                          description: 'The date registered on',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        register_moved_to: {
-                          description: 'Location of registration',
-                          type: 'string',
-                          enum: [
-                            'public-register',
-                            'registered-office',
-                            'single-alternative-inspection-location',
-                            'unspecified-location'
-                          ]
-                        },
-                        links: {
-                          description: 'A set of URLs related to the resource.',
-                          items: {
+                      items: {
+                        title: 'registeredItems',
+                        required: [],
+                        properties: {
+                          moved_on: {
+                            description: 'The date registered on',
+                            type: 'string',
+                            format: 'date'
+                          },
+                          register_moved_to: {
+                            description: 'Location of registration',
+                            type: 'string',
+                            enum: [
+                              'public-register',
+                              'registered-office',
+                              'single-alternative-inspection-location',
+                              'unspecified-location'
+                            ]
+                          },
+                          links: {
+                            description:
+                              'A set of URLs related to the resource.',
+                            type: 'object',
                             title: 'linksItems',
                             required: [],
                             properties: {
@@ -479,29 +480,29 @@ export const GetRegistersSchema = {
                                 type: 'string'
                               }
                             }
-                          },
-                          type: 'object'
-                        }
-                      }
+                          }
+                        },
+                        type: 'object'
+                      },
+                      type: 'array'
                     },
                     links: {
                       description: 'A set of URLs related to the resource.',
-                      items: {
-                        title: 'linksListLLPMembers',
-                        properties: {
-                          llp_members: {
-                            description: 'The URL for the resource.',
-                            type: 'string'
-                          }
+                      type: 'object',
+                      title: 'linksListLLPMembers',
+                      properties: {
+                        llp_members: {
+                          description: 'The URL for the resource.',
+                          type: 'string'
                         }
-                      },
-                      type: 'object'
+                      }
                     }
                   },
                   required: []
                 }
               }
-            }
+            },
+            type: 'array'
           },
           etag: {
             description: 'The ETag of the resource.',

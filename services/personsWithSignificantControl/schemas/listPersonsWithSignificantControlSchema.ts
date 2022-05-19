@@ -259,7 +259,7 @@ export const ListPersonsWithSignificantControlSchema = {
                 natures_of_control: {
                   description:
                     'Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
-                  type: 'string'
+                  type: 'array'
                 }
               },
               type: 'object'

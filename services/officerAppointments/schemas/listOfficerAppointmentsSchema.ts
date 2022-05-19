@@ -114,7 +114,7 @@ export const ListOfficerAppointmentsSchema = {
                     },
                     type: 'object'
                   },
-                  type: 'object'
+                  type: 'array'
                 },
                 appointed_before: {
                   description:

@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/mocha/lib/cli/cli.js tests\\**\\*.spec.ts",
+    "test": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/mocha/lib/cli/cli.js tests\\**\\*.spec.ts --reporter=spec",
     "index": "node --loader ts-node/esm index.ts",
     "getTestData": "node --loader ts-node/esm getTestData.ts"
   },
   "dependencies": {
+    "ajv": "^8.0.0-beta.4",
     "autocannon": "^7.9.0",
     "dotenv": "^16.0.1",
     "mocha": "^10.0.0",
+    "temporal-polyfill": "^0.0.7",
     "ts-node": "^10.7.0"
   },
   "devDependencies": {

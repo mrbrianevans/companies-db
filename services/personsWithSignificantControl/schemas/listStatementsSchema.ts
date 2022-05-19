@@ -126,7 +126,7 @@ export const ListStatementsSchema = {
               },
               type: 'object'
             },
-            type: 'object'
+            type: 'array'
           },
           start_index: {
             description:

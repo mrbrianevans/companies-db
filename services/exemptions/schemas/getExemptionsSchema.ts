@@ -55,103 +55,103 @@ export const GetExemptionsSchema = {
               psc_exempt_as_trading_on_regulated_market: {
                 description:
                   'If present the company has been or is exempt from keeping a PSC register, as it has voting shares admitted to trading on a regulated market other than the UK.',
-                items: {
-                  properties: {
+                type: 'object',
+                properties: {
+                  items: {
+                    type: 'array',
+                    description: 'List of dates',
                     items: {
-                      type: 'array',
-                      description: 'List of dates',
-                      items: {
-                        properties: {
-                          exempt_from: {
-                            description: 'Exemption valid from.',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          exempt_to: {
-                            description: 'Exemption valid to.',
-                            type: 'string',
-                            format: 'date'
-                          }
+                      properties: {
+                        exempt_from: {
+                          description: 'Exemption valid from.',
+                          type: 'string',
+                          format: 'date'
                         },
-                        required: []
-                      }
-                    },
-                    exemption_type: {
-                      description: 'The exemption type.',
-                      type: 'string',
-                      enum: ['psc-exempt-as-trading-on-regulated-market']
+                        exempt_to: {
+                          description: 'Exemption valid to.',
+                          type: 'string',
+                          format: 'date'
+                        }
+                      },
+                      required: [],
+                      type: 'object'
                     }
                   },
-                  required: []
-                }
+                  exemption_type: {
+                    description: 'The exemption type.',
+                    type: 'string',
+                    enum: ['psc-exempt-as-trading-on-regulated-market']
+                  }
+                },
+                required: []
               },
               psc_exempt_as_shares_admitted_on_market: {
                 description:
                   'If present the company has been or is exempt from keeping a PSC register, as it has voting shares admitted to trading on a market listed in the Register of People with Significant Control Regulations 2016.',
-                items: {
-                  required: [],
-                  properties: {
+                type: 'object',
+                required: [],
+                properties: {
+                  items: {
+                    description: 'List of dates',
+                    type: 'array',
                     items: {
-                      description: 'List of dates',
-                      type: 'array',
-                      items: {
-                        properties: {
-                          exempt_from: {
-                            description: 'Exemption valid from.',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          exempt_to: {
-                            description: 'Exemption valid to.',
-                            type: 'string',
-                            format: 'date'
-                          }
+                      properties: {
+                        exempt_from: {
+                          description: 'Exemption valid from.',
+                          type: 'string',
+                          format: 'date'
                         },
-                        required: []
-                      }
-                    },
-                    exemption_type: {
-                      description: 'The exemption type.',
-                      enum: ['psc-exempt-as-shares-admitted-on-market'],
-                      type: 'string'
+                        exempt_to: {
+                          description: 'Exemption valid to.',
+                          type: 'string',
+                          format: 'date'
+                        }
+                      },
+                      required: [],
+                      type: 'object'
                     }
+                  },
+                  exemption_type: {
+                    description: 'The exemption type.',
+                    enum: ['psc-exempt-as-shares-admitted-on-market'],
+                    type: 'string'
                   }
                 }
               },
               disclosure_transparency_rules_chapter_five_applies: {
                 description:
                   'If present the company has been or is exempt from keeping a PSC register, because it is a DTR issuer and the shares are admitted to trading on a regulated market.',
-                items: {
-                  properties: {
+                type: 'object',
+                properties: {
+                  items: {
+                    description: 'List of exemption periods.',
                     items: {
-                      description: 'List of exemption periods.',
-                      items: {
-                        properties: {
-                          exempt_from: {
-                            description: 'Exemption valid from.',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          exempt_to: {
-                            description: 'Exemption valid to.',
-                            type: 'string',
-                            format: 'date'
-                          }
+                      properties: {
+                        exempt_from: {
+                          description: 'Exemption valid from.',
+                          type: 'string',
+                          format: 'date'
                         },
-                        required: []
+                        exempt_to: {
+                          description: 'Exemption valid to.',
+                          type: 'string',
+                          format: 'date'
+                        }
                       },
-                      type: 'array'
+                      required: [],
+                      type: 'object'
                     },
-                    exemption_type: {
-                      description: 'The exemption type.',
-                      enum: [
-                        'disclosure-transparency-rules-chapter-five-applies'
-                      ],
-                      type: 'string'
-                    }
+                    type: 'array'
                   },
-                  required: []
-                }
+                  exemption_type: {
+                    description: 'The exemption type.',
+                    enum: [
+                      'disclosure-transparency-rules-chapter-five-applies'
+                    ],
+                    type: 'string'
+                  }
+                },
+                required: []
               }
             }
           }

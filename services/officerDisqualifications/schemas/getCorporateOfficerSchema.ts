@@ -52,7 +52,7 @@ export const GetCorporateOfficerSchema = {
           links: {
             description:
               'Links to other resources associated with this officer disqualification resource.',
-            type: 'object',
+            type: 'array',
             items: {
               title: 'links',
               properties: {
@@ -77,7 +77,7 @@ export const GetCorporateOfficerSchema = {
               address: {
                 description:
                   'The address of the disqualified officer as provided by the disqualifying authority.',
-                type: 'object',
+                type: 'array',
                 items: {
                   title: 'address',
                   properties: {
@@ -109,16 +109,14 @@ export const GetCorporateOfficerSchema = {
                       description: 'The region. For example Surrey.',
                       type: 'string'
                     }
-                  }
+                  },
+                  type: 'object'
                 }
               },
               company_names: {
                 description:
                   'The companies in which the misconduct took place.',
-                type: 'array',
-                items: {
-                  type: 'string'
-                }
+                type: 'array'
               },
               court_name: {
                 description:
@@ -173,12 +171,13 @@ export const GetCorporateOfficerSchema = {
                         'The name of the court that handled the variation case.',
                       type: 'string'
                     }
-                  }
+                  },
+                  type: 'object'
                 }
               },
               reason: {
                 description: 'The reason for the disqualification.',
-                type: 'object',
+                type: 'array',
                 items: {
                   title: 'reason',
                   properties: {
@@ -203,7 +202,8 @@ export const GetCorporateOfficerSchema = {
                       type: 'string'
                     }
                   },
-                  required: []
+                  required: [],
+                  type: 'object'
                 }
               }
             },
@@ -219,10 +219,7 @@ export const GetCorporateOfficerSchema = {
               company_names: {
                 description:
                   'The companies for which the disqualified officer has permission to act.',
-                type: 'array',
-                items: {
-                  type: 'string'
-                }
+                type: 'array'
               },
               court_name: {
                 description:

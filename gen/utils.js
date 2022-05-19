@@ -14,7 +14,7 @@ export const kebabCase = (str) => str.replaceAll(/([A-Z]*)([A-Z])([a-z]*)/g, (al
     .replaceAll(/(^-)|(-$)/g, '')
 
 export function camelCase(input) {
-    return input.trim().replaceAll(/\s(\w)(\w*)/g, (all, letter, rest) => {
+    return input.trim().replaceAll(/[^a-zA-Z](\w)([^a-zA-Z]*)/g, (all, letter, rest) => {
         return letter.toUpperCase() + rest
     })
 }

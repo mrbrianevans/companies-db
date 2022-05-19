@@ -57,48 +57,43 @@ export const GetInsolvencySchema = {
                   'The type of case.\n For enumeration descriptions see `insolvency_case_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).'
               },
               dates: {
-                type: 'array',
+                type: 'object',
                 description: 'The dates specific to the case.',
-                items: {
-                  title: 'caseDates',
-                  required: [],
-                  properties: {
-                    type: {
-                      type: 'string',
-                      description:
-                        'Describes what date is represented by the associated `date` element.\n For enumeration descriptions see `insolvency_case_date_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
-                      enum: [
-                        'instrumented-on',
-                        'administration-started-on',
-                        'administration-discharged-on',
-                        'administration-ended-on',
-                        'concluded-winding-up-on',
-                        'petitioned-on',
-                        'ordered-to-wind-up-on',
-                        'due-to-be-dissolved-on',
-                        'case-end-on',
-                        'wound-up-on',
-                        'voluntary-arrangement-started-on',
-                        'voluntary-arrangement-ended-on',
-                        'moratorium-started-on',
-                        'moratorium-ended-on',
-                        'declaration-solvent-on'
-                      ]
-                    },
-                    date: {
-                      type: 'string',
-                      format: 'date',
-                      description: 'The case date, described by `date_type`.'
-                    }
+                title: 'caseDates',
+                required: [],
+                properties: {
+                  type: {
+                    type: 'string',
+                    description:
+                      'Describes what date is represented by the associated `date` element.\n For enumeration descriptions see `insolvency_case_date_type` section in the [enumeration mappings] (https://github.com/companieshouse/api-enumerations/blob/master/constants.yml).',
+                    enum: [
+                      'instrumented-on',
+                      'administration-started-on',
+                      'administration-discharged-on',
+                      'administration-ended-on',
+                      'concluded-winding-up-on',
+                      'petitioned-on',
+                      'ordered-to-wind-up-on',
+                      'due-to-be-dissolved-on',
+                      'case-end-on',
+                      'wound-up-on',
+                      'voluntary-arrangement-started-on',
+                      'voluntary-arrangement-ended-on',
+                      'moratorium-started-on',
+                      'moratorium-ended-on',
+                      'declaration-solvent-on'
+                    ]
+                  },
+                  date: {
+                    type: 'string',
+                    format: 'date',
+                    description: 'The case date, described by `date_type`.'
                   }
                 }
               },
               notes: {
                 type: 'array',
-                description: 'The dates specific to the case.',
-                items: {
-                  type: 'string'
-                }
+                description: 'The dates specific to the case.'
               },
               practitioners: {
                 type: 'array',
@@ -112,37 +107,34 @@ export const GetInsolvencySchema = {
                       type: 'string'
                     },
                     address: {
-                      type: 'array',
+                      type: 'object',
                       description: "The practitioners' address.",
-                      items: {
-                        title: 'practitionerAddress',
-                        required: [],
-                        properties: {
-                          address_line_1: {
-                            type: 'string',
-                            description: 'The first line of the address.'
-                          },
-                          address_line_2: {
-                            type: 'string',
-                            description: 'The second line of the address.'
-                          },
-                          locality: {
-                            type: 'string',
-                            description: 'The locality. For example London.'
-                          },
-                          region: {
-                            type: 'string',
-                            description: 'The region. For example Surrey.'
-                          },
-                          postal_code: {
-                            type: 'string',
-                            description:
-                              'The postal code. For example CF14 3UZ.'
-                          },
-                          country: {
-                            type: 'string',
-                            description: 'The country.'
-                          }
+                      title: 'practitionerAddress',
+                      required: [],
+                      properties: {
+                        address_line_1: {
+                          type: 'string',
+                          description: 'The first line of the address.'
+                        },
+                        address_line_2: {
+                          type: 'string',
+                          description: 'The second line of the address.'
+                        },
+                        locality: {
+                          type: 'string',
+                          description: 'The locality. For example London.'
+                        },
+                        region: {
+                          type: 'string',
+                          description: 'The region. For example Surrey.'
+                        },
+                        postal_code: {
+                          type: 'string',
+                          description: 'The postal code. For example CF14 3UZ.'
+                        },
+                        country: {
+                          type: 'string',
+                          description: 'The country.'
                         }
                       }
                     },
@@ -171,11 +163,12 @@ export const GetInsolvencySchema = {
                         'interim-liquidator'
                       ]
                     }
-                  }
+                  },
+                  type: 'object'
                 }
               },
               links: {
-                type: 'object',
+                type: 'array',
                 description: 'The practitioners for the case.',
                 items: {
                   title: 'links',
@@ -185,7 +178,8 @@ export const GetInsolvencySchema = {
                       description:
                         'The link to the charge this case is lodged against.'
                     }
-                  }
+                  },
+                  type: 'object'
                 }
               },
               number: {

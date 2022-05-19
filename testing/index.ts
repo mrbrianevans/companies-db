@@ -1,18 +1,17 @@
 import testData from './testData.json' assert { type: 'json' }
 import autocannon from "autocannon";
 import dotenv from 'dotenv'
-import {getCompanyProfileRequests} from "./companyProfile.js";
 import {baseUrl} from "./url.js";
 import {headers} from "./headers.js";
+import {getCompanyProfileReqs, listStatementsReqs} from "./getTestRequests.js";
 dotenv.config({path: '../.env'})
 
-
-const requests = getCompanyProfileRequests(testData)
+const requests = getCompanyProfileReqs
 const results = await autocannon({url: baseUrl , headers, amount: 200, requests })
 
 console.log(autocannon.printResult(results))
 console.log(results)
-
+//
 
 
 const getCompanyNumber = () => '12763564'

@@ -74,7 +74,7 @@ export const GetUKEstablishmentsSchema = {
                 },
                 links: {
                   description: 'Resources related to this company.',
-                  type: 'object',
+                  type: 'array',
                   items: {
                     title: 'links',
                     required: [],

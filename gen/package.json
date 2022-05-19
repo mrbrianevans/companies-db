@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "prettier": "^2.6.2",
+    "yaml": "^2.1.0",
     "zx": "^6.1.0"
   }
 }
