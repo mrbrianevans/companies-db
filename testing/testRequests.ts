@@ -15,6 +15,7 @@ ajv.addFormat('date', (date)=> {
 })
 
 export async function testRequests(requests: { path: string }[], schema: Schema) {
+  assert(ajv.validateSchema(schema, false),'Schema not valid')
   const validate = ajv.compile(schema)
   assert(requests.length > 0, 'Zero requests to test')
   console.log(requests.length, 'test requests', requests.length > 20 ? 'Only using first 20':'')
@@ -22,7 +23,7 @@ export async function testRequests(requests: { path: string }[], schema: Schema)
     const url = baseUrl + request.path
     const res = await fetch(url, {headers})
     const json = await res.json()
-    assert(res.ok, 'Failed with status code ' + res.status + ' ' + res.statusText + ' on url ' + res.url + json.message)
+    assert(res.ok, 'Failed with status code ' + res.status + ' ' + res.statusText + ' on url ' + res.url + ' ' + json.message)
     const valid = validate(json)
     assert(valid, `${request.path} failed schema validation with ${validate.errors?.length} error(s): ${validate.errors?.map(e=>e.instancePath +' ' +e.message)}`)
   }

@@ -3,10 +3,10 @@ import autocannon from "autocannon";
 import dotenv from 'dotenv'
 import {baseUrl} from "./url.js";
 import {headers} from "./headers.js";
-import {getCompanyProfileReqs, listStatementsReqs} from "./getTestRequests.js";
+import {getChargesReqs, getCompanyProfileReqs, listStatementsReqs} from "./getTestRequests.js";
 dotenv.config({path: '../.env'})
 
-const requests = getCompanyProfileReqs
+const requests = getChargesReqs
 const results = await autocannon({url: baseUrl , headers, amount: 200, requests })
 
 console.log(autocannon.printResult(results))

@@ -4,6 +4,8 @@ import {addCaddyFileEntry, newCaddyFile} from "./files/genCaddyFile.js";
 import {camelCase, kebabCase, prettyTs} from "./utils.js";
 import {addPathSystemTest, genSystemTest} from "./files/genSystemTest.js";
 import YAML from 'yaml'
+import {genDockerCompose} from "./files/genDockerCompose.js";
+import {genPrometheusConfig} from "./files/genPrometheus.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -21,20 +23,8 @@ async function createTagDirectories(tags) {
     await mkdir(resolve(SERVICES_DIR), {recursive: true})
     await mkdir(resolve(SYS_TEST_DIR), {recursive: true})
     await newCaddyFile(SERVICES_DIR)
-    await writeFile(resolve(SERVICES_DIR, 'docker-compose.yaml'), YAML.stringify({
-        version: '3',
-        services: Object.fromEntries(tags.map((tag, i) => [kebabCase(tag.name), {
-            build: tag.name,
-            networks: ['microservices'],
-            env_file: ['.env']
-        }]).concat([['gateway', {
-            image: 'caddy',
-            volumes: ['./Caddyfile:/etc/caddy/Caddyfile'],
-            ports: ['3000:80'], networks: ['microservices']
-        }], ['auth-db', {image: 'redis', networks: ['auth']}],
-        ['auth-service', {build: 'auth', networks: ['auth', 'microservices']}]])),
-        networks: {microservices: {driver: 'bridge'}, auth: {driver: 'bridge'}}
-    }, {defaultStringType: 'QUOTE_DOUBLE'}))
+    await genPrometheusConfig(SERVICES_DIR)
+    await genDockerCompose(SERVICES_DIR, tags)
     await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(`import Fastify from 'fastify'
 // --- import controllers ---
 

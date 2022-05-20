@@ -1,4 +1,9 @@
+:2022 {
+    metrics /metrics
+}
 :80 {
+    log # logs requests
+    
     @authed header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
     # proxy to microservices
     @company-company_number-persons-with-significant-controlsuper-secure-super_secure_id {

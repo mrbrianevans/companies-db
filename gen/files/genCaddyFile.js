@@ -4,11 +4,17 @@ import {camelCase, kebabCase} from "../utils.js";
 
 
 export async function newCaddyFile(SERVICES_DIR){
-    await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), `:80 {
+    await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), `
+:2022 {
+    metrics /metrics
+}
+:80 {
+    log # logs requests
+    
     @authed header_regexp Authorization ^Basic\\s[a-zA-Z0-9]+={0,2}$
     # proxy to microservices
 }
-`)
+`.trim())
 }
 
 export async function addCaddyFileEntry(SERVICES_DIR, path, tag){

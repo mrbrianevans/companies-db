@@ -6,78 +6,104 @@
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "company-profile":
     "build": "companyProfile"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "search":
     "build": "search"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "officers":
     "build": "officers"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "registers":
     "build": "registers"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "charges":
     "build": "charges"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "filing-history":
     "build": "filingHistory"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "insolvency":
     "build": "insolvency"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "exemptions":
     "build": "exemptions"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "officer-disqualifications":
     "build": "officerDisqualifications"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "officer-appointments":
     "build": "officerAppointments"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "ukestablishments":
     "build": "UKEstablishments"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "persons-with-significant-control":
     "build": "personsWithSignificantControl"
     "networks":
       - "microservices"
     "env_file":
       - ".env"
+    "logging":
+      "driver": "local"
   "gateway":
     "image": "caddy"
     "volumes":
@@ -86,17 +112,36 @@
       - "3000:80"
     "networks":
       - "microservices"
+      - "metrics"
+    "logging":
+      "driver": "local"
   "auth-db":
     "image": "redis"
     "networks":
       - "auth"
+    "logging":
+      "driver": "local"
   "auth-service":
     "build": "auth"
     "networks":
       - "auth"
       - "microservices"
+    "logging":
+      "driver": "local"
+  "metrics":
+    "image": "prom/prometheus"
+    "logging":
+      "driver": "local"
+    "volumes":
+      - "./prometheus.yaml:/etc/prometheus/prometheus.yml"
+    "ports":
+      - "9090:9090"
+    "networks":
+      - "metrics"
 "networks":
   "microservices":
     "driver": "bridge"
   "auth":
+    "driver": "bridge"
+  "metrics":
     "driver": "bridge"
