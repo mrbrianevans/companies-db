@@ -4,7 +4,7 @@ import {resolve} from "path";
 import {kebabCase} from "../utils.js";
 export async function genDockerCompose(SERVICES_DIR, tags) {
     await writeFile(resolve(SERVICES_DIR, 'docker-compose.yaml'), YAML.stringify({
-        version: '3',
+        version: '3.7',
         services: Object.fromEntries(tags.map((tag) => [kebabCase(tag.name), {
             build: tag.name,
             networks: ['microservices'],
