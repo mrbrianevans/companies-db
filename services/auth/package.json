@@ -9,8 +9,9 @@
   },
   "version": "1.0.0",
   "dependencies": {
+    "@fastify/redis": "^5.0.0",
     "fastify": "^3.29.0",
-    "redis": "^4.1.0"
+    "ioredis": "^5.0.5"
   },
   "devDependencies": {
     "@types/node": "^17.0.34",

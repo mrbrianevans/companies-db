@@ -1,11 +1,12 @@
 import type { AuthResponse } from '../schemas/authSchema.js'
-import { createClient } from 'redis';
-
+import {FastifyRedis} from "@fastify/redis";
 /**
  * Returns rate limit information.
+ * @deprecated use AuthService instead.
  */
-export async function authService(
-  authHeader: string
+export async function getRatelimitHeaders(
+  authHeader: string,
+  redis: FastifyRedis
 ): Promise<AuthResponse> {
   //todo: this logic is not perfect, but it at least mocks the headers with some information
   const keyMatch = authHeader?.match(/^Basic (.*)$/)
@@ -15,14 +16,9 @@ export async function authService(
   const sizeMinutes = 5
   const window = Math.ceil(new Date().getMinutes() / sizeMinutes)
 
-  const client = createClient({url: 'redis://auth-db:6379'});
-
-  client.on('error', (err) => console.log('Redis Client Error', err));
-
-  await client.connect();
   const bucket = key + ':' + window
-  const used = await client.INCR(bucket)
-  await client.EXPIRE(bucket, 60*sizeMinutes)
+  const used = await redis.incr(bucket)
+  await redis.expire(bucket, 60*sizeMinutes)
   const limit = 600
   const resetDate = new Date()
   resetDate.setMinutes(window * sizeMinutes)
