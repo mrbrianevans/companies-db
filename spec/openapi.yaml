@@ -1,14 +1,14 @@
 openapi: 3.0.1
 info:
-  description: An API suite providing read only access to search and retrieve public
-    company data
+  description: An API suite providing read only access to search and retrieve
+    public company data
   title: Companies House Public Data API
   version: 1.0.0
 servers:
   - url: https://api.company-information.service.gov.uk/
   - url: http://api.company-information.service.gov.uk/
 security:
-  - api_key: [ ]
+  - api_key: []
 tags:
   - description: Registered office address
     name: registeredOfficeAddress
@@ -37,7 +37,7 @@ tags:
   - description: Persons with significant control
     name: personsWithSignificantControl
 paths:
-  /company/{company_number}/registered-office-address:
+  "/company/{company_number}/registered-office-address":
     get:
       description: Get the current address of a company
       operationId: companyCompanyNumberRegisteredOfficeAddressGET
@@ -53,13 +53,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/registeredOfficeAddress'
+                $ref: "#/components/schemas/registeredOfficeAddress"
           description: Successful response
         "401":
-          content: { }
+          content: {}
           description: Not authorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       security:
         - oauth2:
@@ -69,7 +69,7 @@ paths:
       tags:
         - registeredOfficeAddress
       x-eov-operation-handler: controllers/RegisteredOfficeAddressController
-  /company/{company_number}:
+  "/company/{company_number}":
     get:
       description: Get the basic company information
       operationId: companyCompanyNumberGET
@@ -85,8 +85,287 @@ paths:
           content:
             application/json:
               schema:
-                title: companyProfile
                 type: object
+                properties:
+                  accounts:
+                    type: object
+                    properties:
+                      overdue:
+                        type: boolean
+                      accounting_reference_date:
+                        type: object
+                        properties:
+                          month:
+                            type: string
+                          day:
+                            type: string
+                        required:
+                          - month
+                          - day
+                      next_made_up_to:
+                        type: string
+                      last_accounts:
+                        type: object
+                        properties:
+                          period_end_on:
+                            type: string
+                          type:
+                            type: string
+                          period_start_on:
+                            type: string
+                          made_up_to:
+                            type: string
+                      next_due:
+                        type: string
+                      next_accounts:
+                        type: object
+                        properties:
+                          due_on:
+                            type: string
+                          overdue:
+                            type: boolean
+                          period_start_on:
+                            type: string
+                          period_end_on:
+                            type: string
+                        required:
+                          - period_end_on
+                    required:
+                      - last_accounts
+                  can_file:
+                    type: boolean
+                  company_name:
+                    type: string
+                  company_number:
+                    type: string
+                  company_status:
+                    type: string
+                  confirmation_statement:
+                    type: object
+                    properties:
+                      last_made_up_to:
+                        type: string
+                      next_made_up_to:
+                        type: string
+                      next_due:
+                        type: string
+                      overdue:
+                        type: boolean
+                    required:
+                      - next_made_up_to
+                      - next_due
+                  date_of_creation:
+                    type: string
+                  etag:
+                    type: string
+                  has_been_liquidated:
+                    type: boolean
+                  has_charges:
+                    type: boolean
+                  has_insolvency_history:
+                    type: boolean
+                  has_super_secure_pscs:
+                    type: boolean
+                  jurisdiction:
+                    type: string
+                  last_full_members_list_date:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                      filing_history:
+                        type: string
+                      officers:
+                        type: string
+                      persons_with_significant_control:
+                        type: string
+                      charges:
+                        type: string
+                      persons_with_significant_control_statements:
+                        type: string
+                      insolvency:
+                        type: string
+                      registers:
+                        type: string
+                      overseas:
+                        type: string
+                      uk_establishments:
+                        type: string
+                      exemptions:
+                        type: string
+                    required:
+                      - self
+                  previous_company_names:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        effective_from:
+                          type: string
+                        ceased_on:
+                          type: string
+                      required:
+                        - name
+                        - effective_from
+                        - ceased_on
+                  registered_office_address:
+                    type: object
+                    properties:
+                      address_line_1:
+                        type: string
+                      postal_code:
+                        type: string
+                      country:
+                        type: string
+                      locality:
+                        type: string
+                      address_line_2:
+                        type: string
+                      region:
+                        type: string
+                      care_of:
+                        type: string
+                      po_box:
+                        type: string
+                  registered_office_is_in_dispute:
+                    type: boolean
+                  sic_codes:
+                    type: array
+                    items:
+                      type: string
+                  type:
+                    type: string
+                  undeliverable_registered_office_address:
+                    type: boolean
+                  date_of_cessation:
+                    type: string
+                  status:
+                    type: string
+                  annual_return:
+                    type: object
+                    properties:
+                      last_made_up_to:
+                        type: string
+                      overdue:
+                        type: boolean
+                      next_due:
+                        type: string
+                      next_made_up_to:
+                        type: string
+                    required:
+                      - last_made_up_to
+                  branch_company_details:
+                    type: object
+                    properties:
+                      parent_company_number:
+                        type: string
+                      parent_company_name:
+                        type: string
+                      business_activity:
+                        type: string
+                    required:
+                      - parent_company_number
+                      - parent_company_name
+                  foreign_company_details:
+                    type: object
+                    properties:
+                      is_a_credit_financial_institution:
+                        type: boolean
+                      business_activity:
+                        type: string
+                      governed_by:
+                        type: string
+                      registration_number:
+                        type: string
+                      accounting_requirement:
+                        type: object
+                        properties:
+                          foreign_account_type:
+                            type: string
+                          terms_of_account_publication:
+                            type: string
+                        required:
+                          - foreign_account_type
+                          - terms_of_account_publication
+                      legal_form:
+                        type: string
+                      originating_registry:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          country:
+                            type: string
+                        required:
+                          - name
+                          - country
+                      accounts:
+                        type: object
+                        properties:
+                          account_period_to:
+                            type: object
+                            properties:
+                              month:
+                                type: string
+                              day:
+                                type: string
+                            required:
+                              - month
+                              - day
+                          must_file_within:
+                            type: object
+                            properties:
+                              months:
+                                type: string
+                            required:
+                              - months
+                          account_period_from:
+                            type: object
+                            properties:
+                              month:
+                                type: string
+                              day:
+                                type: string
+                            required:
+                              - month
+                              - day
+                        required:
+                          - account_period_to
+                          - must_file_within
+                          - account_period_from
+                    required:
+                      - is_a_credit_financial_institution
+                      - registration_number
+                      - accounting_requirement
+                      - legal_form
+                      - originating_registry
+                  company_status_detail:
+                    type: string
+                  external_registration_number:
+                    type: string
+                  date_of_dissolution:
+                    type: string
+                  partial_data_available:
+                    type: string
+                  is_community_interest_company:
+                    type: boolean
+                  subtype:
+                    type: string
+                required:
+                  - can_file
+                  - company_name
+                  - company_number
+                  - company_status
+                  - etag
+                  - links
+                  - registered_office_address
+                  - type
+                additionalProperties: false
+                title: getCompanyProfile
           description: readCompanyProfile
           headers:
             ETag:
@@ -94,10 +373,10 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Company profile
       tags:
@@ -133,7 +412,7 @@ paths:
                 type: object
           description: Search all
         "401":
-          content: { }
+          content: {}
           description: Not authorised
       summary: Search All
       tags:
@@ -162,9 +441,9 @@ paths:
           schema:
             type: integer
         - description: Enumerable options to restrict search results. Space separate
-            multiple restriction options to combine functionality. For a "company name
-            availability" search use "active-companies legally-equivalent-company-name"
-            together.
+            multiple restriction options to combine functionality. For a
+            "company name availability" search use "active-companies
+            legally-equivalent-company-name" together.
           in: query
           name: restrictions
           schema:
@@ -178,7 +457,7 @@ paths:
                 type: object
           description: Search company
         "401":
-          content: { }
+          content: {}
           description: Not authorised
       summary: Search companies
       tags:
@@ -215,7 +494,7 @@ paths:
                 type: object
           description: Search officer
         "401":
-          content: { }
+          content: {}
           description: Not authorised
       summary: Search company officers
       tags:
@@ -252,7 +531,7 @@ paths:
                 type: object
           description: Search all
         "401":
-          content: { }
+          content: {}
           description: Not authorised
       summary: Search disqualified officers
       tags:
@@ -287,8 +566,8 @@ paths:
           name: search_below
           schema:
             type: string
-        - description: The maximum number of results matching the search term(s) to
-            return with a range of 1 to 100
+        - description: The maximum number of results matching the search term(s) to return
+            with a range of 1 to 100
           in: query
           name: size
           schema:
@@ -307,12 +586,12 @@ paths:
                 type: object
           description: A list of dissolved companies
         "404":
-          content: { }
+          content: {}
           description: No companies found
         "422":
-          content: { }
-          description: Invalid size parameter, size must be greater than zero and
-            not greater than 100
+          content: {}
+          description: Invalid size parameter, size must be greater than zero and not
+            greater than 100
       summary: Search for a dissolved company
       tags:
         - search
@@ -339,8 +618,8 @@ paths:
           name: search_below
           schema:
             type: string
-        - description: The maximum number of results matching the search term(s) to
-            return with a range of 1 to 100
+        - description: The maximum number of results matching the search term(s) to return
+            with a range of 1 to 100
           in: query
           name: size
           schema:
@@ -354,12 +633,12 @@ paths:
                 type: object
           description: A list of companies
         "404":
-          content: { }
+          content: {}
           description: No companies found
         "422":
-          content: { }
-          description: Invalid size parameter, size must be greater than zero and
-            not greater than 100
+          content: {}
+          description: Invalid size parameter, size must be greater than zero and not
+            greater than 100
       summary: Search for a company
       tags:
         - search
@@ -376,49 +655,53 @@ paths:
           schema:
             type: string
         - description: The company status advanced search filter. To search using multiple
-            values, use a comma delimited list or multiple of the same key i.e. company_status=xxx&company_status=yyy
+            values, use a comma delimited list or multiple of the same key i.e.
+            company_status=xxx&company_status=yyy
           in: query
           name: company_status
-          schema: { }
-        - description: The company subtype advanced search filter. To search using multiple
-            values, use a comma delimited list or multiple of the same key i.e. company_subtype=xxx&company_subtype=yyy
+          schema: {}
+        - description: The company subtype advanced search filter. To search using
+            multiple values, use a comma delimited list or multiple of the same
+            key i.e. company_subtype=xxx&company_subtype=yyy
           in: query
           name: company_subtype
           schema:
             type: string
         - description: The company type advanced search filter. To search using multiple
-            values, use a comma delimited list or multiple of the same key i.e. company_type=xxx&company_type=yyy
+            values, use a comma delimited list or multiple of the same key i.e.
+            company_type=xxx&company_type=yyy
           in: query
           name: company_type
-          schema: { }
+          schema: {}
         - description: The dissolved from date advanced search filter
           in: query
           name: dissolved_from
-          schema: { }
+          schema: {}
         - description: The dissolved to date advanced search filter
           in: query
           name: dissolved_to
-          schema: { }
+          schema: {}
         - description: The incorporated from date advanced search filter
           in: query
           name: incorporated_from
-          schema: { }
+          schema: {}
         - description: The incorporated to date advanced search filter
           in: query
           name: incorporated_to
-          schema: { }
+          schema: {}
         - description: The location advanced search filter
           in: query
           name: location
           schema:
             type: string
         - description: The SIC codes advanced search filter. To search using multiple
-            values, use a comma delimited list or multiple of the same key i.e. sic_codes=xxx&sic_codes=yyy
+            values, use a comma delimited list or multiple of the same key i.e.
+            sic_codes=xxx&sic_codes=yyy
           in: query
           name: sic_codes
-          schema: { }
-        - description: The maximum number of results matching the search term(s) to
-            return with a range of 1 to 5000
+          schema: {}
+        - description: The maximum number of results matching the search term(s) to return
+            with a range of 1 to 5000
           in: query
           name: size
           schema:
@@ -438,17 +721,17 @@ paths:
                 type: object
           description: A list of companies
         "400":
-          content: { }
+          content: {}
           description: Bad request
         "404":
-          content: { }
+          content: {}
           description: No companies found
       summary: Advanced search for a company
       tags:
         - search
       x-operationName: advanced company search
       x-eov-operation-handler: controllers/SearchController
-  /company/{company_number}/officers:
+  "/company/{company_number}/officers":
     get:
       description: List of all company officers
       operationId: companyCompanyNumberOfficersGET
@@ -464,9 +747,9 @@ paths:
           name: items_per_page
           schema:
             type: integer
-        - description: The register_type determines which officer type is returned for
-            the registers view.The register_type field will only work if registers_view
-            is set to true
+        - description: The register_type determines which officer type is returned for the
+            registers view.The register_type field will only work if
+            registers_view is set to true
           in: query
           name: register_type
           schema:
@@ -475,10 +758,10 @@ paths:
               - secretaries
               - llp-members
             type: string
-        - description: Display register specific information. If given register is held
-            at Companies House, registers_view set to true and correct register_type
-            specified, only active officers will be returned. Those will also have full
-            date of birth.Defaults to false
+        - description: Display register specific information. If given register is held at
+            Companies House, registers_view set to true and correct
+            register_type specified, only active officers will be returned.
+            Those will also have full date of birth.Defaults to false
           in: query
           name: register_view
           schema:
@@ -505,8 +788,137 @@ paths:
           content:
             application/json:
               schema:
-                title: officerList
                 type: object
+                properties:
+                  active_count:
+                    type: integer
+                  etag:
+                    type: string
+                  inactive_count:
+                    type: integer
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        address:
+                          type: object
+                          properties:
+                            postal_code:
+                              type: string
+                            address_line_1:
+                              type: string
+                            region:
+                              type: string
+                            locality:
+                              type: string
+                            premises:
+                              type: string
+                            address_line_2:
+                              type: string
+                            country:
+                              type: string
+                            care_of:
+                              type: string
+                            po_box:
+                              type: string
+                        officer_role:
+                          type: string
+                        name:
+                          type: string
+                        appointed_on:
+                          type: string
+                        links:
+                          type: object
+                          properties:
+                            officer:
+                              type: object
+                              properties:
+                                appointments:
+                                  type: string
+                              required:
+                                - appointments
+                            self:
+                              type: string
+                          required:
+                            - officer
+                            - self
+                        date_of_birth:
+                          type: object
+                          properties:
+                            year:
+                              type: integer
+                            month:
+                              type: integer
+                          required:
+                            - year
+                            - month
+                        occupation:
+                          type: string
+                        nationality:
+                          type: string
+                        country_of_residence:
+                          type: string
+                        resigned_on:
+                          type: string
+                        identification:
+                          type: object
+                          properties:
+                            place_registered:
+                              type: string
+                            identification_type:
+                              type: string
+                            registration_number:
+                              type: string
+                            legal_form:
+                              type: string
+                            legal_authority:
+                              type: string
+                          required:
+                            - identification_type
+                        former_names:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              surname:
+                                type: string
+                              forenames:
+                                type: string
+                      required:
+                        - officer_role
+                        - name
+                        - links
+                  items_per_page:
+                    type: integer
+                  kind:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                    required:
+                      - self
+                  resigned_count:
+                    type: integer
+                  start_index:
+                    type: integer
+                  total_results:
+                    type: integer
+                required:
+                  - active_count
+                  - etag
+                  - inactive_count
+                  - items
+                  - items_per_page
+                  - kind
+                  - links
+                  - resigned_count
+                  - start_index
+                  - total_results
+                additionalProperties: false
+                title: listCompanyOfficers
           description: List the company officers
           headers:
             ETag:
@@ -521,14 +933,14 @@ paths:
                 type: object
           description: Bad request
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
       summary: Company Officers
       tags:
         - officers
       x-operationName: list
       x-eov-operation-handler: controllers/OfficersController
-  /company/{company_number}/appointments/{appointment_id}:
+  "/company/{company_number}/appointments/{appointment_id}":
     get:
       description: Get details of an individual company officer appointment
       operationId: companyCompanyNumberAppointmentsAppointmentIdGET
@@ -539,7 +951,8 @@ paths:
           required: true
           schema:
             type: string
-        - description: The appointment id of the company officer appointment being requested.
+        - description: The appointment id of the company officer appointment being
+            requested.
           in: path
           name: appointment_id
           required: true
@@ -566,13 +979,13 @@ paths:
                 type: object
           description: Bad request
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
       summary: Get a company officer appointment
       tags:
         - officers
       x-eov-operation-handler: controllers/OfficersController
-  /company/{company_number}/registers:
+  "/company/{company_number}/registers":
     get:
       description: Get the company registers information
       operationId: companyCompanyNumberRegistersGET
@@ -588,7 +1001,154 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/companyRegister'
+                type: object
+                properties:
+                  kind:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                    required:
+                      - self
+                  registers:
+                    type: object
+                    properties:
+                      members:
+                        type: object
+                        properties:
+                          register_type:
+                            type: string
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                register_moved_to:
+                                  type: string
+                                moved_on:
+                                  type: string
+                                links:
+                                  type: object
+                                  properties:
+                                    filing:
+                                      type: string
+                                  required:
+                                    - filing
+                              required:
+                                - register_moved_to
+                                - moved_on
+                        required:
+                          - register_type
+                          - items
+                      directors:
+                        type: object
+                        properties:
+                          register_type:
+                            type: string
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                moved_on:
+                                  type: string
+                                register_moved_to:
+                                  type: string
+                              required:
+                                - moved_on
+                                - register_moved_to
+                          links:
+                            type: object
+                            properties:
+                              directors_register:
+                                type: string
+                            required:
+                              - directors_register
+                        required:
+                          - register_type
+                          - items
+                      secretaries:
+                        type: object
+                        properties:
+                          register_type:
+                            type: string
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                register_moved_to:
+                                  type: string
+                                moved_on:
+                                  type: string
+                              required:
+                                - register_moved_to
+                                - moved_on
+                          links:
+                            type: object
+                            properties:
+                              secretaries_register:
+                                type: string
+                            required:
+                              - secretaries_register
+                        required:
+                          - register_type
+                          - items
+                      persons_with_significant_control:
+                        type: object
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                register_moved_to:
+                                  type: string
+                                moved_on:
+                                  type: string
+                              required:
+                                - register_moved_to
+                                - moved_on
+                          register_type:
+                            type: string
+                          links:
+                            type: object
+                            properties:
+                              persons_with_significant_control_register:
+                                type: string
+                            required:
+                              - persons_with_significant_control_register
+                        required:
+                          - items
+                          - register_type
+                      usual_residential_address:
+                        type: object
+                        properties:
+                          register_type:
+                            type: string
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                register_moved_to:
+                                  type: string
+                                moved_on:
+                                  type: string
+                              required:
+                                - register_moved_to
+                                - moved_on
+                        required:
+                          - register_type
+                          - items
+                required:
+                  - kind
+                  - links
+                  - registers
+                additionalProperties: false
+                title: getCompanyRegister
           description: readCompanyRegister
           headers:
             ETag:
@@ -596,13 +1156,13 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
       summary: Company registers
       tags:
         - registers
       x-eov-operation-handler: controllers/RegistersController
-  /company/{company_number}/filing-history/{transaction_id}:
+  "/company/{company_number}/filing-history/{transaction_id}":
     get:
       description: Get the filing history item of a company
       operationId: companyCompanyNumberFilingHistoryTransactionIdGET
@@ -624,8 +1184,233 @@ paths:
           content:
             application/json:
               schema:
-                title: filingHistoryItem
                 type: object
+                properties:
+                  associated_filings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        category:
+                          type: string
+                        date:
+                          type: string
+                        description:
+                          type: string
+                        type:
+                          type: string
+                        action_date:
+                          type: integer
+                        description_values:
+                          type: object
+                          properties:
+                            capital:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  currency:
+                                    type: string
+                                  figure:
+                                    type: string
+                                required:
+                                  - currency
+                                  - figure
+                            date:
+                              type: string
+                            capital_currency:
+                              type: string
+                            capital_figure:
+                              type: string
+                            resolution_date:
+                              type: string
+                        original_description:
+                          type: string
+                        data:
+                          type: object
+                          properties:
+                            description:
+                              type: string
+                            description_values:
+                              type: object
+                              properties:
+                                description:
+                                  type: string
+                              required:
+                                - description
+                        matched-default:
+                          type: string
+                        subcategory:
+                          type: string
+                      required:
+                        - date
+                        - description
+                        - type
+                  barcode:
+                    type: string
+                  category:
+                    type: string
+                  date:
+                    type: string
+                  description:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                      document_metadata:
+                        type: string
+                    required:
+                      - self
+                  pages:
+                    type: integer
+                  transaction_id:
+                    type: string
+                  type:
+                    type: string
+                  action_date:
+                    type: string
+                  description_values:
+                    type: object
+                    properties:
+                      termination_date:
+                        type: string
+                      officer_name:
+                        type: string
+                      made_up_date:
+                        type: string
+                      change_date:
+                        type: string
+                      appointment_date:
+                        type: string
+                      cessation_date:
+                        type: string
+                      psc_name:
+                        type: string
+                      old_address:
+                        type: string
+                      new_address:
+                        type: string
+                      date:
+                        type: string
+                      capital:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            figure:
+                              type: string
+                            currency:
+                              type: string
+                          required:
+                            - figure
+                            - currency
+                      charge_creation_date:
+                        type: string
+                      charge_number:
+                        type: string
+                      description:
+                        type: string
+                      notification_date:
+                        type: string
+                      withdrawal_date:
+                        type: string
+                      new_date:
+                        type: string
+                      change_type:
+                        type: string
+                      branch_number:
+                        type: string
+                      change_details:
+                        type: string
+                      representative_details:
+                        type: string
+                      brought_down_date:
+                        type: string
+                      change_address:
+                        type: string
+                  subcategory:
+                    type: string
+                  paper_filed:
+                    type: boolean
+                  resolutions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        category:
+                          type: string
+                        delta_at:
+                          type: string
+                        description:
+                          type: string
+                        description_values:
+                          type: object
+                          properties:
+                            res_type:
+                              type: string
+                            description:
+                              type: string
+                            resolution_date:
+                              type: string
+                            case_start_date:
+                              type: string
+                        subcategory:
+                          anyOf:
+                            - type: string
+                            - type: array
+                              items:
+                                type: string
+                        type:
+                          type: string
+                        original_description:
+                          type: string
+                        barcode:
+                          type: string
+                      required:
+                        - category
+                        - description
+                        - subcategory
+                        - type
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        annotation:
+                          type: string
+                        category:
+                          type: string
+                        date:
+                          type: string
+                        description:
+                          type: string
+                        description_values:
+                          type: object
+                          properties:
+                            description:
+                              type: string
+                          required:
+                            - description
+                        type:
+                          type: string
+                      required:
+                        - annotation
+                        - category
+                        - date
+                        - description
+                        - description_values
+                        - type
+                required:
+                  - category
+                  - date
+                  - description
+                  - links
+                  - transaction_id
+                  - type
+                additionalProperties: false
+                title: filingHistoryItem
           description: Filing history items resource returned
         "401":
           content:
@@ -635,13 +1420,13 @@ paths:
                 type: object
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Filing history not available for this company
       summary: filingHistoryItem resource
       tags:
         - filingHistory
       x-eov-operation-handler: controllers/FilingHistoryController
-  /company/{company_number}/filing-history:
+  "/company/{company_number}/filing-history":
     get:
       description: Get the filing history list of a company
       operationId: companyCompanyNumberFilingHistoryGET
@@ -672,8 +1457,297 @@ paths:
           content:
             application/json:
               schema:
-                title: filingHistoryList
                 type: object
+                properties:
+                  filing_history_status:
+                    type: string
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        action_date:
+                          type:
+                            - "null"
+                            - string
+                        category:
+                          type: string
+                        date:
+                          type: string
+                        description:
+                          type: string
+                        description_values:
+                          type: object
+                          properties:
+                            made_up_date:
+                              type: string
+                            new_date:
+                              type: string
+                            notification_date:
+                              type:
+                                - "null"
+                                - string
+                            psc_name:
+                              type: string
+                            cessation_date:
+                              type: string
+                            appointment_date:
+                              type: string
+                            officer_name:
+                              type: string
+                            termination_date:
+                              type: string
+                            change_date:
+                              type: string
+                            description:
+                              type: string
+                            charge_creation_date:
+                              type: string
+                            charge_number:
+                              type: string
+                            old_address:
+                              type: string
+                            new_address:
+                              type: string
+                            branch_number:
+                              type: string
+                            representative_details:
+                              type: string
+                            date:
+                              type: string
+                            capital:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  currency:
+                                    type: string
+                                  figure:
+                                    type: string
+                                  date:
+                                    type: string
+                                required:
+                                  - currency
+                                  - figure
+                            withdrawal_date:
+                              type: string
+                            brought_down_date:
+                              type: string
+                            form_attached:
+                              type: string
+                            change_details:
+                              type: string
+                            company_number:
+                              type: string
+                            close_date:
+                              type: string
+                            change_address:
+                              type: string
+                            form_type:
+                              type: string
+                            alt_capital:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  date:
+                                    type: string
+                                  currency:
+                                    type: string
+                                  description:
+                                    type: string
+                                  figure:
+                                    type: string
+                                required:
+                                  - date
+                                  - currency
+                                  - description
+                                  - figure
+                            case_end_date:
+                              type: string
+                            officer_address:
+                              type: string
+                            change_type:
+                              type: string
+                            original_description:
+                              type: string
+                            default_address:
+                              type: string
+                            change_name:
+                              type: string
+                        links:
+                          type: object
+                          properties:
+                            self:
+                              type: string
+                            document_metadata:
+                              type: string
+                        type:
+                          type: string
+                        pages:
+                          type: integer
+                        barcode:
+                          type:
+                            - "null"
+                            - string
+                        transaction_id:
+                          type: string
+                        subcategory:
+                          anyOf:
+                            - type: string
+                            - type: array
+                              items:
+                                type: string
+                        paper_filed:
+                          type: boolean
+                        associated_filings:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              action_date:
+                                type: integer
+                              category:
+                                type: string
+                              date:
+                                type: string
+                              description:
+                                type: string
+                              description_values:
+                                type: object
+                                properties:
+                                  capital:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        currency:
+                                          type: string
+                                        figure:
+                                          type: string
+                                      required:
+                                        - currency
+                                        - figure
+                                  date:
+                                    type: string
+                                  capital_figure:
+                                    type: string
+                                  capital_currency:
+                                    type: string
+                                  resolution_date:
+                                    type: string
+                                  description:
+                                    type: string
+                              type:
+                                type: string
+                              data:
+                                type: object
+                                properties:
+                                  description_values:
+                                    type: object
+                                    properties:
+                                      description:
+                                        type: string
+                                    required:
+                                      - description
+                                  description:
+                                    type: string
+                              matched-default:
+                                type: string
+                              subcategory:
+                                type: string
+                            required:
+                              - date
+                              - description
+                              - type
+                        resolutions:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              category:
+                                type: string
+                              description:
+                                type: string
+                              description_values:
+                                type: object
+                                properties:
+                                  res_type:
+                                    type: string
+                                  case_start_date:
+                                    type: string
+                                  resolution_date:
+                                    type: string
+                                  description:
+                                    type: string
+                              subcategory:
+                                anyOf:
+                                  - type: string
+                                  - type: array
+                                    items:
+                                      type: string
+                              type:
+                                type: string
+                              original_description:
+                                type: string
+                              barcode:
+                                type: string
+                              parent_form_type:
+                                type: string
+                              date:
+                                type: integer
+                            required:
+                              - category
+                              - description
+                              - type
+                        annotations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              annotation:
+                                type: string
+                              category:
+                                type: string
+                              date:
+                                type: string
+                              description:
+                                type: string
+                              description_values:
+                                type: object
+                                properties:
+                                  description:
+                                    type: string
+                                required:
+                                  - description
+                              type:
+                                type: string
+                            required:
+                              - annotation
+                              - category
+                              - date
+                              - description
+                              - description_values
+                              - type
+                      required:
+                        - date
+                        - type
+                        - barcode
+                        - transaction_id
+                  items_per_page:
+                    type: integer
+                  start_index:
+                    type: integer
+                  total_count:
+                    type: integer
+                required:
+                  - filing_history_status
+                  - items
+                  - items_per_page
+                  - start_index
+                  - total_count
+                additionalProperties: false
+                title: listFilingHistory
           description: Filing history items resource returned
         "401":
           content:
@@ -683,14 +1757,14 @@ paths:
                 type: object
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Filing history not available for this company
       summary: filingHistoryList resource
       tags:
         - filingHistory
       x-operationName: list
       x-eov-operation-handler: controllers/FilingHistoryController
-  /company/{company_number}/exemptions:
+  "/company/{company_number}/exemptions":
     get:
       description: Company exemptions information
       operationId: companyCompanyNumberExemptionsGET
@@ -710,15 +1784,15 @@ paths:
                 type: object
           description: Successful response
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       tags:
         - exemptions
       x-eov-operation-handler: controllers/ExemptionsController
-  /disqualified-officers/natural/{officer_id}:
+  "/disqualified-officers/natural/{officer_id}":
     get:
       description: Get a natural officer's disqualifications
       operationId: disqualified_officersNaturalOfficerIdGET
@@ -743,17 +1817,17 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Get natural officers disqualifications
       tags:
         - officerDisqualifications
       x-operationName: get natural officer
       x-eov-operation-handler: controllers/OfficerDisqualificationsController
-  /disqualified-officers/corporate/{officer_id}:
+  "/disqualified-officers/corporate/{officer_id}":
     get:
       description: Get a corporate officer's disqualifications
       operationId: disqualified_officersCorporateOfficerIdGET
@@ -778,17 +1852,17 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Get a corporate officers disqualifications
       tags:
         - officerDisqualifications
       x-operationName: get corporate officer
       x-eov-operation-handler: controllers/OfficerDisqualificationsController
-  /officers/{officer_id}/appointments:
+  "/officers/{officer_id}/appointments":
     get:
       description: List of all officer appointments
       operationId: officersOfficerIdAppointmentsGET
@@ -804,8 +1878,9 @@ paths:
           name: items_per_page
           schema:
             type: integer
-        - description: The first row of data to retrieve, starting at 0. Use this parameter
-            as a pagination mechanism along with the items_per_page parameter.
+        - description: The first row of data to retrieve, starting at 0. Use this
+            parameter as a pagination mechanism along with the items_per_page
+            parameter.
           in: query
           name: start_index
           schema:
@@ -815,8 +1890,158 @@ paths:
           content:
             application/json:
               schema:
-                title: appointmentList
                 type: object
+                properties:
+                  etag:
+                    type: string
+                  is_corporate_officer:
+                    type: boolean
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        address:
+                          type: object
+                          properties:
+                            address_line_1:
+                              type: string
+                            locality:
+                              type: string
+                            postal_code:
+                              type: string
+                            address_line_2:
+                              type: string
+                            country:
+                              type: string
+                            premises:
+                              type: string
+                            region:
+                              type: string
+                            care_of:
+                              type: string
+                            po_box:
+                              type: string
+                        resigned_on:
+                          type: string
+                        links:
+                          type: object
+                          properties:
+                            company:
+                              type: string
+                          required:
+                            - company
+                        officer_role:
+                          type: string
+                        appointed_on:
+                          type: string
+                        appointed_to:
+                          type: object
+                          properties:
+                            company_status:
+                              type: string
+                            company_name:
+                              type: string
+                            company_number:
+                              type: string
+                          required:
+                            - company_number
+                        name:
+                          type: string
+                        occupation:
+                          type: string
+                        nationality:
+                          type: string
+                        country_of_residence:
+                          type: string
+                        name_elements:
+                          type: object
+                          properties:
+                            surname:
+                              type: string
+                            forename:
+                              type: string
+                            other_forenames:
+                              type: string
+                            title:
+                              type: string
+                            honours:
+                              type: string
+                          required:
+                            - surname
+                        former_names:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              surname:
+                                type: string
+                              forenames:
+                                type: string
+                        is_pre_1992_appointment:
+                          type: boolean
+                        appointed_before:
+                          type: string
+                        identification:
+                          type: object
+                          properties:
+                            registration_number:
+                              type: string
+                            legal_form:
+                              type: string
+                            place_registered:
+                              type: string
+                            legal_authority:
+                              type: string
+                            identification_type:
+                              type: string
+                          required:
+                            - identification_type
+                      required:
+                        - address
+                        - links
+                        - officer_role
+                        - appointed_to
+                        - name
+                  items_per_page:
+                    type: integer
+                  kind:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                    required:
+                      - self
+                  name:
+                    type: string
+                  start_index:
+                    type: integer
+                  total_results:
+                    type: integer
+                  date_of_birth:
+                    type: object
+                    properties:
+                      month:
+                        type: integer
+                      year:
+                        type: integer
+                    required:
+                      - month
+                      - year
+                required:
+                  - etag
+                  - is_corporate_officer
+                  - items
+                  - items_per_page
+                  - kind
+                  - links
+                  - name
+                  - start_index
+                  - total_results
+                additionalProperties: false
+                title: listOfficerAppointments
           description: List the officer appointments
           headers:
             ETag:
@@ -824,17 +2049,17 @@ paths:
               schema:
                 type: string
         "400":
-          content: { }
+          content: {}
           description: Bad request
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
       summary: Officer Appointment List
       tags:
         - officerAppointments
       x-operationName: list
       x-eov-operation-handler: controllers/OfficerAppointmentsController
-  /company/{company_number}/charges:
+  "/company/{company_number}/charges":
     get:
       description: List of charges for a company.
       operationId: companyCompanyNumberChargesGET
@@ -850,21 +2075,148 @@ paths:
           content:
             application/json:
               schema:
-                title: chargeList
                 type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        persons_entitled:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                            required:
+                              - name
+                        classification:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            description:
+                              type: string
+                          required:
+                            - type
+                            - description
+                        transactions:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              filing_type:
+                                type: string
+                              links:
+                                type: object
+                                properties:
+                                  filing:
+                                    type: string
+                                required:
+                                  - filing
+                              delivered_on:
+                                type: string
+                            required:
+                              - filing_type
+                              - delivered_on
+                        charge_number:
+                          type: integer
+                        links:
+                          type: object
+                          properties:
+                            self:
+                              type: string
+                          required:
+                            - self
+                        status:
+                          type: string
+                        created_on:
+                          type: string
+                        charge_code:
+                          type: string
+                        particulars:
+                          type: object
+                          properties:
+                            contains_negative_pledge:
+                              type: boolean
+                            type:
+                              type: string
+                            contains_fixed_charge:
+                              type: boolean
+                            description:
+                              type: string
+                            contains_floating_charge:
+                              type: boolean
+                            floating_charge_covers_all:
+                              type: boolean
+                            chargor_acting_as_bare_trustee:
+                              type: boolean
+                        etag:
+                          type: string
+                        delivered_on:
+                          type: string
+                        satisfied_on:
+                          type: string
+                        secured_details:
+                          type: object
+                          properties:
+                            description:
+                              type: string
+                            type:
+                              type: string
+                          required:
+                            - description
+                            - type
+                        scottish_alterations:
+                          type: object
+                          properties:
+                            has_restricting_provisions:
+                              type: boolean
+                          required:
+                            - has_restricting_provisions
+                        assets_ceased_released:
+                          type: string
+                      required:
+                        - persons_entitled
+                        - classification
+                        - transactions
+                        - charge_number
+                        - links
+                        - status
+                        - created_on
+                        - particulars
+                        - etag
+                        - delivered_on
+                  part_satisfied_count:
+                    type: integer
+                  satisfied_count:
+                    type: integer
+                  total_count:
+                    type: integer
+                  unfiltered_count:
+                    type: integer
+                required:
+                  - items
+                  - part_satisfied_count
+                  - satisfied_count
+                  - total_count
+                  - unfiltered_count
+                additionalProperties: false
+                title: listCharge
           description: Resource returned
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404 ":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Charges
       tags:
         - charges
       x-operationName: list
       x-eov-operation-handler: controllers/ChargesController
-  /company/{company_number}/charges/{charge_id}:
+  "/company/{company_number}/charges/{charge_id}":
     get:
       description: Individual charge information for company.
       operationId: companyCompanyNumberChargesChargeIdGET
@@ -886,19 +2238,127 @@ paths:
           content:
             application/json:
               schema:
-                title: chargeDetails
                 type: object
+                properties:
+                  charge_number:
+                    type: integer
+                  classification:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      description:
+                        type: string
+                    required:
+                      - type
+                      - description
+                  created_on:
+                    type: string
+                  delivered_on:
+                    type: string
+                  etag:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                    required:
+                      - self
+                  particulars:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                      type:
+                        type: string
+                      contains_negative_pledge:
+                        type: boolean
+                      contains_floating_charge:
+                        type: boolean
+                      contains_fixed_charge:
+                        type: boolean
+                      floating_charge_covers_all:
+                        type: boolean
+                      chargor_acting_as_bare_trustee:
+                        type: boolean
+                  persons_entitled:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                      required:
+                        - name
+                  satisfied_on:
+                    type: string
+                  secured_details:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      description:
+                        type: string
+                    required:
+                      - type
+                      - description
+                  status:
+                    type: string
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        filing_type:
+                          type: string
+                        links:
+                          type: object
+                          properties:
+                            filing:
+                              type: string
+                          required:
+                            - filing
+                        delivered_on:
+                          type: string
+                      required:
+                        - filing_type
+                        - delivered_on
+                  charge_code:
+                    type: string
+                  scottish_alterations:
+                    type: object
+                    properties:
+                      has_restricting_provisions:
+                        type: boolean
+                    required:
+                      - has_restricting_provisions
+                  assets_ceased_released:
+                    type: string
+                required:
+                  - charge_number
+                  - classification
+                  - created_on
+                  - delivered_on
+                  - etag
+                  - links
+                  - particulars
+                  - persons_entitled
+                  - status
+                  - transactions
+                additionalProperties: false
+                title: getCharge
           description: Resource returned
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       tags:
         - charges
       x-eov-operation-handler: controllers/ChargesController
-  /company/{company_number}/insolvency:
+  "/company/{company_number}/insolvency":
     get:
       description: Company insolvency information
       operationId: companyCompanyNumberInsolvencyGET
@@ -918,15 +2378,15 @@ paths:
                 type: object
           description: Company insolvency resource returned
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       tags:
         - insolvency
       x-eov-operation-handler: controllers/InsolvencyController
-  /company/{company_number}/uk-establishments:
+  "/company/{company_number}/uk-establishments":
     get:
       description: List of uk-establishments companies
       operationId: companyCompanyNumberUkEstablishmentsGET
@@ -942,17 +2402,61 @@ paths:
           content:
             application/json:
               schema:
-                title: companyUKEstablishments
                 type: object
+                properties:
+                  etag:
+                    type: string
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        company_status:
+                          type: string
+                        locality:
+                          type: string
+                        company_number:
+                          type: string
+                        links:
+                          type: object
+                          properties:
+                            company:
+                              type: string
+                          required:
+                            - company
+                        company_name:
+                          type: string
+                      required:
+                        - company_status
+                        - locality
+                        - company_number
+                        - links
+                        - company_name
+                  kind:
+                    type: string
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                    required:
+                      - self
+                required:
+                  - etag
+                  - items
+                  - kind
+                  - links
+                additionalProperties: false
+                title: listUkEstablishments
           description: Resource returned
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
       summary: Company UK Establishments
       tags:
         - UKEstablishments
       x-eov-operation-handler: controllers/UKEstablishmentsController
-  /company/{company_number}/persons-with-significant-control:
+  "/company/{company_number}/persons-with-significant-control":
     get:
       description: List of all persons with significant control (not statements)
       operationId: companyCompanyNumberPersonsWithSignificantControlGET
@@ -964,8 +2468,7 @@ paths:
           required: true
           schema:
             type: string
-        - description: The number of persons with significant control to return per
-            page.
+        - description: The number of persons with significant control to return per page.
           in: query
           name: items_per_page
           required: true
@@ -977,12 +2480,16 @@ paths:
           required: true
           schema:
             type: string
-        - description:  | 
-               Display register specific information. If register is held at
-               Companies House and register_view is set to true, only PSCs which are
-               active or were terminated during election period are shown together with
-               full dates of birth where available. Accepted values are: -`true`  
-               -`false`  \n Defaults to false.
+        - description: >
+            Display register specific information. If register is held at
+
+            Companies House and register_view is set to true, only PSCs which are
+
+            active or were terminated during election period are shown together with
+
+            full dates of birth where available. Accepted values are: -`true`  
+
+            -`false`  \n Defaults to false.
           in: query
           name: register_view
           required: true
@@ -993,8 +2500,138 @@ paths:
           content:
             application/json:
               schema:
-                title: list
                 type: object
+                properties:
+                  active_count:
+                    type: integer
+                  ceased_count:
+                    type: integer
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        notified_on:
+                          type: string
+                        natures_of_control:
+                          type: array
+                          items:
+                            type: string
+                        name:
+                          type: string
+                        etag:
+                          type: string
+                        address:
+                          type: object
+                          properties:
+                            country:
+                              type: string
+                            premises:
+                              type: string
+                            address_line_1:
+                              type: string
+                            postal_code:
+                              type: string
+                            locality:
+                              type: string
+                            address_line_2:
+                              type: string
+                            region:
+                              type: string
+                            care_of:
+                              type: string
+                            po_box:
+                              type: string
+                        links:
+                          type: object
+                          properties:
+                            self:
+                              type: string
+                          required:
+                            - self
+                        identification:
+                          type: object
+                          properties:
+                            place_registered:
+                              type: string
+                            registration_number:
+                              type: string
+                            legal_form:
+                              type: string
+                            country_registered:
+                              type: string
+                            legal_authority:
+                              type: string
+                          required:
+                            - legal_form
+                            - legal_authority
+                        kind:
+                          type: string
+                        ceased_on:
+                          type: string
+                        nationality:
+                          type: string
+                        name_elements:
+                          type: object
+                          properties:
+                            surname:
+                              type: string
+                            forename:
+                              type: string
+                            middle_name:
+                              type: string
+                            title:
+                              type: string
+                          required:
+                            - surname
+                            - forename
+                        date_of_birth:
+                          type: object
+                          properties:
+                            year:
+                              type: integer
+                            month:
+                              type: integer
+                          required:
+                            - year
+                            - month
+                        country_of_residence:
+                          type: string
+                      required:
+                        - notified_on
+                        - natures_of_control
+                        - name
+                        - etag
+                        - address
+                        - links
+                        - kind
+                  items_per_page:
+                    type: integer
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                      persons_with_significant_control_statements:
+                        type: string
+                      exemptions:
+                        type: string
+                    required:
+                      - self
+                  start_index:
+                    type: integer
+                  total_results:
+                    type: integer
+                required:
+                  - active_count
+                  - ceased_count
+                  - items
+                  - items_per_page
+                  - links
+                  - start_index
+                  - total_results
+                additionalProperties: false
+                title: listPersonsWithSignificantControl
           description: readCompanyProfile
           headers:
             ETag:
@@ -1002,17 +2639,17 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: List the company persons with significant control
       tags:
         - personsWithSignificantControl
       x-operationName: list
       x-eov-operation-handler: controllers/PersonsWithSignificantControlController
-  /company/{company_number}/persons-with-significant-control/individual/{psc_id}:
+  "/company/{company_number}/persons-with-significant-control/individual/{psc_id}":
     get:
       description: Get details of an individual person with significant control
       operationId: companyCompanyNumberPersonsWithSignificantControlIndividualPscIdGET
@@ -1024,7 +2661,8 @@ paths:
           required: true
           schema:
             type: string
-        - description: The id of the person with significant control details being requested.
+        - description: The id of the person with significant control details being
+            requested.
           in: path
           name: psc_id
           required: true
@@ -1044,17 +2682,17 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Get the individual person with significant control
       tags:
         - personsWithSignificantControl
       x-operationName: get individual
       x-eov-operation-handler: controllers/PersonsWithSignificantControlController
-  /company/{company_number}/persons-with-significant-control/corporate-entity/{psc_id}:
+  "/company/{company_number}/persons-with-significant-control/corporate-entity/{psc_id}":
     get:
       description: Get details of a corporate entity with significant control
       operationId: companyCompanyNumberPersonsWithSignificantControlCorporateEntityPscIdGET
@@ -1087,17 +2725,17 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Get the corporate entity with significant control
       tags:
         - personsWithSignificantControl
       x-operationName: get corporate entities
       x-eov-operation-handler: controllers/PersonsWithSignificantControlController
-  /company/{company_number}/persons-with-significant-control/legal-person/{psc_id}:
+  "/company/{company_number}/persons-with-significant-control/legal-person/{psc_id}":
     get:
       description: Get details of a legal person with significant control
       operationId: companyCompanyNumberPersonsWithSignificantControlLegalPersonPscIdGET
@@ -1130,23 +2768,23 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Get the legal person with significant control
       tags:
         - personsWithSignificantControl
       x-operationName: get legal persons
       x-eov-operation-handler: controllers/PersonsWithSignificantControlController
-  /company/{company_number}/persons-with-significant-control-statements:
+  "/company/{company_number}/persons-with-significant-control-statements":
     get:
       description: List of all persons with significant control statements
       operationId: companyCompanyNumberPersonsWithSignificantControlStatementsGET
       parameters:
-        - description: The company number of the persons with significant control statements
-            list being requested.
+        - description: The company number of the persons with significant control
+            statements list being requested.
           in: path
           name: company_number
           required: true
@@ -1165,15 +2803,18 @@ paths:
           required: true
           schema:
             type: integer
-        - description: | 
+        - description: >
             Display register specific information. If register is held at
+
             Companies House and register_view is set to true, only statements which
+
             are active or were withdrawn during election period are shown. Accepted
+
             values are: -`true`  \n -`false`  \n Defaults to false.
           in: query
           name: register_view
           required: true
-          schema: { }
+          schema: {}
       responses:
         "200":
           content:
@@ -1188,23 +2829,23 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: List the company persons with significant control statements
       tags:
         - personsWithSignificantControl
       x-operationName: list statements
       x-eov-operation-handler: controllers/PersonsWithSignificantControlController
-  /company/{company_number}/persons-with-significant-control-statements/{statement_id}:
+  "/company/{company_number}/persons-with-significant-control-statements/{statement_id}":
     get:
       description: Get details of a person with significant control statement
       operationId: companyCompanyNumberPersonsWithSignificantControlStatementsStatementIdGET
       parameters:
-        - description: The company number of the persons with significant control statements
-            list being requested.
+        - description: The company number of the persons with significant control
+            statements list being requested.
           in: path
           name: company_number
           required: true
@@ -1231,17 +2872,17 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Get the person with significant control statement
       tags:
         - personsWithSignificantControl
       x-operationName: get statement
       x-eov-operation-handler: controllers/PersonsWithSignificantControlController
-  /company/{company_number}/persons-with-significant-control/super-secure/{super_secure_id}:
+  "/company/{company_number}/persons-with-significant-control/super-secure/{super_secure_id}":
     get:
       description: Get details of a super secure person with significant control
       operationId: companyCompanyNumberPersonsWithSignificantControlSuperSecureSuperSecureIdGET
@@ -1274,10 +2915,10 @@ paths:
               schema:
                 type: string
         "401":
-          content: { }
+          content: {}
           description: Unauthorised
         "404":
-          content: { }
+          content: {}
           description: Resource not found
       summary: Get the super secure person with significant control
       tags:
@@ -1286,38 +2927,6 @@ paths:
       x-eov-operation-handler: controllers/PersonsWithSignificantControlController
 components:
   schemas:
-    companyRegister:
-      example:
-        company_number: company_number
-        kind: registers
-        registers: '{}'
-        links: '{}'
-        etag: etag
-      properties:
-        links:
-          description: A set of URLs related to the resource, including self.
-          properties: { }
-          type: object
-        company_number:
-          description: The number of the company.
-          type: string
-        kind:
-          enum:
-            - registers
-          type: string
-        registers:
-          description: company registers information.
-          type: object
-        etag:
-          description: The ETag of the resource.
-          type: string
-      required:
-        - company_number
-        - kind
-        - links
-        - registers
-      title: companyRegister
-      type: object
     registeredOfficeAddress:
       example:
         country: England
@@ -1326,7 +2935,7 @@ components:
         address_line_1: address_line_1
         locality: locality
         etag: etag
-        links: '{}'
+        links: "{}"
         address_line_2: address_line_2
         region: region
         postal_code: postal_code
@@ -1344,7 +2953,7 @@ components:
           type: string
         links:
           description: Links to the related resources
-          properties: { }
+          properties: {}
           readOnly: true
           type: object
         premises:

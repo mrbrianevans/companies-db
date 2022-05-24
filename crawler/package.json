@@ -1,0 +1,26 @@
+{
+  "name": "crawler",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm crawl.ts"
+  },
+  "dependencies": {
+    "@companieshouse/api-sdk-node": "^2.0.5",
+    "ajv": "^8.11.0",
+    "camelcase": "^6.3.0",
+    "dotenv": "^16.0.1",
+    "genson-js": "^0.0.8",
+    "json-to-ts": "^1.7.0",
+    "mongodb": "^4.6.0",
+    "ts-node": "^10.8.0",
+    "typescript-json-schema": "^0.53.1",
+    "ws": "^8.6.0",
+    "yaml": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.35",
+    "@types/ws": "^8.5.3",
+    "typescript": "^4.6.4"
+  }
+}
