@@ -128,6 +128,8 @@
       - "microservices"
     "logging":
       "driver": "local"
+    "environment":
+      "AUTH_DB_URL": "auth-db"
   "metrics":
     "image": "prom/prometheus"
     "logging":

@@ -13,7 +13,16 @@ ajv.addFormat('date', (date)=> {
     return false
   }
 })
-
+ajv.addFormat('uri', (uri)=> {
+  try{
+    new URL(uri)
+    return true
+  }catch (e) {
+    console.log("uri failed validation:", uri, e)
+    return false
+  }
+})
+ajv.addKeyword('example', {keyword: 'example'})
 export async function testRequests(requests: { path: string }[], schema: Schema) {
   assert(ajv.validateSchema(schema, false),'Schema not valid')
   const validate = ajv.compile(schema)

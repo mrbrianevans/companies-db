@@ -118,11 +118,93 @@ export class Crawler{
     return []
   }
 
+  async crawlSearchCompanies(){
+    const words: Record<string, number> = {}
+    const companyNames = this.db.collection('company').find().map(c=>c.company_name.split(' '))
+    for await(const name of companyNames){
+      for(const word of name) words[word] = (words[word] ?? 0) + 1
+    }
+    const sortedWords = Object.entries(words).sort(([,a],[,b])=>b-a)
+    const searchTerms = sortedWords.filter(([t])=>t.match(/^[a-z]+$/i)).slice(150,300)
+    for (const [searchTerm] of searchTerms) {
+      try{
+        await this.fetchAndSave('/search/companies?q='+searchTerm, 'searchCompanies')
+        await this.fetchAndSave('/search?q='+searchTerm.toLowerCase(), 'searchAll')
+        await this.fetchAndSave('/dissolved-search/companies?search_type=best-match&q='+searchTerm.toLowerCase(), 'searchDissolved')
+        // await this.fetchAndSave('/alphabetic-search/companies?q='+searchTerm.toLowerCase(), 'searchAlphabetic')
+      }catch (e) {
+        console.log(e.message)
+      }
+    }
+  }
+  async crawlSearchOfficers(){
+    const words: Record<string, number> = {}
+    const officerNames = this.db.collection('officersItem').find().map(c=>c.name.split(', '))
+    for await(const name of officerNames){
+      for(const word of name) words[word] = (words[word] ?? 0) + 1
+    }
+    const sortedWords = Object.entries(words).sort(([,a],[,b])=>b-a)
+    const searchTerms = sortedWords.filter(([t])=>t.match(/^[a-z]+$/i)).slice(100,300)
+    for (const [searchTerm] of searchTerms) {
+      await this.fetchAndSave('/search/officers?q='+searchTerm.toLowerCase(), 'searchOfficers')
+      await this.fetchAndSave('/search/disqualified-officers?q='+searchTerm.toLowerCase(), 'searchDisqualifiedOfficers')
+      await this.fetchAndSave('/search?q='+searchTerm.toLowerCase(), 'searchAll')
+    }
+  }
+
   async crawlOfficers(){
     const officers = this.db.collection<ListOfficers>('officers').find()
     for await(const officerList of officers) {
       for(const officer of officerList.items){
         await this.fetchAndSave(officer.links.officer.appointments, 'appointments')
+        await this.fetchAndSave(officer.links.self, 'officersItem')
+      }
+    }
+  }
+  async crawlPsc(){
+    const pscLists = this.db.collection('personsWithSignificantControl').find()
+    for await(const pscList of pscLists) {
+      for(const psc of pscList.items){
+        if(psc.kind === 'individual-person-with-significant-control')
+          await this.fetchAndSave(psc.links.self, 'pscIndividual')
+        else        if(psc.kind === 'corporate-entity-person-with-significant-control')
+          await this.fetchAndSave(psc.links.self, 'pscCorporate')
+        else          if(psc.kind === 'legal-person-person-with-significant-control')
+          await this.fetchAndSave(psc.links.self, 'pscLegal')
+        else
+          console.log(psc.kind)
+      }
+    }
+  }
+  async crawlPscStatements(){
+    const pscLists = this.db.collection('personsWithSignificantControlStatements').find()
+    for await(const pscList of pscLists) {
+      for(const psc of pscList.items){
+        await this.fetchAndSave(psc.links.self, 'personsWithSignificantControlStatementsItem')
+      }
+    }
+  }
+
+  async crawlThroughCompaniesLinks(){
+    const companies = this.db.collection('company').find()
+    for await(const company of companies) {
+      await this.crawlDocument(company, company._id.toString())
+    }
+  }
+  async crawlExemptions(){
+    const companies = this.db.collection('company').find({"links.exemptions":{'$exists': true}})
+    for await(const company of companies) {
+      await this.fetchAndSave(company.links.exemptions, 'exemptions')
+    }
+  }
+  async crawlRegisteredOfficeAddress(){
+    const companies = this.db.collection('company').find()
+    for await(const company of companies) {
+      const {company_number} = company
+      try {
+        await this.fetchAndSave(`/company/${company_number}/registered-office-address`, 'registeredOfficeAddress')
+      }catch (e) {
+        console.log("Couldn't get registered-office-address for", company_number)
       }
     }
   }
@@ -145,6 +227,18 @@ export class Crawler{
       }
     }
   }
+  async crawlDisqualifiedOfficers(){
+    const officersLists = this.db.collection('searchDisqualifiedOfficers').find()
+    for await(const officersList of officersLists) {
+      for(const officer of officersList.items){
+        if(!officer.links.self) continue
+        if(officer.links.self.startsWith('/disqualified-officers/natural'))
+          await this.fetchAndSave(officer.links.self, 'disqualifiedOfficersNatural')
+        else if(officer.links.self.startsWith('/disqualified-officers/corporate'))
+          await this.fetchAndSave(officer.links.self, 'disqualifiedOfficersCorporate')
+      }
+    }
+  }
 
   async listenOnWebsocket(){
     const events = new WebSocket('wss://companies.stream/events')
@@ -156,6 +250,7 @@ export class Crawler{
       'company-profile': 'company',
       'company-psc-corporate': 'pscCorporate',
       'company-psc-individual': 'pscIndividual',
+      'company-psc-supersecure': 'pscSuperSecure',
       'filing-history': 'filingHistoryItem',
     }
     events.addEventListener('message', async ({data}) => {
@@ -163,8 +258,9 @@ export class Crawler{
       pass.push({resource_uri, resource_kind})
     })
     for await(const {resource_uri, resource_kind} of pass){
+      if(resource_kind === 'filing-history' || resource_kind === 'company-profile') continue
         const doc = await this.fetchAndSave(resource_uri, streamNames[resource_kind] ?? camelcase(resource_kind+'-stream'))
-        await this.crawlDocument(doc, resource_uri)
+        // await this.crawlDocument(doc, resource_uri)
     }
     events.close()
   }

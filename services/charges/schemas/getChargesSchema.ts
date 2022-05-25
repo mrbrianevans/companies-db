@@ -30,299 +30,190 @@ export const GetChargesSchema = {
     },
     response: {
       '200': {
-        title: 'chargeDetails',
-        required: [],
+        type: 'object',
         properties: {
-          etag: {
+          charge_code: {
             type: 'string'
           },
-          id: {
-            type: 'string',
-            description: 'The id of the charge'
-          },
-          charge_code: {
-            type: 'string',
-            description:
-              'The charge code is a replacement of the mortgage description'
+          charge_number: {
+            type: 'integer'
           },
           classification: {
             type: 'object',
-            description: 'Classification information',
-            title: 'classificationDesc',
-            required: [],
             properties: {
-              type: {
-                enum: ['charge-description', 'nature-of-charge'],
-                type: 'string',
-                description:
-                  'The type of charge classication.\n For enumeration descriptions see `classificationDesc` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
-              },
               description: {
-                type: 'string',
-                description: 'Details of the charge classification'
+                type: 'string'
+              },
+              type: {
+                type: 'string'
               }
-            }
-          },
-          charge_number: {
-            type: 'integer',
-            description:
-              'The charge number is used to reference an individual charge'
-          },
-          status: {
-            enum: [
-              'outstanding',
-              'fully-satisfied',
-              'part-satisfied',
-              'satisfied'
-            ],
-            type: 'string',
-            description:
-              'The status of the charge.\n For enumeration descriptions see `status` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
-          },
-          assests_ceased_released: {
-            enum: [
-              'property-ceased-to-belong',
-              'part-property-release-and-ceased-to-belong',
-              'part-property-released',
-              'part-property-ceased-to-belong',
-              'whole-property-released',
-              'multiple-filings',
-              'whole-property-released-and-ceased-to-belong'
-            ],
-            type: 'string',
-            description:
-              'Cease/release information about the charge.\n For enumeration descriptions see `assets-ceased-released` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
-          },
-          acquired_on: {
-            type: 'string',
-            format: 'date',
-            description: 'The date the property or undertaking was acquired on'
-          },
-          delivered_on: {
-            type: 'string',
-            format: 'date',
-            description: 'The date the charge was submitted to Companies House'
-          },
-          resolved_on: {
-            type: 'string',
-            format: 'date',
-            description: 'The date the issue was resolved on'
-          },
-          covering_instrument_date: {
-            type: 'string',
-            format: 'date',
-            description:
-              'The date by which the series of debentures were created'
+            },
+            required: ['description', 'type']
           },
           created_on: {
-            type: 'string',
-            format: 'date',
-            description: 'The date the charge was created'
+            type: 'string'
           },
-          satisfied_on: {
-            type: 'string',
-            format: 'date',
-            description: 'The date the charge was satisfied'
+          delivered_on: {
+            type: 'string'
+          },
+          etag: {
+            type: 'string'
+          },
+          links: {
+            type: 'object',
+            properties: {
+              self: {
+                type: 'string'
+              }
+            },
+            required: ['self']
           },
           particulars: {
             type: 'object',
-            description: 'Details of charge or undertaking',
-            title: 'particularDesc',
-            required: [],
             properties: {
-              type: {
-                enum: [
-                  'short-particulars',
-                  'charged-property-description',
-                  'charged-property-or-undertaking-description',
-                  'brief-description'
-                ],
-                type: 'string',
-                description:
-                  'The type of charge particulars.\n For enumeration descriptions see `particular-description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
-              },
               description: {
-                type: 'string',
-                description: 'Details of charge particulars'
-              },
-              contains_floating_charge: {
-                type: 'boolean',
-                description: 'The charge contains a floating charge'
-              },
-              contains_fixed_charge: {
-                type: 'boolean',
-                description: 'The charge contains a fixed charge'
-              },
-              floating_charge_covers_all: {
-                type: 'boolean',
-                description:
-                  'The floating charge covers all the property or undertaking or the company'
+                type: 'string'
               },
               contains_negative_pledge: {
-                type: 'boolean',
-                description: 'The charge contains a negative pledge'
+                type: 'boolean'
+              },
+              type: {
+                type: 'string'
+              },
+              floating_charge_covers_all: {
+                type: 'boolean'
+              },
+              contains_fixed_charge: {
+                type: 'boolean'
+              },
+              contains_floating_charge: {
+                type: 'boolean'
               },
               chargor_acting_as_bare_trustee: {
-                type: 'boolean',
-                description:
-                  'The chargor is acting as a bare trustee for the property'
+                type: 'boolean'
               }
+            }
+          },
+          persons_entitled: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                }
+              },
+              required: ['name']
+            }
+          },
+          status: {
+            type: 'string'
+          },
+          transactions: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                links: {
+                  type: 'object',
+                  properties: {
+                    filing: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['filing']
+                },
+                delivered_on: {
+                  type: 'string'
+                },
+                filing_type: {
+                  type: 'string'
+                }
+              },
+              required: ['delivered_on', 'filing_type']
             }
           },
           secured_details: {
             type: 'object',
-            description:
-              'Information about what is secured against this charge',
-            title: 'securedDetailsDesc',
-            required: [],
             properties: {
-              type: {
-                enum: ['amount-secured', 'obligations-secured'],
-                type: 'string',
-                description:
-                  'The type of secured details.\n For enumeration descriptions see `secured-details-description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
-              },
               description: {
-                type: 'string',
-                description:
-                  'Details of the amount or obligation secured by the charge'
+                type: 'string'
+              },
+              type: {
+                type: 'string'
               }
-            }
+            },
+            required: ['description', 'type']
+          },
+          satisfied_on: {
+            type: 'string'
           },
           scottish_alterations: {
             type: 'object',
-            description: 'Information about alterations for Scottish companies',
-            title: 'alterationsDesc',
-            required: [],
             properties: {
-              type: {
-                type: 'string'
-              },
-              description: {
-                type: 'string'
-              },
-              has_alterations_to_order: {
-                type: 'boolean',
-                description: 'The charge has alterations to order'
-              },
-              has_alterations_to_prohibitions: {
-                type: 'boolean',
-                description: 'The charge has alterations to prohibitions'
-              },
-              has_alterations_to_provisions: {
-                type: 'boolean',
-                description:
-                  'The charge has provisions restricting the creation of further charges'
+              has_restricting_provisions: {
+                type: 'boolean'
               }
-            }
+            },
+            required: ['has_restricting_provisions']
+          },
+          assets_ceased_released: {
+            type: 'string'
           },
           more_than_four_persons_entitled: {
-            type: 'boolean',
-            description: 'Charge has more than four person entitled'
-          },
-          persons_entitled: {
-            type: 'array',
-            description: 'People that are entitled to the charge',
-            items: {
-              title: 'persons_entitled',
-              required: [],
-              properties: {
-                name: {
-                  type: 'string',
-                  description: 'The name of the person entitled.'
-                }
-              },
-              type: 'object'
-            }
-          },
-          transactions: {
-            type: 'array',
-            description: 'Transactions that have been filed for the charge.',
-            items: {
-              title: 'transactions',
-              properties: {
-                filing_type: {
-                  type: 'string',
-                  description:
-                    'Filing type which created, updated or satisfied the charge'
-                },
-                transaction_id: {
-                  type: 'integer',
-                  description: 'The id of the filing'
-                },
-                delivered_on: {
-                  type: 'string',
-                  format: 'date',
-                  description:
-                    'The date the filing was submitted to Companies House'
-                },
-                insolvency_case_number: {
-                  type: 'integer',
-                  description: 'The insolvency case related to this filing'
-                },
-                links: {
-                  type: 'object',
-                  description: 'The resources related to this filing',
-                  title: 'transaction_links',
-                  properties: {
-                    filing: {
-                      type: 'string',
-                      description: 'Link to the charge filing data'
-                    },
-                    insolvency_case: {
-                      type: 'string',
-                      description:
-                        'Link to the insolvency case related to this filing'
-                    }
-                  }
-                }
-              },
-              type: 'object'
-            }
-          },
-          insolvency_cases: {
-            type: 'array',
-            description: 'Transactions that have been filed for the charge.',
-            items: {
-              title: 'insolvency_cases',
-              properties: {
-                case_number: {
-                  type: 'integer',
-                  description: 'The number of this insolvency case'
-                },
-                transaction_id: {
-                  type: 'integer',
-                  description: 'The id of the insolvency filing'
-                },
-                links: {
-                  type: 'object',
-                  description: 'The resources related to this insolvency case',
-                  title: 'insolvency_case_links',
-                  properties: {
-                    case: {
-                      type: 'string',
-                      description: 'Link to the insolvency case data'
-                    }
-                  }
-                }
-              },
-              type: 'object'
-            }
-          },
-          links: {
-            type: 'object',
-            description: 'The resources related to this charge',
-            title: 'charge_links',
-            required: [],
-            properties: {
-              self: {
-                type: 'string',
-                description: 'Link to the this charge data'
-              }
-            }
+            type: 'boolean'
           }
         },
-        type: 'object'
+        required: [
+          'charge_number',
+          'classification',
+          'created_on',
+          'delivered_on',
+          'etag',
+          'links',
+          'particulars',
+          'persons_entitled',
+          'status',
+          'transactions'
+        ],
+        additionalProperties: false,
+        title: 'getCharge',
+        example: {
+          charge_code: '092848280568',
+          charge_number: 568,
+          classification: {
+            description: 'A registered charge',
+            type: 'charge-description'
+          },
+          created_on: '2022-05-13',
+          delivered_on: '2022-05-24',
+          etag: 'f0449b37b7460b5d58a65849e756a4f64720d291',
+          links: {
+            self: '/company/09284828/charges/EMGXI7FXv34NdzmPVRyhd6HIFCs'
+          },
+          particulars: {
+            description:
+              '43 wootton drive, hemel hempstead, HP2 6LA. HD605623.',
+            contains_negative_pledge: true,
+            type: 'brief-description'
+          },
+          persons_entitled: [
+            {
+              name: 'Bank of London and the Middle East PLC'
+            }
+          ],
+          status: 'outstanding',
+          transactions: [
+            {
+              links: {
+                filing:
+                  '/company/09284828/filing-history/MzM0MDMwMjcwMWFkaXF6a2N4'
+              },
+              delivered_on: '2022-05-24',
+              filing_type: 'create-charge-with-deed'
+            }
+          ]
+        }
       }
     }
   }

@@ -25,138 +25,164 @@ export const GetExemptionsSchema = {
     },
     response: {
       '200': {
-        title: 'companyExemptions',
-        required: [],
+        type: 'object',
         properties: {
-          links: {
-            description:
-              'A set of URLs related to the resource, including self.',
-            type: 'object',
-            properties: {
-              self: {
-                description: 'The URL of this resource.',
-                type: 'string'
-              }
-            },
-            required: []
-          },
-          kind: {
-            type: 'string',
-            enum: ['exemptions']
-          },
           etag: {
-            type: 'string',
-            description: 'The ETag of the resource.'
+            type: 'string'
           },
           exemptions: {
-            description: 'Exemptions information.',
             type: 'object',
             properties: {
               psc_exempt_as_trading_on_regulated_market: {
-                description:
-                  'If present the company has been or is exempt from keeping a PSC register, as it has voting shares admitted to trading on a regulated market other than the UK.',
                 type: 'object',
                 properties: {
+                  exemption_type: {
+                    type: 'string'
+                  },
                   items: {
                     type: 'array',
-                    description: 'List of dates',
                     items: {
+                      type: 'object',
                       properties: {
-                        exempt_from: {
-                          description: 'Exemption valid from.',
-                          type: 'string',
-                          format: 'date'
-                        },
                         exempt_to: {
-                          description: 'Exemption valid to.',
-                          type: 'string',
-                          format: 'date'
+                          type: 'string'
+                        },
+                        exempt_from: {
+                          type: 'string'
                         }
                       },
-                      required: [],
-                      type: 'object'
+                      required: ['exempt_to', 'exempt_from']
                     }
-                  },
-                  exemption_type: {
-                    description: 'The exemption type.',
-                    type: 'string',
-                    enum: ['psc-exempt-as-trading-on-regulated-market']
                   }
                 },
-                required: []
-              },
-              psc_exempt_as_shares_admitted_on_market: {
-                description:
-                  'If present the company has been or is exempt from keeping a PSC register, as it has voting shares admitted to trading on a market listed in the Register of People with Significant Control Regulations 2016.',
-                type: 'object',
-                required: [],
-                properties: {
-                  items: {
-                    description: 'List of dates',
-                    type: 'array',
-                    items: {
-                      properties: {
-                        exempt_from: {
-                          description: 'Exemption valid from.',
-                          type: 'string',
-                          format: 'date'
-                        },
-                        exempt_to: {
-                          description: 'Exemption valid to.',
-                          type: 'string',
-                          format: 'date'
-                        }
-                      },
-                      required: [],
-                      type: 'object'
-                    }
-                  },
-                  exemption_type: {
-                    description: 'The exemption type.',
-                    enum: ['psc-exempt-as-shares-admitted-on-market'],
-                    type: 'string'
-                  }
-                }
+                required: ['exemption_type', 'items']
               },
               disclosure_transparency_rules_chapter_five_applies: {
-                description:
-                  'If present the company has been or is exempt from keeping a PSC register, because it is a DTR issuer and the shares are admitted to trading on a regulated market.',
                 type: 'object',
                 properties: {
                   items: {
-                    description: 'List of exemption periods.',
+                    type: 'array',
                     items: {
+                      type: 'object',
                       properties: {
                         exempt_from: {
-                          description: 'Exemption valid from.',
-                          type: 'string',
-                          format: 'date'
+                          type: 'string'
                         },
                         exempt_to: {
-                          description: 'Exemption valid to.',
-                          type: 'string',
-                          format: 'date'
+                          type: 'string'
                         }
                       },
-                      required: [],
-                      type: 'object'
-                    },
-                    type: 'array'
+                      required: ['exempt_from', 'exempt_to']
+                    }
                   },
                   exemption_type: {
-                    description: 'The exemption type.',
-                    enum: [
-                      'disclosure-transparency-rules-chapter-five-applies'
-                    ],
                     type: 'string'
                   }
                 },
-                required: []
+                required: ['items', 'exemption_type']
+              },
+              psc_exempt_as_trading_on_uk_regulated_market: {
+                type: 'object',
+                properties: {
+                  items: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        exempt_from: {
+                          type: 'string'
+                        },
+                        exempt_to: {
+                          type: 'string'
+                        }
+                      },
+                      required: ['exempt_from']
+                    }
+                  },
+                  exemption_type: {
+                    type: 'string'
+                  }
+                },
+                required: ['items', 'exemption_type']
+              },
+              psc_exempt_as_trading_on_eu_regulated_market: {
+                type: 'object',
+                properties: {
+                  exemption_type: {
+                    type: 'string'
+                  },
+                  items: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        exempt_from: {
+                          type: 'string'
+                        },
+                        exempt_to: {
+                          type: 'string'
+                        }
+                      },
+                      required: ['exempt_from', 'exempt_to']
+                    }
+                  }
+                },
+                required: ['exemption_type', 'items']
               }
             }
+          },
+          kind: {
+            type: 'string'
+          },
+          links: {
+            type: 'object',
+            properties: {
+              self: {
+                type: 'string'
+              }
+            },
+            required: ['self']
           }
         },
-        type: 'object'
+        required: ['etag', 'exemptions', 'kind', 'links'],
+        additionalProperties: false,
+        title: 'getExemptions',
+        example: {
+          etag: 'd427c6d903475de1b7d15e352ece0b1e0ac99554',
+          exemptions: {
+            psc_exempt_as_trading_on_regulated_market: {
+              exemption_type: 'psc-exempt-as-trading-on-regulated-market',
+              items: [
+                {
+                  exempt_to: '2021-08-13',
+                  exempt_from: '2017-08-13'
+                }
+              ]
+            },
+            disclosure_transparency_rules_chapter_five_applies: {
+              items: [
+                {
+                  exempt_from: '2016-08-13',
+                  exempt_to: '2021-08-24'
+                }
+              ],
+              exemption_type:
+                'disclosure-transparency-rules-chapter-five-applies'
+            },
+            psc_exempt_as_trading_on_uk_regulated_market: {
+              items: [
+                {
+                  exempt_from: '2021-08-13'
+                }
+              ],
+              exemption_type: 'psc-exempt-as-trading-on-uk-regulated-market'
+            }
+          },
+          kind: 'exemptions',
+          links: {
+            self: '/company/00084492/exemptions'
+          }
+        }
       }
     }
   }

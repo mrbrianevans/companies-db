@@ -1,9 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getRatelimitHeaders } from '../service/getRatelimitHeaders.js'
 import {
   AuthSchema as schema
 } from '../schemas/authSchema.js'
-import {AuthService} from "../service/AuthService";
+import {AuthService} from "../service/AuthService.js";
 
 export const rateLimitController: FastifyPluginAsync = async (
   fastify,
@@ -22,6 +21,7 @@ export const rateLimitController: FastifyPluginAsync = async (
         await service.recordViolation()
         res.status(429)
       }
+      req.log.info(responseAuthHeaders, 'Response auth headers about to be sent')
       return responseAuthHeaders
     }
   )

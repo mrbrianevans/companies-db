@@ -37,305 +37,257 @@ export const ListOfficerAppointmentsSchema = {
     },
     response: {
       '200': {
-        title: 'appointmentList',
+        type: 'object',
         properties: {
-          date_of_birth: {
-            description: "The officer's date of birth details.",
-            type: 'object',
-            title: 'dateOfBirth',
-            properties: {
-              month: {
-                description: 'The month the officer was born in.',
-                type: 'integer'
-              },
-              year: {
-                description: 'The year the officer was born in.',
-                type: 'integer'
-              }
-            },
-            required: []
-          },
           etag: {
-            description: 'The ETag of the resource.',
             type: 'string'
           },
           is_corporate_officer: {
-            description:
-              'Indicator representing if the officer is a corporate body.',
             type: 'boolean'
           },
           items: {
-            description: 'The list of officer appointments.',
             type: 'array',
             items: {
-              title: 'officerAppointmentSummary',
+              type: 'object',
               properties: {
-                address: {
-                  description: 'The correspondence address of the officer.',
-                  items: {
-                    title: 'address',
-                    properties: {
-                      address_line_1: {
-                        description: 'The first line of the address.',
-                        type: 'string'
-                      },
-                      address_line_2: {
-                        description: 'The second line of the address.',
-                        type: 'string'
-                      },
-                      care_of: {
-                        description: 'The care of name.',
-                        type: 'string'
-                      },
-                      country: {
-                        description: 'The country. For example, UK.',
-                        type: 'string'
-                      },
-                      locality: {
-                        description: 'The locality. For example London.',
-                        type: 'string'
-                      },
-                      po_box: {
-                        description: 'The post-office box number.',
-                        type: 'string'
-                      },
-                      postal_code: {
-                        description: 'The postal code. For example CF14 3UZ.',
-                        type: 'string'
-                      },
-                      premises: {
-                        description: 'The property name or number.',
-                        type: 'string'
-                      },
-                      region: {
-                        description: 'The region. For example Surrey.',
-                        type: 'string'
-                      }
-                    },
-                    type: 'object'
+                links: {
+                  type: 'object',
+                  properties: {
+                    company: {
+                      type: 'string'
+                    }
                   },
-                  type: 'array'
+                  required: ['company']
                 },
-                appointed_before: {
-                  description:
-                    'The date the officer was appointed before. Only present when the `is_pre_1992_appointment` attribute is `true`.',
-                  type: 'string',
-                  format: 'date'
-                },
-                appointed_on: {
-                  description: 'The date the officer was appointed.',
-                  type: 'string',
-                  format: 'date'
+                officer_role: {
+                  type: 'string'
                 },
                 appointed_to: {
-                  description: 'The company information of the appointment.',
                   type: 'object',
-                  title: 'appointedTo',
                   properties: {
-                    company_name: {
-                      description:
-                        'The name of the company the officer is acting for.',
+                    company_status: {
                       type: 'string'
                     },
                     company_number: {
-                      description:
-                        'The number of the company the officer is acting for.',
                       type: 'string'
                     },
-                    company_status: {
-                      description:
-                        'The status of the company the officer is acting for.',
+                    company_name: {
                       type: 'string'
                     }
                   },
-                  required: []
+                  required: ['company_number']
                 },
                 name: {
-                  description: 'The full name of the officer.',
                   type: 'string'
                 },
-                country_of_residence: {
-                  description: "The officer's country of residence.",
+                appointed_on: {
                   type: 'string'
                 },
-                former_names: {
-                  description:
-                    'Former names for the officer, if there are any.',
+                address: {
                   type: 'object',
-                  title: 'formerNames',
                   properties: {
-                    forenames: {
-                      description: 'Former forenames of the officer.',
+                    locality: {
                       type: 'string'
                     },
-                    surname: {
-                      description: 'Former surnames of the officer.',
-                      type: 'string'
-                    }
-                  }
-                },
-                identification: {
-                  description:
-                    'Only one from `eea` or `non-eea` can be supplied, not both.',
-                  type: 'object',
-                  title: 'corporateIdent',
-                  properties: {
-                    identification_type: {
-                      description: "The officer's identity type",
-                      enum: ['eea', 'non-eea'],
+                    address_line_1: {
                       type: 'string'
                     },
-                    legal_authority: {
-                      description:
-                        'The legal authority supervising the company.',
+                    country: {
                       type: 'string'
                     },
-                    legal_form: {
-                      description:
-                        'The legal form of the company as defined by its country of registration.',
+                    premises: {
                       type: 'string'
                     },
-                    place_registered: {
-                      description: 'Place registered.',
+                    postal_code: {
                       type: 'string'
                     },
-                    registration_number: {
-                      description: 'Company registration number.',
+                    address_line_2: {
                       type: 'string'
-                    }
-                  }
-                },
-                is_pre_1992_appointment: {
-                  description:
-                    'Indicator representing if the officer was appointed before their appointment date.',
-                  type: 'boolean'
-                },
-                links: {
-                  description:
-                    'Links to other resources associated with this officer appointment item.',
-                  type: 'object',
-                  title: 'appointmentLinkTypes',
-                  required: [],
-                  properties: {
-                    company: {
-                      description:
-                        'Link to the company profile resource that this appointment is associated with.',
+                    },
+                    region: {
+                      type: 'string'
+                    },
+                    care_of: {
+                      type: 'string'
+                    },
+                    po_box: {
                       type: 'string'
                     }
                   }
                 },
                 name_elements: {
-                  description:
-                    "A document encapsulating the separate elements of a natural officer's name.",
                   type: 'object',
-                  title: 'nameElements',
                   properties: {
-                    forename: {
-                      description: 'The forename of the officer.',
-                      type: 'string'
-                    },
                     title: {
-                      description: 'Title of the officer.',
                       type: 'string'
                     },
-                    other_forenames: {
-                      description: 'Other forenames of the officer.',
+                    forename: {
                       type: 'string'
                     },
                     surname: {
-                      description: 'The surname of the officer.',
+                      type: 'string'
+                    },
+                    other_forenames: {
                       type: 'string'
                     },
                     honours: {
-                      description: 'Honours an officer might have.',
                       type: 'string'
                     }
                   },
-                  required: []
+                  required: ['surname']
+                },
+                country_of_residence: {
+                  type: 'string'
                 },
                 nationality: {
-                  description: "The officer's nationality.",
                   type: 'string'
                 },
                 occupation: {
-                  description: "The officer's occupation.",
-                  type: 'string'
-                },
-                officer_role: {
-                  enum: [
-                    'cic-manager',
-                    'corporate-director',
-                    'corporate-llp-designated-member',
-                    'corporate-llp-member',
-                    'corporate-member-of-a-management',
-                    'corporate-member-of-a-supervisory-organ',
-                    'corporate-member-of-an-administrative-organ',
-                    'corporate-nominee-director',
-                    'corporate-nominee-secretary',
-                    'corporate-secretary',
-                    'director',
-                    'judicial-factor',
-                    'llp-designated-member',
-                    'llp-member',
-                    'member-of-a-management',
-                    'member-of-a-supervisory-organ',
-                    'member-of-an-administrative-organ',
-                    'nominee-director',
-                    'nominee-secretary',
-                    'receiver-and-manager',
-                    'secretary'
-                  ],
                   type: 'string'
                 },
                 resigned_on: {
-                  description: 'The date the officer was resigned.',
-                  type: 'string',
-                  format: 'date'
+                  type: 'string'
+                },
+                identification: {
+                  type: 'object',
+                  properties: {
+                    identification_type: {
+                      type: 'string'
+                    },
+                    registration_number: {
+                      type: 'string'
+                    },
+                    place_registered: {
+                      type: 'string'
+                    },
+                    legal_form: {
+                      type: 'string'
+                    },
+                    legal_authority: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['identification_type']
+                },
+                is_pre_1992_appointment: {
+                  type: 'boolean'
+                },
+                appointed_before: {
+                  type: 'string'
+                },
+                former_names: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      surname: {
+                        type: 'string'
+                      },
+                      forenames: {
+                        type: 'string'
+                      }
+                    }
+                  }
                 }
               },
-              required: [],
-              type: 'object'
+              required: [
+                'links',
+                'officer_role',
+                'appointed_to',
+                'name',
+                'address'
+              ]
             }
           },
           items_per_page: {
-            description:
-              'The number of officer appointments to return per page.',
             type: 'integer'
           },
           kind: {
-            enum: ['personal-appointment'],
             type: 'string'
           },
           links: {
-            description:
-              'Links to other resources associated with this officer appointment resource.',
             type: 'object',
-            title: 'officerLinkTypes',
-            required: [],
             properties: {
               self: {
-                description: 'Link to this officer appointment resource.',
                 type: 'string'
               }
-            }
+            },
+            required: ['self']
           },
           name: {
-            description: 'The corporate or natural officer name.',
             type: 'string'
           },
           start_index: {
-            description:
-              'The first row of data to retrieve, starting at 0. Use this parameter as a pagination mechanism along with the `items_per_page` parameter.',
             type: 'integer'
           },
           total_results: {
-            description:
-              'The total number of officer appointments in this result set.',
             type: 'integer'
+          },
+          date_of_birth: {
+            type: 'object',
+            properties: {
+              month: {
+                type: 'integer'
+              },
+              year: {
+                type: 'integer'
+              }
+            },
+            required: ['month', 'year']
           }
         },
-        required: [],
-        type: 'object'
+        required: [
+          'etag',
+          'is_corporate_officer',
+          'items',
+          'items_per_page',
+          'kind',
+          'links',
+          'name',
+          'start_index',
+          'total_results'
+        ],
+        additionalProperties: false,
+        title: 'listOfficerAppointments',
+        example: {
+          etag: 'ed9c67852e4a5210c0186bec133d725d74e6cb76',
+          is_corporate_officer: false,
+          items: [
+            {
+              links: {
+                company: '/company/13276747'
+              },
+              officer_role: 'secretary',
+              appointed_to: {
+                company_status: 'active',
+                company_number: '13276747',
+                company_name: 'SEGRO (UK ENERGY) LIMITED'
+              },
+              name: 'Julia FOO',
+              appointed_on: '2021-11-03',
+              address: {
+                locality: 'London',
+                address_line_1: 'New Burlington Place',
+                country: 'United Kingdom',
+                premises: '1',
+                postal_code: 'W1S 2HR'
+              },
+              name_elements: {
+                title: 'Miss',
+                forename: 'Julia',
+                surname: 'FOO'
+              }
+            }
+          ],
+          items_per_page: 35,
+          kind: 'personal-appointment',
+          links: {
+            self: '/officers/hzBw2VEdcjqwmYT1qWlbnNS4Z0I/appointments'
+          },
+          name: 'Julia FOO',
+          start_index: 0,
+          total_results: 1
+        }
       }
     }
   }

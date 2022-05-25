@@ -1,11 +1,10 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getRatelimitHeaders } from '../service/getRatelimitHeaders.js'
 import {
-  AuthSchema as schema
-} from '../schemas/authSchema.js'
-import {AuthService} from "../service/AuthService";
+  NewKeySchema as schema
+} from '../schemas/newKeySchema.js'
+import {AuthService} from "../service/AuthService.js";
 
-export const rateLimitController: FastifyPluginAsync = async (
+export const newKeyController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -20,7 +19,7 @@ export const rateLimitController: FastifyPluginAsync = async (
 
       const responseAuthHeaders = await service.getResponseHeaders()
 
-      return responseAuthHeaders
+      return {key, ...responseAuthHeaders}
     }
   )
 }

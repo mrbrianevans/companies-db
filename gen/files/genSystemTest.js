@@ -1,6 +1,7 @@
 import {readFile, writeFile} from "node:fs/promises";
 import {resolve} from "path";
 import {camelCase, kebabCase, prettyTs} from "../utils.js";
+import wT from "prettier/esm/parser-typescript.mjs";
 
 const marker = `// tests for each path`
 export async function genSystemTest(SYS_TEST_DIR, tagName) {
@@ -9,13 +10,23 @@ import * as TestRequests from "../getTestRequests";
 import {testRequests} from "../testRequests";
 fetch('http://localhost:3000').catch() //to remove warning about fetch being experimental from test results
 
-describe('${kebabCase(tagName)}-service', function () {
-${marker}
-
-});
-
+export function test_${tagName}(){
+    describe('${kebabCase(tagName)}-service', function () {
+    ${marker}
+    
+    });
+}
     `
     await writeFile(resolve(SYS_TEST_DIR, tagName + '.spec.ts'), prettyTs(fileContent))
+}
+
+export async function genSystemTestCallerFile(SYS_TEST_DIR, tagNames){
+    const fileContent = `
+    ${tagNames.map(tag=>`import {test_${tag}} from './${tag + '.spec.js'}'`).join('\n')}
+    
+    await ${tagNames.map(tag=>`test_${tag}()`).join('\n')}
+    `
+    await writeFile(resolve(SYS_TEST_DIR, 'runAllTests.ts'), prettyTs(fileContent))
 }
 
 export async function addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema){

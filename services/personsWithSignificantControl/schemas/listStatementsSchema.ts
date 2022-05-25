@@ -44,131 +44,104 @@ export const ListStatementsSchema = {
     },
     response: {
       '200': {
-        title: 'statementList',
+        type: 'object',
         properties: {
-          items_per_page: {
-            description:
-              'The number of persons with significant control statements to return per page.',
-            type: 'integer'
-          },
-          items: {
-            description:
-              'The list of persons with significant control statements.',
-            items: {
-              title: 'statement',
-              required: [],
-              properties: {
-                etag: {
-                  description: 'The ETag of the resource.',
-                  type: 'string'
-                },
-                kind: {
-                  enum: ['persons-with-significant-control-statement'],
-                  type: 'string'
-                },
-                notified_on: {
-                  description:
-                    'The date that the person with significant control statement was processed by Companies House.',
-                  type: 'string',
-                  format: 'date'
-                },
-                ceased_on: {
-                  description:
-                    'The date that Companies House was notified about the cessation of this person with significant control.',
-                  type: 'string',
-                  format: 'date'
-                },
-                restrictions_notice_withdrawal_reason: {
-                  description:
-                    'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
-                  enum: [
-                    'restrictions-notice-withdrawn-by-court-order',
-                    'restrictions-notice-withdrawn-by-company'
-                  ],
-                  type: 'string'
-                },
-                statement: {
-                  description:
-                    'Indicates the type of statement filed.\n For enumeration descriptions see `statement_description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
-                  enum: [
-                    'no-individual-or-entity-with-signficant-control',
-                    'steps-to-find-psc-not-yet-completed',
-                    'psc-exists-but-not-identified',
-                    'psc-details-not-confirmed',
-                    'psc-contacted-but-no-response',
-                    'restrictions-notice-issued-to-psc',
-                    'psc-has-failed-to-confirm-changed-details'
-                  ],
-                  type: 'string'
-                },
-                linked_psc_name: {
-                  description: 'The name of the psc linked to this statement.',
-                  type: 'string'
-                },
-                links: {
-                  description:
-                    'A set of URLs related to the resource, including self.',
-                  type: 'object',
-                  title: 'statementLinksType',
-                  required: [],
-                  properties: {
-                    self: {
-                      description: 'The URL of the resource.',
-                      type: 'string'
-                    },
-                    person_with_significant_control: {
-                      description:
-                        'The URL of the person with significant control linked to this statement.',
-                      type: 'string'
-                    }
-                  }
-                }
-              },
-              type: 'object'
-            },
-            type: 'array'
-          },
-          start_index: {
-            description:
-              'The offset into the entire result set that this page starts.',
-            type: 'integer'
-          },
-          total_results: {
-            description:
-              'The total number of persons with significant control statements in this result set.',
-            type: 'integer'
-          },
           active_count: {
-            description:
-              'The number of active persons with significant control statements in this result set.',
             type: 'integer'
           },
           ceased_count: {
-            description:
-              'The number of ceased persons with significant control statements in this result set.',
+            type: 'integer'
+          },
+          items: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                links: {
+                  type: 'object',
+                  properties: {
+                    self: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['self']
+                },
+                statement: {
+                  type: 'string'
+                },
+                notified_on: {
+                  type: 'string'
+                },
+                etag: {
+                  type: 'string'
+                },
+                kind: {
+                  type: 'string'
+                },
+                ceased_on: {
+                  type: 'string'
+                }
+              },
+              required: ['links', 'statement', 'notified_on', 'etag', 'kind']
+            }
+          },
+          items_per_page: {
             type: 'integer'
           },
           links: {
-            description:
-              'A set of URLs related to the resource, including self.',
             type: 'object',
-            title: 'statementListLinksType',
-            required: [],
             properties: {
-              self: {
-                description: 'The URL of the resource.',
+              persons_with_significant_control: {
                 type: 'string'
               },
-              persons_with_significant_control_statements_list: {
-                description:
-                  'The URL of the persons with significant control statements list resource.',
+              self: {
                 type: 'string'
               }
-            }
+            },
+            required: ['self']
+          },
+          start_index: {
+            type: 'integer'
+          },
+          total_results: {
+            type: 'integer'
           }
         },
-        required: [],
-        type: 'object'
+        required: [
+          'active_count',
+          'ceased_count',
+          'items',
+          'items_per_page',
+          'links',
+          'start_index',
+          'total_results'
+        ],
+        additionalProperties: false,
+        title: 'listPersonsWithSignificantControlStatements',
+        example: {
+          active_count: 0,
+          ceased_count: 1,
+          items: [
+            {
+              links: {
+                self: '/company/OC401231/persons-with-significant-control-statements/J3aA7nNxlxiLA_SN3OC_f46soBA'
+              },
+              statement: 'psc-details-not-confirmed',
+              notified_on: '2016-08-10',
+              etag: '1378b459e7084aa462031cc68d93fb6462f212ee',
+              kind: 'persons-with-significant-control-statement',
+              ceased_on: '2017-08-17'
+            }
+          ],
+          items_per_page: 25,
+          links: {
+            persons_with_significant_control:
+              '/company/OC401231/persons-with-significant-control',
+            self: '/company/OC401231/persons-with-significant-control-statements'
+          },
+          start_index: 0,
+          total_results: 1
+        }
       }
     }
   }

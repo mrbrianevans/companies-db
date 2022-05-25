@@ -1,4 +1,5 @@
 import Fastify from 'fastify'
+import 'dotenv/config'
 // --- import controllers ---
 import { getSuperSecurePersonController } from './personsWithSignificantControl/controllers/getSuperSecurePersonController.js'
 import { getStatementController } from './personsWithSignificantControl/controllers/getStatementController.js'

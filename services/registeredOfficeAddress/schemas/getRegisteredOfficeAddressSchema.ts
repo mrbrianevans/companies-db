@@ -25,76 +25,59 @@ export const GetRegisteredOfficeAddressSchema = {
     },
     response: {
       '200': {
-        title: 'registeredOfficeAddress',
         type: 'object',
-        required: [],
         properties: {
+          address_line_1: {
+            type: 'string'
+          },
+          country: {
+            type: 'string'
+          },
           etag: {
-            type: 'string',
-            description: 'The ETag of the resource.',
-            readOnly: true
+            type: 'string'
           },
           kind: {
-            type: 'string',
-            description: 'The type of resource.',
-            enum: ['registered-office-address'],
-            readOnly: true
+            type: 'string'
           },
           links: {
             type: 'object',
-            description: 'Links to the related resources',
-            readOnly: true,
-            required: [],
             properties: {
               self: {
-                description: 'URL to this resource.',
-                readOnly: true,
-                type: 'string',
-                format: 'uri'
+                type: 'string'
               }
-            }
-          },
-          premises: {
-            type: 'string',
-            description: 'The property name or number.'
-          },
-          address_line_1: {
-            type: 'string',
-            description: 'The first line of the address.'
-          },
-          address_line_2: {
-            type: 'string',
-            description: 'The second line of the address.'
+            },
+            required: ['self']
           },
           locality: {
-            type: 'string',
-            description: 'The locality e.g London.'
-          },
-          region: {
-            type: 'string',
-            description: 'The region e.g Surrey.'
+            type: 'string'
           },
           postal_code: {
-            type: 'string',
-            description: 'The postal code e.g CF14 3UZ.'
+            type: 'string'
           },
-          country: {
-            type: 'string',
-            description: 'The country.',
-            enum: [
-              'England',
-              'Wales',
-              'Scotland',
-              'Northern Ireland',
-              'Great Britain',
-              'United Kingdom',
-              'Not specified'
-            ]
+          region: {
+            type: 'string'
+          },
+          address_line_2: {
+            type: 'string'
           },
           po_box: {
-            type: 'string',
-            description: 'The post-office box number.'
+            type: 'string'
           }
+        },
+        required: ['etag', 'kind', 'links'],
+        additionalProperties: false,
+        title: 'getRegisteredOfficeAddress',
+        example: {
+          address_line_1: '29a High Street',
+          country: 'England',
+          etag: 'd932765332d66741b03f7bd9db5d9cf5f4286642',
+          kind: 'registered-office-address',
+          links: {
+            self: '/company/14057702/registered-office-address'
+          },
+          locality: 'Banstead',
+          postal_code: 'SM7 2NH',
+          region: 'Surrey'
         }
       }
     }

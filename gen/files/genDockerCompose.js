@@ -14,7 +14,7 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
             volumes: ['./Caddyfile:/etc/caddy/Caddyfile'],
             ports: ['3000:80'], networks: ['microservices', 'metrics'], logging:{driver: 'local'}
         }], ['auth-db', {image: 'redis', networks: ['auth'], logging:{driver: 'local'}}],
-            ['auth-service', {build: 'auth', networks: ['auth', 'microservices'], logging:{driver: 'local'}}],
+            ['auth-service', {build: 'auth', networks: ['auth', 'microservices'], logging:{driver: 'local'}, environment: {AUTH_DB_URL: 'auth-db'}}],
             ['metrics', {image: 'prom/prometheus', logging:{driver: 'local'},
                 volumes: ['./prometheus.yaml:/etc/prometheus/prometheus.yml'],
                 ports: ['9090:9090'], networks: ['metrics']

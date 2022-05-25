@@ -25,488 +25,278 @@ export const GetRegistersSchema = {
     },
     response: {
       '200': {
-        title: 'companyRegister',
         type: 'object',
-        required: [],
         properties: {
+          kind: {
+            type: 'string'
+          },
           links: {
             type: 'object',
-            description:
-              'A set of URLs related to the resource, including self.',
-            title: 'linksType',
-            required: [],
             properties: {
               self: {
-                description: 'The URL of the resource.',
                 type: 'string'
               }
-            }
-          },
-          company_number: {
-            type: 'string',
-            description: 'The number of the company.'
-          },
-          kind: {
-            enum: ['registers'],
-            type: 'string'
+            },
+            required: ['self']
           },
           registers: {
-            description: 'company registers information.',
-            items: {
-              title: 'registers',
-              description: 'Registered company information',
-              type: 'object',
-              required: [],
-              properties: {
-                directors: {
-                  description: 'List of registered company directors.',
-                  type: 'object',
-                  title: 'registerListDirectors',
-                  required: [],
-                  properties: {
-                    register_type: {
-                      description: 'The register type.',
-                      enum: ['directors'],
-                      type: 'string'
-                    },
+            type: 'object',
+            properties: {
+              members: {
+                type: 'object',
+                properties: {
+                  register_type: {
+                    type: 'string'
+                  },
+                  items: {
+                    type: 'array',
                     items: {
-                      items: {
-                        title: 'registeredItems',
-                        required: [],
-                        properties: {
-                          moved_on: {
-                            description: 'The date registered on',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          register_moved_to: {
-                            description: 'Location of registration',
-                            type: 'string',
-                            enum: [
-                              'public-register',
-                              'registered-office',
-                              'single-alternative-inspection-location',
-                              'unspecified-location'
-                            ]
-                          },
-                          links: {
-                            description:
-                              'A set of URLs related to the resource.',
-                            type: 'object',
-                            title: 'linksItems',
-                            required: [],
-                            properties: {
-                              filing: {
-                                description:
-                                  'The URL of the transaction for the resource.',
-                                type: 'string'
-                              }
-                            }
-                          }
-                        },
-                        type: 'object'
-                      },
-                      type: 'array'
-                    },
-                    links: {
-                      description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      title: 'linksDirectorsRegister',
                       properties: {
-                        directors_register: {
-                          description: 'The URL for the resource.',
+                        register_moved_to: {
                           type: 'string'
+                        },
+                        moved_on: {
+                          type: 'string'
+                        },
+                        links: {
+                          type: 'object',
+                          properties: {
+                            filing: {
+                              type: 'string'
+                            }
+                          },
+                          required: ['filing']
                         }
-                      }
+                      },
+                      required: ['register_moved_to', 'moved_on']
                     }
                   }
                 },
-                secretaries: {
-                  description: 'List of registered company secretaries.',
-                  type: 'object',
-                  title: 'registerListSecretaries',
-                  required: [],
-                  properties: {
-                    register_type: {
-                      description: 'The register type.',
-                      enum: ['secretaries'],
-                      type: 'string'
-                    },
+                required: ['register_type', 'items']
+              },
+              directors: {
+                type: 'object',
+                properties: {
+                  items: {
+                    type: 'array',
                     items: {
-                      items: {
-                        title: 'registeredItems',
-                        required: [],
-                        properties: {
-                          moved_on: {
-                            description: 'The date registered on',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          register_moved_to: {
-                            description: 'Location of registration',
-                            type: 'string',
-                            enum: [
-                              'public-register',
-                              'registered-office',
-                              'single-alternative-inspection-location',
-                              'unspecified-location'
-                            ]
-                          },
-                          links: {
-                            description:
-                              'A set of URLs related to the resource.',
-                            type: 'object',
-                            title: 'linksItems',
-                            required: [],
-                            properties: {
-                              filing: {
-                                description:
-                                  'The URL of the transaction for the resource.',
-                                type: 'string'
-                              }
-                            }
-                          }
-                        },
-                        type: 'object'
-                      },
-                      type: 'array'
-                    },
-                    links: {
-                      description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      title: 'linksSecretaryRegister',
                       properties: {
-                        secretaries_register: {
-                          description: 'The URL for the resource.',
+                        moved_on: {
                           type: 'string'
-                        }
-                      }
-                    }
-                  }
-                },
-                persons_with_significant_control: {
-                  description:
-                    'List of registered company persons with significant control.',
-                  type: 'object',
-                  title: 'registerListPersonsWithSignificantControl',
-                  required: [],
-                  properties: {
-                    register_type: {
-                      description: 'The register type.',
-                      enum: ['persons-with-significant-control'],
-                      type: 'string'
-                    },
-                    items: {
-                      items: {
-                        title: 'registeredItems',
-                        required: [],
-                        properties: {
-                          moved_on: {
-                            description: 'The date registered on',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          register_moved_to: {
-                            description: 'Location of registration',
-                            type: 'string',
-                            enum: [
-                              'public-register',
-                              'registered-office',
-                              'single-alternative-inspection-location',
-                              'unspecified-location'
-                            ]
-                          },
-                          links: {
-                            description:
-                              'A set of URLs related to the resource.',
-                            type: 'object',
-                            title: 'linksItems',
-                            required: [],
-                            properties: {
-                              filing: {
-                                description:
-                                  'The URL of the transaction for the resource.',
-                                type: 'string'
-                              }
-                            }
-                          }
                         },
-                        type: 'object'
-                      },
-                      type: 'array'
-                    },
-                    links: {
-                      description: 'A set of URLs related to the resource.',
-                      type: 'object',
-                      title: 'linksPersonsWithSignificantControlRegister',
-                      properties: {
-                        persons_with_significant_control_register: {
-                          description: 'The URL for the resource.',
+                        register_moved_to: {
                           type: 'string'
-                        }
-                      }
-                    }
-                  }
-                },
-                usual_residential_address: {
-                  description: 'List of register addresses.',
-                  type: 'object',
-                  title: 'registerListUsualResidentialAddress',
-                  required: [],
-                  properties: {
-                    register_type: {
-                      description: 'The register type.',
-                      enum: ['usual-residential-address'],
-                      type: 'string'
-                    },
-                    items: {
-                      items: {
-                        title: 'registeredItems',
-                        required: [],
-                        properties: {
-                          moved_on: {
-                            description: 'The date registered on',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          register_moved_to: {
-                            description: 'Location of registration',
-                            type: 'string',
-                            enum: [
-                              'public-register',
-                              'registered-office',
-                              'single-alternative-inspection-location',
-                              'unspecified-location'
-                            ]
-                          },
-                          links: {
-                            description:
-                              'A set of URLs related to the resource.',
-                            type: 'object',
-                            title: 'linksItems',
-                            required: [],
-                            properties: {
-                              filing: {
-                                description:
-                                  'The URL of the transaction for the resource.',
-                                type: 'string'
-                              }
-                            }
-                          }
                         },
-                        type: 'object'
-                      },
-                      type: 'array'
-                    },
-                    links: {
-                      description: 'A set of URLs related to the resource.',
-                      type: 'object',
-                      title: 'linksListUsualResidentialAddress',
-                      properties: {
-                        usual_residential_address: {
-                          description: 'The URL for the resource.',
-                          type: 'string'
-                        }
-                      }
-                    }
-                  }
-                },
-                llp_usual_residential_address: {
-                  description: 'List of register addresses.',
-                  type: 'object',
-                  title: 'registerListLLPUsualResidentialAddress',
-                  properties: {
-                    register_type: {
-                      description: 'The register type.',
-                      enum: ['llp-usual-residential-address'],
-                      type: 'string'
-                    },
-                    items: {
-                      items: {
-                        title: 'registeredItems',
-                        required: [],
-                        properties: {
-                          moved_on: {
-                            description: 'The date registered on',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          register_moved_to: {
-                            description: 'Location of registration',
-                            type: 'string',
-                            enum: [
-                              'public-register',
-                              'registered-office',
-                              'single-alternative-inspection-location',
-                              'unspecified-location'
-                            ]
-                          },
-                          links: {
-                            description:
-                              'A set of URLs related to the resource.',
-                            type: 'object',
-                            title: 'linksItems',
-                            required: [],
-                            properties: {
-                              filing: {
-                                description:
-                                  'The URL of the transaction for the resource.',
-                                type: 'string'
-                              }
+                        links: {
+                          type: 'object',
+                          properties: {
+                            filing: {
+                              type: 'string'
                             }
-                          }
-                        },
-                        type: 'object'
-                      },
-                      type: 'array'
-                    },
-                    links: {
-                      description: 'A set of URLs related to the resource.',
-                      type: 'object',
-                      title: 'linksListLLPUsualResidentialAddress',
-                      properties: {
-                        llp_usual_residential_address: {
-                          description: 'The URL for the resource.',
-                          type: 'string'
+                          },
+                          required: ['filing']
                         }
-                      }
+                      },
+                      required: ['moved_on', 'register_moved_to']
                     }
                   },
-                  required: []
+                  register_type: {
+                    type: 'string'
+                  },
+                  links: {
+                    type: 'object',
+                    properties: {
+                      directors_register: {
+                        type: 'string'
+                      }
+                    },
+                    required: ['directors_register']
+                  }
                 },
-                members: {
-                  description: 'List of registered company members..',
-                  type: 'object',
-                  title: 'registerListMembers',
-                  required: [],
-                  properties: {
-                    register_type: {
-                      description: 'The register type.',
-                      enum: ['members'],
-                      type: 'string'
-                    },
+                required: ['items', 'register_type']
+              },
+              secretaries: {
+                type: 'object',
+                properties: {
+                  register_type: {
+                    type: 'string'
+                  },
+                  items: {
+                    type: 'array',
                     items: {
-                      items: {
-                        title: 'registeredItems',
-                        required: [],
-                        properties: {
-                          moved_on: {
-                            description: 'The date registered on',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          register_moved_to: {
-                            description: 'Location of registration',
-                            type: 'string',
-                            enum: [
-                              'public-register',
-                              'registered-office',
-                              'single-alternative-inspection-location',
-                              'unspecified-location'
-                            ]
-                          },
-                          links: {
-                            description:
-                              'A set of URLs related to the resource.',
-                            type: 'object',
-                            title: 'linksItems',
-                            required: [],
-                            properties: {
-                              filing: {
-                                description:
-                                  'The URL of the transaction for the resource.',
-                                type: 'string'
-                              }
-                            }
-                          }
-                        },
-                        type: 'object'
-                      },
-                      type: 'array'
-                    },
-                    links: {
-                      description: 'A set of URLs related to the resource.',
                       type: 'object',
-                      title: 'linksListMembers',
                       properties: {
-                        members: {
-                          description: 'The URL for the resource.',
+                        moved_on: {
+                          type: 'string'
+                        },
+                        register_moved_to: {
                           type: 'string'
                         }
+                      },
+                      required: ['moved_on', 'register_moved_to']
+                    }
+                  },
+                  links: {
+                    type: 'object',
+                    properties: {
+                      secretaries_register: {
+                        type: 'string'
                       }
+                    },
+                    required: ['secretaries_register']
+                  }
+                },
+                required: ['register_type', 'items']
+              },
+              persons_with_significant_control: {
+                type: 'object',
+                properties: {
+                  register_type: {
+                    type: 'string'
+                  },
+                  items: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        moved_on: {
+                          type: 'string'
+                        },
+                        register_moved_to: {
+                          type: 'string'
+                        },
+                        links: {
+                          type: 'object',
+                          properties: {
+                            filing: {
+                              type: 'string'
+                            }
+                          },
+                          required: ['filing']
+                        }
+                      },
+                      required: ['moved_on', 'register_moved_to']
+                    }
+                  },
+                  links: {
+                    type: 'object',
+                    properties: {
+                      persons_with_significant_control_register: {
+                        type: 'string'
+                      }
+                    },
+                    required: ['persons_with_significant_control_register']
+                  }
+                },
+                required: ['register_type', 'items']
+              },
+              usual_residential_address: {
+                type: 'object',
+                properties: {
+                  items: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        register_moved_to: {
+                          type: 'string'
+                        },
+                        moved_on: {
+                          type: 'string'
+                        }
+                      },
+                      required: ['register_moved_to', 'moved_on']
+                    }
+                  },
+                  register_type: {
+                    type: 'string'
+                  }
+                },
+                required: ['items', 'register_type']
+              },
+              llp_members: {
+                type: 'object',
+                properties: {
+                  links: {
+                    type: 'object',
+                    properties: {
+                      llp_members_register: {
+                        type: 'string'
+                      }
+                    },
+                    required: ['llp_members_register']
+                  },
+                  register_type: {
+                    type: 'string'
+                  },
+                  items: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        moved_on: {
+                          type: 'string'
+                        },
+                        register_moved_to: {
+                          type: 'string'
+                        }
+                      },
+                      required: ['moved_on', 'register_moved_to']
                     }
                   }
                 },
-                llp_members: {
-                  description: 'List of registered llp members.',
-                  type: 'object',
-                  title: 'registerListLLPMembers',
-                  properties: {
-                    register_type: {
-                      description: 'The register type.',
-                      enum: ['llp-members'],
-                      type: 'string'
-                    },
-                    items: {
-                      items: {
-                        title: 'registeredItems',
-                        required: [],
-                        properties: {
-                          moved_on: {
-                            description: 'The date registered on',
-                            type: 'string',
-                            format: 'date'
-                          },
-                          register_moved_to: {
-                            description: 'Location of registration',
-                            type: 'string',
-                            enum: [
-                              'public-register',
-                              'registered-office',
-                              'single-alternative-inspection-location',
-                              'unspecified-location'
-                            ]
-                          },
-                          links: {
-                            description:
-                              'A set of URLs related to the resource.',
-                            type: 'object',
-                            title: 'linksItems',
-                            required: [],
-                            properties: {
-                              filing: {
-                                description:
-                                  'The URL of the transaction for the resource.',
-                                type: 'string'
-                              }
-                            }
-                          }
-                        },
-                        type: 'object'
-                      },
-                      type: 'array'
-                    },
-                    links: {
-                      description: 'A set of URLs related to the resource.',
-                      type: 'object',
-                      title: 'linksListLLPMembers',
-                      properties: {
-                        llp_members: {
-                          description: 'The URL for the resource.',
-                          type: 'string'
-                        }
-                      }
-                    }
-                  },
-                  required: []
-                }
+                required: ['register_type', 'items']
               }
-            },
-            type: 'array'
+            }
+          }
+        },
+        required: ['kind', 'links', 'registers'],
+        additionalProperties: false,
+        title: 'getCompanyRegister',
+        example: {
+          kind: 'registers',
+          links: {
+            self: '/company/12638402/registers'
           },
-          etag: {
-            description: 'The ETag of the resource.',
-            type: 'string'
+          registers: {
+            members: {
+              register_type: 'members',
+              items: [
+                {
+                  register_moved_to: 'unspecified-location',
+                  moved_on: '2021-06-11'
+                }
+              ]
+            },
+            directors: {
+              items: [
+                {
+                  moved_on: '2021-06-11',
+                  register_moved_to: 'unspecified-location'
+                }
+              ],
+              register_type: 'directors'
+            },
+            secretaries: {
+              register_type: 'secretaries',
+              items: [
+                {
+                  moved_on: '2021-06-11',
+                  register_moved_to: 'unspecified-location'
+                }
+              ]
+            },
+            persons_with_significant_control: {
+              register_type: 'persons-with-significant-control',
+              items: [
+                {
+                  moved_on: '2021-06-11',
+                  register_moved_to: 'unspecified-location'
+                }
+              ]
+            }
           }
         }
       }

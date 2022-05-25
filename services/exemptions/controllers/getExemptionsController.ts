@@ -18,10 +18,8 @@ export const getExemptionsController: FastifyPluginAsync = async (
     const { company_number } = req.params
     const {} = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
-    res.header('X-Ratelimit-Limit', ratelimit.limit)
-    res.header('X-Ratelimit-Remain', ratelimit.remain)
-    res.header('X-Ratelimit-Reset', ratelimit.reset)
-    res.header('X-Ratelimit-Window', ratelimit.window)
+    for (const [header, value] of Object.entries(ratelimit))
+      res.header(header, value)
     return reflect(req.url)
     return getExemptions(company_number)
   })

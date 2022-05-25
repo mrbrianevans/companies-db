@@ -47,266 +47,252 @@ export const ListPersonsWithSignificantControlSchema = {
     },
     response: {
       '200': {
-        title: 'list',
+        type: 'object',
         properties: {
-          items_per_page: {
-            description:
-              'The number of persons with significant control to return per page.',
-            type: 'integer'
-          },
-          items: {
-            description: 'The list of persons with significant control.',
-            items: {
-              title: 'listSummary',
-              required: [],
-              properties: {
-                etag: {
-                  description: 'The ETag of the resource.',
-                  type: 'string'
-                },
-                notified_on: {
-                  description:
-                    'The date that Companies House was notified about this person with significant control.',
-                  type: 'string',
-                  format: 'date'
-                },
-                ceased_on: {
-                  description:
-                    'The date that Companies House was notified about the cessation of this person with significant control.',
-                  type: 'string',
-                  format: 'date'
-                },
-                country_of_residence: {
-                  description:
-                    'The country of residence of the person with significant control.',
-                  type: 'string'
-                },
-                date_of_birth: {
-                  description:
-                    'The date of birth of the person with significant control.',
-                  type: 'object',
-                  title: 'dateOfBirth',
-                  properties: {
-                    day: {
-                      description: 'The day of the date of birth.',
-                      type: 'integer'
-                    },
-                    month: {
-                      description: 'The month of date of birth.',
-                      type: 'integer'
-                    },
-                    year: {
-                      description: 'The year of date of birth.',
-                      type: 'integer'
-                    }
-                  },
-                  required: []
-                },
-                name: {
-                  description: 'Name of the person with significant control.',
-                  type: 'string'
-                },
-                name_elements: {
-                  description:
-                    "A document encapsulating the separate elements of a person with significant control's name.",
-                  type: 'object',
-                  title: 'nameElements',
-                  properties: {
-                    forename: {
-                      description:
-                        'The forename of the person with significant control.',
-                      type: 'string'
-                    },
-                    title: {
-                      description:
-                        'Title of the person with significant control.',
-                      type: 'string'
-                    },
-                    other_forenames: {
-                      description:
-                        'Other forenames of the person with significant control.',
-                      type: 'string'
-                    },
-                    surname: {
-                      description:
-                        'The surname of the person with significant control.',
-                      type: 'string'
-                    }
-                  },
-                  required: []
-                },
-                links: {
-                  description:
-                    'A set of URLs related to the resource, including self.',
-                  type: 'object',
-                  title: 'pscLinksType',
-                  required: [],
-                  properties: {
-                    self: {
-                      description: 'The URL of the resource.',
-                      type: 'string'
-                    },
-                    statement: {
-                      description:
-                        'The URL of the statement linked to this person with significant control.',
-                      type: 'string'
-                    }
-                  }
-                },
-                nationality: {
-                  description:
-                    'The nationality of the person with significant control.',
-                  type: 'string'
-                },
-                identification: {
-                  description: '',
-                  type: 'object',
-                  title: 'pscListIdent',
-                  properties: {
-                    legal_authority: {
-                      description:
-                        'The legal authority supervising the corporate entity or legal person with significant control.',
-                      type: 'string'
-                    },
-                    legal_form: {
-                      description:
-                        'The legal form of the corporate entity or legal person with significant control as defined by its country of registration.',
-                      type: 'string'
-                    },
-                    place_registered: {
-                      description:
-                        'The place the corporate entity with significant control is registered.',
-                      type: 'string'
-                    },
-                    registration_number: {
-                      description:
-                        'The registration number of the corporate entity with significant control.',
-                      type: 'string'
-                    },
-                    country_registered: {
-                      description:
-                        'The country or state the corporate entity with significant control is registered in.',
-                      type: 'string'
-                    }
-                  },
-                  required: []
-                },
-                ceased: {
-                  description:
-                    'Presence of that indicator means the super secure person status is ceased <br />',
-                  type: 'boolean'
-                },
-                description: {
-                  description:
-                    'Description of the super secure legal statement <br />',
-                  enum: ['super-secure-persons-with-significant-control'],
-                  type: 'string'
-                },
-                kind: {
-                  enum: [
-                    'individual-person-with-significant-control',
-                    'corporate-entity-person-with-significant-control',
-                    'legal-person-with-significant-control',
-                    'super-secure-person-with-significant-control'
-                  ],
-                  type: 'string'
-                },
-                address: {
-                  description:
-                    'The service address of the person with significant control. If given, this address will be shown on the public record instead of the residential address.',
-                  type: 'object',
-                  title: 'pscAddress',
-                  required: [],
-                  properties: {
-                    address_line_1: {
-                      description: 'The first line of the address.',
-                      type: 'string'
-                    },
-                    address_line_2: {
-                      description: 'The second line of the address.',
-                      type: 'string'
-                    },
-                    care_of: {
-                      description: 'Care of name.',
-                      type: 'string'
-                    },
-                    country: {
-                      description: 'The country. For example, UK.',
-                      type: 'string'
-                    },
-                    locality: {
-                      description: 'The locality. For example London.',
-                      type: 'string'
-                    },
-                    po_box: {
-                      description: 'The post-officer box number.',
-                      type: 'string'
-                    },
-                    postal_code: {
-                      description: 'The postal code. For example CF14 3UZ.',
-                      type: 'string'
-                    },
-                    premises: {
-                      description: 'The property name or number.',
-                      type: 'string'
-                    },
-                    region: {
-                      description: 'The region. For example Surrey.',
-                      type: 'string'
-                    }
-                  }
-                },
-                natures_of_control: {
-                  description:
-                    'Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
-                  type: 'array'
-                }
-              },
-              type: 'object'
-            },
-            type: 'array'
-          },
-          start_index: {
-            description:
-              'The offset into the entire result set that this page starts.',
-            type: 'integer'
-          },
-          total_results: {
-            description:
-              'The total number of persons with significant control in this result set.',
-            type: 'integer'
-          },
           active_count: {
-            description:
-              'The number of active persons with significant control in this result set.',
             type: 'integer'
           },
           ceased_count: {
-            description:
-              'The number of ceased persons with significant control in this result set.',
+            type: 'integer'
+          },
+          items: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                country_of_residence: {
+                  type: 'string'
+                },
+                etag: {
+                  type: 'string'
+                },
+                date_of_birth: {
+                  type: 'object',
+                  properties: {
+                    year: {
+                      type: 'integer'
+                    },
+                    month: {
+                      type: 'integer'
+                    }
+                  },
+                  required: ['year', 'month']
+                },
+                notified_on: {
+                  type: 'string'
+                },
+                links: {
+                  type: 'object',
+                  properties: {
+                    self: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['self']
+                },
+                natures_of_control: {
+                  type: 'array',
+                  items: {
+                    type: 'string'
+                  }
+                },
+                nationality: {
+                  type: 'string'
+                },
+                name_elements: {
+                  type: 'object',
+                  properties: {
+                    forename: {
+                      type: 'string'
+                    },
+                    title: {
+                      type: 'string'
+                    },
+                    surname: {
+                      type: 'string'
+                    },
+                    middle_name: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['surname']
+                },
+                name: {
+                  type: 'string'
+                },
+                address: {
+                  type: 'object',
+                  properties: {
+                    locality: {
+                      type: 'string'
+                    },
+                    premises: {
+                      type: 'string'
+                    },
+                    country: {
+                      type: 'string'
+                    },
+                    region: {
+                      type: 'string'
+                    },
+                    address_line_1: {
+                      type: 'string'
+                    },
+                    postal_code: {
+                      type: 'string'
+                    },
+                    address_line_2: {
+                      type: 'string'
+                    },
+                    care_of: {
+                      type: 'string'
+                    },
+                    po_box: {
+                      type: 'string'
+                    }
+                  }
+                },
+                kind: {
+                  type: 'string'
+                },
+                ceased_on: {
+                  type: 'string'
+                },
+                identification: {
+                  type: 'object',
+                  properties: {
+                    legal_authority: {
+                      type: 'string'
+                    },
+                    country_registered: {
+                      type: 'string'
+                    },
+                    legal_form: {
+                      type: 'string'
+                    },
+                    registration_number: {
+                      type: 'string'
+                    },
+                    place_registered: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['legal_authority', 'legal_form']
+                },
+                description: {
+                  type: 'string'
+                }
+              },
+              required: ['etag', 'links', 'kind']
+            }
+          },
+          items_per_page: {
             type: 'integer'
           },
           links: {
-            description:
-              'A set of URLs related to the resource, including self.',
             type: 'object',
-            title: 'pscListLinksType',
-            required: [],
             properties: {
               self: {
-                description: 'The URL of the resource.',
                 type: 'string'
               },
-              persons_with_significant_control_list: {
-                description:
-                  'The URL of the persons with significant control list resource.',
+              persons_with_significant_control_statements: {
+                type: 'string'
+              },
+              exemptions: {
                 type: 'string'
               }
-            }
+            },
+            required: ['self']
+          },
+          start_index: {
+            type: 'integer'
+          },
+          total_results: {
+            type: 'integer'
           }
         },
-        required: [],
-        type: 'object'
+        required: [
+          'active_count',
+          'ceased_count',
+          'items',
+          'items_per_page',
+          'links',
+          'start_index',
+          'total_results'
+        ],
+        additionalProperties: false,
+        title: 'listPersonsWithSignificantControl',
+        example: {
+          active_count: 1,
+          ceased_count: 1,
+          items: [
+            {
+              country_of_residence: 'England',
+              etag: '09dda16a85bbd90be915ea4d1bc0938c141d5006',
+              date_of_birth: {
+                year: 1958,
+                month: 12
+              },
+              notified_on: '2020-10-26',
+              links: {
+                self: '/company/04277636/persons-with-significant-control/individual/OXRcen646dCFlhc7SCl3D2KAxZ0'
+              },
+              natures_of_control: ['ownership-of-shares-75-to-100-percent'],
+              nationality: 'British',
+              name_elements: {
+                forename: 'Asmita',
+                title: 'Mrs',
+                surname: 'Saujani',
+                middle_name: 'Nitinchandra'
+              },
+              name: 'Mrs Asmita Nitinchandra Saujani',
+              address: {
+                locality: 'Rickmansworth',
+                premises: '50 Grovewood Close',
+                country: 'England',
+                region: 'Hertfordshire',
+                address_line_1: 'Chorleywood',
+                postal_code: 'WD3 5PX'
+              },
+              kind: 'individual-person-with-significant-control'
+            },
+            {
+              ceased_on: '2020-10-26',
+              etag: 'a3f86f7fde9af31b046343300aeb6ea470dd1a29',
+              country_of_residence: 'United Arab Emirates',
+              notified_on: '2016-08-01',
+              date_of_birth: {
+                year: 1966,
+                month: 7
+              },
+              name: 'Mrs Falguni Sanjiv Patel',
+              name_elements: {
+                title: 'Mrs',
+                forename: 'Falguni',
+                middle_name: 'Sanjiv',
+                surname: 'Patel'
+              },
+              nationality: 'British',
+              links: {
+                self: '/company/04277636/persons-with-significant-control/individual/VqdFpT8mO1_olhlkbz49WQ8FI84'
+              },
+              natures_of_control: ['ownership-of-shares-25-to-50-percent'],
+              kind: 'individual-person-with-significant-control',
+              address: {
+                locality: 'Middlesex',
+                address_line_2: 'Northwood',
+                address_line_1: '41 The Broadway, Joel Street',
+                postal_code: 'HA6 1NZ'
+              }
+            }
+          ],
+          items_per_page: 25,
+          links: {
+            self: '/company/04277636/persons-with-significant-control'
+          },
+          start_index: 0,
+          total_results: 2
+        }
       }
     }
   }

@@ -39,7 +39,7 @@ export class AuthService {
   }
   async getUsage(){
     const usage = await this.context.redis.get(this.getUsageKey())
-    return parseInt(usage)
+    return usage ? parseInt(usage) : 0
   }
 
   private getQuotaKey(){

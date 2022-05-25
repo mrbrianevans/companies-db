@@ -30,162 +30,151 @@ export const GetIndividualSchema = {
     },
     response: {
       '200': {
-        title: 'individual',
-        required: [],
+        type: 'object',
         properties: {
-          etag: {
-            description: 'The ETag of the resource.',
-            type: 'string'
-          },
-          notified_on: {
-            description:
-              'The date that Companies House was notified about this person with significant control.',
-            type: 'string',
-            format: 'date'
-          },
-          ceased_on: {
-            description:
-              'The date that Companies House was notified about the cessation of this person with significant control.',
-            type: 'string',
-            format: 'date'
-          },
-          kind: {
-            enum: ['individual-person-with-significant-control'],
-            type: 'string'
-          },
-          country_of_residence: {
-            description:
-              'The country of residence of the person with significant control.',
-            type: 'string'
-          },
-          date_of_birth: {
-            description:
-              'The date of birth of the person with significant control.',
-            type: 'object',
-            title: 'dateOfBirth',
-            properties: {
-              day: {
-                description: 'The day of the date of birth.',
-                type: 'integer'
-              },
-              month: {
-                description: 'The month of date of birth.',
-                type: 'integer'
-              },
-              year: {
-                description: 'The year of date of birth.',
-                type: 'integer'
-              }
-            },
-            required: []
-          },
-          name: {
-            description: 'Name of the person with significant control.',
-            type: 'string'
-          },
-          name_elements: {
-            description:
-              "A document encapsulating the seperate elements of a person with significant control's name.",
-            type: 'object',
-            title: 'nameElements',
-            properties: {
-              forename: {
-                description:
-                  'The forename of the person with significant control.',
-                type: 'string'
-              },
-              title: {
-                description: 'Title of the person with significant control.',
-                type: 'string'
-              },
-              other_forenames: {
-                description:
-                  'Other forenames of the person with significant control.',
-                type: 'string'
-              },
-              surname: {
-                description:
-                  'The surname of the person with significant control.',
-                type: 'string'
-              }
-            },
-            required: []
-          },
-          links: {
-            description:
-              'A set of URLs related to the resource, including self.',
-            type: 'object',
-            title: 'pscLinksType',
-            required: [],
-            properties: {
-              self: {
-                description: 'The URL of the resource.',
-                type: 'string'
-              },
-              statement: {
-                description:
-                  'The URL of the statement linked to this person with significant control.',
-                type: 'string'
-              }
-            }
-          },
-          nationality: {
-            description:
-              'The nationality of the person with significant control.',
-            type: 'string'
-          },
           address: {
-            description:
-              'The service address of the person with significant control. If given, this address will be shown on the public record instead of the residential address.',
             type: 'object',
-            title: 'pscAddress',
-            required: [],
             properties: {
-              address_line_1: {
-                description: 'The first line of the address.',
-                type: 'string'
-              },
-              address_line_2: {
-                description: 'The second line of the address.',
-                type: 'string'
-              },
-              care_of: {
-                description: 'Care of name.',
-                type: 'string'
-              },
               country: {
-                description: 'The country. For example, UK.',
-                type: 'string'
-              },
-              locality: {
-                description: 'The locality. For example London.',
-                type: 'string'
-              },
-              po_box: {
-                description: 'The post-officer box number.',
-                type: 'string'
-              },
-              postal_code: {
-                description: 'The postal code. For example CF14 3UZ.',
                 type: 'string'
               },
               premises: {
-                description: 'The property name or number.',
                 type: 'string'
               },
               region: {
-                description: 'The region. For example Surrey.',
+                type: 'string'
+              },
+              locality: {
+                type: 'string'
+              },
+              postal_code: {
+                type: 'string'
+              },
+              address_line_1: {
+                type: 'string'
+              },
+              address_line_2: {
+                type: 'string'
+              },
+              care_of: {
+                type: 'string'
+              },
+              po_box: {
                 type: 'string'
               }
             }
           },
+          country_of_residence: {
+            type: 'string'
+          },
+          date_of_birth: {
+            type: 'object',
+            properties: {
+              month: {
+                type: 'integer'
+              },
+              year: {
+                type: 'integer'
+              }
+            },
+            required: ['month', 'year']
+          },
+          etag: {
+            type: 'string'
+          },
+          kind: {
+            type: 'string'
+          },
+          links: {
+            type: 'object',
+            properties: {
+              self: {
+                type: 'string'
+              }
+            },
+            required: ['self']
+          },
+          name: {
+            type: 'string'
+          },
+          name_elements: {
+            type: 'object',
+            properties: {
+              title: {
+                type: 'string'
+              },
+              middle_name: {
+                type: 'string'
+              },
+              surname: {
+                type: 'string'
+              },
+              forename: {
+                type: 'string'
+              }
+            },
+            required: ['surname', 'forename']
+          },
+          nationality: {
+            type: 'string'
+          },
           natures_of_control: {
-            description:
-              'Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
-            type: 'array'
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          },
+          notified_on: {
+            type: 'string'
+          },
+          ceased_on: {
+            type: 'string'
           }
         },
-        type: 'object'
+        required: [
+          'address',
+          'country_of_residence',
+          'date_of_birth',
+          'etag',
+          'kind',
+          'links',
+          'name',
+          'name_elements',
+          'nationality',
+          'natures_of_control',
+          'notified_on'
+        ],
+        additionalProperties: false,
+        title: 'getPersonWithSignificantControlIndividual',
+        example: {
+          address: {
+            country: 'United Kingdom',
+            premises: '42 Glebe Street',
+            region: 'Leicestershire',
+            locality: 'Loughborough',
+            postal_code: 'LE11 1JR'
+          },
+          country_of_residence: 'United Kingdom',
+          date_of_birth: {
+            month: 3,
+            year: 1967
+          },
+          etag: '814acb77d25049624b14c0fa88af7d09fcbf7e39',
+          kind: 'individual-person-with-significant-control',
+          links: {
+            self: '/company/11370252/persons-with-significant-control/individual/tw_J6Owb0RS9lglUle6hoxVwAqI'
+          },
+          name: 'Mr Richard Anthony Smith',
+          name_elements: {
+            title: 'Mr',
+            middle_name: 'Anthony',
+            surname: 'Smith',
+            forename: 'Richard'
+          },
+          nationality: 'British',
+          natures_of_control: ['ownership-of-shares-75-to-100-percent'],
+          notified_on: '2018-05-18'
+        }
       }
     }
   }

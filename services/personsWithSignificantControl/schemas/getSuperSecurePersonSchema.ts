@@ -30,42 +30,38 @@ export const GetSuperSecurePersonSchema = {
     },
     response: {
       '200': {
-        title: 'superSecure',
-        required: [],
+        type: 'object',
         properties: {
+          description: {
+            type: 'string'
+          },
           etag: {
-            description: 'The ETag of the resource.',
             type: 'string'
           },
           kind: {
-            enum: ['super-secure-person-with-significant-control'],
             type: 'string'
-          },
-          description: {
-            description: 'Description of the super secure legal statement \n',
-            enum: ['super-secure-persons-with-significant-control'],
-            type: 'string'
-          },
-          ceased: {
-            description:
-              'Presence of that indicator means the super secure person status is ceased \n',
-            type: 'boolean'
           },
           links: {
-            description:
-              'A set of URLs related to the resource, including self.',
             type: 'object',
-            title: 'superSecureLinksType',
-            required: [],
             properties: {
               self: {
-                description: 'The URL of the resource.',
                 type: 'string'
               }
-            }
+            },
+            required: ['self']
           }
         },
-        type: 'object'
+        required: ['description', 'etag', 'kind', 'links'],
+        additionalProperties: false,
+        title: 'getPersonsWithSignificantControlSuperSecure',
+        example: {
+          description: 'super-secure-persons-with-significant-control',
+          etag: '71519abc34634304d42ef2720a4ed0a432e28d96',
+          kind: 'super-secure-person-with-significant-control',
+          links: {
+            self: '/company/OC418501/persons-with-significant-control/super-secure/hsp93JPzJLp3FHQiu0kZ040-jqk'
+          }
+        }
       }
     }
   }

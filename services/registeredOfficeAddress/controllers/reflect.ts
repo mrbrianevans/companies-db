@@ -23,9 +23,14 @@ export async function reflect(path) {
   return await res.json()
 }
 export async function auth(headers) {
-  const ratelimit = await fetch(process.env.AUTH_URL, { headers }).then((r) =>
-    r.json()
-  )
-  logger.info({ ratelimit }, 'Fetched ratelimit from auth service')
-  return ratelimit
+  try {
+    const ratelimit = await fetch(process.env.AUTH_URL, { headers }).then((r) =>
+      r.json()
+    )
+    logger.info({ ratelimit }, 'Fetched ratelimit from auth service')
+    return ratelimit
+  } catch (e) {
+    logger.error('Failed to get authorization headers')
+    throw e
+  }
 }
