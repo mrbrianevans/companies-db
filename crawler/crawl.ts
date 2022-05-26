@@ -15,13 +15,13 @@ const cols = await db.db('responses').listCollections().toArray()
 console.log(cols.map(col=>col.name))
 
 const crawler = new Crawler(db.db('responses'))
-// await crawler.listenOnWebsocket()
 // await crawler.crawl()
 // await crawler.crawlDisqualifiedOfficers()
 // await crawler.crawlPscStatements()
 // await crawler.crawlPsc()
 // await crawler.crawlSearchCompanies()
 // await crawler.crawlSearchOfficers()
+// await crawler.listenOnWebsocket()
 // await crawler.crawlRegisteredOfficeAddress()
 // await crawler.crawlOfficers()
 // await crawler.crawlThroughCompaniesLinks()
@@ -29,7 +29,7 @@ const crawler = new Crawler(db.db('responses'))
 // await crawler.crawlFilingHistory()
 // await crawler.crawlCharges()
 
-const paths = [
+const oldPaths = [
   {collection: 'charges', operation: 'listCharge', endpoint: '/company/{company_number}/charges'},
   {collection: 'chargesItem', operation: 'getCharge', endpoint: '/company/{company_number}/charges/{charge_id}'},
   {collection: 'company', operation: 'getCompanyProfile', endpoint: '/company/{company_number}'},
@@ -61,43 +61,219 @@ const paths = [
 ]
 
 
-for (const path of paths) {
-  const {operation, endpoint} = path
-  generate: try {
-    const docs = await db.db('responses').collection(path.collection).aggregate([{$sample:{size:10000}}]).map(d => {
-      delete d._id
-      return d
-    }).toArray()
-// generate TypeScript defs
-//     const typeDefs = JsonToTS(docs, {rootName: operation})
-//     await writeFile(resolve(`./types/${operation}TypeDefs.ts`), typeDefs.join('\n\n'))
-
-// generate JSON schema
-    const schema = createCompoundSchema(docs)
-    // mergeSchemas([schema]) // merge with their spec to get documentation
-    Object.assign(schema, {additionalProperties: false, title: operation, example: docs[0]})
-// update openapi.yaml
-    const openapi = await readFile(resolve('../spec/openapi.yaml')).then(String).then(YAML.parse)
-    openapi.paths[endpoint].get.responses[200].content['application/json'].schema = schema
-    await writeFile(resolve('../spec/openapi.yaml'), YAML.stringify(openapi))
-    Object.assign(schema, {'$schema': "http://json-schema.org/draft-07/schema#", example: undefined})
-    await writeFile(resolve(`./schemas/${operation}JsonSchema.json`), JSON.stringify(schema, null, 2))
-  }catch (e){
-    console.log("Failed to generate", path)
+const paths = [
+  {
+    operation: 'getCharges',
+    endpoint: '/company/{company_number}/charges/{charge_id}',
+    collection: 'chargesItem'
+  },
+  {
+    operation: 'listCharges',
+    endpoint: '/company/{company_number}/charges',
+    collection: 'charges'
+  },
+  {
+    operation: 'getCompanyProfile',
+    endpoint: '/company/{company_number}',
+    collection: 'company'
+  },
+  {
+    operation: 'getExemptions',
+    endpoint: '/company/{company_number}/exemptions',
+    collection: 'exemptions'
+  },
+  {
+    operation: 'getFilingHistory',
+    endpoint: '/company/{company_number}/filing-history/{transaction_id}',
+    collection: 'filingHistoryItem'
+  },
+  {
+    operation: 'listFilingHistory',
+    endpoint: '/company/{company_number}/filing-history',
+    collection: 'filingHistory'
+  },
+  {
+    operation: 'getInsolvency',
+    endpoint: '/company/{company_number}/insolvency',
+    collection: 'insolvency'
+  },
+  {
+    operation: 'getOfficers',
+    endpoint: '/company/{company_number}/appointments/{appointment_id}',
+    collection: 'officersItem'
+  },
+  {
+    operation: 'getNaturalOfficer',
+    endpoint: '/disqualified-officers/natural/{officer_id}',
+    collection: 'disqualifiedOfficersNatural'
+  },
+  {
+    operation: 'getCorporateOfficer',
+    endpoint: '/disqualified-officers/corporate/{officer_id}',
+    collection: 'disqualifiedOfficersCorporate'
+  },
+  {
+    operation: 'listOfficers',
+    endpoint: '/company/{company_number}/officers',
+    collection: 'officers'
+  },
+  {
+    operation: 'listOfficerAppointments',
+    endpoint: '/officers/{officer_id}/appointments',
+    collection: 'appointments'
+  },
+  {
+    operation: 'getIndividual',
+    endpoint: '/company/{company_number}/persons-with-significant-control/individual/{psc_id}',
+    collection: 'pscIndividual'
+  },
+  {
+    operation: 'getCorporateEntities',
+    endpoint: '/company/{company_number}/persons-with-significant-control/corporate-entity/{psc_id}',
+    collection: 'pscCorporate'
+  },
+  {
+    operation: 'getLegalPersons',
+    endpoint: '/company/{company_number}/persons-with-significant-control/legal-person/{psc_id}',
+    collection: 'pscLegal'
+  },
+  {
+    operation: 'getStatement',
+    endpoint: '/company/{company_number}/persons-with-significant-control-statements/{statement_id}',
+    collection: 'personsWithSignificantControlStatementsItem'
+  },
+  {
+    operation: 'getSuperSecurePerson',
+    endpoint: '/company/{company_number}/persons-with-significant-control/super-secure/{super_secure_id}',
+    collection: 'pscSuperSecure'
+  },
+  {
+    operation: 'listPersonsWithSignificantControl',
+    endpoint: '/company/{company_number}/persons-with-significant-control',
+    collection: 'personsWithSignificantControl'
+  },
+  {
+    operation: 'listStatements',
+    endpoint: '/company/{company_number}/persons-with-significant-control-statements',
+    collection: 'personsWithSignificantControlStatements'
+  },
+  {
+    operation: 'getRegisteredOfficeAddress',
+    endpoint: '/company/{company_number}/registered-office-address',
+    collection: 'registeredOfficeAddress'
+  },
+  {
+    operation: 'getRegisters',
+    endpoint: '/company/{company_number}/registers',
+    collection: 'registers'
+  },
+  {
+    operation: 'advancedCompanySearch',
+    endpoint: '/advanced-search/companies',
+    collection: 'advancedCompanySearch'
+  },
+  {
+    operation: 'searchAll',
+    endpoint: '/search',
+    collection: 'searchAll'
+  },
+  {
+    operation: 'searchCompanies',
+    endpoint: '/search/companies',
+    collection: 'searchCompanies'
+  },
+  {
+    operation: 'searchOfficers',
+    endpoint: '/search/officers',
+    collection: 'searchOfficers'
+  },
+  {
+    operation: 'searchDisqualifiedOfficers',
+    endpoint: '/search/disqualified-officers',
+    collection: 'searchDisqualifiedOfficers'
+  },
+  {
+    operation: 'searchDissolvedCompanies',
+    endpoint: '/dissolved-search/companies',
+    collection: 'searchDissolved'
+  },
+  {
+    operation: 'searchCompaniesAlphabetically',
+    endpoint: '/alphabetic-search/companies',
+    collection: 'searchCompaniesAlphabetically'
+  },
+  {
+    operation: 'getUKEstablishments',
+    endpoint: '/company/{company_number}/uk-establishments',
+    collection: 'ukEstablishments'
   }
+]
 
-//check documents pass validation
-  test: {
-//     const docs = await db.db('responses').collection(path.collection).find()
-//     const schemaFromFile = await readFile(resolve(`./schemas/${operation}JsonSchema.json`)).then(String).then(JSON.parse)
-//     const ajv = new Ajv()
-//     const validate = ajv.compile(schemaFromFile)
-//     for await(const doc of docs) {
-//       const {_id} = doc
-//       delete doc._id
-//       const valid = validate(doc)
-//       if (!valid) console.log(_id, "Invalid:", validate.errors?.map(e=>e.message)?.join(', '))
-//     }
+
+// generate test URLs
+async function generateTestUrls(qty = 100) {
+  const testUrls = {}
+  for (const path of paths) {
+    const {operation} = path
+    const urls = await db.db('responses').collection(path.collection).aggregate([{$sample: {size: qty}}]).map(d=>d._id).toArray()
+    testUrls[operation] = urls
+  }
+  await writeFile(resolve('testUrls.json'), JSON.stringify(testUrls, null, 1))
+}
+
+async function generateSchemas(typedefs = false, schemas = false){
+  for (const path of paths) {
+    const {operation, endpoint} = path
+    generate: try {
+      const docs = await db.db('responses').collection(path.collection).aggregate([{$sample: {size: 10000}}]).map(d => {
+        delete d._id
+        return d
+      }).toArray()
+// generate TypeScript defs
+      if(typedefs) {
+        const typeDefs = JsonToTS(docs, {rootName: operation})
+        await writeFile(resolve(`./types/${operation}TypeDefs.ts`), typeDefs.join('\n\n'))
+      }
+// generate JSON schema
+      if(schemas) {
+        const schema = createCompoundSchema(docs)
+        // mergeSchemas([schema]) // merge with their spec to get documentation
+        Object.assign(schema, {additionalProperties: false, title: operation, example: docs[0]})
+// update openapi.yaml
+        const openapi = await readFile(resolve('../spec/openapi.yaml')).then(String).then(YAML.parse)
+        openapi.paths[endpoint].get.responses[200].content['application/json'].schema = schema
+        await writeFile(resolve('../spec/openapi.yaml'), YAML.stringify(openapi))
+        Object.assign(schema, {'$schema': "http://json-schema.org/draft-07/schema#", example: undefined})
+        await writeFile(resolve(`./schemas/${operation}JsonSchema.json`), JSON.stringify(schema, null, 2))
+      }
+    } catch (e) {
+      console.log("Failed to generate", path)
+    }
   }
 }
+
+//check documents pass validation
+async function testValidation(){
+for (const path of paths) {
+  const {operation} = path
+  test: {
+    const docs = await db.db('responses').collection(path.collection).find()
+    const schemaFromFile = await readFile(resolve(`./schemas/${operation}JsonSchema.json`)).then(String).then(JSON.parse)
+    const ajv = new Ajv()
+    const validate = ajv.compile(schemaFromFile)
+    for await(const doc of docs) {
+      const {_id} = doc
+      delete doc._id
+      const valid = validate(doc)
+      if (!valid) console.log(_id, "Invalid:", validate.errors?.map(e=>e.message)?.join(', '))
+    }
+  }
+}
+}
+
+await generateTestUrls(10)
+// await generateSchemas(false, false)
+// await testValidation()
+
+
 await db.close()

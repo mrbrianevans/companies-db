@@ -6,34 +6,24 @@ import wT from "prettier/esm/parser-typescript.mjs";
 const marker = `// tests for each path`
 export async function genSystemTest(SYS_TEST_DIR, tagName) {
     const fileContent = `
-import * as TestRequests from "../getTestRequests";
+import testUrls from '../testUrls.json' assert {type: 'json'}
 import {testRequests} from "../testRequests";
-fetch('http://localhost:3000').catch() //to remove warning about fetch being experimental from test results
+fetch('https://httpbin.org/get').catch(e=>e) //to remove warning about fetch being experimental from test results
 
-export function test_${tagName}(){
-    describe('${kebabCase(tagName)}-service', function () {
-    ${marker}
-    
-    });
-}
+describe('${kebabCase(tagName)}-service', function () {
+${marker}
+
+});
+
     `
     await writeFile(resolve(SYS_TEST_DIR, tagName + '.spec.ts'), prettyTs(fileContent))
-}
-
-export async function genSystemTestCallerFile(SYS_TEST_DIR, tagNames){
-    const fileContent = `
-    ${tagNames.map(tag=>`import {test_${tag}} from './${tag + '.spec.js'}'`).join('\n')}
-    
-    await ${tagNames.map(tag=>`test_${tag}()`).join('\n')}
-    `
-    await writeFile(resolve(SYS_TEST_DIR, 'runAllTests.ts'), prettyTs(fileContent))
 }
 
 export async function addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema){
     const testContent = `
   it('${name}: ${path}', async function () {
     const schema = ${JSON.stringify(responseSchema)}
-    await testRequests(TestRequests.${name}Reqs, schema)
+    await testRequests(testUrls.${name}.map(path=>({path})), schema)
   });
     `
     // this logs out a starting point for the getTestRequests file

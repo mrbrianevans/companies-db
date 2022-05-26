@@ -4,7 +4,7 @@ export interface SearchDissolvedCompaniesParams {}
 
 export interface SearchDissolvedCompaniesQueryString {
   /** The company name being searched for */
-  q?: string
+  q: string
   /** Determines type of search. Options are alphabetical, best-match, previous-name-dissolved */
   search_type?: string
   /** The ordered_alpha_key_with_id used for alphabetical paging */
@@ -46,7 +46,7 @@ export const SearchDissolvedCompaniesSchema = {
           type: 'string'
         }
       },
-      required: []
+      required: ['q']
     },
     response: {
       '200': {

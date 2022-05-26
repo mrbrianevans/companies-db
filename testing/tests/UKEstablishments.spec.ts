@@ -1,74 +1,66 @@
-import * as TestRequests from '../getTestRequests'
+import testUrls from '../testUrls.json' assert { type: 'json' }
 import { testRequests } from '../testRequests'
-fetch('http://localhost:3000').catch() //to remove warning about fetch being experimental from test results
+fetch('https://httpbin.org/get').catch((e) => e) //to remove warning about fetch being experimental from test results
 
 describe('ukestablishments-service', function () {
   // tests for each path
   it('getUKEstablishments: /company/{company_number}/uk-establishments', async function () {
     const schema = {
-      title: 'companyUKEstablishments',
-      required: [],
+      type: 'object',
       properties: {
-        etag: { type: 'string', description: 'The ETag of the resource.' },
-        kind: {
-          type: 'string',
-          description: 'UK Establishment companies.',
-          enum: ['ukestablishment-companies']
-        },
-        links: {
-          type: 'object',
-          description: 'UK Establishment Resources related to this company.',
-          title: 'self_links',
-          required: [],
-          properties: {
-            self: { type: 'string', description: 'Link to this company.' }
-          }
-        },
+        etag: { type: 'string' },
         items: {
           type: 'array',
-          description: 'List of UK Establishment companies.',
           items: {
-            title: 'companyDetails',
-            required: [],
+            type: 'object',
             properties: {
-              company_number: {
-                type: 'string',
-                description: 'The number of the company.'
-              },
-              company_name: {
-                type: 'string',
-                description: 'The name of the company.'
-              },
-              company_status: {
-                type: 'string',
-                description: 'Company status.'
-              },
-              locality: {
-                type: 'string',
-                description: 'The locality e.g London.'
-              },
               links: {
-                description: 'Resources related to this company.',
-                type: 'array',
-                items: {
-                  title: 'links',
-                  required: [],
-                  properties: {
-                    company: {
-                      type: 'string',
-                      description: 'The link to the company.'
-                    }
-                  },
-                  type: 'object'
-                }
-              }
+                type: 'object',
+                properties: { company: { type: 'string' } },
+                required: ['company']
+              },
+              company_status: { type: 'string' },
+              company_number: { type: 'string' },
+              locality: { type: 'string' },
+              company_name: { type: 'string' }
             },
-            type: 'object'
+            required: [
+              'links',
+              'company_status',
+              'company_number',
+              'locality',
+              'company_name'
+            ]
           }
+        },
+        kind: { type: 'string' },
+        links: {
+          type: 'object',
+          properties: { self: { type: 'string' } },
+          required: ['self']
         }
       },
-      type: 'object'
+      required: ['etag', 'items', 'kind', 'links'],
+      additionalProperties: false,
+      title: 'listUkEstablishments',
+      example: {
+        etag: '8ad9b7f6dc0c0d0f2fcb8ab6a41db35ccedce243',
+        items: [
+          {
+            links: { company: '/company/BR023780' },
+            company_status: 'open',
+            company_number: 'BR023780',
+            locality: 'London',
+            company_name: 'LINCOLN MIDCO PTE. LIMITED'
+          }
+        ],
+        kind: 'related-companies',
+        links: { self: '/company/FC038685' }
+      }
     }
-    await testRequests(TestRequests.getUKEstablishmentsReqs, schema)
+    await testRequests(
+      testUrls.getUKEstablishments.map((path) => ({ path })),
+      schema
+    )
   })
 })

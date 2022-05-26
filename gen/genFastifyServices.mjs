@@ -26,6 +26,7 @@ async function createTagDirectories(tags) {
     await genPrometheusConfig(SERVICES_DIR)
     await genDockerCompose(SERVICES_DIR, tags)
     await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(`import Fastify from 'fastify'
+import 'dotenv/config'
 // --- import controllers ---
 
 const fastify = Fastify({logger: true})
@@ -166,6 +167,7 @@ function flattenItemsRecursive(schema, skip) {
     }
 }
 function removeSchemaRequirements(schema){
+    return // skip for now, testing new schemas with correct requirements
     if (!isObject(schema)) return
     if ('required' in schema) schema.required = []
     if ('items' in schema) removeSchemaRequirements(schema.items)
@@ -196,15 +198,17 @@ async function createRoutes(paths, responsePaths) {
         const {get: {parameters, ['x-operationName']: operationName, tags: [tag], summary, description}} = paths[path]
         const responsePath = path.replace('company_number', 'companyNumber')
         const {get: {responses}} = responsePaths[responsePath] ?? responsePaths[path] // these are sometimes different
+        const responseSchema = responses[200].content['application/json'].schema
         const op = camelCase(operationName ?? 'get')
         const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op,
             Name = name.replace(/^\w/, l => l.toUpperCase())
-        if (responses?.[200]?.schema) flattenItemsRecursive(responses[200].schema)
-        removeSchemaRequirements(responses?.[200]?.schema)
+        // if (responseSchema) flattenItemsRecursive(responseSchema)
+        // removeSchemaRequirements(responseSchema)
         for (const parameter of parameters) {
-            parameter.required = isPath(parameter) // query parameters are never required and path parameters are always required
+            parameter.required = isPath(parameter) || getName(parameter) === 'q' // query parameters are never required and path parameters are always required
         }
-        await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responses?.[200]?.schema)
+        await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema)
+        await addCaddyFileEntry(SERVICES_DIR, path, tag)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
@@ -228,7 +232,7 @@ export const ${Name}Schema = {
                 properties: Object.fromEntries(parameters.filter(isQuery).map(p => [getName(p), p.schema])),
                 required: parameters.filter(isQuery).filter(p => p.required).map(getName)
             },
-            response: {200: responses[200].schema}
+            response: {200: responseSchema}
         }, null, 2)}
 } as const
 
@@ -249,10 +253,8 @@ export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
     const {${parameters.filter(isPath).map(getName).join(', ')}} = req.params
     const {${parameters.filter(isQuery).map(getName).join(', ')}} = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
-      res.header('X-Ratelimit-Limit', ratelimit.limit)
-      res.header('X-Ratelimit-Remain', ratelimit.remain)
-      res.header('X-Ratelimit-Reset', ratelimit.reset)
-      res.header('X-Ratelimit-Window', ratelimit.window)
+      for(const [header, value] of Object.entries(ratelimit))
+        res.header(header, value)
     return reflect(req.url)
     return ${name}(${processParams(parameters)})
   })
@@ -276,9 +278,14 @@ export async function reflect(path){
  return await res.json()
 }
 export async function auth(headers) {
+try{
   const ratelimit = await fetch(process.env.AUTH_URL, { headers }).then(r=>r.json())
   logger.info({ratelimit}, 'Fetched ratelimit from auth service')
   return ratelimit
+  }catch (e){
+  logger.error("Failed to get authorization headers")
+  throw e
+  }
 }
         `))
         // write service stub
@@ -309,7 +316,6 @@ import { ${name}Controller } from '${['.', tag, 'controllers', name + 'Controlle
         await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(monolith))
 
 
-        await addCaddyFileEntry(SERVICES_DIR, path, tag)
     }
 }
 
@@ -320,5 +326,5 @@ const Yspec = await readFile(resolve('../spec/openapi.yaml')).then(String).then(
 
 
 await createTagDirectories(Yspec.tags)
-await createRoutes(Yspec.paths, spec.paths)
+await createRoutes(Yspec.paths, Yspec.paths)
 // console.log(Object.keys(Yspec.paths).map(p=>`"${p}": [{query: {}, params: {company_number: getCompanyNumber()}}]`).join(',\n\t'))

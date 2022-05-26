@@ -22,7 +22,7 @@ ajv.addFormat('uri', (uri)=> {
     return false
   }
 })
-ajv.addKeyword('example', {keyword: 'example'})
+ajv.addKeyword('example')
 export async function testRequests(requests: { path: string }[], schema: Schema) {
   assert(ajv.validateSchema(schema, false),'Schema not valid')
   const validate = ajv.compile(schema)
@@ -32,7 +32,7 @@ export async function testRequests(requests: { path: string }[], schema: Schema)
     const url = baseUrl + request.path
     const res = await fetch(url, {headers})
     const json = await res.json()
-    assert(res.ok, 'Failed with status code ' + res.status + ' ' + res.statusText + ' on url ' + res.url + ' ' + json.message)
+    assert(res.ok, 'Failed with status code ' + res.status + ' ' + res.statusText + ' on url ' + url + ' ' + json.message)
     const valid = validate(json)
     assert(valid, `${request.path} failed schema validation with ${validate.errors?.length} error(s): ${validate.errors?.map(e=>e.instancePath +' ' +e.message)}`)
   }

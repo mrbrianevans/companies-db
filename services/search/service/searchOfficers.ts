@@ -6,7 +6,7 @@ import type { SearchOfficersResponse } from '../schemas/searchOfficersSchema.js'
  * Search for officer information.
  */
 export async function searchOfficers(
-  q?: string,
+  q: string,
   items_per_page?: number,
   start_index?: number
 ): Promise<SearchOfficersResponse> {

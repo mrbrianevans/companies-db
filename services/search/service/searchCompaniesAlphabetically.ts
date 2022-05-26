@@ -6,7 +6,7 @@ import type { SearchCompaniesAlphabeticallyResponse } from '../schemas/searchCom
  * Search for a company.
  */
 export async function searchCompaniesAlphabetically(
-  q?: string,
+  q: string,
   search_above?: string,
   search_below?: string,
   size?: string

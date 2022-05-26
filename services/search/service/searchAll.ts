@@ -6,7 +6,7 @@ import type { SearchAllResponse } from '../schemas/searchAllSchema.js'
  * Search companies, officers and disqualified officers.
  */
 export async function searchAll(
-  q?: string,
+  q: string,
   items_per_page?: number,
   start_index?: number
 ): Promise<SearchAllResponse> {

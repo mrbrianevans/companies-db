@@ -1,74 +1,45 @@
-import * as TestRequests from '../getTestRequests'
+import testUrls from '../testUrls.json' assert { type: 'json' }
 import { testRequests } from '../testRequests'
-fetch('http://localhost:3000').catch() //to remove warning about fetch being experimental from test results
+fetch('https://httpbin.org/get').catch((e) => e) //to remove warning about fetch being experimental from test results
 
 describe('registered-office-address-service', function () {
   // tests for each path
   it('getRegisteredOfficeAddress: /company/{company_number}/registered-office-address', async function () {
     const schema = {
-      title: 'registeredOfficeAddress',
       type: 'object',
-      required: [],
       properties: {
-        etag: {
-          type: 'string',
-          description: 'The ETag of the resource.',
-          readOnly: true
-        },
-        kind: {
-          type: 'string',
-          description: 'The type of resource.',
-          enum: ['registered-office-address'],
-          readOnly: true
-        },
+        address_line_1: { type: 'string' },
+        country: { type: 'string' },
+        etag: { type: 'string' },
+        kind: { type: 'string' },
         links: {
           type: 'object',
-          description: 'Links to the related resources',
-          readOnly: true,
-          required: [],
-          properties: {
-            self: {
-              description: 'URL to this resource.',
-              readOnly: true,
-              type: 'string',
-              format: 'uri'
-            }
-          }
+          properties: { self: { type: 'string' } },
+          required: ['self']
         },
-        premises: {
-          type: 'string',
-          description: 'The property name or number.'
-        },
-        address_line_1: {
-          type: 'string',
-          description: 'The first line of the address.'
-        },
-        address_line_2: {
-          type: 'string',
-          description: 'The second line of the address.'
-        },
-        locality: { type: 'string', description: 'The locality e.g London.' },
-        region: { type: 'string', description: 'The region e.g Surrey.' },
-        postal_code: {
-          type: 'string',
-          description: 'The postal code e.g CF14 3UZ.'
-        },
-        country: {
-          type: 'string',
-          description: 'The country.',
-          enum: [
-            'England',
-            'Wales',
-            'Scotland',
-            'Northern Ireland',
-            'Great Britain',
-            'United Kingdom',
-            'Not specified'
-          ]
-        },
-        po_box: { type: 'string', description: 'The post-office box number.' }
+        locality: { type: 'string' },
+        postal_code: { type: 'string' },
+        region: { type: 'string' },
+        address_line_2: { type: 'string' },
+        po_box: { type: 'string' }
+      },
+      required: ['etag', 'kind', 'links'],
+      additionalProperties: false,
+      title: 'getRegisteredOfficeAddress',
+      example: {
+        address_line_1: '29a High Street',
+        country: 'England',
+        etag: 'd932765332d66741b03f7bd9db5d9cf5f4286642',
+        kind: 'registered-office-address',
+        links: { self: '/company/14057702/registered-office-address' },
+        locality: 'Banstead',
+        postal_code: 'SM7 2NH',
+        region: 'Surrey'
       }
     }
-    await testRequests(TestRequests.getRegisteredOfficeAddressReqs, schema)
+    await testRequests(
+      testUrls.getRegisteredOfficeAddress.map((path) => ({ path })),
+      schema
+    )
   })
 })

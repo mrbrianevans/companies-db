@@ -6,7 +6,7 @@ import type { SearchDissolvedCompaniesResponse } from '../schemas/searchDissolve
  * Search for a dissolved company.
  */
 export async function searchDissolvedCompanies(
-  q?: string,
+  q: string,
   search_type?: string,
   search_above?: string,
   search_below?: string,

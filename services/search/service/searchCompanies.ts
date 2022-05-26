@@ -6,7 +6,7 @@ import type { SearchCompaniesResponse } from '../schemas/searchCompaniesSchema.j
  * Search company information.
  */
 export async function searchCompanies(
-  q?: string,
+  q: string,
   items_per_page?: number,
   start_index?: number,
   restrictions?: string

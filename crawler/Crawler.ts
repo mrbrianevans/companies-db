@@ -79,6 +79,7 @@ export class Crawler{
   }
 
   async crawlCompanies(companies){
+    console.log("Crawl companies")
     for (const company of companies.items) {
       const {links: {self}} = company
       const profile = await this.fetchAndSave(self, 'company')
@@ -119,6 +120,7 @@ export class Crawler{
   }
 
   async crawlSearchCompanies(){
+    console.log("Crawl search/companies")
     const words: Record<string, number> = {}
     const companyNames = this.db.collection('company').find().map(c=>c.company_name.split(' '))
     for await(const name of companyNames){
@@ -138,6 +140,7 @@ export class Crawler{
     }
   }
   async crawlSearchOfficers(){
+    console.log("Crawl search officers")
     const words: Record<string, number> = {}
     const officerNames = this.db.collection('officersItem').find().map(c=>c.name.split(', '))
     for await(const name of officerNames){
@@ -153,6 +156,7 @@ export class Crawler{
   }
 
   async crawlOfficers(){
+    console.log("Crawl officers")
     const officers = this.db.collection<ListOfficers>('officers').find()
     for await(const officerList of officers) {
       for(const officer of officerList.items){
@@ -162,6 +166,7 @@ export class Crawler{
     }
   }
   async crawlPsc(){
+    console.log("Crawl psc")
     const pscLists = this.db.collection('personsWithSignificantControl').find()
     for await(const pscList of pscLists) {
       for(const psc of pscList.items){
@@ -177,6 +182,7 @@ export class Crawler{
     }
   }
   async crawlPscStatements(){
+    console.log("Crawl psc statements")
     const pscLists = this.db.collection('personsWithSignificantControlStatements').find()
     for await(const pscList of pscLists) {
       for(const psc of pscList.items){
@@ -186,18 +192,21 @@ export class Crawler{
   }
 
   async crawlThroughCompaniesLinks(){
+    console.log("Crawl companies links")
     const companies = this.db.collection('company').find()
     for await(const company of companies) {
       await this.crawlDocument(company, company._id.toString())
     }
   }
   async crawlExemptions(){
+    console.log("Crawl exemptions")
     const companies = this.db.collection('company').find({"links.exemptions":{'$exists': true}})
     for await(const company of companies) {
       await this.fetchAndSave(company.links.exemptions, 'exemptions')
     }
   }
   async crawlRegisteredOfficeAddress(){
+    console.log("Crawl registeredOfficeAddress")
     const companies = this.db.collection('company').find()
     for await(const company of companies) {
       const {company_number} = company
@@ -210,6 +219,7 @@ export class Crawler{
   }
 
   async crawlFilingHistory(){
+    console.log("Crawl filing history")
     const filingHistories = this.db.collection('filingHistory').find()
     for await(const filingHistory of filingHistories) {
       for(const filing of filingHistory.items){
@@ -219,6 +229,7 @@ export class Crawler{
     }
   }
   async crawlCharges(){
+    console.log("Crawl charges")
     const chargesLists = this.db.collection('charges').find()
     for await(const chargesList of chargesLists) {
       for(const charge of chargesList.items){
@@ -228,6 +239,7 @@ export class Crawler{
     }
   }
   async crawlDisqualifiedOfficers(){
+    console.log("Crawl disqualified officers")
     const officersLists = this.db.collection('searchDisqualifiedOfficers').find()
     for await(const officersList of officersLists) {
       for(const officer of officersList.items){
@@ -241,6 +253,7 @@ export class Crawler{
   }
 
   async listenOnWebsocket(){
+    console.log("Crawl websocket events")
     const events = new WebSocket('wss://companies.stream/events')
     const pass = new PassThrough({objectMode: true})
     const streamNames = {
@@ -258,9 +271,13 @@ export class Crawler{
       pass.push({resource_uri, resource_kind})
     })
     for await(const {resource_uri, resource_kind} of pass){
-      if(resource_kind === 'filing-history' || resource_kind === 'company-profile') continue
+      try{
+      // if(resource_kind === 'filing-history' || resource_kind === 'company-profile') continue
         const doc = await this.fetchAndSave(resource_uri, streamNames[resource_kind] ?? camelcase(resource_kind+'-stream'))
         // await this.crawlDocument(doc, resource_uri)
+      }catch (e){
+        
+      }
     }
     events.close()
   }

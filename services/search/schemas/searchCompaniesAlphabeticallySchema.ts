@@ -4,7 +4,7 @@ export interface SearchCompaniesAlphabeticallyParams {}
 
 export interface SearchCompaniesAlphabeticallyQueryString {
   /** The company name being searched for */
-  q?: string
+  q: string
   /** The ordered_alpha_key_with_id used for paging */
   search_above?: string
   /** The ordered_alpha_key_with_id used for paging */
@@ -36,7 +36,7 @@ export const SearchCompaniesAlphabeticallySchema = {
           type: 'string'
         }
       },
-      required: []
+      required: ['q']
     },
     response: {
       '200': {

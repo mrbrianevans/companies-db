@@ -4,7 +4,7 @@ export interface SearchDisqualifiedOfficersParams {}
 
 export interface SearchDisqualifiedOfficersQueryString {
   /** The term being searched for. */
-  q?: string
+  q: string
   /** The number of search results to return per page. */
   items_per_page?: number
   /** The index of the first result item to return. */
@@ -31,7 +31,7 @@ export const SearchDisqualifiedOfficersSchema = {
           type: 'integer'
         }
       },
-      required: []
+      required: ['q']
     },
     response: {
       '200': {
