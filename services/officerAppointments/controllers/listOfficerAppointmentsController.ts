@@ -21,6 +21,13 @@ export const listOfficerAppointmentsController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
-    return listOfficerAppointments(officer_id, items_per_page, start_index)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
+    return listOfficerAppointments(
+      context,
+      officer_id,
+      items_per_page,
+      start_index
+    )
   })
 }

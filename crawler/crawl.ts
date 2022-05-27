@@ -7,6 +7,8 @@ import {resolve} from "path";
 import Ajv from "ajv";
 import * as YAML from 'yaml'
 import {mergeSchemas} from "genson-js";
+import {Schema} from "genson-js";
+import {ValueType} from "genson-js";
 
 const db = new MongoClient('mongodb://localhost:27017')
 await db.connect()
@@ -21,6 +23,7 @@ const crawler = new Crawler(db.db('responses'))
 // await crawler.crawlPsc()
 // await crawler.crawlSearchCompanies()
 // await crawler.crawlSearchOfficers()
+// await crawler.crawlSearchAdvanced()
 // await crawler.listenOnWebsocket()
 // await crawler.crawlRegisteredOfficeAddress()
 // await crawler.crawlOfficers()
@@ -199,7 +202,7 @@ const paths = [
   },
   {
     operation: 'searchCompaniesAlphabetically',
-    endpoint: '/alphabetic-search/companies',
+    endpoint: '/alphabetical-search/companies',
     collection: 'searchCompaniesAlphabetically'
   },
   {
@@ -231,23 +234,28 @@ async function generateSchemas(typedefs = false, schemas = false){
       }).toArray()
 // generate TypeScript defs
       if(typedefs) {
-        const typeDefs = JsonToTS(docs, {rootName: operation})
+        const typeDefs = JsonToTS(docs.slice(0,500), {rootName: operation})
         await writeFile(resolve(`./types/${operation}TypeDefs.ts`), typeDefs.join('\n\n'))
       }
 // generate JSON schema
       if(schemas) {
         const schema = createCompoundSchema(docs)
-        // mergeSchemas([schema]) // merge with their spec to get documentation
-        Object.assign(schema, {additionalProperties: false, title: operation, example: docs[0]})
+        //todo: merge with their spec to get documentation
+        const responsePath = endpoint.replace('company_number', 'companyNumber')
+        const officialSchema: Schema = await readFile(resolve('../spec/apispec.json')).then(String).then(JSON.parse).then(spec=>(spec.paths[endpoint]??spec.paths[responsePath]).get.responses[200].schema)
+        flattenItemsRecursive(officialSchema)
+        // console.log(officialSchema.type, schema.type)
+        const combinedSchema = mergeSchemas([schema, officialSchema])
+        Object.assign(combinedSchema, {additionalProperties: false, title: operation, example: docs[0]})
 // update openapi.yaml
         const openapi = await readFile(resolve('../spec/openapi.yaml')).then(String).then(YAML.parse)
-        openapi.paths[endpoint].get.responses[200].content['application/json'].schema = schema
+        openapi.paths[endpoint].get.responses[200].content['application/json'].schema = combinedSchema
         await writeFile(resolve('../spec/openapi.yaml'), YAML.stringify(openapi))
-        Object.assign(schema, {'$schema': "http://json-schema.org/draft-07/schema#", example: undefined})
-        await writeFile(resolve(`./schemas/${operation}JsonSchema.json`), JSON.stringify(schema, null, 2))
+        Object.assign(combinedSchema, {'$schema': "http://json-schema.org/draft-07/schema#", example: undefined})
+        await writeFile(resolve(`./schemas/${operation}JsonSchema.json`), JSON.stringify(combinedSchema, null, 2))
       }
     } catch (e) {
-      console.log("Failed to generate", path)
+      console.log("Failed to generate", path,e)
     }
   }
 }
@@ -271,9 +279,37 @@ for (const path of paths) {
 }
 }
 
-await generateTestUrls(10)
-// await generateSchemas(false, false)
+await generateTestUrls(20)
+await generateSchemas(true, true)
 // await testValidation()
 
 
 await db.close()
+
+
+
+function flattenItemsRecursive(schema, skip?:string) {
+  const isObject = obj => obj !== null && typeof obj === 'object';
+  if (!isObject(schema)) return
+  else if ('properties' in schema) {
+    schema.type = ValueType.Object
+    for (const property in schema.properties) {
+      if (isObject(schema.properties[property])) {
+        flattenItemsRecursive(schema.properties[property], property)
+      }
+    }
+  }
+  else if ('items' in schema) {
+    if ((schema.items.title !== skip && skip !== 'items') || !('title' in schema.items)) {
+      schema.type = ValueType.Object
+      for (const item in schema.items) {
+        schema[item] = schema.items[item]
+      }
+      delete schema.items
+      flattenItemsRecursive(schema)
+    }else{
+      schema.type = ValueType.Array
+      flattenItemsRecursive(schema.items)
+    }
+  }
+}

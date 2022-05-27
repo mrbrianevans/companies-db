@@ -24,7 +24,10 @@ export const listStatementsController: FastifyPluginAsync = async (
       for (const [header, value] of Object.entries(ratelimit))
         res.header(header, value)
       return reflect(req.url)
+      const { redis, mongo } = fastify
+      const context = { redis, mongo, req }
       return listStatements(
+        context,
         company_number,
         items_per_page,
         start_index,

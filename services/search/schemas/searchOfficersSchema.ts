@@ -42,59 +42,6 @@ export const SearchOfficersSchema = {
             items: {
               type: 'object',
               properties: {
-                address: {
-                  type: 'object',
-                  properties: {
-                    locality: {
-                      type: 'string'
-                    },
-                    country: {
-                      type: 'string'
-                    },
-                    premises: {
-                      type: 'string'
-                    },
-                    address_line_1: {
-                      type: 'string'
-                    },
-                    postal_code: {
-                      type: 'string'
-                    },
-                    address_line_2: {
-                      type: 'string'
-                    },
-                    region: {
-                      type: 'string'
-                    },
-                    care_of: {
-                      type: 'string'
-                    },
-                    po_box: {
-                      type: 'string'
-                    }
-                  }
-                },
-                description_identifiers: {
-                  type: 'array',
-                  items: {
-                    type: 'string'
-                  }
-                },
-                kind: {
-                  type: 'string'
-                },
-                address_snippet: {
-                  type: 'string'
-                },
-                title: {
-                  type: 'string'
-                },
-                snippet: {
-                  type: 'string'
-                },
-                appointment_count: {
-                  type: 'integer'
-                },
                 links: {
                   type: 'object',
                   properties: {
@@ -104,19 +51,82 @@ export const SearchOfficersSchema = {
                   },
                   required: ['self']
                 },
+                address_snippet: {
+                  type: 'string'
+                },
+                address: {
+                  type: 'object',
+                  properties: {
+                    country: {
+                      type: 'string'
+                    },
+                    address_line_1: {
+                      type: 'string'
+                    },
+                    region: {
+                      type: 'string'
+                    },
+                    postal_code: {
+                      type: 'string'
+                    },
+                    locality: {
+                      type: 'string'
+                    },
+                    premises: {
+                      type: 'string'
+                    },
+                    address_line_2: {
+                      type: 'string'
+                    },
+                    po_box: {
+                      type: 'string'
+                    },
+                    care_of: {
+                      type: 'string'
+                    }
+                  }
+                },
+                appointment_count: {
+                  type: 'integer'
+                },
+                snippet: {
+                  type: 'string'
+                },
+                description_identifiers: {
+                  anyOf: [
+                    {
+                      type: 'string',
+                      description:
+                        'An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations.',
+                      enum: ['appointment-count', 'born-on']
+                    },
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'string'
+                      }
+                    }
+                  ]
+                },
                 description: {
+                  type: 'string'
+                },
+                kind: {
+                  type: 'string'
+                },
+                title: {
                   type: 'string'
                 },
                 matches: {
                   type: 'object',
                   properties: {
-                    title: {
+                    snippet: {
                       type: 'array',
                       items: {
                         type: 'integer'
                       }
                     },
-                    snippet: {
+                    title: {
                       type: 'array',
                       items: {
                         type: 'integer'
@@ -139,14 +149,12 @@ export const SearchOfficersSchema = {
                 }
               },
               required: [
-                'address',
-                'description_identifiers',
-                'kind',
                 'address_snippet',
-                'title',
+                'address',
                 'appointment_count',
-                'links',
-                'description'
+                'description',
+                'kind',
+                'title'
               ]
             }
           },
@@ -166,508 +174,535 @@ export const SearchOfficersSchema = {
             type: 'integer'
           }
         },
-        required: [
-          'items',
-          'items_per_page',
-          'kind',
-          'page_number',
-          'start_index',
-          'total_results'
-        ],
+        required: ['kind'],
         additionalProperties: false,
         title: 'searchOfficers',
         example: {
           items: [
             {
-              address: {
-                locality: 'Alton',
-                country: 'United Kingdom',
-                premises: 'The Elkolet Centre',
-                address_line_1: 'Mill Lane',
-                postal_code: 'GU34 2QG'
-              },
-              description_identifiers: ['appointment-count'],
-              kind: 'searchresults#officer',
-              address_snippet:
-                'The Elkolet Centre, Mill Lane, Alton, United Kingdom, GU34 2QG',
-              title: 'KNOWLES INDUSTRIES (UK) LIMITED',
-              snippet: '',
-              appointment_count: 5,
               links: {
-                self: '/officers/4thsnQuBqNP0opyNEarG4afJTP8/appointments'
+                self: '/officers/jzwJPDI848ea-bOSg1ooqmrv8g8/appointments'
               },
-              description: 'Total number of appointments 5',
-              matches: {
-                title: [1, 7],
-                snippet: []
-              }
-            },
-            {
-              address_snippet:
-                'The Elkolet Centre, Mill Lane, Alton, England, GU34 2QG',
-              title: 'KNOWLES INDUSTRIES (UK) LIMITED',
-              appointment_count: 1,
-              links: {
-                self: '/officers/WY2Q_jh9LKon6dcIgnhFrNX2OhY/appointments'
-              },
-              snippet: '',
-              matches: {
-                title: [1, 7],
-                snippet: []
-              },
-              description: 'Total number of appointments 1',
+              address_snippet: '100 New Bridge Street, London,  ,  , EC4V 6JA',
               address: {
-                locality: 'Alton',
-                country: 'England',
-                premises: 'The Elkolet Centre',
-                address_line_1: 'Mill Lane',
-                postal_code: 'GU34 2QG'
-              },
-              description_identifiers: ['appointment-count'],
-              kind: 'searchresults#officer'
-            },
-            {
-              appointment_count: 1,
-              snippet: '',
-              links: {
-                self: '/officers/ty6wRGrba6xBXU8Mzu6n5FNGGhQ/appointments'
-              },
-              description: 'Total number of appointments 1',
-              matches: {
-                title: [1, 7],
-                snippet: []
-              },
-              title: 'KNOWLES INDUSTRIES (UK) LIMITED',
-              address_snippet:
-                'The Elkolet Centre, Mill Lane, Alton, United Kingdom, GU34 2QG',
-              kind: 'searchresults#officer',
-              address: {
-                postal_code: 'GU34 2QG',
-                address_line_1: 'Mill Lane',
-                premises: 'The Elkolet Centre',
-                locality: 'Alton',
-                country: 'United Kingdom'
-              },
-              description_identifiers: ['appointment-count']
-            },
-            {
-              address_snippet: '183 Fraser Road, Sheffield, England, S8 0JP',
-              title: 'KNOWLES WARWICK LIMITED',
-              matches: {
-                title: [1, 7],
-                snippet: []
-              },
-              description: 'Total number of appointments 1',
-              appointment_count: 1,
-              snippet: '',
-              links: {
-                self: '/officers/MBhY8mfEG33AY-0exjb_UI4X94w/appointments'
-              },
-              description_identifiers: ['appointment-count'],
-              address: {
-                premises: '183',
-                postal_code: 'S8 0JP',
-                address_line_1: 'Fraser Road',
-                country: 'England',
-                locality: 'Sheffield'
-              },
-              kind: 'searchresults#officer'
-            },
-            {
-              title: 'KNOWLES & ASSOCIATES LIMITED',
-              address_snippet:
-                '3 Kitsmead Lane, Longcross, Chertsey, Surrey, England, KT16 0EF',
-              matches: {
-                snippet: [],
-                title: [1, 7]
-              },
-              description: 'Total number of appointments 1',
-              links: {
-                self: '/officers/_8Po1f0PRp9jQszDFuo_qUPl7Ek/appointments'
-              },
-              appointment_count: 1,
-              snippet: '',
-              kind: 'searchresults#officer',
-              description_identifiers: ['appointment-count'],
-              address: {
-                locality: 'Chertsey',
-                country: 'England',
-                address_line_2: 'Longcross',
-                postal_code: 'KT16 0EF',
-                address_line_1: 'Kitsmead Lane',
-                region: 'Surrey',
-                premises: '3'
-              }
-            },
-            {
-              appointment_count: 1,
-              links: {
-                self: '/officers/mmsqLoaH8wwdkmDnNCnZnI5veJA/appointments'
-              },
-              snippet: '',
-              description: 'Total number of appointments 1',
-              matches: {
-                snippet: [],
-                title: [1, 7]
-              },
-              title: 'KNOWLES HOLDING COMPANY LTD',
-              address_snippet:
-                '252a Grantham Road, Sleaford, Lincolnshire, England, NG34 7NX',
-              kind: 'searchresults#officer',
-              address: {
-                region: 'Lincolnshire',
-                premises: '252a',
-                postal_code: 'NG34 7NX',
-                address_line_1: 'Grantham Road',
-                country: 'England',
-                locality: 'Sleaford'
-              },
-              description_identifiers: ['appointment-count']
-            },
-            {
-              address_snippet:
-                'Belgrave Hall, Belgrave Street, Leeds, England, LS2 8DD',
-              title: 'KNOWLES IP LIMITED',
-              matches: {
-                title: [1, 7],
-                snippet: []
-              },
-              description: 'Total number of appointments 1',
-              appointment_count: 1,
-              snippet: '',
-              links: {
-                self: '/officers/2luMjijrb3zKXx5BqtVDaUdNy64/appointments'
-              },
-              kind: 'searchresults#officer',
-              description_identifiers: ['appointment-count'],
-              address: {
-                premises: 'Belgrave Hall',
-                address_line_1: 'Belgrave Street',
-                postal_code: 'LS2 8DD',
-                country: 'England',
-                locality: 'Leeds'
-              }
-            },
-            {
-              address: {
-                locality: 'Stockton Heath',
-                postal_code: 'WA4 6BH',
-                address_line_1: 'Walton Road',
-                region: 'Cheshire',
-                premises: 'Apartment 2 Village Terrace'
-              },
-              description_identifiers: ['appointment-count'],
-              kind: 'searchresults#officer',
-              title: 'KNOWLES COMPUTER SERVICES LTD',
-              address_snippet:
-                'Apartment 2 Village Terrace Walton Road, Stockton Heath, Cheshire, WA4 6BH',
-              snippet: '',
-              appointment_count: 1,
-              links: {
-                self: '/officers/1zmHlQOFqy4JMVhbUTNsLw2Ut0E/appointments'
-              },
-              matches: {
-                snippet: [],
-                title: [1, 7]
-              },
-              description: 'Total number of appointments 1'
-            },
-            {
-              address_snippet: '96 Church Street, Brighton, England, BN1 1UJ',
-              title: 'KNOWLES EUROPE',
-              matches: {
-                snippet: [],
-                title: [1, 7]
-              },
-              description: 'Total number of appointments 1',
-              snippet: '',
-              appointment_count: 1,
-              links: {
-                self: '/officers/5NDxCRTWq61i5pDPpPprWsZiE50/appointments'
-              },
-              kind: 'searchresults#officer',
-              description_identifiers: ['appointment-count'],
-              address: {
-                address_line_1: 'Church Street',
-                postal_code: 'BN1 1UJ',
-                premises: '96',
-                locality: 'Brighton',
-                country: 'England'
-              }
-            },
-            {
-              description: 'Total number of appointments 5',
-              matches: {
-                title: [1, 7],
-                snippet: []
-              },
-              snippet: '',
-              appointment_count: 5,
-              links: {
-                self: '/officers/N_mOug62gW01dfVw8y7nDH6xUxs/appointments'
-              },
-              address_snippet:
-                'Trust Company Complex, Ajeltake Island, Majuro, Marshall Islands, MH96960',
-              title: 'KNOWLES SECRETARY INC ',
-              description_identifiers: ['appointment-count'],
-              address: {
-                address_line_1: 'Trust Company Complex',
-                postal_code: 'MH96960',
-                address_line_2: 'Ajeltake Island',
-                country: 'Marshall Islands',
-                locality: 'Majuro'
-              },
-              kind: 'searchresults#officer'
-            },
-            {
-              description: 'Total number of appointments 5',
-              matches: {
-                title: [1, 7],
-                snippet: []
-              },
-              snippet: '',
-              appointment_count: 5,
-              links: {
-                self: '/officers/T5EkJr4PCYRNLI8vcCr39-GjaOY/appointments'
-              },
-              title: 'KNOWLES DIRECTOR INC ',
-              address_snippet:
-                'Trust Company Complex, Ajeltake Road, Ajeltake Island, Majuro, Mh 96960, Marshall Islands',
-              kind: 'searchresults#officer',
-              description_identifiers: ['appointment-count'],
-              address: {
-                region: 'Mh 96960',
-                address_line_1: 'Trust Company Complex',
-                address_line_2: 'Ajeltake Road, Ajeltake Island',
-                country: 'Marshall Islands',
-                locality: 'Majuro'
-              }
-            },
-            {
-              address_snippet:
-                'Union Pension Trustees Ltd, 18-21 Queen Square, Bristol, United Kingdom, BS1 4NH',
-              title: 'SIPP SIR NIGEL KNOWLES ',
-              description: 'Total number of appointments 1',
-              matches: {
-                snippet: [],
-                title: [16, 22]
-              },
-              appointment_count: 1,
-              snippet: '',
-              links: {
-                self: '/officers/MzkIto38dPVQv_96eXKHC-NgdQk/appointments'
-              },
-              description_identifiers: ['appointment-count'],
-              address: {
-                postal_code: 'BS1 4NH',
-                address_line_1: '18-21 Queen Square',
-                premises: 'Union Pension Trustees Ltd',
-                country: 'United Kingdom',
-                locality: 'Bristol'
-              },
-              kind: 'searchresults#officer'
-            },
-            {
-              description: 'Total number of appointments 1',
-              matches: {
-                title: [34, 40],
-                snippet: []
-              },
-              snippet: '',
-              appointment_count: 1,
-              links: {
-                self: '/officers/yJDtY9jrr0EVE_dFQNPbJyUCkhk/appointments'
-              },
-              title:
-                'TRUSTEES OF THE RODNEY GILCHRIST KNOWLES LIFE INTEREST TRUST ',
-              address_snippet:
-                'Flat 1 Delph Court, 27a Taptonville Road, Sheffield, England, S10 5DH',
-              description_identifiers: ['appointment-count'],
-              address: {
-                premises: 'Flat 1 Delph Court',
-                postal_code: 'S10 5DH',
-                address_line_1: '27a Taptonville Road',
-                country: 'England',
-                locality: 'Sheffield'
-              },
-              kind: 'searchresults#officer'
-            },
-            {
-              description: 'Total number of appointments 1',
-              matches: {
-                title: [3, 9],
-                snippet: []
-              },
-              appointment_count: 1,
-              links: {
-                self: '/officers/wxQE4U8T_Dn_AK3Ompf8oNLOhY8/appointments'
-              },
-              snippet: '',
-              address_snippet:
-                'Clough Willu Cottage, Tosaby Road, St. Marks, Ballasalla, Isle Of Man, IM9 3AN',
-              title: 'T KNOWLES ',
-              description_identifiers: ['appointment-count'],
-              address: {
-                locality: 'Isle Of Man',
-                postal_code: 'IM9 3AN',
-                address_line_1: 'Tosaby Road',
-                premises: 'Clough Willu Cottage',
-                address_line_2: 'St. Marks, Ballasalla'
-              },
-              kind: 'searchresults#officer'
-            },
-            {
-              title: 'DICKON KNOWLES LIMITED',
-              address_snippet:
-                'Mariners, Penwerris Lane, Falmouth, Cornwall, United Kingdom, TR11 2PF',
-              matches: {
-                title: [8, 14],
-                snippet: []
-              },
-              description: 'Total number of appointments 0',
-              appointment_count: 0,
-              links: {
-                self: '/officers/doHyGk0dvE4TjvWK8qPb3P3cZnM/appointments'
-              },
-              snippet: '',
-              kind: 'searchresults#officer',
-              description_identifiers: ['appointment-count'],
-              address: {
-                country: 'United Kingdom',
-                locality: 'Falmouth',
-                address_line_1: 'Penwerris Lane',
-                postal_code: 'TR11 2PF',
-                premises: 'Mariners',
-                region: 'Cornwall'
-              }
-            },
-            {
-              address_snippet:
-                '23 Chestergate, Macclesfield, England, SK11 6BX',
-              title: 'CARTER KNOWLES LTD',
-              links: {
-                self: '/officers/yFjV2g3Q5tFcRdx3Q344MRf-dpU/appointments'
-              },
-              appointment_count: 7,
-              snippet: '',
-              description: 'Total number of appointments 7',
-              matches: {
-                snippet: [],
-                title: [8, 14]
-              },
-              kind: 'searchresults#officer',
-              address: {
-                country: 'England',
-                locality: 'Macclesfield',
-                premises: '23',
-                postal_code: 'SK11 6BX',
-                address_line_1: 'Chestergate'
-              },
-              description_identifiers: ['appointment-count']
-            },
-            {
-              address: {
-                premises: '5',
-                postal_code: 'PE19 5SD',
-                address_line_1: 'Copes Close',
-                address_line_2: 'Buckden',
-                care_of: 'STEPHEN KNOWLES',
-                country: 'United Kingdom',
-                locality: 'St. Neots'
-              },
-              description_identifiers: ['appointment-count'],
-              kind: 'searchresults#officer',
-              snippet: '',
-              appointment_count: 1,
-              links: {
-                self: '/officers/FgituhsNjt1Avgh8CrarT3u2sUY/appointments'
-              },
-              description: 'Total number of appointments 1',
-              matches: {
-                snippet: [],
-                title: [4, 10]
-              },
-              title: 'SJ KNOWLES IT LTD',
-              address_snippet:
-                'STEPHEN KNOWLES, 5 Copes Close, Buckden, St. Neots, United Kingdom, PE19 5SD'
-            },
-            {
-              appointment_count: 1,
-              snippet: '',
-              links: {
-                self: '/officers/GXuHHnkV0dNM-snBJ9S6-hPu4F0/appointments'
-              },
-              description: 'Total number of appointments 1',
-              matches: {
-                title: [16, 22],
-                snippet: []
-              },
-              title: 'SIPP SIR NIGEL KNOWLES',
-              address_snippet:
-                'Union Pension Trustees Ltd, 18-21 Queen Square, Bristol, United Kingdom, BS1 4NH',
-              kind: 'searchresults#officer',
-              address: {
-                country: 'United Kingdom',
-                locality: 'Bristol',
-                address_line_1: '18-21 Queen Square',
-                postal_code: 'BS1 4NH',
-                premises: 'Union Pension Trustees Ltd'
-              },
-              description_identifiers: ['appointment-count']
-            },
-            {
-              appointment_count: 0,
-              snippet: 'Marisa Julie KNOWLES ',
-              links: {
-                self: '/officers/Em028n6eJpEZ5qqbwpIZ39JFXWo/appointments'
-              },
-              matches: {
-                snippet: [14, 20],
-                title: [21, 27]
-              },
-              description: 'Total number of appointments 0 - Born October 1972',
-              address_snippet: '49 Rushmore Drive, Widnes, England, WA8 9QB',
-              title: 'Marisa Julie AUSTIN KNOWLES',
-              date_of_birth: {
-                year: 1972,
-                month: 10
-              },
-              address: {
-                premises: '49',
-                postal_code: 'WA8 9QB',
-                address_line_1: 'Rushmore Drive',
-                country: 'England',
-                locality: 'Widnes'
-              },
-              description_identifiers: ['appointment-count', 'born-on'],
-              kind: 'searchresults#officer'
-            },
-            {
-              description_identifiers: ['appointment-count', 'born-on'],
-              address: {
-                premises: 'Palladium House',
-                address_line_1: '1-4 Argyll Street',
-                postal_code: 'W1F 7LD',
-                country: 'Uk',
+                country: ' ',
+                address_line_1: '100 New Bridge Street',
+                region: ' ',
+                postal_code: 'EC4V 6JA',
                 locality: 'London'
               },
+              appointment_count: 1,
+              snippet: '',
+              description_identifiers: ['appointment-count'],
+              description: 'Total number of appointments 1',
               kind: 'searchresults#officer',
-              description: 'Total number of appointments 0 - Born July 1967',
+              title: 'WYATT TRUSTEE LIMITED',
               matches: {
                 snippet: [],
-                title: [17, 23]
+                title: [1, 5]
+              }
+            },
+            {
+              address_snippet:
+                'Braithwaite Street, Holbeck Lane, Leeds, United Kingdom, LS11 9XE',
+              address: {
+                locality: 'Leeds',
+                postal_code: 'LS11 9XE',
+                address_line_1: 'Holbeck Lane',
+                country: 'United Kingdom',
+                premises: 'Braithwaite Street'
               },
-              snippet: '',
-              appointment_count: 0,
               links: {
-                self: '/officers/IIplC4iD2qTzZw00ZkVracGmvr0/appointments'
+                self: '/officers/WofTSaSTk6iaYlGERAQOdurrDOE/appointments'
+              },
+              appointment_count: 1,
+              description_identifiers: ['appointment-count'],
+              snippet: '',
+              description: 'Total number of appointments 1',
+              kind: 'searchresults#officer',
+              title: 'JOHN WYATT (FEED FATS) LIMITED',
+              matches: {
+                title: [6, 10],
+                snippet: []
+              }
+            },
+            {
+              description: 'Total number of appointments 1',
+              title: 'THE WYATT 2012 FAMILY SETTLEMENT ',
+              kind: 'searchresults#officer',
+              matches: {
+                title: [5, 9],
+                snippet: []
+              },
+              links: {
+                self: '/officers/BfNSZvzMDTwUZpn1eM2s3OJZ7U4/appointments'
+              },
+              address: {
+                locality: 'Nailsea',
+                country: 'England',
+                address_line_1: 'Briar Close',
+                premises: '1',
+                postal_code: 'BS48 1QG',
+                region: 'N Somerset'
               },
               address_snippet:
-                'Palladium House, 1-4 Argyll Street, London, Uk, W1F 7LD',
-              title: 'Marianne CELINE KNOWLES',
+                '1 Briar Close, Nailsea, N Somerset, England, BS48 1QG',
+              appointment_count: 1,
+              snippet: '',
+              description_identifiers: ['appointment-count']
+            },
+            {
+              matches: {
+                title: [7, 11],
+                snippet: []
+              },
+              description: 'Total number of appointments 1',
+              kind: 'searchresults#officer',
+              title: 'LEWIS WYATT (CONSTRUCTION) LIMITED',
+              snippet: '',
+              description_identifiers: ['appointment-count'],
+              address_snippet: '1 Parkstone Road, Poole, Dorset, BH15 2NN',
+              address: {
+                region: 'Dorset',
+                postal_code: 'BH15 2NN',
+                premises: '1 Parkstone Road',
+                locality: 'Poole'
+              },
+              links: {
+                self: '/officers/0qflnf-ZfngF64hVSmxvTog49p0/appointments'
+              },
+              appointment_count: 1
+            },
+            {
+              matches: {
+                title: [5, 9],
+                snippet: []
+              },
+              kind: 'searchresults#officer',
+              title:
+                'THE WYATT ALEXANDER STURN FAMILY TRUST SETH M CAMERON TRUSTEE',
+              description: 'Total number of appointments 0',
+              snippet: '',
+              description_identifiers: ['appointment-count'],
+              appointment_count: 0,
+              address: {
+                locality: 'Greenwich',
+                premises: '115',
+                address_line_1: 'East Putnam Avenue',
+                country: 'United States',
+                region: 'Connecticut',
+                postal_code: '06830'
+              },
+              address_snippet:
+                '115 East Putnam Avenue, Greenwich, Connecticut, United States, 06830',
+              links: {
+                self: '/officers/q1Xfjw-zRets3MuXYR5RtPmhmNI/appointments'
+              }
+            },
+            {
+              matches: {
+                snippet: [],
+                title: [18, 22]
+              },
+              kind: 'searchresults#officer',
+              title: 'Susan Mary ASHBY WYATT',
+              description: 'Total number of appointments 0',
+              snippet: '',
+              description_identifiers: ['appointment-count'],
+              appointment_count: 0,
+              address: {
+                locality: 'Littlehampton',
+                postal_code: 'BN17 7PU',
+                region: 'West Sussex',
+                address_line_1: '54 Old Mead Road'
+              },
+              address_snippet:
+                '54 Old Mead Road, Littlehampton, West Sussex, BN17 7PU',
+              links: {
+                self: '/officers/W86fhtqv0vAdF5sWQCLm8hIvgAE/appointments'
+              }
+            },
+            {
+              matches: {
+                title: [22, 26],
+                snippet: []
+              },
+              description: 'Total number of appointments 1',
+              title: 'Amanada Jane BALBIER WYATT',
+              kind: 'searchresults#officer',
+              description_identifiers: ['appointment-count'],
+              snippet: '',
+              links: {
+                self: '/officers/BXyTJfi3HAZiNllSNYJ7YAcDOS4/appointments'
+              },
+              address_snippet:
+                'Alpha House, 4 Greek Street, Stockport, Cheshire, United Kingdom, SK3 8AB',
+              address: {
+                postal_code: 'SK3 8AB',
+                region: 'Cheshire',
+                country: 'United Kingdom',
+                premises: 'Alpha House',
+                address_line_1: '4 Greek Street',
+                locality: 'Stockport'
+              },
+              appointment_count: 1
+            },
+            {
+              matches: {
+                snippet: [],
+                title: [21, 25]
+              },
+              kind: 'searchresults#officer',
+              title: 'Amanda Jane BALBIER WYATT',
+              description: 'Total number of appointments 1',
+              snippet: '',
+              description_identifiers: ['appointment-count'],
+              appointment_count: 1,
+              address_snippet:
+                '69 Moor Lane, Wilmslow, Cheshire, United Kingdom, SK9 6BQ',
+              address: {
+                address_line_1: 'Moor Lane',
+                premises: '69',
+                country: 'United Kingdom',
+                region: 'Cheshire',
+                postal_code: 'SK9 6BQ',
+                locality: 'Wilmslow'
+              },
+              links: {
+                self: '/officers/ndcMlyRLsfaFPLGr43_JfMjrBaU/appointments'
+              }
+            },
+            {
+              appointment_count: 0,
+              links: {
+                self: '/officers/mu_U2Phro2Lx1uuolnre_JcTrEU/appointments'
+              },
+              address: {
+                locality: 'York',
+                postal_code: 'YO10 3DB',
+                country: 'England',
+                premises: '6',
+                address_line_1: 'Sadberge Court'
+              },
+              address_snippet: '6 Sadberge Court, York, England, YO10 3DB',
+              description_identifiers: ['appointment-count', 'born-on'],
+              snippet: '',
+              title: 'Edward James Channer BARKER WYATT',
+              kind: 'searchresults#officer',
+              description: 'Total number of appointments 0 - Born April 1976',
+              date_of_birth: {
+                year: 1976,
+                month: 4
+              },
+              matches: {
+                snippet: [],
+                title: [29, 33]
+              }
+            },
+            {
+              kind: 'searchresults#officer',
+              title: 'Jessica BRADLEY',
+              description:
+                'Total number of appointments 0 - Born September 1984',
+              date_of_birth: {
+                month: 9,
+                year: 1984
+              },
+              matches: {
+                snippet: [9, 13]
+              },
+              appointment_count: 0,
+              address_snippet:
+                '19a, Hookstone Chase, Harrogate, United Kingdom, HG27HH',
+              address: {
+                locality: 'Harrogate',
+                premises: '19a',
+                address_line_1: 'Hookstone Chase',
+                country: 'United Kingdom',
+                postal_code: 'HG27HH'
+              },
+              links: {
+                self: '/officers/caRLlpnpxXXnUWMTtfSKeAzo_iA/appointments'
+              },
+              description_identifiers: ['appointment-count', 'born-on'],
+              snippet: 'Jessica WYATT '
+            },
+            {
+              snippet: '',
+              description_identifiers: ['appointment-count', 'born-on'],
+              appointment_count: 0,
+              links: {
+                self: '/officers/QoUVNnjMFX7eQYCBbFAr-zBl3xw/appointments'
+              },
+              address: {
+                locality: 'Essex',
+                country: 'United Kingdom',
+                address_line_1: '321-323 High Road',
+                premises: 'Office 647',
+                postal_code: 'RM6 6AX',
+                address_line_2: 'Chadwell Heath'
+              },
+              address_snippet:
+                'Office 647, 321-323 High Road, Chadwell Heath, Essex, United Kingdom, RM6 6AX',
+              date_of_birth: {
+                month: 6,
+                year: 1996
+              },
+              matches: {
+                title: [13, 17],
+                snippet: []
+              },
+              title: 'Hywel COSBY WYATT',
+              kind: 'searchresults#officer',
+              description: 'Total number of appointments 0 - Born June 1996'
+            },
+            {
+              description_identifiers: ['appointment-count', 'born-on'],
+              snippet: 'Valerie Diana DEVINE - WYATT ',
+              appointment_count: 2,
+              address_snippet:
+                'Manzold House, Little Saxham, Bury St Edmunds, Suffolk, IP29 5LD',
+              address: {
+                locality: 'Bury St Edmunds',
+                address_line_1: 'Manzold House',
+                region: 'Suffolk',
+                postal_code: 'IP29 5LD',
+                address_line_2: 'Little Saxham'
+              },
+              links: {
+                self: '/officers/95OsHpEhlqkWgHr-bFQEYwRTOQs/appointments'
+              },
+              date_of_birth: {
+                month: 8,
+                year: 1938
+              },
+              matches: {
+                snippet: [24, 28]
+              },
+              title: 'Valerie Diana DEVINE-WYATT',
+              kind: 'searchresults#officer',
+              description: 'Total number of appointments 2 - Born August 1938'
+            },
+            {
+              title: 'Kenneth FORD - WYATT',
+              kind: 'searchresults#officer',
+              description: 'Total number of appointments 0 - Born July 1969',
               date_of_birth: {
                 month: 7,
-                year: 1967
+                year: 1969
+              },
+              matches: {
+                title: [16, 20],
+                snippet: []
+              },
+              appointment_count: 0,
+              links: {
+                self: '/officers/MA14j-hAtqZak8rXlpJozEuYw58/appointments'
+              },
+              address: {
+                locality: 'London',
+                postal_code: 'W1J 9HL',
+                address_line_1: 'Piccadilly',
+                premises: '212 Piccadilly London',
+                country: 'England'
+              },
+              address_snippet:
+                '212 Piccadilly London Piccadilly, London, England, W1J 9HL',
+              snippet: '',
+              description_identifiers: ['appointment-count', 'born-on']
+            },
+            {
+              date_of_birth: {
+                year: 1969,
+                month: 7
+              },
+              matches: {
+                title: [14, 18],
+                snippet: []
+              },
+              kind: 'searchresults#officer',
+              title: 'Kenneth FORD WYATT',
+              description: 'Total number of appointments 0 - Born July 1969',
+              snippet: '',
+              description_identifiers: ['appointment-count', 'born-on'],
+              appointment_count: 0,
+              address_snippet:
+                'Floor 4, Regis, Victoria House, Chelmsford, United Kingdom, CM1 1JR',
+              address: {
+                locality: 'Chelmsford',
+                premises: 'Floor 4',
+                address_line_1: 'Regis',
+                country: 'United Kingdom',
+                address_line_2: 'Victoria House',
+                postal_code: 'CM1 1JR'
+              },
+              links: {
+                self: '/officers/QOxTn6k_f9fWq_ESl7XbjuQ4NXQ/appointments'
+              }
+            },
+            {
+              description_identifiers: ['appointment-count', 'born-on'],
+              snippet: '',
+              appointment_count: 1,
+              address: {
+                locality: 'London',
+                postal_code: 'SE10 0RU',
+                country: 'England',
+                address_line_1: 'West Parkside',
+                premises: '106 Farnsworth Court'
+              },
+              address_snippet:
+                '106 Farnsworth Court, West Parkside, London, England, SE10 0RU',
+              links: {
+                self: '/officers/21aPhimKWUBZJN_QT71Oz9Z758w/appointments'
+              },
+              date_of_birth: {
+                year: 1979,
+                month: 7
+              },
+              matches: {
+                title: [24, 28],
+                snippet: []
+              },
+              title: 'Dr Robin James GLOSTER WYATT',
+              kind: 'searchresults#officer',
+              description: 'Total number of appointments 1 - Born July 1979'
+            },
+            {
+              appointment_count: 3,
+              links: {
+                self: '/officers/NSfJctBbBP6aZcGu1FuJ6h9ogpQ/appointments'
+              },
+              address: {
+                postal_code: 'EC1Y 0TL',
+                premises: 'Invicta House',
+                country: 'England',
+                address_line_1: '108 - 114 Golden Lane',
+                locality: 'London'
+              },
+              address_snippet:
+                'Invicta House, 108 - 114 Golden Lane, London, England, EC1Y 0TL',
+              snippet: '',
+              description_identifiers: ['appointment-count', 'born-on'],
+              title: 'Loredana Maria GUETG WYATT',
+              kind: 'searchresults#officer',
+              description:
+                'Total number of appointments 3 - Born November 1975',
+              date_of_birth: {
+                month: 11,
+                year: 1975
+              },
+              matches: {
+                snippet: [],
+                title: [22, 26]
+              }
+            },
+            {
+              appointment_count: 1,
+              links: {
+                self: '/officers/7rxopMYfjZxZrARQQiJmejmJLW8/appointments'
+              },
+              address_snippet:
+                'The White House, Wilderspool Business Park, Greenalls Avenue, Warrington, England, WA4 6HL',
+              address: {
+                locality: 'Warrington',
+                postal_code: 'WA4 6HL',
+                address_line_2: 'Greenalls Avenue',
+                premises: 'The White House',
+                country: 'England',
+                address_line_1: 'Wilderspool Business Park'
+              },
+              description_identifiers: ['appointment-count'],
+              snippet: '',
+              kind: 'searchresults#officer',
+              title: 'Loredana Maria GUETG WYATT',
+              description: 'Total number of appointments 1',
+              matches: {
+                snippet: [],
+                title: [22, 26]
+              }
+            },
+            {
+              snippet: '',
+              description_identifiers: ['appointment-count', 'born-on'],
+              appointment_count: 1,
+              links: {
+                self: '/officers/jNed3MBWsfMR4qH00pT1ape32ds/appointments'
+              },
+              address_snippet:
+                'Garden Halls, 1 Cartwright Gardens, London, England, WC1H 9EN',
+              address: {
+                locality: 'London',
+                postal_code: 'WC1H 9EN',
+                premises: 'Garden Halls',
+                address_line_1: '1 Cartwright Gardens',
+                country: 'England'
+              },
+              date_of_birth: {
+                year: 2001,
+                month: 10
+              },
+              matches: {
+                snippet: [],
+                title: [35, 39]
+              },
+              title: 'Emilia Felicity Katherine HANNIS- WYATT',
+              kind: 'searchresults#officer',
+              description: 'Total number of appointments 1 - Born October 2001'
+            },
+            {
+              snippet: 'Mary Therese WYATT ',
+              description_identifiers: ['appointment-count', 'born-on'],
+              appointment_count: 2,
+              links: {
+                self: '/officers/gTaZCUkMI9y7ar65DkQ4Adk8yAc/appointments'
+              },
+              address_snippet: '236 Chaldon Way, Coulsdon, England, CR5 1DH',
+              address: {
+                country: 'England',
+                address_line_1: 'Chaldon Way',
+                premises: '236',
+                postal_code: 'CR5 1DH',
+                locality: 'Coulsdon'
+              },
+              date_of_birth: {
+                year: 1962,
+                month: 2
+              },
+              matches: {
+                snippet: [14, 18]
+              },
+              kind: 'searchresults#officer',
+              title: 'Mary Therese HARCOURT-ELLIS',
+              description: 'Total number of appointments 2 - Born February 1962'
+            },
+            {
+              appointment_count: 0,
+              address_snippet:
+                '3 Littlecote Road, Chippenham, Wiltshire, SN14 0NY',
+              address: {
+                postal_code: 'SN14 0NY',
+                region: 'Wiltshire',
+                address_line_1: 'Littlecote Road',
+                premises: '3',
+                locality: 'Chippenham'
+              },
+              links: {
+                self: '/officers/HmUfaHcOBSdWpF82J4uXYKGTs2U/appointments'
+              },
+              description_identifiers: ['appointment-count', 'born-on'],
+              snippet: '',
+              title: 'Mark HAWKINS WYATT',
+              kind: 'searchresults#officer',
+              description:
+                'Total number of appointments 0 - Born December 1974',
+              date_of_birth: {
+                year: 1974,
+                month: 12
+              },
+              matches: {
+                snippet: [],
+                title: [14, 18]
               }
             }
           ],
@@ -675,7 +710,7 @@ export const SearchOfficersSchema = {
           kind: 'search#officers',
           page_number: 1,
           start_index: 0,
-          total_results: 5074
+          total_results: 3380
         }
       }
     }

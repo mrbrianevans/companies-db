@@ -21,7 +21,10 @@ export const listFilingHistoryController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
     return listFilingHistory(
+      context,
       company_number,
       category,
       items_per_page,

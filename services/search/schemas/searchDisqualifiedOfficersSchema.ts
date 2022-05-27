@@ -42,25 +42,58 @@ export const SearchDisqualifiedOfficersSchema = {
             items: {
               type: 'object',
               properties: {
-                description_identifiers: {
-                  type: 'array',
-                  items: {
-                    type: 'string'
+                kind: {
+                  type: 'string'
+                },
+                address: {
+                  type: 'object',
+                  properties: {
+                    locality: {
+                      type: 'string'
+                    },
+                    country: {
+                      type: 'string'
+                    },
+                    premises: {
+                      type: 'string'
+                    },
+                    address_line_1: {
+                      type: 'string'
+                    },
+                    postal_code: {
+                      type: 'string'
+                    },
+                    address_line_2: {
+                      type: 'string'
+                    },
+                    region: {
+                      type: 'string'
+                    }
                   }
                 },
-                description: {
-                  type: 'string'
-                },
-                snippet: {
-                  type: 'string'
-                },
-                address_snippet: {
-                  type: 'string'
+                description_identifiers: {
+                  anyOf: [
+                    {
+                      type: 'string',
+                      description:
+                        'An array of enumeration types that make up the search description. See search_descriptions_raw.yaml in api-enumerations.',
+                      enum: ['born-on']
+                    },
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'string'
+                      }
+                    }
+                  ]
                 },
                 date_of_birth: {
                   type: 'string'
                 },
                 title: {
+                  type: 'string'
+                },
+                address_snippet: {
                   type: 'string'
                 },
                 links: {
@@ -72,32 +105,8 @@ export const SearchDisqualifiedOfficersSchema = {
                   },
                   required: ['self']
                 },
-                address: {
-                  type: 'object',
-                  properties: {
-                    country: {
-                      type: 'string'
-                    },
-                    premises: {
-                      type: 'string'
-                    },
-                    locality: {
-                      type: 'string'
-                    },
-                    postal_code: {
-                      type: 'string'
-                    },
-                    address_line_1: {
-                      type: 'string'
-                    },
-                    address_line_2: {
-                      type: 'string'
-                    },
-                    region: {
-                      type: 'string'
-                    }
-                  },
-                  required: ['locality']
+                description: {
+                  type: 'string'
                 },
                 matches: {
                   type: 'object',
@@ -114,17 +123,16 @@ export const SearchDisqualifiedOfficersSchema = {
                   },
                   required: ['snippet', 'title']
                 },
-                kind: {
+                snippet: {
                   type: 'string'
                 }
               },
               required: [
-                'description',
-                'address_snippet',
-                'title',
-                'links',
+                'kind',
                 'address',
-                'kind'
+                'title',
+                'address_snippet',
+                'description'
               ]
             }
           },
@@ -144,14 +152,7 @@ export const SearchDisqualifiedOfficersSchema = {
             type: 'integer'
           }
         },
-        required: [
-          'items',
-          'items_per_page',
-          'kind',
-          'page_number',
-          'start_index',
-          'total_results'
-        ],
+        required: ['items_per_page', 'kind', 'start_index', 'total_results'],
         additionalProperties: false,
         title: 'searchDisqualifiedOfficers',
         example: {

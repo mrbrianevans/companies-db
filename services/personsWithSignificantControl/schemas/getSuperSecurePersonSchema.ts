@@ -49,11 +49,16 @@ export const GetSuperSecurePersonSchema = {
               }
             },
             required: ['self']
+          },
+          ceased: {
+            description:
+              'Presence of that indicator means the super secure person status is ceased \n',
+            type: 'boolean'
           }
         },
         required: ['description', 'etag', 'kind', 'links'],
         additionalProperties: false,
-        title: 'getPersonsWithSignificantControlSuperSecure',
+        title: 'getSuperSecurePerson',
         example: {
           description: 'super-secure-persons-with-significant-control',
           etag: '71519abc34634304d42ef2720a4ed0a432e28d96',

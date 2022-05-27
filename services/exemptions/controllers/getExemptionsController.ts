@@ -21,6 +21,8 @@ export const getExemptionsController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
-    return getExemptions(company_number)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
+    return getExemptions(context, company_number)
   })
 }

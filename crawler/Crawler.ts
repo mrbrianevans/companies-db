@@ -133,7 +133,7 @@ export class Crawler{
         await this.fetchAndSave('/search/companies?q='+searchTerm, 'searchCompanies')
         await this.fetchAndSave('/search?q='+searchTerm.toLowerCase(), 'searchAll')
         await this.fetchAndSave('/dissolved-search/companies?search_type=best-match&q='+searchTerm.toLowerCase(), 'searchDissolved')
-        // await this.fetchAndSave('/alphabetic-search/companies?q='+searchTerm.toLowerCase(), 'searchAlphabetic')
+        await this.fetchAndSave('/alphabetical-search/companies?q='+searchTerm.toLowerCase(), 'searchCompaniesAlphabetically')
       }catch (e) {
         console.log(e.message)
       }
@@ -152,6 +152,16 @@ export class Crawler{
       await this.fetchAndSave('/search/officers?q='+searchTerm.toLowerCase(), 'searchOfficers')
       await this.fetchAndSave('/search/disqualified-officers?q='+searchTerm.toLowerCase(), 'searchDisqualifiedOfficers')
       await this.fetchAndSave('/search?q='+searchTerm.toLowerCase(), 'searchAll')
+    }
+  }
+  async crawlSearchAdvanced(){
+    console.log("Crawl search advanced")
+    const sicCodes = this.db.collection('company').aggregate([{$match:{sic_codes: {$size:1}}}, {$sample: {size: 1000}}, {$group: {_id:"$sic_codes"}}]).map(d=>d._id[0])
+    const statuses = await this.db.collection('company').aggregate([{$match:{company_status: {$exists:true}}}, {$sample: {size: 1000}}, {$group: {_id:"$company_status"}}]).map(d=>d._id).toArray()
+    for await(const sicCode of sicCodes){
+      for (const status of statuses) {
+        await this.fetchAndSave(`/advanced-search/companies?sic_codes=${sicCode}&status=${status}`, 'advancedCompanySearch')
+      }
     }
   }
 
@@ -276,7 +286,7 @@ export class Crawler{
         const doc = await this.fetchAndSave(resource_uri, streamNames[resource_kind] ?? camelcase(resource_kind+'-stream'))
         // await this.crawlDocument(doc, resource_uri)
       }catch (e){
-        
+
       }
     }
     events.close()

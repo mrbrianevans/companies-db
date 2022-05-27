@@ -177,11 +177,11 @@
                 header_down Service companies-search
         }
 
-        @alphabetic-searchcompanies {
+        @alphabetical-searchcompanies {
                 header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
-                path_regexp ^\/alphabetic-search\/companies$
+                path_regexp ^\/alphabetical-search\/companies$
         }
-        reverse_proxy @alphabetic-searchcompanies search:3000 {
+        reverse_proxy @alphabetical-searchcompanies search:3000 {
                 header_down Service companies-search
         }
 

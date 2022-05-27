@@ -57,32 +57,50 @@ export const ListStatementsSchema = {
             items: {
               type: 'object',
               properties: {
-                links: {
-                  type: 'object',
-                  properties: {
-                    self: {
-                      type: 'string'
-                    }
-                  },
-                  required: ['self']
-                },
-                statement: {
-                  type: 'string'
-                },
-                notified_on: {
+                kind: {
                   type: 'string'
                 },
                 etag: {
                   type: 'string'
                 },
-                kind: {
+                notified_on: {
                   type: 'string'
+                },
+                statement: {
+                  type: 'string'
+                },
+                links: {
+                  type: 'object',
+                  properties: {
+                    self: {
+                      type: 'string'
+                    },
+                    person_with_significant_control: {
+                      description:
+                        'The URL of the person with significant control linked to this statement.',
+                      type: 'string'
+                    }
+                  },
+                  required: ['self']
                 },
                 ceased_on: {
                   type: 'string'
+                },
+                restrictions_notice_withdrawal_reason: {
+                  description:
+                    'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
+                  enum: [
+                    'restrictions-notice-withdrawn-by-court-order',
+                    'restrictions-notice-withdrawn-by-company'
+                  ],
+                  type: 'string'
+                },
+                linked_psc_name: {
+                  description: 'The name of the psc linked to this statement.',
+                  type: 'string'
                 }
               },
-              required: ['links', 'statement', 'notified_on', 'etag', 'kind']
+              required: ['kind', 'etag', 'notified_on', 'statement', 'links']
             }
           },
           items_per_page: {
@@ -91,10 +109,15 @@ export const ListStatementsSchema = {
           links: {
             type: 'object',
             properties: {
+              self: {
+                type: 'string'
+              },
               persons_with_significant_control: {
                 type: 'string'
               },
-              self: {
+              persons_with_significant_control_statements_list: {
+                description:
+                  'The URL of the persons with significant control statements list resource.',
                 type: 'string'
               }
             },
@@ -117,27 +140,24 @@ export const ListStatementsSchema = {
           'total_results'
         ],
         additionalProperties: false,
-        title: 'listPersonsWithSignificantControlStatements',
+        title: 'listStatements',
         example: {
-          active_count: 0,
-          ceased_count: 1,
+          active_count: 1,
+          ceased_count: 0,
           items: [
             {
-              links: {
-                self: '/company/OC401231/persons-with-significant-control-statements/J3aA7nNxlxiLA_SN3OC_f46soBA'
-              },
-              statement: 'psc-details-not-confirmed',
-              notified_on: '2016-08-10',
-              etag: '1378b459e7084aa462031cc68d93fb6462f212ee',
               kind: 'persons-with-significant-control-statement',
-              ceased_on: '2017-08-17'
+              etag: '5493058979a9265cd855efb03706833c439b6542',
+              notified_on: '2017-06-30',
+              statement: 'no-individual-or-entity-with-signficant-control',
+              links: {
+                self: '/company/10843053/persons-with-significant-control-statements/JwBAymT3-nexdr9HQdEaVXlTEUY'
+              }
             }
           ],
           items_per_page: 25,
           links: {
-            persons_with_significant_control:
-              '/company/OC401231/persons-with-significant-control',
-            self: '/company/OC401231/persons-with-significant-control-statements'
+            self: '/company/10843053/persons-with-significant-control-statements'
           },
           start_index: 0,
           total_results: 1

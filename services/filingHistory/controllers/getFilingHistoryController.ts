@@ -24,7 +24,9 @@ export const getFilingHistoryController: FastifyPluginAsync = async (
       for (const [header, value] of Object.entries(ratelimit))
         res.header(header, value)
       return reflect(req.url)
-      return getFilingHistory(company_number, transaction_id)
+      const { redis, mongo } = fastify
+      const context = { redis, mongo, req }
+      return getFilingHistory(context, company_number, transaction_id)
     }
   )
 }

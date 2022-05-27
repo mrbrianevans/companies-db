@@ -35,19 +35,19 @@ export const GetIndividualSchema = {
           address: {
             type: 'object',
             properties: {
-              country: {
-                type: 'string'
-              },
               premises: {
                 type: 'string'
               },
               region: {
                 type: 'string'
               },
-              locality: {
+              postal_code: {
                 type: 'string'
               },
-              postal_code: {
+              country: {
+                type: 'string'
+              },
+              locality: {
                 type: 'string'
               },
               address_line_1: {
@@ -56,10 +56,10 @@ export const GetIndividualSchema = {
               address_line_2: {
                 type: 'string'
               },
-              care_of: {
+              po_box: {
                 type: 'string'
               },
-              po_box: {
+              care_of: {
                 type: 'string'
               }
             }
@@ -74,6 +74,10 @@ export const GetIndividualSchema = {
                 type: 'integer'
               },
               year: {
+                type: 'integer'
+              },
+              day: {
+                description: 'The day of the date of birth.',
                 type: 'integer'
               }
             },
@@ -90,6 +94,11 @@ export const GetIndividualSchema = {
             properties: {
               self: {
                 type: 'string'
+              },
+              statement: {
+                description:
+                  'The URL of the statement linked to this person with significant control.',
+                type: 'string'
               }
             },
             required: ['self']
@@ -100,20 +109,25 @@ export const GetIndividualSchema = {
           name_elements: {
             type: 'object',
             properties: {
-              title: {
-                type: 'string'
-              },
               middle_name: {
                 type: 'string'
               },
               surname: {
                 type: 'string'
               },
+              title: {
+                type: 'string'
+              },
               forename: {
+                type: 'string'
+              },
+              other_forenames: {
+                description:
+                  'Other forenames of the person with significant control.',
                 type: 'string'
               }
             },
-            required: ['surname', 'forename']
+            required: ['surname']
           },
           nationality: {
             type: 'string'
@@ -145,35 +159,38 @@ export const GetIndividualSchema = {
           'notified_on'
         ],
         additionalProperties: false,
-        title: 'getPersonWithSignificantControlIndividual',
+        title: 'getIndividual',
         example: {
           address: {
-            country: 'United Kingdom',
-            premises: '42 Glebe Street',
-            region: 'Leicestershire',
-            locality: 'Loughborough',
-            postal_code: 'LE11 1JR'
+            premises: '14 Broad Acres',
+            region: 'Hertfordshire',
+            postal_code: 'AL10 9LD',
+            country: 'England',
+            locality: 'Hatfield'
           },
-          country_of_residence: 'United Kingdom',
+          country_of_residence: 'England',
           date_of_birth: {
             month: 3,
-            year: 1967
+            year: 1980
           },
-          etag: '814acb77d25049624b14c0fa88af7d09fcbf7e39',
+          etag: '585f0033128d445423565ef6119366f38299d73e',
           kind: 'individual-person-with-significant-control',
           links: {
-            self: '/company/11370252/persons-with-significant-control/individual/tw_J6Owb0RS9lglUle6hoxVwAqI'
+            self: '/company/09454270/persons-with-significant-control/individual/yTVnaEeES8-Ar9U0mLOtefLnuaQ'
           },
-          name: 'Mr Richard Anthony Smith',
+          name: 'Mr Laga Leyira Wiwuga',
           name_elements: {
+            middle_name: 'Leyira',
+            surname: 'Wiwuga',
             title: 'Mr',
-            middle_name: 'Anthony',
-            surname: 'Smith',
-            forename: 'Richard'
+            forename: 'Laga'
           },
           nationality: 'British',
-          natures_of_control: ['ownership-of-shares-75-to-100-percent'],
-          notified_on: '2018-05-18'
+          natures_of_control: [
+            'ownership-of-shares-75-to-100-percent',
+            'voting-rights-75-to-100-percent'
+          ],
+          notified_on: '2016-04-06'
         }
       }
     }

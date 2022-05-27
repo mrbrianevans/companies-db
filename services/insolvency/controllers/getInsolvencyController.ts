@@ -21,6 +21,8 @@ export const getInsolvencyController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
-    return getInsolvency(company_number)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
+    return getInsolvency(context, company_number)
   })
 }

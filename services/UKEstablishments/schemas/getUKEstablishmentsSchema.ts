@@ -36,33 +36,49 @@ export const GetUKEstablishmentsSchema = {
               type: 'object',
               properties: {
                 links: {
-                  type: 'object',
-                  properties: {
-                    company: {
-                      type: 'string'
+                  anyOf: [
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          company: {
+                            type: 'string',
+                            description: 'The link to the company.'
+                          }
+                        },
+                        required: ['company']
+                      }
+                    },
+                    {
+                      type: 'object',
+                      properties: {
+                        company: {
+                          type: 'string'
+                        }
+                      },
+                      required: ['company']
                     }
-                  },
-                  required: ['company']
+                  ]
                 },
-                company_status: {
+                locality: {
                   type: 'string'
                 },
                 company_number: {
                   type: 'string'
                 },
-                locality: {
+                company_name: {
                   type: 'string'
                 },
-                company_name: {
+                company_status: {
                   type: 'string'
                 }
               },
               required: [
                 'links',
-                'company_status',
                 'company_number',
-                'locality',
-                'company_name'
+                'company_name',
+                'company_status'
               ]
             }
           },
@@ -79,25 +95,25 @@ export const GetUKEstablishmentsSchema = {
             required: ['self']
           }
         },
-        required: ['etag', 'items', 'kind', 'links'],
+        required: ['etag', 'items', 'kind'],
         additionalProperties: false,
-        title: 'listUkEstablishments',
+        title: 'getUKEstablishments',
         example: {
-          etag: '8ad9b7f6dc0c0d0f2fcb8ab6a41db35ccedce243',
+          etag: 'e107f7caacf1efb5019ac55144b1f8d0568a0f10',
           items: [
             {
               links: {
-                company: '/company/BR023780'
+                company: '/company/BR023799'
               },
-              company_status: 'open',
-              company_number: 'BR023780',
-              locality: 'London',
-              company_name: 'LINCOLN MIDCO PTE. LIMITED'
+              locality: 'Farnham',
+              company_number: 'BR023799',
+              company_name: 'UPPER FROYLE PROPERTY INVESTMENTS LIMITED',
+              company_status: 'open'
             }
           ],
           kind: 'related-companies',
           links: {
-            self: '/company/FC038685'
+            self: '/company/FC038704'
           }
         }
       }

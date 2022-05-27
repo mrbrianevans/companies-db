@@ -84,6 +84,24 @@ export const SearchDissolvedCompaniesSchema = {
                 date_of_creation: {
                   type: 'string'
                 },
+                registered_office_address: {
+                  type: 'object',
+                  properties: {
+                    address_line_1: {
+                      type: 'string'
+                    },
+                    address_line_2: {
+                      type: 'string'
+                    },
+                    postal_code: {
+                      type: 'string'
+                    },
+                    locality: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['address_line_1']
+                },
                 previous_company_names: {
                   type: 'array',
                   items: {
@@ -109,24 +127,6 @@ export const SearchDissolvedCompaniesSchema = {
                       'company_number'
                     ]
                   }
-                },
-                registered_office_address: {
-                  type: 'object',
-                  properties: {
-                    address_line_1: {
-                      type: 'string'
-                    },
-                    address_line_2: {
-                      type: 'string'
-                    },
-                    locality: {
-                      type: 'string'
-                    },
-                    postal_code: {
-                      type: 'string'
-                    }
-                  },
-                  required: ['address_line_1']
                 }
               },
               required: [
@@ -167,6 +167,24 @@ export const SearchDissolvedCompaniesSchema = {
               date_of_creation: {
                 type: 'string'
               },
+              registered_office_address: {
+                type: 'object',
+                properties: {
+                  address_line_1: {
+                    type: 'string'
+                  },
+                  address_line_2: {
+                    type: 'string'
+                  },
+                  locality: {
+                    type: 'string'
+                  },
+                  postal_code: {
+                    type: 'string'
+                  }
+                },
+                required: ['address_line_1', 'address_line_2', 'postal_code']
+              },
               previous_company_names: {
                 type: 'array',
                 items: {
@@ -192,24 +210,6 @@ export const SearchDissolvedCompaniesSchema = {
                     'company_number'
                   ]
                 }
-              },
-              registered_office_address: {
-                type: 'object',
-                properties: {
-                  address_line_1: {
-                    type: 'string'
-                  },
-                  address_line_2: {
-                    type: 'string'
-                  },
-                  locality: {
-                    type: 'string'
-                  },
-                  postal_code: {
-                    type: 'string'
-                  }
-                },
-                required: ['address_line_1', 'address_line_2', 'postal_code']
               }
             },
             required: [
@@ -223,313 +223,316 @@ export const SearchDissolvedCompaniesSchema = {
             ]
           }
         },
-        required: ['etag', 'hits', 'items', 'kind', 'top_hit'],
         additionalProperties: false,
-        title: 'searchDissolved',
+        title: 'searchDissolvedCompanies',
         example: {
-          etag: '78835bd666832e4114a1b454ad1d2bc9fd1100c4',
-          hits: 3978,
+          etag: '267d2874b33c3e24ea04257f8b271fce6bddb1c1',
+          hits: 4306,
           items: [
             {
-              company_name: 'CADMIUM COURT LIMITED',
-              company_number: '02032259',
+              company_name: 'ENERGY LIMITED',
+              company_number: '02364353',
               company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'CADMIUMCOURT:02032259',
+              ordered_alpha_key_with_id: 'ENERGY:02364353',
               kind: 'searchresults#dissolved-company',
               date_of_cessation: '1993-10-12',
-              date_of_creation: '1986-06-27',
+              date_of_creation: '1989-03-22'
+            },
+            {
+              company_name: 'ENERGY LIMITED',
+              company_number: '02886665',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'ENERGY:02886665',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '1997-07-15',
+              date_of_creation: '1994-01-12'
+            },
+            {
+              company_name: 'ENERGY SKATEPARK LIMITED',
+              company_number: '05298758',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'ENERGYSKATEPARK:05298758',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2007-06-02',
+              date_of_creation: '2004-11-29',
+              registered_office_address: {
+                address_line_1: '1 Brassey Road',
+                address_line_2: 'Old Potts Way Shrewsbury',
+                postal_code: 'SY3 7FA'
+              }
+            },
+            {
+              company_name: 'POSITIVE ENERGY LIMITED',
+              company_number: '02991454',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'POSITIVEENERGY:02991454',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2002-04-02',
+              date_of_creation: '1994-11-17'
+            },
+            {
+              company_name: 'ENERGY ADVOCATES LIMITED',
+              company_number: '02672143',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'ENERGYADVOCATES:02672143',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '1995-03-28',
+              date_of_creation: '1991-12-17'
+            },
+            {
+              company_name: 'EUROPA ENERGY PLC',
+              company_number: '01513904',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'EUROPAENERGY:01513904',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2007-03-20',
+              date_of_creation: '1980-08-22',
+              registered_office_address: {
+                address_line_1: 'Hill House',
+                address_line_2: '1 Little New Street',
+                locality: 'London',
+                postal_code: 'EC4A 3TR'
+              },
               previous_company_names: [
                 {
-                  ceased_on: '1988-06-27',
-                  effective_from: '1986-06-27',
-                  name: 'LAWCOURT LIMITED',
-                  company_number: '02032259'
+                  ceased_on: '1990-04-25',
+                  effective_from: '1980-12-31',
+                  name: 'TR ENERGY PUBLIC LIMITED COMPANY',
+                  company_number: '01513904'
+                },
+                {
+                  ceased_on: '1980-12-31',
+                  effective_from: '1980-08-22',
+                  name: 'KESTVILLE LIMITED',
+                  company_number: '01513904'
                 }
               ]
             },
             {
-              company_name: 'FANS COURT LIMITED',
-              company_number: '06268400',
+              company_name: 'PARKWOOD ENERGY LIMITED',
+              company_number: '06190542',
               company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'FANSCOURT:06268400',
+              ordered_alpha_key_with_id: 'PARKWOODENERGY:06190542',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2009-03-10',
+              date_of_creation: '2007-03-28',
+              registered_office_address: {
+                address_line_1: '240 Hawthorne Road',
+                address_line_2: 'Liverpool',
+                postal_code: 'L20 3AS'
+              }
+            },
+            {
+              company_name: 'VENTURE ENERGY LIMITED',
+              company_number: '03624888',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'VENTUREENERGY:03624888',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2009-01-20',
+              date_of_creation: '1998-09-01',
+              registered_office_address: {
+                address_line_1: '10 Ranelagh Grove',
+                address_line_2: 'London',
+                postal_code: 'SW1W 8PD'
+              }
+            },
+            {
+              company_name: 'WIGHT ENERGY PLC',
+              company_number: '02836906',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'WIGHTENERGY:02836906',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '1995-06-20',
+              date_of_creation: '1993-07-16'
+            },
+            {
+              company_name: 'ENERGY ANGLIA LIMITED',
+              company_number: '01442374',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'ENERGYANGLIA:01442374',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '1991-07-09',
+              date_of_creation: '1979-08-07',
+              previous_company_names: [
+                {
+                  ceased_on: '1988-03-09',
+                  effective_from: '1979-08-07',
+                  name: 'DISAB (U.K.) LIMITED',
+                  company_number: '01442374'
+                }
+              ]
+            },
+            {
+              company_name: 'ENERGY LINE LIMITED',
+              company_number: '03168329',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'ENERGYLINE:03168329',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2000-08-22',
+              date_of_creation: '1996-03-06'
+            },
+            {
+              company_name: 'CLAYTON ENERGY LIMITED',
+              company_number: '03151028',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'CLAYTONENERGY:03151028',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2003-04-15',
+              date_of_creation: '1996-01-25',
+              registered_office_address: {
+                address_line_1: 'Yorkshire House',
+                address_line_2: '7 South Lane',
+                locality: 'Holmfirth Huddersfield',
+                postal_code: 'HD9 1HN'
+              }
+            },
+            {
+              company_name: 'FREEDOM ENERGY LIMITED',
+              company_number: '05665927',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'FREEDOMENERGY:05665927',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2008-06-18',
+              date_of_creation: '2006-01-04',
+              registered_office_address: {
+                address_line_1: '2nd Floor',
+                address_line_2: '145-157 St.John Street',
+                locality: 'London',
+                postal_code: 'EC1V 4PY'
+              }
+            },
+            {
+              company_name: 'CREATIVE ENERGY LIMITED',
+              company_number: '04915887',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'CREATIVEENERGY:04915887',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '2005-06-28',
+              date_of_creation: '2003-09-30',
+              registered_office_address: {
+                address_line_1: '11 Coronation Avenue',
+                address_line_2: 'Rushwick',
+                locality: 'Worcester',
+                postal_code: 'WR2 5TF'
+              }
+            },
+            {
+              company_name: 'EXXCO ENERGY LIMITED',
+              company_number: 'SC158854',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'EXXCOENERGY:SC158854',
+              kind: 'searchresults#dissolved-company',
+              date_of_cessation: '1998-09-18',
+              date_of_creation: '1995-06-27',
+              previous_company_names: [
+                {
+                  ceased_on: '1995-08-21',
+                  effective_from: '1995-06-27',
+                  name: 'LEDGE 233 LIMITED',
+                  company_number: 'SC158854'
+                }
+              ]
+            },
+            {
+              company_name: 'OMEGA ENERGY LIMITED',
+              company_number: '06314478',
+              company_status: 'dissolved',
+              ordered_alpha_key_with_id: 'OMEGAENERGY:06314478',
               kind: 'searchresults#dissolved-company',
               date_of_cessation: '2009-04-07',
-              date_of_creation: '2007-06-04',
+              date_of_creation: '2007-07-16',
               registered_office_address: {
-                address_line_1: '3 Queens Gardens',
-                address_line_2: 'Dartford',
-                locality: 'Kent',
-                postal_code: 'DA2 6HZ'
+                address_line_1: '24 Grangewood',
+                address_line_2: 'Potters Bar',
+                locality: 'Herts',
+                postal_code: 'EN6 1SH'
               }
             },
             {
-              company_name: 'HIGHFIELD COURT LIMITED',
-              company_number: '02639105',
+              company_name: 'HANSEN ENERGY LIMITED',
+              company_number: '04336907',
               company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'HIGHFIELDCOURT:02639105',
+              ordered_alpha_key_with_id: 'HANSENENERGY:04336907',
               kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1993-05-25',
-              date_of_creation: '1991-08-19'
-            },
-            {
-              company_name: 'STERLING COURT LIMITED',
-              company_number: '03312049',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'STERLINGCOURT:03312049',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2005-11-15',
-              date_of_creation: '1997-02-03',
+              date_of_cessation: '2009-08-11',
+              date_of_creation: '2001-12-10',
               registered_office_address: {
-                address_line_1: 'Sterling House',
-                address_line_2: '2-6 Market Place',
-                locality: 'Atherton',
-                postal_code: 'M46 0EG'
-              },
-              previous_company_names: [
-                {
-                  ceased_on: '2000-12-22',
-                  effective_from: '1997-02-03',
-                  name: 'GRANGE GREEN MANOR DEVELOPMENTS LIMITED',
-                  company_number: '03312049'
-                }
-              ]
+                address_line_1: 'C/O BREBNERS',
+                address_line_2: '6th Floor Tubs Hill House North London Road',
+                locality: 'Sevenoaks',
+                postal_code: 'TN13 1BL'
+              }
             },
             {
-              company_name: 'OAKFIELD COURT LIMITED',
-              company_number: '02370283',
+              company_name: 'WORLDWIDE ENERGY LIMITED',
+              company_number: '03112802',
               company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'OAKFIELDCOURT:02370283',
+              ordered_alpha_key_with_id: 'WORLDWIDEENERGY:03112802',
               kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2001-03-27',
-              date_of_creation: '1989-04-10'
+              date_of_cessation: '1997-07-29',
+              date_of_creation: '1995-10-12'
             },
             {
-              company_name: 'WOODSTOCK COURT LIMITED',
-              company_number: '06238747',
+              company_name: 'ROWLEY ENERGY LIMITED',
+              company_number: '02763442',
               company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'WOODSTOCKCOURT:06238747',
+              ordered_alpha_key_with_id: 'ROWLEYENERGY:02763442',
               kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2008-02-05',
-              date_of_creation: '2007-05-08',
+              date_of_cessation: '2007-10-02',
+              date_of_creation: '1992-11-10',
               registered_office_address: {
-                address_line_1: '788-790 Finchley Road',
-                address_line_2: 'Temple Fortune',
+                address_line_1: '20-22 Queen Street',
+                address_line_2: 'Mayfair',
                 locality: 'London',
-                postal_code: 'NW11 7TJ'
+                postal_code: 'W1J 5PR'
               },
               previous_company_names: [
                 {
-                  ceased_on: '2007-05-23',
-                  effective_from: '2007-05-08',
-                  name: 'WOODSTOCK COURT (TOTON) MANAGEMENT COMPANY LIMITED',
-                  company_number: '06238747'
+                  ceased_on: '1993-01-15',
+                  effective_from: '1992-11-10',
+                  name: 'IBIS (214) LIMITED',
+                  company_number: '02763442'
                 }
               ]
             },
             {
-              company_name: 'GARDEN COURT LIMITED',
-              company_number: '02189069',
+              company_name: 'MCC ENERGY LIMITED',
+              company_number: '05570203',
               company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'GARDENCOURT:02189069',
+              ordered_alpha_key_with_id: 'MCCENERGY:05570203',
               kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1990-10-23',
-              date_of_creation: '1987-11-05'
-            },
-            {
-              company_name: 'GREEMOUNT COURT LIMITED',
-              company_number: '00292032',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'GREEMOUNTCOURT:00292032',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2007-06-26',
-              date_of_creation: '1934-09-13',
+              date_of_cessation: '2009-08-18',
+              date_of_creation: '2005-09-21',
               registered_office_address: {
-                address_line_1: '2 Heap Bridge',
-                address_line_2: 'Bury',
-                locality: 'Lancashire',
-                postal_code: 'BL9 7HR'
+                address_line_1: '344 Linen Hall 162 - 168 Regent Street',
+                locality: 'London',
+                postal_code: 'W1B 5TD'
               },
               previous_company_names: [
                 {
-                  ceased_on: '2001-07-17',
-                  effective_from: '1992-05-18',
-                  name: 'DETAILVALUE LIMITED',
-                  company_number: '00292032'
+                  ceased_on: '2009-01-16',
+                  effective_from: '2005-11-01',
+                  name: 'MCC ENERGY PLC',
+                  company_number: '05570203'
                 },
                 {
-                  ceased_on: '1992-05-18',
-                  effective_from: '1987-05-08',
-                  name: 'BYSON PLASTICS LIMITED',
-                  company_number: '00292032'
-                },
-                {
-                  ceased_on: '1987-05-08',
-                  effective_from: '1934-09-13',
-                  name: 'BYSON APPLIANCE CO.LIMITED',
-                  company_number: '00292032'
+                  ceased_on: '2005-11-01',
+                  effective_from: '2005-09-21',
+                  name: 'TERSUS ENERGY PLC',
+                  company_number: '05570203'
                 }
               ]
-            },
-            {
-              company_name: 'HIGHNAM COURT LIMITED',
-              company_number: '01959999',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'HIGHNAMCOURT:01959999',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1995-05-02',
-              date_of_creation: '1985-11-15',
-              previous_company_names: [
-                {
-                  ceased_on: '1986-09-18',
-                  effective_from: '1985-11-15',
-                  name: 'SWIFT 790 LIMITED',
-                  company_number: '01959999'
-                }
-              ]
-            },
-            {
-              company_name: 'HOLLIN COURT LIMITED',
-              company_number: '02815658',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'HOLLINCOURT:02815658',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2000-01-18',
-              date_of_creation: '1993-05-06'
-            },
-            {
-              company_name: 'COURT LION LIMITED',
-              company_number: '03143234',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'COURTLION:03143234',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1999-09-07',
-              date_of_creation: '1996-01-03',
-              previous_company_names: [
-                {
-                  ceased_on: '1996-07-03',
-                  effective_from: '1996-01-03',
-                  name: 'HOLAW (355) LIMITED',
-                  company_number: '03143234'
-                }
-              ]
-            },
-            {
-              company_name: 'ELDON COURT PLC',
-              company_number: 'SC127518',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'ELDONCOURT:SC127518',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1994-05-20',
-              date_of_creation: '1990-09-25'
-            },
-            {
-              company_name: 'VICTORIA COURT LIMITED',
-              company_number: '00721507',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'VICTORIACOURT:00721507',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1994-07-05',
-              date_of_creation: '1962-04-13'
-            },
-            {
-              company_name: 'HEADWAY COURT LIMITED',
-              company_number: '02471912',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'HEADWAYCOURT:02471912',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1995-08-01',
-              date_of_creation: '1990-02-20'
-            },
-            {
-              company_name: "FRIDAY'S COURT LIMITED",
-              company_number: '01946707',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'FRIDAYSCOURT:01946707',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2005-04-05',
-              date_of_creation: '1985-09-12',
-              registered_office_address: {
-                address_line_1: '3 Durrant Road',
-                address_line_2: 'Bournemouth',
-                locality: 'Dorset',
-                postal_code: 'BH2 6NE'
-              }
-            },
-            {
-              company_name: 'BARRACK COURT LIMITED',
-              company_number: '02268063',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'BARRACKCOURT:02268063',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1991-02-12',
-              date_of_creation: '1988-06-16'
-            },
-            {
-              company_name: 'COURT PERSONNEL LIMITED',
-              company_number: '01807372',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'COURTPERSONNEL:01807372',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1990-11-27',
-              date_of_creation: '1984-04-10'
-            },
-            {
-              company_name: 'COURT EXPERIENCE LIMITED',
-              company_number: '03498419',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'COURTEXPERIENCE:03498419',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '1999-07-06',
-              date_of_creation: '1998-01-23'
-            },
-            {
-              company_name: 'COURT CONSULTANTS LIMITED',
-              company_number: '04437406',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'COURTCONSULTANTS:04437406',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2009-06-30',
-              date_of_creation: '2002-05-13',
-              registered_office_address: {
-                address_line_1: 'Eastgate House',
-                address_line_2: '11 Cheyne Walk',
-                locality: 'Northampton',
-                postal_code: 'NN1 5PT'
-              }
-            },
-            {
-              company_name: 'CHARNWOOD COURT LIMITED',
-              company_number: '02818345',
-              company_status: 'dissolved',
-              ordered_alpha_key_with_id: 'CHARNWOODCOURT:02818345',
-              kind: 'searchresults#dissolved-company',
-              date_of_cessation: '2009-10-13',
-              date_of_creation: '1993-05-17',
-              registered_office_address: {
-                address_line_1: 'Flat 6, Charnwood Court',
-                address_line_2: 'Leighton Street',
-                locality: 'South Shields',
-                postal_code: 'NE33 3BF'
-              }
             }
           ],
           kind: 'search#dissolved',
           top_hit: {
-            company_name: 'CADMIUM COURT LIMITED',
-            company_number: '02032259',
+            company_name: 'ENERGY LIMITED',
+            company_number: '02364353',
             company_status: 'dissolved',
-            ordered_alpha_key_with_id: 'CADMIUMCOURT:02032259',
+            ordered_alpha_key_with_id: 'ENERGY:02364353',
             kind: 'searchresults#dissolved-company',
             date_of_cessation: '1993-10-12',
-            date_of_creation: '1986-06-27',
-            previous_company_names: [
-              {
-                ceased_on: '1988-06-27',
-                effective_from: '1986-06-27',
-                name: 'LAWCOURT LIMITED',
-                company_number: '02032259'
-              }
-            ]
+            date_of_creation: '1989-03-22'
           }
         }
       }

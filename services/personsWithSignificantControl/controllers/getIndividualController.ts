@@ -24,7 +24,9 @@ export const getIndividualController: FastifyPluginAsync = async (
       for (const [header, value] of Object.entries(ratelimit))
         res.header(header, value)
       return reflect(req.url)
-      return getIndividual(company_number, psc_id)
+      const { redis, mongo } = fastify
+      const context = { redis, mongo, req }
+      return getIndividual(context, company_number, psc_id)
     }
   )
 }

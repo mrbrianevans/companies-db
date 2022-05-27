@@ -60,12 +60,6 @@ export const ListPersonsWithSignificantControlSchema = {
             items: {
               type: 'object',
               properties: {
-                country_of_residence: {
-                  type: 'string'
-                },
-                etag: {
-                  type: 'string'
-                },
                 date_of_birth: {
                   type: 'object',
                   properties: {
@@ -74,71 +68,83 @@ export const ListPersonsWithSignificantControlSchema = {
                     },
                     month: {
                       type: 'integer'
+                    },
+                    day: {
+                      description: 'The day of the date of birth.',
+                      type: 'integer'
                     }
                   },
                   required: ['year', 'month']
                 },
-                notified_on: {
-                  type: 'string'
-                },
-                links: {
-                  type: 'object',
-                  properties: {
-                    self: {
-                      type: 'string'
-                    }
-                  },
-                  required: ['self']
-                },
-                natures_of_control: {
-                  type: 'array',
-                  items: {
-                    type: 'string'
-                  }
-                },
-                nationality: {
-                  type: 'string'
-                },
                 name_elements: {
                   type: 'object',
                   properties: {
-                    forename: {
+                    middle_name: {
                       type: 'string'
                     },
-                    title: {
+                    forename: {
                       type: 'string'
                     },
                     surname: {
                       type: 'string'
                     },
-                    middle_name: {
+                    title: {
+                      type: 'string'
+                    },
+                    other_forenames: {
+                      description:
+                        'Other forenames of the person with significant control.',
                       type: 'string'
                     }
                   },
                   required: ['surname']
                 },
+                kind: {
+                  type: 'string'
+                },
+                natures_of_control: {
+                  anyOf: [
+                    {
+                      description:
+                        'Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
+                      type: 'string'
+                    },
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'string'
+                      }
+                    }
+                  ]
+                },
                 name: {
+                  type: 'string'
+                },
+                country_of_residence: {
+                  type: 'string'
+                },
+                nationality: {
                   type: 'string'
                 },
                 address: {
                   type: 'object',
                   properties: {
-                    locality: {
+                    postal_code: {
+                      type: 'string'
+                    },
+                    address_line_1: {
                       type: 'string'
                     },
                     premises: {
+                      type: 'string'
+                    },
+                    locality: {
                       type: 'string'
                     },
                     country: {
                       type: 'string'
                     },
                     region: {
-                      type: 'string'
-                    },
-                    address_line_1: {
-                      type: 'string'
-                    },
-                    postal_code: {
                       type: 'string'
                     },
                     address_line_2: {
@@ -152,7 +158,24 @@ export const ListPersonsWithSignificantControlSchema = {
                     }
                   }
                 },
-                kind: {
+                links: {
+                  type: 'object',
+                  properties: {
+                    self: {
+                      type: 'string'
+                    },
+                    statement: {
+                      description:
+                        'The URL of the statement linked to this person with significant control.',
+                      type: 'string'
+                    }
+                  },
+                  required: ['self']
+                },
+                notified_on: {
+                  type: 'string'
+                },
+                etag: {
                   type: 'string'
                 },
                 ceased_on: {
@@ -161,19 +184,19 @@ export const ListPersonsWithSignificantControlSchema = {
                 identification: {
                   type: 'object',
                   properties: {
+                    registration_number: {
+                      type: 'string'
+                    },
                     legal_authority: {
                       type: 'string'
                     },
                     country_registered: {
                       type: 'string'
                     },
-                    legal_form: {
-                      type: 'string'
-                    },
-                    registration_number: {
-                      type: 'string'
-                    },
                     place_registered: {
+                      type: 'string'
+                    },
+                    legal_form: {
                       type: 'string'
                     }
                   },
@@ -181,9 +204,14 @@ export const ListPersonsWithSignificantControlSchema = {
                 },
                 description: {
                   type: 'string'
+                },
+                ceased: {
+                  description:
+                    'Presence of that indicator means the super secure person status is ceased <br />',
+                  type: 'boolean'
                 }
               },
-              required: ['etag', 'links', 'kind']
+              required: ['links', 'etag']
             }
           },
           items_per_page: {
@@ -199,6 +227,11 @@ export const ListPersonsWithSignificantControlSchema = {
                 type: 'string'
               },
               exemptions: {
+                type: 'string'
+              },
+              persons_with_significant_control_list: {
+                description:
+                  'The URL of the persons with significant control list resource.',
                 type: 'string'
               }
             },
@@ -227,68 +260,67 @@ export const ListPersonsWithSignificantControlSchema = {
           ceased_count: 1,
           items: [
             {
-              country_of_residence: 'England',
-              etag: '09dda16a85bbd90be915ea4d1bc0938c141d5006',
               date_of_birth: {
-                year: 1958,
-                month: 12
+                year: 1969,
+                month: 6
               },
-              notified_on: '2020-10-26',
-              links: {
-                self: '/company/04277636/persons-with-significant-control/individual/OXRcen646dCFlhc7SCl3D2KAxZ0'
-              },
-              natures_of_control: ['ownership-of-shares-75-to-100-percent'],
-              nationality: 'British',
               name_elements: {
-                forename: 'Asmita',
-                title: 'Mrs',
-                surname: 'Saujani',
-                middle_name: 'Nitinchandra'
+                middle_name: 'Roy',
+                forename: 'Jonathan',
+                surname: 'Growcott',
+                title: 'Mr'
               },
-              name: 'Mrs Asmita Nitinchandra Saujani',
+              kind: 'individual-person-with-significant-control',
+              natures_of_control: ['ownership-of-shares-75-to-100-percent'],
+              name: 'Mr Jonathan Roy Growcott',
+              country_of_residence: 'England',
+              nationality: 'English',
               address: {
-                locality: 'Rickmansworth',
-                premises: '50 Grovewood Close',
-                country: 'England',
-                region: 'Hertfordshire',
-                address_line_1: 'Chorleywood',
-                postal_code: 'WD3 5PX'
+                postal_code: 'DY6 7HU',
+                address_line_1: 'Stallings Lane',
+                premises: '8a',
+                locality: 'Kingswinford',
+                country: 'England'
               },
-              kind: 'individual-person-with-significant-control'
+              links: {
+                self: '/company/08744864/persons-with-significant-control/individual/oBL_jXq90aj3DzFLaZtqh3Ak9QI'
+              },
+              notified_on: '2019-09-30',
+              etag: '0f3d8e2cb44eb939e8feaba52a625b74ef074371'
             },
             {
-              ceased_on: '2020-10-26',
-              etag: 'a3f86f7fde9af31b046343300aeb6ea470dd1a29',
-              country_of_residence: 'United Arab Emirates',
-              notified_on: '2016-08-01',
               date_of_birth: {
-                year: 1966,
-                month: 7
+                month: 9,
+                year: 1960
               },
-              name: 'Mrs Falguni Sanjiv Patel',
               name_elements: {
-                title: 'Mrs',
-                forename: 'Falguni',
-                middle_name: 'Sanjiv',
-                surname: 'Patel'
+                forename: 'Jeremy',
+                middle_name: 'Peter',
+                surname: 'Moore',
+                title: 'Mr'
               },
-              nationality: 'British',
-              links: {
-                self: '/company/04277636/persons-with-significant-control/individual/VqdFpT8mO1_olhlkbz49WQ8FI84'
-              },
-              natures_of_control: ['ownership-of-shares-25-to-50-percent'],
+              name: 'Mr Jeremy Peter Moore',
+              natures_of_control: ['ownership-of-shares-75-to-100-percent'],
+              ceased_on: '2019-09-30',
               kind: 'individual-person-with-significant-control',
               address: {
-                locality: 'Middlesex',
-                address_line_2: 'Northwood',
-                address_line_1: '41 The Broadway, Joel Street',
-                postal_code: 'HA6 1NZ'
+                region: 'Shropshire',
+                locality: 'Hilton',
+                premises: 'New Barns Farm',
+                postal_code: 'WV15 5PB'
+              },
+              country_of_residence: 'England',
+              nationality: 'British',
+              etag: '3e76a5ad71ef44c634b16e1354f600cd511ed521',
+              notified_on: '2016-10-01',
+              links: {
+                self: '/company/08744864/persons-with-significant-control/individual/PzH2tbV8TNFk1HQXjxvITe5E7MQ'
               }
             }
           ],
           items_per_page: 25,
           links: {
-            self: '/company/04277636/persons-with-significant-control'
+            self: '/company/08744864/persons-with-significant-control'
           },
           start_index: 0,
           total_results: 2

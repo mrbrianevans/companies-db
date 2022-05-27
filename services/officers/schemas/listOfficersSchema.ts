@@ -71,37 +71,11 @@ export const ListOfficersSchema = {
             items: {
               type: 'object',
               properties: {
-                address: {
-                  type: 'object',
-                  properties: {
-                    locality: {
-                      type: 'string'
-                    },
-                    address_line_1: {
-                      type: 'string'
-                    },
-                    premises: {
-                      type: 'string'
-                    },
-                    postal_code: {
-                      type: 'string'
-                    },
-                    country: {
-                      type: 'string'
-                    },
-                    region: {
-                      type: 'string'
-                    },
-                    address_line_2: {
-                      type: 'string'
-                    },
-                    care_of: {
-                      type: 'string'
-                    },
-                    po_box: {
-                      type: 'string'
-                    }
-                  }
+                nationality: {
+                  type: 'string'
+                },
+                country_of_residence: {
+                  type: 'string'
                 },
                 appointed_on: {
                   type: 'string'
@@ -124,32 +98,111 @@ export const ListOfficersSchema = {
                   },
                   required: ['self', 'officer']
                 },
-                name: {
+                occupation: {
                   type: 'string'
                 },
-                officer_role: {
+                name: {
                   type: 'string'
                 },
                 date_of_birth: {
                   type: 'object',
                   properties: {
+                    month: {
+                      type: 'integer'
+                    },
                     year: {
                       type: 'integer'
                     },
-                    month: {
+                    day: {
+                      description: 'The day of the date of birth.',
                       type: 'integer'
                     }
                   },
-                  required: ['year', 'month']
+                  required: ['month', 'year']
                 },
-                nationality: {
+                officer_role: {
                   type: 'string'
                 },
-                occupation: {
-                  type: 'string'
-                },
-                country_of_residence: {
-                  type: 'string'
+                address: {
+                  anyOf: [
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          address_line_1: {
+                            description: 'The first line of the address.',
+                            type: 'string'
+                          },
+                          address_line_2: {
+                            description: 'The second line of the address.',
+                            type: 'string'
+                          },
+                          care_of: {
+                            description: 'The care of name.',
+                            type: 'string'
+                          },
+                          country: {
+                            description: 'The country e.g. United Kingdom.',
+                            type: 'string'
+                          },
+                          locality: {
+                            description: 'The locality e.g. London.',
+                            type: 'string'
+                          },
+                          po_box: {
+                            description: 'The post-office box number.',
+                            type: 'string'
+                          },
+                          postal_code: {
+                            description: 'The postal code e.g. CF14 3UZ.',
+                            type: 'string'
+                          },
+                          premises: {
+                            description: 'The property name or number.',
+                            type: 'string'
+                          },
+                          region: {
+                            description: 'The region e.g. Surrey.',
+                            type: 'string'
+                          }
+                        },
+                        required: ['address_line_1', 'locality']
+                      }
+                    },
+                    {
+                      type: 'object',
+                      properties: {
+                        address_line_2: {
+                          type: 'string'
+                        },
+                        postal_code: {
+                          type: 'string'
+                        },
+                        country: {
+                          type: 'string'
+                        },
+                        region: {
+                          type: 'string'
+                        },
+                        address_line_1: {
+                          type: 'string'
+                        },
+                        premises: {
+                          type: 'string'
+                        },
+                        locality: {
+                          type: 'string'
+                        },
+                        care_of: {
+                          type: 'string'
+                        },
+                        po_box: {
+                          type: 'string'
+                        }
+                      }
+                    }
+                  ]
                 },
                 resigned_on: {
                   type: 'string'
@@ -157,10 +210,10 @@ export const ListOfficersSchema = {
                 identification: {
                   type: 'object',
                   properties: {
-                    identification_type: {
+                    registration_number: {
                       type: 'string'
                     },
-                    registration_number: {
+                    identification_type: {
                       type: 'string'
                     },
                     place_registered: {
@@ -172,22 +225,137 @@ export const ListOfficersSchema = {
                     legal_form: {
                       type: 'string'
                     }
-                  },
-                  required: ['identification_type']
+                  }
                 },
                 former_names: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      surname: {
-                        type: 'string'
-                      },
-                      forenames: {
-                        type: 'string'
+                  anyOf: [
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          surname: {
+                            type: 'string'
+                          },
+                          forenames: {
+                            type: 'string'
+                          }
+                        }
+                      }
+                    },
+                    {
+                      type: 'object',
+                      properties: {
+                        forenames: {
+                          description: 'Former forenames of the officer.',
+                          type: 'string'
+                        },
+                        surname: {
+                          description: 'Former surnames of the officer.',
+                          type: 'string'
+                        }
                       }
                     }
+                  ]
+                },
+                contact_details: {
+                  description:
+                    'The contact at the `corporate-managing-officer` of a `registered-overseas-entity`.',
+                  type: 'object',
+                  title: 'contactDetails',
+                  required: ['address_line_1', 'locality', 'name'],
+                  properties: {
+                    address_line_1: {
+                      description: 'The first line of the address.',
+                      type: 'string'
+                    },
+                    address_line_2: {
+                      description: 'The second line of the address.',
+                      type: 'string'
+                    },
+                    care_of: {
+                      description: 'The care of name.',
+                      type: 'string'
+                    },
+                    country: {
+                      description: 'The country e.g. United Kingdom.',
+                      type: 'string'
+                    },
+                    locality: {
+                      description: 'The locality e.g. London.',
+                      type: 'string'
+                    },
+                    name: {
+                      description: 'The name of the contact.',
+                      type: 'string'
+                    },
+                    po_box: {
+                      description: 'The post-office box number.',
+                      type: 'string'
+                    },
+                    postal_code: {
+                      description: 'The postal code e.g. CF14 3UZ.',
+                      type: 'string'
+                    },
+                    premises: {
+                      description: 'The property name or number.',
+                      type: 'string'
+                    },
+                    region: {
+                      description: 'The region e.g. Surrey.',
+                      type: 'string'
+                    }
                   }
+                },
+                principal_office_address: {
+                  description:
+                    'The principal/registered office address of a `corporate-managing-officer` of a `registered-overseas-entity`.',
+                  type: 'object',
+                  title: 'address',
+                  required: ['address_line_1', 'locality'],
+                  properties: {
+                    address_line_1: {
+                      description: 'The first line of the address.',
+                      type: 'string'
+                    },
+                    address_line_2: {
+                      description: 'The second line of the address.',
+                      type: 'string'
+                    },
+                    care_of: {
+                      description: 'The care of name.',
+                      type: 'string'
+                    },
+                    country: {
+                      description: 'The country e.g. United Kingdom.',
+                      type: 'string'
+                    },
+                    locality: {
+                      description: 'The locality e.g. London.',
+                      type: 'string'
+                    },
+                    po_box: {
+                      description: 'The post-office box number.',
+                      type: 'string'
+                    },
+                    postal_code: {
+                      description: 'The postal code e.g. CF14 3UZ.',
+                      type: 'string'
+                    },
+                    premises: {
+                      description: 'The property name or number.',
+                      type: 'string'
+                    },
+                    region: {
+                      description: 'The region e.g. Surrey.',
+                      type: 'string'
+                    }
+                  }
+                },
+                responsibilities: {
+                  description:
+                    'The responsibilities of the managing officer of a `registered-overseas-entity`.',
+                  type: 'string'
                 }
               },
               required: ['links', 'name', 'officer_role']
@@ -221,7 +389,6 @@ export const ListOfficersSchema = {
         required: [
           'active_count',
           'etag',
-          'inactive_count',
           'items',
           'items_per_page',
           'kind',
@@ -231,226 +398,49 @@ export const ListOfficersSchema = {
           'total_results'
         ],
         additionalProperties: false,
-        title: 'listCompanyOfficers',
+        title: 'listOfficers',
         example: {
-          active_count: 4,
-          etag: '79566b66c86329874c13ce61bae1022dba6dee79',
-          inactive_count: 0,
+          active_count: 0,
+          etag: '490e7c1c96f85192cf3f3973d59e9b33e47cade0',
+          inactive_count: 1,
           items: [
             {
-              address: {
-                locality: 'Glasgow',
-                address_line_1: 'Sauchiehall Street',
-                premises: '217',
-                postal_code: 'G2 3EX',
-                country: 'United Kingdom'
-              },
-              appointed_on: '2017-10-12',
+              nationality: 'British',
+              country_of_residence: 'England',
+              appointed_on: '2015-11-12',
               links: {
-                self: '/company/SC578764/appointments/Iz_abzJJlhXIA1S0i20WoVAO5W4',
+                self: '/company/09870307/appointments/0bhRVXIQoMxmVUWz_I5Aeo1q_gI',
                 officer: {
                   appointments:
-                    '/officers/nP3gmZB3lWqH98KnxGroxeD_FXQ/appointments'
+                    '/officers/VCAEYwOwGM_IN1qPw2UDOgPMHQ0/appointments'
                 }
               },
-              name: 'DICKSON, Ian',
-              officer_role: 'secretary'
-            },
-            {
-              links: {
-                officer: {
-                  appointments:
-                    '/officers/4KhFXpxeyOcEy0kUYfVw7ymCAPo/appointments'
-                },
-                self: '/company/SC578764/appointments/kT2WRWqaFQVRf1jnI4V26rpfJLE'
-              },
+              occupation: 'Company Director',
+              name: 'KIRKHAM, Graham, Lord',
               date_of_birth: {
-                year: 1950,
-                month: 4
+                month: 12,
+                year: 1944
               },
-              nationality: 'British',
-              occupation: 'Director',
               officer_role: 'director',
-              country_of_residence: 'United Kingdom',
-              name: 'DICKSON, Ian',
-              appointed_on: '2017-10-12',
               address: {
-                country: 'United Kingdom',
-                locality: 'Glasgow',
-                address_line_1: 'Sauchiehall Street',
-                postal_code: 'G2 3EX',
-                premises: '217'
-              }
-            },
-            {
-              occupation: 'Director',
-              officer_role: 'director',
-              country_of_residence: 'Scotland',
-              name: 'MCCALLUM, Colin',
-              address: {
-                country: 'United Kingdom',
-                address_line_1: 'Sauchiehall Street',
-                postal_code: 'G2 3EX',
-                locality: 'Glasgow',
-                premises: '217'
-              },
-              appointed_on: '2022-02-01',
-              links: {
-                self: '/company/SC578764/appointments/z_09dfxugbWSiZbZd8UDKrQCh3U',
-                officer: {
-                  appointments:
-                    '/officers/1HLYRNBXuWirO2VxG0aIk55ZNEY/appointments'
-                }
-              },
-              nationality: 'British',
-              date_of_birth: {
-                year: 1958,
-                month: 3
-              }
-            },
-            {
-              date_of_birth: {
-                year: 1972,
-                month: 8
-              },
-              nationality: 'British',
-              links: {
-                officer: {
-                  appointments:
-                    '/officers/FMjH8gNRH1IYdXF9sSgSO4RL8uk/appointments'
-                },
-                self: '/company/SC578764/appointments/cSkjz1xlTcb3alhlaO6mWgK5zbU'
-              },
-              appointed_on: '2019-08-25',
-              address: {
-                premises: '217',
-                country: 'United Kingdom',
-                address_line_1: 'Sauchiehall Street',
-                locality: 'Glasgow',
-                postal_code: 'G2 3EX'
-              },
-              country_of_residence: 'Scotland',
-              occupation: 'Director',
-              officer_role: 'director',
-              name: 'YOUNG, Pauline Agnes'
-            },
-            {
-              links: {
-                self: '/company/SC578764/appointments/ZUbltBTnEHJ0gRyAW3e5m9Eot1g',
-                officer: {
-                  appointments:
-                    '/officers/gIWdb7lKe_mkPVxFZ6oTsS50600/appointments'
-                }
-              },
-              nationality: 'British',
-              date_of_birth: {
-                year: 1949,
-                month: 12
-              },
-              occupation: 'Director',
-              officer_role: 'director',
-              country_of_residence: 'United Kingdom',
-              name: 'CAIRNS, David',
-              address: {
-                country: 'United Kingdom',
-                postal_code: 'G2 3EX',
-                address_line_1: 'Sauchiehall Street',
-                premises: '217',
-                locality: 'Glasgow'
-              },
-              resigned_on: '2020-03-03',
-              appointed_on: '2017-10-12'
-            },
-            {
-              links: {
-                officer: {
-                  appointments:
-                    '/officers/I2mO4LGkIHc3r8tKeMkbzU8AzGY/appointments'
-                },
-                self: '/company/SC578764/appointments/-8qz5QzZBnPKnUJH-JWJfWBg-O4'
-              },
-              date_of_birth: {
-                month: 5,
-                year: 1962
-              },
-              nationality: 'British',
-              occupation: 'Director',
-              officer_role: 'director',
-              country_of_residence: 'United Kingdom',
-              name: 'MACKIE, John Ross',
-              resigned_on: '2019-02-06',
-              appointed_on: '2017-10-12',
-              address: {
-                locality: 'Glasgow',
-                postal_code: 'G2 3EX',
-                premises: '217',
-                country: 'United Kingdom',
-                address_line_1: 'Sauchiehall Street'
-              }
-            },
-            {
-              name: 'SINCLAIR, Celia Margaret Lloyd',
-              country_of_residence: 'United Kingdom',
-              occupation: 'Director',
-              officer_role: 'director',
-              appointed_on: '2017-10-12',
-              resigned_on: '2022-01-31',
-              address: {
-                country: 'United Kingdom',
-                address_line_1: 'Sauchiehall Street',
-                postal_code: 'G2 3EX',
-                locality: 'Glasgow',
-                premises: '217'
-              },
-              links: {
-                officer: {
-                  appointments:
-                    '/officers/5ymszo9eA4oUAFboil6bm1sSfaU/appointments'
-                },
-                self: '/company/SC578764/appointments/yr2pkyWU-wTKRo94eov84ArehlA'
-              },
-              date_of_birth: {
-                month: 4,
-                year: 1947
-              },
-              nationality: 'British'
-            },
-            {
-              links: {
-                officer: {
-                  appointments:
-                    '/officers/Xyy43RTMDaH3yesypIaEdACu0rE/appointments'
-                },
-                self: '/company/SC578764/appointments/XtsO7txqc9OTN6F1bm7EeZINW_w'
-              },
-              date_of_birth: {
-                year: 1939,
-                month: 11
-              },
-              nationality: 'British',
-              officer_role: 'director',
-              occupation: 'Director',
-              country_of_residence: 'Scotland',
-              name: 'TAYLOR, Maurice Vincent',
-              resigned_on: '2021-07-21',
-              appointed_on: '2017-10-12',
-              address: {
-                address_line_1: 'Sauchiehall Street',
-                postal_code: 'G2 3EX',
-                country: 'United Kingdom',
-                premises: '217',
-                locality: 'Glasgow'
+                address_line_2: 'Redhouse Interchange, Ardwick-Le-Street',
+                postal_code: 'DN6 7FE',
+                country: 'England',
+                region: 'South Yorkshire',
+                address_line_1: 'Ebor Court',
+                premises: '8,',
+                locality: 'Doncaster'
               }
             }
           ],
           items_per_page: 35,
           kind: 'officer-list',
           links: {
-            self: '/company/SC578764/officers'
+            self: '/company/09870307/officers'
           },
-          resigned_count: 4,
+          resigned_count: 0,
           start_index: 0,
-          total_results: 8
+          total_results: 1
         }
       }
     }

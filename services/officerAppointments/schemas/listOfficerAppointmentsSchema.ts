@@ -39,6 +39,18 @@ export const ListOfficerAppointmentsSchema = {
       '200': {
         type: 'object',
         properties: {
+          date_of_birth: {
+            type: 'object',
+            properties: {
+              year: {
+                type: 'integer'
+              },
+              month: {
+                type: 'integer'
+              }
+            },
+            required: ['year', 'month']
+          },
           etag: {
             type: 'string'
           },
@@ -50,15 +62,6 @@ export const ListOfficerAppointmentsSchema = {
             items: {
               type: 'object',
               properties: {
-                links: {
-                  type: 'object',
-                  properties: {
-                    company: {
-                      type: 'string'
-                    }
-                  },
-                  required: ['company']
-                },
                 officer_role: {
                   type: 'string'
                 },
@@ -68,66 +71,112 @@ export const ListOfficerAppointmentsSchema = {
                     company_status: {
                       type: 'string'
                     },
-                    company_number: {
+                    company_name: {
                       type: 'string'
                     },
-                    company_name: {
+                    company_number: {
                       type: 'string'
                     }
                   },
                   required: ['company_number']
                 },
-                name: {
-                  type: 'string'
-                },
-                appointed_on: {
+                country_of_residence: {
                   type: 'string'
                 },
                 address: {
-                  type: 'object',
-                  properties: {
-                    locality: {
-                      type: 'string'
+                  anyOf: [
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          address_line_1: {
+                            description: 'The first line of the address.',
+                            type: 'string'
+                          },
+                          address_line_2: {
+                            description: 'The second line of the address.',
+                            type: 'string'
+                          },
+                          care_of: {
+                            description: 'The care of name.',
+                            type: 'string'
+                          },
+                          country: {
+                            description: 'The country. For example, UK.',
+                            type: 'string'
+                          },
+                          locality: {
+                            description: 'The locality. For example London.',
+                            type: 'string'
+                          },
+                          po_box: {
+                            description: 'The post-office box number.',
+                            type: 'string'
+                          },
+                          postal_code: {
+                            description:
+                              'The postal code. For example CF14 3UZ.',
+                            type: 'string'
+                          },
+                          premises: {
+                            description: 'The property name or number.',
+                            type: 'string'
+                          },
+                          region: {
+                            description: 'The region. For example Surrey.',
+                            type: 'string'
+                          }
+                        }
+                      }
                     },
-                    address_line_1: {
-                      type: 'string'
-                    },
-                    country: {
-                      type: 'string'
-                    },
-                    premises: {
-                      type: 'string'
-                    },
-                    postal_code: {
-                      type: 'string'
-                    },
-                    address_line_2: {
-                      type: 'string'
-                    },
-                    region: {
-                      type: 'string'
-                    },
-                    care_of: {
-                      type: 'string'
-                    },
-                    po_box: {
-                      type: 'string'
+                    {
+                      type: 'object',
+                      properties: {
+                        postal_code: {
+                          type: 'string'
+                        },
+                        address_line_1: {
+                          type: 'string'
+                        },
+                        region: {
+                          type: 'string'
+                        },
+                        locality: {
+                          type: 'string'
+                        },
+                        premises: {
+                          type: 'string'
+                        },
+                        country: {
+                          type: 'string'
+                        },
+                        address_line_2: {
+                          type: 'string'
+                        },
+                        care_of: {
+                          type: 'string'
+                        },
+                        po_box: {
+                          type: 'string'
+                        }
+                      }
                     }
-                  }
+                  ]
                 },
                 name_elements: {
                   type: 'object',
                   properties: {
-                    title: {
-                      type: 'string'
-                    },
                     forename: {
                       type: 'string'
                     },
-                    surname: {
+                    other_forenames: {
                       type: 'string'
                     },
-                    other_forenames: {
+                    title: {
+                      type: 'string'
+                    },
+                    surname: {
                       type: 'string'
                     },
                     honours: {
@@ -136,38 +185,29 @@ export const ListOfficerAppointmentsSchema = {
                   },
                   required: ['surname']
                 },
-                country_of_residence: {
+                appointed_on: {
                   type: 'string'
+                },
+                name: {
+                  type: 'string'
+                },
+                links: {
+                  type: 'object',
+                  properties: {
+                    company: {
+                      type: 'string'
+                    }
+                  },
+                  required: ['company']
                 },
                 nationality: {
-                  type: 'string'
-                },
-                occupation: {
                   type: 'string'
                 },
                 resigned_on: {
                   type: 'string'
                 },
-                identification: {
-                  type: 'object',
-                  properties: {
-                    identification_type: {
-                      type: 'string'
-                    },
-                    registration_number: {
-                      type: 'string'
-                    },
-                    place_registered: {
-                      type: 'string'
-                    },
-                    legal_form: {
-                      type: 'string'
-                    },
-                    legal_authority: {
-                      type: 'string'
-                    }
-                  },
-                  required: ['identification_type']
+                occupation: {
+                  type: 'string'
                 },
                 is_pre_1992_appointment: {
                   type: 'boolean'
@@ -175,27 +215,64 @@ export const ListOfficerAppointmentsSchema = {
                 appointed_before: {
                   type: 'string'
                 },
-                former_names: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      surname: {
-                        type: 'string'
-                      },
-                      forenames: {
-                        type: 'string'
-                      }
+                identification: {
+                  type: 'object',
+                  properties: {
+                    registration_number: {
+                      type: 'string'
+                    },
+                    place_registered: {
+                      type: 'string'
+                    },
+                    identification_type: {
+                      type: 'string'
+                    },
+                    legal_authority: {
+                      type: 'string'
+                    },
+                    legal_form: {
+                      type: 'string'
                     }
                   }
+                },
+                former_names: {
+                  anyOf: [
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          forenames: {
+                            type: 'string'
+                          },
+                          surname: {
+                            type: 'string'
+                          }
+                        }
+                      }
+                    },
+                    {
+                      type: 'object',
+                      properties: {
+                        forenames: {
+                          description: 'Former forenames of the officer.',
+                          type: 'string'
+                        },
+                        surname: {
+                          description: 'Former surnames of the officer.',
+                          type: 'string'
+                        }
+                      }
+                    }
+                  ]
                 }
               },
               required: [
-                'links',
                 'officer_role',
                 'appointed_to',
+                'address',
                 'name',
-                'address'
+                'links'
               ]
             }
           },
@@ -222,18 +299,6 @@ export const ListOfficerAppointmentsSchema = {
           },
           total_results: {
             type: 'integer'
-          },
-          date_of_birth: {
-            type: 'object',
-            properties: {
-              month: {
-                type: 'integer'
-              },
-              year: {
-                type: 'integer'
-              }
-            },
-            required: ['month', 'year']
           }
         },
         required: [
@@ -250,43 +315,78 @@ export const ListOfficerAppointmentsSchema = {
         additionalProperties: false,
         title: 'listOfficerAppointments',
         example: {
-          etag: 'ed9c67852e4a5210c0186bec133d725d74e6cb76',
+          date_of_birth: {
+            year: 1971,
+            month: 4
+          },
+          etag: 'c12a22174815a08d78fe2888639d5ddbfdab5779',
           is_corporate_officer: false,
           items: [
             {
-              links: {
-                company: '/company/13276747'
-              },
-              officer_role: 'secretary',
+              officer_role: 'llp-member',
               appointed_to: {
                 company_status: 'active',
-                company_number: '13276747',
-                company_name: 'SEGRO (UK ENERGY) LIMITED'
+                company_name: 'BLUEBAY ASSET MANAGEMENT LLP',
+                company_number: 'OC370085'
               },
-              name: 'Julia FOO',
-              appointed_on: '2021-11-03',
+              country_of_residence: 'United Kingdom',
               address: {
+                postal_code: 'W1K 3JR',
+                address_line_1: 'Grosvenor Street',
+                region: 'Greater London',
                 locality: 'London',
-                address_line_1: 'New Burlington Place',
-                country: 'United Kingdom',
-                premises: '1',
-                postal_code: 'W1S 2HR'
+                premises: '77'
               },
               name_elements: {
-                title: 'Miss',
-                forename: 'Julia',
-                surname: 'FOO'
+                forename: 'Mark',
+                other_forenames: 'Charles David',
+                title: 'Mr',
+                surname: 'DOWDING'
+              },
+              appointed_on: '2012-04-02',
+              name: 'Mark Charles David DOWDING',
+              links: {
+                company: '/company/OC370085'
+              }
+            },
+            {
+              officer_role: 'director',
+              name_elements: {
+                other_forenames: 'Charles David',
+                forename: 'Mark',
+                title: 'Mr',
+                surname: 'DOWDING'
+              },
+              address: {
+                locality: 'St Albans',
+                region: 'Hertfordshire',
+                address_line_1: '60 Marshals Drive',
+                postal_code: 'AL1 4RF'
+              },
+              nationality: 'British',
+              country_of_residence: 'United Kingdom',
+              appointed_to: {
+                company_status: 'active',
+                company_number: '00949417',
+                company_name: 'INVESCO ASSET MANAGEMENT LIMITED'
+              },
+              resigned_on: '2007-04-05',
+              name: 'Mark Charles David DOWDING',
+              appointed_on: '2006-09-22',
+              occupation: 'Company Director',
+              links: {
+                company: '/company/00949417'
               }
             }
           ],
           items_per_page: 35,
           kind: 'personal-appointment',
           links: {
-            self: '/officers/hzBw2VEdcjqwmYT1qWlbnNS4Z0I/appointments'
+            self: '/officers/_KEhtG96oweECRpL-MofQUhT1qI/appointments'
           },
-          name: 'Julia FOO',
+          name: 'Mark Charles David DOWDING',
           start_index: 0,
-          total_results: 1
+          total_results: 2
         }
       }
     }

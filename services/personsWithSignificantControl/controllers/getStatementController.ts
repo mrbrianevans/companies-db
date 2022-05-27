@@ -24,7 +24,9 @@ export const getStatementController: FastifyPluginAsync = async (
       for (const [header, value] of Object.entries(ratelimit))
         res.header(header, value)
       return reflect(req.url)
-      return getStatement(company_number, statement_id)
+      const { redis, mongo } = fastify
+      const context = { redis, mongo, req }
+      return getStatement(context, company_number, statement_id)
     }
   )
 }

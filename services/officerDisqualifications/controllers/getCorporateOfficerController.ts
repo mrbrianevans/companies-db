@@ -24,7 +24,9 @@ export const getCorporateOfficerController: FastifyPluginAsync = async (
       for (const [header, value] of Object.entries(ratelimit))
         res.header(header, value)
       return reflect(req.url)
-      return getCorporateOfficer(officer_id)
+      const { redis, mongo } = fastify
+      const context = { redis, mongo, req }
+      return getCorporateOfficer(context, officer_id)
     }
   )
 }

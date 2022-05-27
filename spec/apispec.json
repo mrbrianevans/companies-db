@@ -3407,7 +3407,7 @@
         }
       }
     },
-    "/alphabetic-search/companies": {
+    "/alphabetical-search/companies": {
       "get": {
         "summary": "Search for a company",
         "description": "Search for a company",

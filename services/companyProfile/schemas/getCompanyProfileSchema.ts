@@ -30,61 +30,61 @@ export const GetCompanyProfileSchema = {
           accounts: {
             type: 'object',
             properties: {
-              next_made_up_to: {
-                type: 'string'
-              },
-              last_accounts: {
+              accounting_reference_date: {
                 type: 'object',
                 properties: {
-                  period_end_on: {
+                  month: {
                     type: 'string'
                   },
-                  period_start_on: {
-                    type: 'string'
-                  },
-                  made_up_to: {
-                    type: 'string'
-                  },
-                  type: {
+                  day: {
                     type: 'string'
                   }
-                }
+                },
+                required: ['month', 'day']
               },
               overdue: {
                 type: 'boolean'
               },
+              last_accounts: {
+                type: 'object',
+                properties: {
+                  period_start_on: {
+                    type: 'string'
+                  },
+                  type: {
+                    type: 'string'
+                  },
+                  period_end_on: {
+                    type: 'string'
+                  },
+                  made_up_to: {
+                    type: 'string'
+                  }
+                }
+              },
+              next_due: {
+                type: 'string'
+              },
+              next_made_up_to: {
+                type: 'string'
+              },
               next_accounts: {
                 type: 'object',
                 properties: {
+                  overdue: {
+                    type: 'boolean'
+                  },
+                  period_start_on: {
+                    type: 'string'
+                  },
                   due_on: {
                     type: 'string'
                   },
                   period_end_on: {
                     type: 'string'
-                  },
-                  period_start_on: {
-                    type: 'string'
-                  },
-                  overdue: {
-                    type: 'boolean'
                   }
                 },
                 required: ['period_end_on']
-              },
-              accounting_reference_date: {
-                type: 'object',
-                properties: {
-                  day: {
-                    type: 'string'
-                  },
-                  month: {
-                    type: 'string'
-                  }
-                },
-                required: ['day', 'month']
-              },
-              next_due: {
-                type: 'string'
               }
             },
             required: ['last_accounts']
@@ -104,29 +104,26 @@ export const GetCompanyProfileSchema = {
           confirmation_statement: {
             type: 'object',
             properties: {
-              next_made_up_to: {
-                type: 'string'
+              overdue: {
+                type: 'boolean'
               },
               last_made_up_to: {
                 type: 'string'
               },
-              overdue: {
-                type: 'boolean'
-              },
               next_due: {
+                type: 'string'
+              },
+              next_made_up_to: {
                 type: 'string'
               }
             },
-            required: ['next_made_up_to', 'next_due']
+            required: ['next_due', 'next_made_up_to']
           },
           date_of_creation: {
             type: 'string'
           },
           etag: {
             type: 'string'
-          },
-          has_been_liquidated: {
-            type: 'boolean'
           },
           has_charges: {
             type: 'boolean'
@@ -140,16 +137,16 @@ export const GetCompanyProfileSchema = {
           jurisdiction: {
             type: 'string'
           },
-          last_full_members_list_date: {
-            type: 'string'
-          },
           links: {
             type: 'object',
             properties: {
-              self: {
+              filing_history: {
                 type: 'string'
               },
-              filing_history: {
+              persons_with_significant_control: {
+                type: 'string'
+              },
+              self: {
                 type: 'string'
               },
               officers: {
@@ -158,16 +155,13 @@ export const GetCompanyProfileSchema = {
               charges: {
                 type: 'string'
               },
-              persons_with_significant_control: {
-                type: 'string'
-              },
-              registers: {
-                type: 'string'
-              },
               persons_with_significant_control_statements: {
                 type: 'string'
               },
               insolvency: {
+                type: 'string'
+              },
+              registers: {
                 type: 'string'
               },
               exemptions: {
@@ -182,31 +176,13 @@ export const GetCompanyProfileSchema = {
             },
             required: ['self']
           },
-          previous_company_names: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                name: {
-                  type: 'string'
-                },
-                ceased_on: {
-                  type: 'string'
-                },
-                effective_from: {
-                  type: 'string'
-                }
-              },
-              required: ['name', 'ceased_on', 'effective_from']
-            }
-          },
           registered_office_address: {
             type: 'object',
             properties: {
-              country: {
+              locality: {
                 type: 'string'
               },
-              locality: {
+              country: {
                 type: 'string'
               },
               address_line_1: {
@@ -238,14 +214,38 @@ export const GetCompanyProfileSchema = {
               type: 'string'
             }
           },
-          status: {
-            type: 'string'
-          },
           type: {
             type: 'string'
           },
           undeliverable_registered_office_address: {
             type: 'boolean'
+          },
+          last_full_members_list_date: {
+            type: 'string'
+          },
+          has_been_liquidated: {
+            type: 'boolean'
+          },
+          previous_company_names: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                ceased_on: {
+                  type: 'string'
+                },
+                name: {
+                  type: 'string'
+                },
+                effective_from: {
+                  type: 'string'
+                }
+              },
+              required: ['ceased_on', 'name', 'effective_from']
+            }
+          },
+          status: {
+            type: 'string'
           },
           date_of_cessation: {
             type: 'string'
@@ -262,10 +262,10 @@ export const GetCompanyProfileSchema = {
               overdue: {
                 type: 'boolean'
               },
-              next_made_up_to: {
+              next_due: {
                 type: 'string'
               },
-              next_due: {
+              next_made_up_to: {
                 type: 'string'
               }
             }
@@ -276,29 +276,29 @@ export const GetCompanyProfileSchema = {
           subtype: {
             type: 'string'
           },
+          external_registration_number: {
+            type: 'string'
+          },
           foreign_company_details: {
             type: 'object',
             properties: {
-              registration_number: {
-                type: 'string'
-              },
-              governed_by: {
-                type: 'string'
-              },
               originating_registry: {
                 type: 'object',
                 properties: {
-                  country: {
+                  name: {
                     type: 'string'
                   },
-                  name: {
+                  country: {
                     type: 'string'
                   }
                 },
                 required: ['country']
               },
-              business_activity: {
+              registration_number: {
                 type: 'string'
+              },
+              is_a_credit_financial_institution: {
+                type: 'boolean'
               },
               accounting_requirement: {
                 type: 'object',
@@ -315,8 +315,11 @@ export const GetCompanyProfileSchema = {
                   'foreign_account_type'
                 ]
               },
-              is_a_credit_financial_institution: {
-                type: 'boolean'
+              governed_by: {
+                type: 'string'
+              },
+              business_activity: {
+                type: 'string'
               },
               legal_form: {
                 type: 'string'
@@ -339,14 +342,14 @@ export const GetCompanyProfileSchema = {
                   account_period_to: {
                     type: 'object',
                     properties: {
-                      month: {
+                      day: {
                         type: 'string'
                       },
-                      day: {
+                      month: {
                         type: 'string'
                       }
                     },
-                    required: ['month', 'day']
+                    required: ['day', 'month']
                   },
                   must_file_within: {
                     type: 'object',
@@ -366,13 +369,16 @@ export const GetCompanyProfileSchema = {
               }
             },
             required: [
-              'registration_number',
               'originating_registry',
-              'accounting_requirement',
-              'is_a_credit_financial_institution'
+              'registration_number',
+              'is_a_credit_financial_institution',
+              'accounting_requirement'
             ]
           },
-          external_registration_number: {
+          date_of_dissolution: {
+            type: 'string'
+          },
+          partial_data_available: {
             type: 'string'
           },
           branch_company_details: {
@@ -388,17 +394,18 @@ export const GetCompanyProfileSchema = {
                 type: 'string'
               }
             },
-            required: ['parent_company_name', 'parent_company_number']
-          },
-          partial_data_available: {
-            type: 'string'
+            required: [
+              'parent_company_name',
+              'parent_company_number',
+              'business_activity'
+            ]
           }
         },
         required: [
           'can_file',
           'company_name',
           'company_number',
-          'company_status',
+          'date_of_creation',
           'etag',
           'links',
           'registered_office_address',
@@ -408,73 +415,57 @@ export const GetCompanyProfileSchema = {
         title: 'getCompanyProfile',
         example: {
           accounts: {
-            next_made_up_to: '2022-07-31',
-            last_accounts: {
-              period_end_on: '2021-07-31',
-              period_start_on: '2020-08-01',
-              made_up_to: '2021-07-31',
-              type: 'full'
+            accounting_reference_date: {
+              month: '03',
+              day: '31'
             },
             overdue: false,
+            last_accounts: {
+              period_start_on: '2021-03-16',
+              type: 'micro-entity',
+              period_end_on: '2022-03-31',
+              made_up_to: '2022-03-31'
+            },
+            next_due: '2023-12-31',
+            next_made_up_to: '2023-03-31',
             next_accounts: {
-              due_on: '2023-04-30',
-              period_end_on: '2022-07-31',
-              period_start_on: '2021-08-01',
-              overdue: false
-            },
-            accounting_reference_date: {
-              day: '31',
-              month: '07'
-            },
-            next_due: '2023-04-30'
+              overdue: false,
+              period_start_on: '2022-04-01',
+              due_on: '2023-12-31',
+              period_end_on: '2023-03-31'
+            }
           },
           can_file: true,
-          company_name: 'BLOOMSBURY INSTITUTE LIMITED',
-          company_number: '04511191',
+          company_name: 'MAN CAVE BARBERS BOLTON LIMITED',
+          company_number: '13271177',
           company_status: 'active',
           confirmation_statement: {
-            next_made_up_to: '2022-08-14',
-            last_made_up_to: '2021-08-14',
             overdue: false,
-            next_due: '2022-08-28'
+            last_made_up_to: '2022-03-15',
+            next_due: '2023-03-29',
+            next_made_up_to: '2023-03-15'
           },
-          date_of_creation: '2002-08-14',
-          etag: '8fe333b206db92542fcbccea6a55aa173f06c0e7',
-          has_been_liquidated: false,
-          has_charges: true,
+          date_of_creation: '2021-03-16',
+          etag: '24b40f295e851167ebeab418a7bb6522b364fbe9',
+          has_charges: false,
           has_insolvency_history: false,
           has_super_secure_pscs: false,
           jurisdiction: 'england-wales',
-          last_full_members_list_date: '2015-08-14',
           links: {
-            self: '/company/04511191',
-            filing_history: '/company/04511191/filing-history',
-            officers: '/company/04511191/officers',
-            charges: '/company/04511191/charges',
+            filing_history: '/company/13271177/filing-history',
             persons_with_significant_control:
-              '/company/04511191/persons-with-significant-control'
+              '/company/13271177/persons-with-significant-control',
+            self: '/company/13271177',
+            officers: '/company/13271177/officers'
           },
-          previous_company_names: [
-            {
-              name: 'LONDON SCHOOL OF BUSINESS AND MANAGEMENT LIMITED',
-              ceased_on: '2018-09-27',
-              effective_from: '2002-08-29'
-            },
-            {
-              name: 'SCHOOL OF MANAGEMENT STUDIES LONDON LIMITED',
-              effective_from: '2002-08-14',
-              ceased_on: '2002-08-29'
-            }
-          ],
           registered_office_address: {
+            locality: 'Bolton',
             country: 'England',
-            locality: 'London',
-            address_line_1: '7 Bedford Square',
-            postal_code: 'WC1B 3RA'
+            address_line_1: '430 Chorley Old Road',
+            postal_code: 'BL1 6AG'
           },
           registered_office_is_in_dispute: false,
-          sic_codes: ['85421', '85422'],
-          status: 'active',
+          sic_codes: ['96020'],
           type: 'ltd',
           undeliverable_registered_office_address: false
         }

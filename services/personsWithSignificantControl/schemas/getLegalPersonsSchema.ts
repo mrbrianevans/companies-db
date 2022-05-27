@@ -35,10 +35,13 @@ export const GetLegalPersonsSchema = {
           address: {
             type: 'object',
             properties: {
+              postal_code: {
+                type: 'string'
+              },
               locality: {
                 type: 'string'
               },
-              postal_code: {
+              address_line_1: {
                 type: 'string'
               },
               premises: {
@@ -47,17 +50,22 @@ export const GetLegalPersonsSchema = {
               country: {
                 type: 'string'
               },
-              address_line_1: {
-                type: 'string'
-              },
               region: {
                 type: 'string'
               },
               address_line_2: {
                 type: 'string'
+              },
+              care_of: {
+                description: 'Care of name.',
+                type: 'string'
+              },
+              po_box: {
+                description: 'The post-officer box number.',
+                type: 'string'
               }
             },
-            required: ['locality', 'premises']
+            required: ['premises']
           },
           etag: {
             type: 'string'
@@ -81,6 +89,11 @@ export const GetLegalPersonsSchema = {
             type: 'object',
             properties: {
               self: {
+                type: 'string'
+              },
+              statement: {
+                description:
+                  'The URL of the statement linked to this person with significant control.',
                 type: 'string'
               }
             },
@@ -113,23 +126,23 @@ export const GetLegalPersonsSchema = {
           'notified_on'
         ],
         additionalProperties: false,
-        title: 'getPersonWithSignificantControlLegal',
+        title: 'getLegalPersons',
         example: {
           address: {
-            locality: 'London',
             postal_code: 'NW7 3TD',
+            locality: 'London',
+            address_line_1: '86 The Broadway',
             premises: 'Athene House, Suite Q',
-            country: 'United Kingdom',
-            address_line_1: '86 The Broadway'
+            country: 'United Kingdom'
           },
-          etag: '63f99bcd12bc08cb1600bbda3ea24f07b56c7430',
+          etag: '60b7226f0b145e0f2b3800bfe5e76a2da64dc15b',
           identification: {
             legal_authority: 'England & Wales',
             legal_form: 'Limited'
           },
           kind: 'legal-person-person-with-significant-control',
           links: {
-            self: '/company/14057310/persons-with-significant-control/legal-person/2kNo5j4tFSkn4WfnKaO5VZXphXw'
+            self: '/company/13698056/persons-with-significant-control/legal-person/jYbWLJ4XfiUzSp4_lbgGz9mIWvE'
           },
           name: 'Qa Directors Limited',
           natures_of_control: [
@@ -137,7 +150,7 @@ export const GetLegalPersonsSchema = {
             'voting-rights-75-to-100-percent',
             'right-to-appoint-and-remove-directors'
           ],
-          notified_on: '2022-04-20'
+          notified_on: '2021-10-22'
         }
       }
     }

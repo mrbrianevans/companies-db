@@ -34,7 +34,10 @@ export const advancedCompanySearchController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
     return advancedCompanySearch(
+      context,
       company_name,
       company_status,
       company_subtype,

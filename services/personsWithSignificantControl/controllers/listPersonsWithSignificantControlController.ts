@@ -24,7 +24,10 @@ export const listPersonsWithSignificantControlController: FastifyPluginAsync =
         for (const [header, value] of Object.entries(ratelimit))
           res.header(header, value)
         return reflect(req.url)
+        const { redis, mongo } = fastify
+        const context = { redis, mongo, req }
         return listPersonsWithSignificantControl(
+          context,
           company_number,
           items_per_page,
           start_index,

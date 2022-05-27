@@ -21,6 +21,14 @@ export const searchCompaniesController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
-    return searchCompanies(q, items_per_page, start_index, restrictions)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
+    return searchCompanies(
+      context,
+      q,
+      items_per_page,
+      start_index,
+      restrictions
+    )
   })
 }

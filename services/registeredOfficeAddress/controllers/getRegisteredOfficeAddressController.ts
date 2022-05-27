@@ -24,7 +24,9 @@ export const getRegisteredOfficeAddressController: FastifyPluginAsync = async (
       for (const [header, value] of Object.entries(ratelimit))
         res.header(header, value)
       return reflect(req.url)
-      return getRegisteredOfficeAddress(company_number)
+      const { redis, mongo } = fastify
+      const context = { redis, mongo, req }
+      return getRegisteredOfficeAddress(context, company_number)
     }
   )
 }

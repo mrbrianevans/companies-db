@@ -53,7 +53,9 @@ await fastify.listen(3000, '::')
                 "typescript": "^4.6.4"
             },
             "dependencies": {
-                "fastify": "^3.29.0"
+                "fastify": "^3.29.0",
+                "@fastify/mongodb": "^6.0.1",
+                "@fastify/redis": "^6.0.0"
             }
         }, null, 2)
     )
@@ -85,7 +87,9 @@ await fastify.listen(3000, '::')
             },
             "version": "1.0.0",
             "dependencies": {
-                "fastify": "^3.29.0"
+                "fastify": "^3.29.0",
+                "@fastify/mongodb": "^6.0.1",
+                "@fastify/redis": "^6.0.0"
             },
             "devDependencies": {
                 "@types/node": "^17.0.34",
@@ -256,7 +260,9 @@ export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
       for(const [header, value] of Object.entries(ratelimit))
         res.header(header, value)
     return reflect(req.url)
-    return ${name}(${processParams(parameters)})
+    const {redis, mongo} = fastify
+    const context = {redis, mongo, req}
+    return ${name}(context,${processParams(parameters)})
   })
 }
 
@@ -291,13 +297,21 @@ try{
         // write service stub
         await writeFile(resolve(SERVICES_DIR, tag, 'service', name + '.ts'), prettyTs(`
 import type { ${Name}Response } from "../schemas/${name}Schema.js";
+import type {FastifyRedis} from "@fastify/redis";
+import type {FastifyMongo} from "@fastify/mongodb";
+import type {FastifyRequest} from "fastify";
 
+interface Context{
+  redis: FastifyRedis,
+  mongo: FastifyMongo
+  req: FastifyRequest
+}
 /**
  * ${summary??''}.
  *
  * ${description??''}.
  */
-export async function ${name}(${processParams(parameters, true)}): Promise<${Name}Response>{
+export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response>{
   //todo: Write logic for function here, access database, return response  
   return Promise.resolve(null) 
 }

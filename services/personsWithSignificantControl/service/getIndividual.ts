@@ -1,11 +1,20 @@
 import type { GetIndividualResponse } from '../schemas/getIndividualSchema.js'
+import type { FastifyRedis } from '@fastify/redis'
+import type { FastifyMongo } from '@fastify/mongodb'
+import type { FastifyRequest } from 'fastify'
 
+interface Context {
+  redis: FastifyRedis
+  mongo: FastifyMongo
+  req: FastifyRequest
+}
 /**
  * Get the individual person with significant control.
  *
  * Get details of an individual person with significant control.
  */
 export async function getIndividual(
+  context: Context,
   company_number: string,
   psc_id: string
 ): Promise<GetIndividualResponse> {

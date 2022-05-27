@@ -35,32 +35,38 @@ export const GetCorporateEntitiesSchema = {
           address: {
             type: 'object',
             properties: {
-              locality: {
-                type: 'string'
-              },
-              premises: {
-                type: 'string'
-              },
               country: {
                 type: 'string'
               },
               postal_code: {
                 type: 'string'
               },
-              address_line_1: {
+              locality: {
                 type: 'string'
               },
-              address_line_2: {
+              premises: {
+                type: 'string'
+              },
+              address_line_1: {
                 type: 'string'
               },
               region: {
                 type: 'string'
               },
+              address_line_2: {
+                type: 'string'
+              },
               po_box: {
                 type: 'string'
+              },
+              care_of: {
+                description: 'Care of name.',
+                type: 'string'
               }
-            },
-            required: ['locality', 'premises']
+            }
+          },
+          ceased_on: {
+            type: 'string'
           },
           etag: {
             type: 'string'
@@ -71,10 +77,10 @@ export const GetCorporateEntitiesSchema = {
               legal_form: {
                 type: 'string'
               },
-              legal_authority: {
+              place_registered: {
                 type: 'string'
               },
-              place_registered: {
+              legal_authority: {
                 type: 'string'
               },
               country_registered: {
@@ -94,6 +100,11 @@ export const GetCorporateEntitiesSchema = {
             properties: {
               self: {
                 type: 'string'
+              },
+              statement: {
+                description:
+                  'The URL of the statement linked to this person with significant control.',
+                type: 'string'
               }
             },
             required: ['self']
@@ -109,9 +120,6 @@ export const GetCorporateEntitiesSchema = {
           },
           notified_on: {
             type: 'string'
-          },
-          ceased_on: {
-            type: 'string'
           }
         },
         required: [
@@ -125,32 +133,35 @@ export const GetCorporateEntitiesSchema = {
           'notified_on'
         ],
         additionalProperties: false,
-        title: 'getPersonWithSignificantControlCorporate',
+        title: 'getCorporateEntities',
         example: {
           address: {
-            locality: 'London',
-            premises: '2',
             country: 'United Kingdom',
-            postal_code: 'EC3R 7PD',
-            address_line_1: 'Minster Court',
-            address_line_2: 'Mincing Lane'
+            postal_code: 'N12 0DR',
+            locality: 'London',
+            premises: 'Winnington House',
+            address_line_1: '2 Woodberry Grove'
           },
-          etag: '5f4f9cc06849e26ca46628f85f3db8a5db6af386',
+          ceased_on: '2020-07-06',
+          etag: '67b51cedbaa227a7ebbc7dbfd7edb16934342091',
           identification: {
-            legal_form: 'Private Limited Company',
-            legal_authority: 'Companies Act 2006'
+            legal_form: 'Limited By Shares',
+            place_registered: 'Companies House',
+            legal_authority: 'England',
+            country_registered: 'England',
+            registration_number: '07168188'
           },
           kind: 'corporate-entity-person-with-significant-control',
           links: {
-            self: '/company/10735116/persons-with-significant-control/corporate-entity/mnfMD38W4O5vKK9tjos-uyd5bXc'
+            self: '/company/08888819/persons-with-significant-control/corporate-entity/c7EGmbxSnWjD-jN-Mhr1cUDNGYA'
           },
-          name: 'Ardonagh Midco 2 Plc',
+          name: 'Woodberry Secretarial Limited',
           natures_of_control: [
             'ownership-of-shares-75-to-100-percent',
             'voting-rights-75-to-100-percent',
             'right-to-appoint-and-remove-directors'
           ],
-          notified_on: '2017-04-21'
+          notified_on: '2016-04-06'
         }
       }
     }

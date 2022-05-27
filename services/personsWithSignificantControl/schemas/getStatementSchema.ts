@@ -32,6 +32,9 @@ export const GetStatementSchema = {
       '200': {
         type: 'object',
         properties: {
+          ceased_on: {
+            type: 'string'
+          },
           etag: {
             type: 'string'
           },
@@ -43,6 +46,11 @@ export const GetStatementSchema = {
             properties: {
               self: {
                 type: 'string'
+              },
+              person_with_significant_control: {
+                description:
+                  'The URL of the person with significant control linked to this statement.',
+                type: 'string'
               }
             },
             required: ['self']
@@ -53,20 +61,31 @@ export const GetStatementSchema = {
           statement: {
             type: 'string'
           },
-          ceased_on: {
+          restrictions_notice_withdrawal_reason: {
+            description:
+              'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
+            enum: [
+              'restrictions-notice-withdrawn-by-court-order',
+              'restrictions-notice-withdrawn-by-company'
+            ],
+            type: 'string'
+          },
+          linked_psc_name: {
+            description: 'The name of the psc linked to this statement.',
             type: 'string'
           }
         },
         required: ['etag', 'kind', 'links', 'notified_on', 'statement'],
         additionalProperties: false,
-        title: 'getPersonsWithSignificantControlStatement',
+        title: 'getStatement',
         example: {
-          etag: '628debfa978bce7728190507ad12f08cbd247f7c',
+          ceased_on: '2021-11-08',
+          etag: '3f359cc57b46e2062a678196b8408e1b60b92d60',
           kind: 'persons-with-significant-control-statement',
           links: {
-            self: '/company/11206460/persons-with-significant-control-statements/i42dMhzIfCQBO8XjRpRH9i76u0Y'
+            self: '/company/08162785/persons-with-significant-control-statements/8N8QcP_qKb7tJT7skvkO_hxRMEk'
           },
-          notified_on: '2018-02-14',
+          notified_on: '2016-07-31',
           statement: 'no-individual-or-entity-with-signficant-control'
         }
       }

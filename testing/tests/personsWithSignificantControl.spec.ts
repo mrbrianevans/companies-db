@@ -3,6 +3,7 @@ import { testRequests } from '../testRequests'
 fetch('https://httpbin.org/get').catch((e) => e) //to remove warning about fetch being experimental from test results
 
 describe('persons-with-significant-control-service', function () {
+  this.timeout(5000)
   // tests for each path
   it('getSuperSecurePerson: /company/{company_number}/persons-with-significant-control/super-secure/{super_secure_id}', async function () {
     const schema = {
@@ -15,11 +16,16 @@ describe('persons-with-significant-control-service', function () {
           type: 'object',
           properties: { self: { type: 'string' } },
           required: ['self']
+        },
+        ceased: {
+          description:
+            'Presence of that indicator means the super secure person status is ceased \n',
+          type: 'boolean'
         }
       },
       required: ['description', 'etag', 'kind', 'links'],
       additionalProperties: false,
-      title: 'getPersonsWithSignificantControlSuperSecure',
+      title: 'getSuperSecurePerson',
       example: {
         description: 'super-secure-persons-with-significant-control',
         etag: '71519abc34634304d42ef2720a4ed0a432e28d96',
@@ -39,27 +45,48 @@ describe('persons-with-significant-control-service', function () {
     const schema = {
       type: 'object',
       properties: {
+        ceased_on: { type: 'string' },
         etag: { type: 'string' },
         kind: { type: 'string' },
         links: {
           type: 'object',
-          properties: { self: { type: 'string' } },
+          properties: {
+            self: { type: 'string' },
+            person_with_significant_control: {
+              description:
+                'The URL of the person with significant control linked to this statement.',
+              type: 'string'
+            }
+          },
           required: ['self']
         },
         notified_on: { type: 'string' },
         statement: { type: 'string' },
-        ceased_on: { type: 'string' }
+        restrictions_notice_withdrawal_reason: {
+          description:
+            'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
+          enum: [
+            'restrictions-notice-withdrawn-by-court-order',
+            'restrictions-notice-withdrawn-by-company'
+          ],
+          type: 'string'
+        },
+        linked_psc_name: {
+          description: 'The name of the psc linked to this statement.',
+          type: 'string'
+        }
       },
       required: ['etag', 'kind', 'links', 'notified_on', 'statement'],
       additionalProperties: false,
-      title: 'getPersonsWithSignificantControlStatement',
+      title: 'getStatement',
       example: {
-        etag: '628debfa978bce7728190507ad12f08cbd247f7c',
+        ceased_on: '2021-11-08',
+        etag: '3f359cc57b46e2062a678196b8408e1b60b92d60',
         kind: 'persons-with-significant-control-statement',
         links: {
-          self: '/company/11206460/persons-with-significant-control-statements/i42dMhzIfCQBO8XjRpRH9i76u0Y'
+          self: '/company/08162785/persons-with-significant-control-statements/8N8QcP_qKb7tJT7skvkO_hxRMEk'
         },
-        notified_on: '2018-02-14',
+        notified_on: '2016-07-31',
         statement: 'no-individual-or-entity-with-signficant-control'
       }
     }
@@ -80,26 +107,51 @@ describe('persons-with-significant-control-service', function () {
           items: {
             type: 'object',
             properties: {
+              kind: { type: 'string' },
+              etag: { type: 'string' },
+              notified_on: { type: 'string' },
+              statement: { type: 'string' },
               links: {
                 type: 'object',
-                properties: { self: { type: 'string' } },
+                properties: {
+                  self: { type: 'string' },
+                  person_with_significant_control: {
+                    description:
+                      'The URL of the person with significant control linked to this statement.',
+                    type: 'string'
+                  }
+                },
                 required: ['self']
               },
-              statement: { type: 'string' },
-              notified_on: { type: 'string' },
-              etag: { type: 'string' },
-              kind: { type: 'string' },
-              ceased_on: { type: 'string' }
+              ceased_on: { type: 'string' },
+              restrictions_notice_withdrawal_reason: {
+                description:
+                  'The reason for the company withdrawing a <code>restrictions-notice-issued-to-psc</code> statement',
+                enum: [
+                  'restrictions-notice-withdrawn-by-court-order',
+                  'restrictions-notice-withdrawn-by-company'
+                ],
+                type: 'string'
+              },
+              linked_psc_name: {
+                description: 'The name of the psc linked to this statement.',
+                type: 'string'
+              }
             },
-            required: ['links', 'statement', 'notified_on', 'etag', 'kind']
+            required: ['kind', 'etag', 'notified_on', 'statement', 'links']
           }
         },
         items_per_page: { type: 'integer' },
         links: {
           type: 'object',
           properties: {
+            self: { type: 'string' },
             persons_with_significant_control: { type: 'string' },
-            self: { type: 'string' }
+            persons_with_significant_control_statements_list: {
+              description:
+                'The URL of the persons with significant control statements list resource.',
+              type: 'string'
+            }
           },
           required: ['self']
         },
@@ -116,27 +168,24 @@ describe('persons-with-significant-control-service', function () {
         'total_results'
       ],
       additionalProperties: false,
-      title: 'listPersonsWithSignificantControlStatements',
+      title: 'listStatements',
       example: {
-        active_count: 0,
-        ceased_count: 1,
+        active_count: 1,
+        ceased_count: 0,
         items: [
           {
-            links: {
-              self: '/company/OC401231/persons-with-significant-control-statements/J3aA7nNxlxiLA_SN3OC_f46soBA'
-            },
-            statement: 'psc-details-not-confirmed',
-            notified_on: '2016-08-10',
-            etag: '1378b459e7084aa462031cc68d93fb6462f212ee',
             kind: 'persons-with-significant-control-statement',
-            ceased_on: '2017-08-17'
+            etag: '5493058979a9265cd855efb03706833c439b6542',
+            notified_on: '2017-06-30',
+            statement: 'no-individual-or-entity-with-signficant-control',
+            links: {
+              self: '/company/10843053/persons-with-significant-control-statements/JwBAymT3-nexdr9HQdEaVXlTEUY'
+            }
           }
         ],
         items_per_page: 25,
         links: {
-          persons_with_significant_control:
-            '/company/OC401231/persons-with-significant-control',
-          self: '/company/OC401231/persons-with-significant-control-statements'
+          self: '/company/10843053/persons-with-significant-control-statements'
         },
         start_index: 0,
         total_results: 1
@@ -155,15 +204,20 @@ describe('persons-with-significant-control-service', function () {
         address: {
           type: 'object',
           properties: {
-            locality: { type: 'string' },
             postal_code: { type: 'string' },
+            locality: { type: 'string' },
+            address_line_1: { type: 'string' },
             premises: { type: 'string' },
             country: { type: 'string' },
-            address_line_1: { type: 'string' },
             region: { type: 'string' },
-            address_line_2: { type: 'string' }
+            address_line_2: { type: 'string' },
+            care_of: { description: 'Care of name.', type: 'string' },
+            po_box: {
+              description: 'The post-officer box number.',
+              type: 'string'
+            }
           },
-          required: ['locality', 'premises']
+          required: ['premises']
         },
         etag: { type: 'string' },
         identification: {
@@ -177,7 +231,14 @@ describe('persons-with-significant-control-service', function () {
         kind: { type: 'string' },
         links: {
           type: 'object',
-          properties: { self: { type: 'string' } },
+          properties: {
+            self: { type: 'string' },
+            statement: {
+              description:
+                'The URL of the statement linked to this person with significant control.',
+              type: 'string'
+            }
+          },
           required: ['self']
         },
         name: { type: 'string' },
@@ -196,23 +257,23 @@ describe('persons-with-significant-control-service', function () {
         'notified_on'
       ],
       additionalProperties: false,
-      title: 'getPersonWithSignificantControlLegal',
+      title: 'getLegalPersons',
       example: {
         address: {
-          locality: 'London',
           postal_code: 'NW7 3TD',
+          locality: 'London',
+          address_line_1: '86 The Broadway',
           premises: 'Athene House, Suite Q',
-          country: 'United Kingdom',
-          address_line_1: '86 The Broadway'
+          country: 'United Kingdom'
         },
-        etag: '63f99bcd12bc08cb1600bbda3ea24f07b56c7430',
+        etag: '60b7226f0b145e0f2b3800bfe5e76a2da64dc15b',
         identification: {
           legal_authority: 'England & Wales',
           legal_form: 'Limited'
         },
         kind: 'legal-person-person-with-significant-control',
         links: {
-          self: '/company/14057310/persons-with-significant-control/legal-person/2kNo5j4tFSkn4WfnKaO5VZXphXw'
+          self: '/company/13698056/persons-with-significant-control/legal-person/jYbWLJ4XfiUzSp4_lbgGz9mIWvE'
         },
         name: 'Qa Directors Limited',
         natures_of_control: [
@@ -220,7 +281,7 @@ describe('persons-with-significant-control-service', function () {
           'voting-rights-75-to-100-percent',
           'right-to-appoint-and-remove-directors'
         ],
-        notified_on: '2022-04-20'
+        notified_on: '2021-10-22'
       }
     }
     await testRequests(
@@ -236,24 +297,25 @@ describe('persons-with-significant-control-service', function () {
         address: {
           type: 'object',
           properties: {
-            locality: { type: 'string' },
-            premises: { type: 'string' },
             country: { type: 'string' },
             postal_code: { type: 'string' },
+            locality: { type: 'string' },
+            premises: { type: 'string' },
             address_line_1: { type: 'string' },
-            address_line_2: { type: 'string' },
             region: { type: 'string' },
-            po_box: { type: 'string' }
-          },
-          required: ['locality', 'premises']
+            address_line_2: { type: 'string' },
+            po_box: { type: 'string' },
+            care_of: { description: 'Care of name.', type: 'string' }
+          }
         },
+        ceased_on: { type: 'string' },
         etag: { type: 'string' },
         identification: {
           type: 'object',
           properties: {
             legal_form: { type: 'string' },
-            legal_authority: { type: 'string' },
             place_registered: { type: 'string' },
+            legal_authority: { type: 'string' },
             country_registered: { type: 'string' },
             registration_number: { type: 'string' }
           },
@@ -262,13 +324,19 @@ describe('persons-with-significant-control-service', function () {
         kind: { type: 'string' },
         links: {
           type: 'object',
-          properties: { self: { type: 'string' } },
+          properties: {
+            self: { type: 'string' },
+            statement: {
+              description:
+                'The URL of the statement linked to this person with significant control.',
+              type: 'string'
+            }
+          },
           required: ['self']
         },
         name: { type: 'string' },
         natures_of_control: { type: 'array', items: { type: 'string' } },
-        notified_on: { type: 'string' },
-        ceased_on: { type: 'string' }
+        notified_on: { type: 'string' }
       },
       required: [
         'address',
@@ -281,32 +349,35 @@ describe('persons-with-significant-control-service', function () {
         'notified_on'
       ],
       additionalProperties: false,
-      title: 'getPersonWithSignificantControlCorporate',
+      title: 'getCorporateEntities',
       example: {
         address: {
-          locality: 'London',
-          premises: '2',
           country: 'United Kingdom',
-          postal_code: 'EC3R 7PD',
-          address_line_1: 'Minster Court',
-          address_line_2: 'Mincing Lane'
+          postal_code: 'N12 0DR',
+          locality: 'London',
+          premises: 'Winnington House',
+          address_line_1: '2 Woodberry Grove'
         },
-        etag: '5f4f9cc06849e26ca46628f85f3db8a5db6af386',
+        ceased_on: '2020-07-06',
+        etag: '67b51cedbaa227a7ebbc7dbfd7edb16934342091',
         identification: {
-          legal_form: 'Private Limited Company',
-          legal_authority: 'Companies Act 2006'
+          legal_form: 'Limited By Shares',
+          place_registered: 'Companies House',
+          legal_authority: 'England',
+          country_registered: 'England',
+          registration_number: '07168188'
         },
         kind: 'corporate-entity-person-with-significant-control',
         links: {
-          self: '/company/10735116/persons-with-significant-control/corporate-entity/mnfMD38W4O5vKK9tjos-uyd5bXc'
+          self: '/company/08888819/persons-with-significant-control/corporate-entity/c7EGmbxSnWjD-jN-Mhr1cUDNGYA'
         },
-        name: 'Ardonagh Midco 2 Plc',
+        name: 'Woodberry Secretarial Limited',
         natures_of_control: [
           'ownership-of-shares-75-to-100-percent',
           'voting-rights-75-to-100-percent',
           'right-to-appoint-and-remove-directors'
         ],
-        notified_on: '2017-04-21'
+        notified_on: '2016-04-06'
       }
     }
     await testRequests(
@@ -322,40 +393,59 @@ describe('persons-with-significant-control-service', function () {
         address: {
           type: 'object',
           properties: {
-            country: { type: 'string' },
             premises: { type: 'string' },
             region: { type: 'string' },
-            locality: { type: 'string' },
             postal_code: { type: 'string' },
+            country: { type: 'string' },
+            locality: { type: 'string' },
             address_line_1: { type: 'string' },
             address_line_2: { type: 'string' },
-            care_of: { type: 'string' },
-            po_box: { type: 'string' }
+            po_box: { type: 'string' },
+            care_of: { type: 'string' }
           }
         },
         country_of_residence: { type: 'string' },
         date_of_birth: {
           type: 'object',
-          properties: { month: { type: 'integer' }, year: { type: 'integer' } },
+          properties: {
+            month: { type: 'integer' },
+            year: { type: 'integer' },
+            day: {
+              description: 'The day of the date of birth.',
+              type: 'integer'
+            }
+          },
           required: ['month', 'year']
         },
         etag: { type: 'string' },
         kind: { type: 'string' },
         links: {
           type: 'object',
-          properties: { self: { type: 'string' } },
+          properties: {
+            self: { type: 'string' },
+            statement: {
+              description:
+                'The URL of the statement linked to this person with significant control.',
+              type: 'string'
+            }
+          },
           required: ['self']
         },
         name: { type: 'string' },
         name_elements: {
           type: 'object',
           properties: {
-            title: { type: 'string' },
             middle_name: { type: 'string' },
             surname: { type: 'string' },
-            forename: { type: 'string' }
+            title: { type: 'string' },
+            forename: { type: 'string' },
+            other_forenames: {
+              description:
+                'Other forenames of the person with significant control.',
+              type: 'string'
+            }
           },
-          required: ['surname', 'forename']
+          required: ['surname']
         },
         nationality: { type: 'string' },
         natures_of_control: { type: 'array', items: { type: 'string' } },
@@ -376,32 +466,35 @@ describe('persons-with-significant-control-service', function () {
         'notified_on'
       ],
       additionalProperties: false,
-      title: 'getPersonWithSignificantControlIndividual',
+      title: 'getIndividual',
       example: {
         address: {
-          country: 'United Kingdom',
-          premises: '42 Glebe Street',
-          region: 'Leicestershire',
-          locality: 'Loughborough',
-          postal_code: 'LE11 1JR'
+          premises: '14 Broad Acres',
+          region: 'Hertfordshire',
+          postal_code: 'AL10 9LD',
+          country: 'England',
+          locality: 'Hatfield'
         },
-        country_of_residence: 'United Kingdom',
-        date_of_birth: { month: 3, year: 1967 },
-        etag: '814acb77d25049624b14c0fa88af7d09fcbf7e39',
+        country_of_residence: 'England',
+        date_of_birth: { month: 3, year: 1980 },
+        etag: '585f0033128d445423565ef6119366f38299d73e',
         kind: 'individual-person-with-significant-control',
         links: {
-          self: '/company/11370252/persons-with-significant-control/individual/tw_J6Owb0RS9lglUle6hoxVwAqI'
+          self: '/company/09454270/persons-with-significant-control/individual/yTVnaEeES8-Ar9U0mLOtefLnuaQ'
         },
-        name: 'Mr Richard Anthony Smith',
+        name: 'Mr Laga Leyira Wiwuga',
         name_elements: {
+          middle_name: 'Leyira',
+          surname: 'Wiwuga',
           title: 'Mr',
-          middle_name: 'Anthony',
-          surname: 'Smith',
-          forename: 'Richard'
+          forename: 'Laga'
         },
         nationality: 'British',
-        natures_of_control: ['ownership-of-shares-75-to-100-percent'],
-        notified_on: '2018-05-18'
+        natures_of_control: [
+          'ownership-of-shares-75-to-100-percent',
+          'voting-rights-75-to-100-percent'
+        ],
+        notified_on: '2016-04-06'
       }
     }
     await testRequests(
@@ -421,65 +514,95 @@ describe('persons-with-significant-control-service', function () {
           items: {
             type: 'object',
             properties: {
-              country_of_residence: { type: 'string' },
-              etag: { type: 'string' },
               date_of_birth: {
                 type: 'object',
                 properties: {
                   year: { type: 'integer' },
-                  month: { type: 'integer' }
+                  month: { type: 'integer' },
+                  day: {
+                    description: 'The day of the date of birth.',
+                    type: 'integer'
+                  }
                 },
                 required: ['year', 'month']
               },
-              notified_on: { type: 'string' },
-              links: {
-                type: 'object',
-                properties: { self: { type: 'string' } },
-                required: ['self']
-              },
-              natures_of_control: { type: 'array', items: { type: 'string' } },
-              nationality: { type: 'string' },
               name_elements: {
                 type: 'object',
                 properties: {
+                  middle_name: { type: 'string' },
                   forename: { type: 'string' },
-                  title: { type: 'string' },
                   surname: { type: 'string' },
-                  middle_name: { type: 'string' }
+                  title: { type: 'string' },
+                  other_forenames: {
+                    description:
+                      'Other forenames of the person with significant control.',
+                    type: 'string'
+                  }
                 },
                 required: ['surname']
               },
+              kind: { type: 'string' },
+              natures_of_control: {
+                anyOf: [
+                  {
+                    description:
+                      'Indicates the nature of control the person with significant control holds.\n For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. \n',
+                    type: 'string'
+                  },
+                  { type: 'array', items: { type: 'string' } }
+                ]
+              },
               name: { type: 'string' },
+              country_of_residence: { type: 'string' },
+              nationality: { type: 'string' },
               address: {
                 type: 'object',
                 properties: {
-                  locality: { type: 'string' },
+                  postal_code: { type: 'string' },
+                  address_line_1: { type: 'string' },
                   premises: { type: 'string' },
+                  locality: { type: 'string' },
                   country: { type: 'string' },
                   region: { type: 'string' },
-                  address_line_1: { type: 'string' },
-                  postal_code: { type: 'string' },
                   address_line_2: { type: 'string' },
                   care_of: { type: 'string' },
                   po_box: { type: 'string' }
                 }
               },
-              kind: { type: 'string' },
+              links: {
+                type: 'object',
+                properties: {
+                  self: { type: 'string' },
+                  statement: {
+                    description:
+                      'The URL of the statement linked to this person with significant control.',
+                    type: 'string'
+                  }
+                },
+                required: ['self']
+              },
+              notified_on: { type: 'string' },
+              etag: { type: 'string' },
               ceased_on: { type: 'string' },
               identification: {
                 type: 'object',
                 properties: {
+                  registration_number: { type: 'string' },
                   legal_authority: { type: 'string' },
                   country_registered: { type: 'string' },
-                  legal_form: { type: 'string' },
-                  registration_number: { type: 'string' },
-                  place_registered: { type: 'string' }
+                  place_registered: { type: 'string' },
+                  legal_form: { type: 'string' }
                 },
                 required: ['legal_authority', 'legal_form']
               },
-              description: { type: 'string' }
+              description: { type: 'string' },
+              ceased: {
+                description:
+                  'Presence of that indicator means the super secure person status is ceased <br />',
+                type: 'boolean'
+              }
             },
-            required: ['etag', 'links', 'kind']
+            required: ['links', 'etag']
           }
         },
         items_per_page: { type: 'integer' },
@@ -488,7 +611,12 @@ describe('persons-with-significant-control-service', function () {
           properties: {
             self: { type: 'string' },
             persons_with_significant_control_statements: { type: 'string' },
-            exemptions: { type: 'string' }
+            exemptions: { type: 'string' },
+            persons_with_significant_control_list: {
+              description:
+                'The URL of the persons with significant control list resource.',
+              type: 'string'
+            }
           },
           required: ['self']
         },
@@ -511,61 +639,60 @@ describe('persons-with-significant-control-service', function () {
         ceased_count: 1,
         items: [
           {
-            country_of_residence: 'England',
-            etag: '09dda16a85bbd90be915ea4d1bc0938c141d5006',
-            date_of_birth: { year: 1958, month: 12 },
-            notified_on: '2020-10-26',
-            links: {
-              self: '/company/04277636/persons-with-significant-control/individual/OXRcen646dCFlhc7SCl3D2KAxZ0'
-            },
-            natures_of_control: ['ownership-of-shares-75-to-100-percent'],
-            nationality: 'British',
+            date_of_birth: { year: 1969, month: 6 },
             name_elements: {
-              forename: 'Asmita',
-              title: 'Mrs',
-              surname: 'Saujani',
-              middle_name: 'Nitinchandra'
+              middle_name: 'Roy',
+              forename: 'Jonathan',
+              surname: 'Growcott',
+              title: 'Mr'
             },
-            name: 'Mrs Asmita Nitinchandra Saujani',
+            kind: 'individual-person-with-significant-control',
+            natures_of_control: ['ownership-of-shares-75-to-100-percent'],
+            name: 'Mr Jonathan Roy Growcott',
+            country_of_residence: 'England',
+            nationality: 'English',
             address: {
-              locality: 'Rickmansworth',
-              premises: '50 Grovewood Close',
-              country: 'England',
-              region: 'Hertfordshire',
-              address_line_1: 'Chorleywood',
-              postal_code: 'WD3 5PX'
+              postal_code: 'DY6 7HU',
+              address_line_1: 'Stallings Lane',
+              premises: '8a',
+              locality: 'Kingswinford',
+              country: 'England'
             },
-            kind: 'individual-person-with-significant-control'
+            links: {
+              self: '/company/08744864/persons-with-significant-control/individual/oBL_jXq90aj3DzFLaZtqh3Ak9QI'
+            },
+            notified_on: '2019-09-30',
+            etag: '0f3d8e2cb44eb939e8feaba52a625b74ef074371'
           },
           {
-            ceased_on: '2020-10-26',
-            etag: 'a3f86f7fde9af31b046343300aeb6ea470dd1a29',
-            country_of_residence: 'United Arab Emirates',
-            notified_on: '2016-08-01',
-            date_of_birth: { year: 1966, month: 7 },
-            name: 'Mrs Falguni Sanjiv Patel',
+            date_of_birth: { month: 9, year: 1960 },
             name_elements: {
-              title: 'Mrs',
-              forename: 'Falguni',
-              middle_name: 'Sanjiv',
-              surname: 'Patel'
+              forename: 'Jeremy',
+              middle_name: 'Peter',
+              surname: 'Moore',
+              title: 'Mr'
             },
-            nationality: 'British',
-            links: {
-              self: '/company/04277636/persons-with-significant-control/individual/VqdFpT8mO1_olhlkbz49WQ8FI84'
-            },
-            natures_of_control: ['ownership-of-shares-25-to-50-percent'],
+            name: 'Mr Jeremy Peter Moore',
+            natures_of_control: ['ownership-of-shares-75-to-100-percent'],
+            ceased_on: '2019-09-30',
             kind: 'individual-person-with-significant-control',
             address: {
-              locality: 'Middlesex',
-              address_line_2: 'Northwood',
-              address_line_1: '41 The Broadway, Joel Street',
-              postal_code: 'HA6 1NZ'
+              region: 'Shropshire',
+              locality: 'Hilton',
+              premises: 'New Barns Farm',
+              postal_code: 'WV15 5PB'
+            },
+            country_of_residence: 'England',
+            nationality: 'British',
+            etag: '3e76a5ad71ef44c634b16e1354f600cd511ed521',
+            notified_on: '2016-10-01',
+            links: {
+              self: '/company/08744864/persons-with-significant-control/individual/PzH2tbV8TNFk1HQXjxvITe5E7MQ'
             }
           }
         ],
         items_per_page: 25,
-        links: { self: '/company/04277636/persons-with-significant-control' },
+        links: { self: '/company/08744864/persons-with-significant-control' },
         start_index: 0,
         total_results: 2
       }

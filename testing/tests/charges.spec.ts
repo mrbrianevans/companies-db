@@ -3,6 +3,7 @@ import { testRequests } from '../testRequests'
 fetch('https://httpbin.org/get').catch((e) => e) //to remove warning about fetch being experimental from test results
 
 describe('charges-service', function () {
+  this.timeout(5000)
   // tests for each path
   it('getCharges: /company/{company_number}/charges/{charge_id}', async function () {
     const schema = {
@@ -32,9 +33,9 @@ describe('charges-service', function () {
             description: { type: 'string' },
             contains_negative_pledge: { type: 'boolean' },
             type: { type: 'string' },
-            floating_charge_covers_all: { type: 'boolean' },
             contains_fixed_charge: { type: 'boolean' },
             contains_floating_charge: { type: 'boolean' },
+            floating_charge_covers_all: { type: 'boolean' },
             chargor_acting_as_bare_trustee: { type: 'boolean' }
           }
         },
@@ -54,15 +55,29 @@ describe('charges-service', function () {
             properties: {
               links: {
                 type: 'object',
-                properties: { filing: { type: 'string' } },
-                required: ['filing']
+                properties: {
+                  filing: { type: 'string' },
+                  insolvency_case: {
+                    type: 'string',
+                    description:
+                      'Link to the insolvency case related to this filing'
+                  }
+                }
               },
               delivered_on: { type: 'string' },
-              filing_type: { type: 'string' }
-            },
-            required: ['delivered_on', 'filing_type']
+              filing_type: { type: 'string' },
+              transaction_id: {
+                type: 'integer',
+                description: 'The id of the filing'
+              },
+              insolvency_case_number: {
+                type: 'integer',
+                description: 'The insolvency case related to this filing'
+              }
+            }
           }
         },
+        satisfied_on: { type: 'string' },
         secured_details: {
           type: 'object',
           properties: {
@@ -71,29 +86,92 @@ describe('charges-service', function () {
           },
           required: ['description', 'type']
         },
-        satisfied_on: { type: 'string' },
+        assets_ceased_released: { type: 'string' },
         scottish_alterations: {
           type: 'object',
-          properties: { has_restricting_provisions: { type: 'boolean' } },
-          required: ['has_restricting_provisions']
+          properties: {
+            has_restricting_provisions: { type: 'boolean' },
+            type: { type: 'string' },
+            description: { type: 'string' },
+            has_alterations_to_order: {
+              type: 'boolean',
+              description: 'The charge has alterations to order'
+            },
+            has_alterations_to_prohibitions: {
+              type: 'boolean',
+              description: 'The charge has alterations to prohibitions'
+            },
+            has_alterations_to_provisions: {
+              type: 'boolean',
+              description:
+                'The charge has provisions restricting the creation of further charges'
+            }
+          }
         },
-        assets_ceased_released: { type: 'string' },
-        more_than_four_persons_entitled: { type: 'boolean' }
+        more_than_four_persons_entitled: { type: 'boolean' },
+        id: { type: 'string', description: 'The id of the charge' },
+        assests_ceased_released: {
+          enum: [
+            'property-ceased-to-belong',
+            'part-property-release-and-ceased-to-belong',
+            'part-property-released',
+            'part-property-ceased-to-belong',
+            'whole-property-released',
+            'multiple-filings',
+            'whole-property-released-and-ceased-to-belong'
+          ],
+          type: 'string',
+          description:
+            'Cease/release information about the charge.\n For enumeration descriptions see `assets-ceased-released` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
+        },
+        acquired_on: {
+          type: 'string',
+          format: 'date',
+          description: 'The date the property or undertaking was acquired on'
+        },
+        resolved_on: {
+          type: 'string',
+          format: 'date',
+          description: 'The date the issue was resolved on'
+        },
+        covering_instrument_date: {
+          type: 'string',
+          format: 'date',
+          description: 'The date by which the series of debentures were created'
+        },
+        insolvency_cases: {
+          type: 'array',
+          description: 'Transactions that have been filed for the charge.',
+          items: {
+            title: 'insolvency_cases',
+            properties: {
+              case_number: {
+                type: 'integer',
+                description: 'The number of this insolvency case'
+              },
+              transaction_id: {
+                type: 'integer',
+                description: 'The id of the insolvency filing'
+              },
+              links: {
+                type: 'object',
+                description: 'The resources related to this insolvency case',
+                title: 'insolvency_case_links',
+                properties: {
+                  case: {
+                    type: 'string',
+                    description: 'Link to the insolvency case data'
+                  }
+                }
+              }
+            },
+            type: 'object'
+          }
+        }
       },
-      required: [
-        'charge_number',
-        'classification',
-        'created_on',
-        'delivered_on',
-        'etag',
-        'links',
-        'particulars',
-        'persons_entitled',
-        'status',
-        'transactions'
-      ],
+      required: ['charge_number', 'classification', 'etag', 'status'],
       additionalProperties: false,
-      title: 'getCharge',
+      title: 'getCharges',
       example: {
         charge_code: '092848280568',
         charge_number: 568,
@@ -149,49 +227,6 @@ describe('charges-service', function () {
                 },
                 required: ['description', 'type']
               },
-              status: { type: 'string' },
-              etag: { type: 'string' },
-              delivered_on: { type: 'string' },
-              transactions: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    filing_type: { type: 'string' },
-                    links: {
-                      type: 'object',
-                      properties: {
-                        filing: { type: 'string' },
-                        insolvency_case: { type: 'string' }
-                      },
-                      required: ['filing']
-                    },
-                    delivered_on: { type: 'string' },
-                    insolvency_case_number: { type: 'string' }
-                  },
-                  required: ['delivered_on']
-                }
-              },
-              particulars: {
-                type: 'object',
-                properties: {
-                  contains_fixed_charge: { type: 'boolean' },
-                  contains_floating_charge: { type: 'boolean' },
-                  floating_charge_covers_all: { type: 'boolean' },
-                  contains_negative_pledge: { type: 'boolean' },
-                  description: { type: 'string' },
-                  type: { type: 'string' },
-                  chargor_acting_as_bare_trustee: { type: 'boolean' }
-                }
-              },
-              created_on: { type: 'string' },
-              charge_number: { type: 'integer' },
-              charge_code: { type: 'string' },
-              links: {
-                type: 'object',
-                properties: { self: { type: 'string' } },
-                required: ['self']
-              },
               persons_entitled: {
                 type: 'array',
                 items: {
@@ -200,106 +235,211 @@ describe('charges-service', function () {
                   required: ['name']
                 }
               },
+              satisfied_on: { type: 'string' },
               secured_details: {
                 type: 'object',
                 properties: {
-                  type: { type: 'string' },
-                  description: { type: 'string' }
+                  description: { type: 'string' },
+                  type: { type: 'string' }
                 },
-                required: ['type', 'description']
+                required: ['description', 'type']
               },
-              satisfied_on: { type: 'string' },
+              created_on: { type: 'string' },
+              etag: { type: 'string' },
+              links: {
+                type: 'object',
+                properties: { self: { type: 'string' } },
+                required: ['self']
+              },
+              particulars: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string' },
+                  description: { type: 'string' },
+                  contains_floating_charge: { type: 'boolean' },
+                  contains_fixed_charge: { type: 'boolean' },
+                  contains_negative_pledge: { type: 'boolean' },
+                  floating_charge_covers_all: { type: 'boolean' },
+                  chargor_acting_as_bare_trustee: { type: 'boolean' }
+                }
+              },
+              status: { type: 'string' },
+              charge_number: { type: 'integer' },
+              transactions: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    delivered_on: { type: 'string' },
+                    filing_type: { type: 'string' },
+                    links: {
+                      type: 'object',
+                      properties: {
+                        filing: { type: 'string' },
+                        insolvency_case: { type: 'string' }
+                      }
+                    },
+                    insolvency_case_number: {
+                      anyOf: [
+                        { type: 'string' },
+                        {
+                          type: 'integer',
+                          description:
+                            'The insolvency case related to this filing'
+                        }
+                      ]
+                    },
+                    transaction_id: {
+                      type: 'integer',
+                      description: 'The id of the filing'
+                    }
+                  }
+                }
+              },
+              delivered_on: { type: 'string' },
+              charge_code: { type: 'string' },
+              scottish_alterations: {
+                type: 'object',
+                properties: {
+                  has_alterations_to_order: { type: 'boolean' },
+                  has_restricting_provisions: { type: 'boolean' },
+                  has_alterations_to_prohibitions: { type: 'boolean' },
+                  type: { type: 'string' },
+                  description: { type: 'string' },
+                  has_alterations_to_provisions: {
+                    type: 'boolean',
+                    description:
+                      'The charge has provisions restricting the creation of further charges'
+                  }
+                }
+              },
+              assets_ceased_released: { type: 'string' },
               insolvency_cases: {
                 type: 'array',
                 items: {
                   type: 'object',
                   properties: {
-                    case_number: { type: 'string' },
-                    transaction_id: { type: 'string' },
+                    case_number: {
+                      anyOf: [
+                        { type: 'string' },
+                        {
+                          type: 'integer',
+                          description: 'The number of this insolvency case'
+                        }
+                      ]
+                    },
                     links: {
                       type: 'object',
-                      properties: { case: { type: 'string' } },
-                      required: ['case']
+                      properties: { case: { type: 'string' } }
+                    },
+                    transaction_id: {
+                      anyOf: [
+                        { type: 'string' },
+                        {
+                          type: 'integer',
+                          description: 'The id of the insolvency filing'
+                        }
+                      ]
                     }
-                  },
-                  required: ['case_number', 'links']
+                  }
                 }
               },
-              assets_ceased_released: { type: 'string' },
               acquired_on: { type: 'string' },
-              scottish_alterations: {
-                type: 'object',
-                properties: {
-                  has_restricting_provisions: { type: 'boolean' },
-                  has_alterations_to_prohibitions: { type: 'boolean' },
-                  has_alterations_to_order: { type: 'boolean' }
-                }
+              id: { type: 'string', description: 'The id of the charge' },
+              assests_ceased_released: {
+                enum: [
+                  'property-ceased-to-belong',
+                  'part-property-release-and-ceased-to-belong',
+                  'part-property-released',
+                  'part-property-ceased-to-belong',
+                  'whole-property-released',
+                  'multiple-filings',
+                  'whole-property-released-and-ceased-to-belong'
+                ],
+                type: 'string',
+                description:
+                  'Cease/release information about the charge.\n For enumeration descriptions see `assets-ceased-released` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/mortgage_descriptions.yml)'
+              },
+              resolved_on: {
+                type: 'string',
+                format: 'date',
+                description: 'The date the issue was resolved on'
+              },
+              covering_instrument_date: {
+                type: 'string',
+                format: 'date',
+                description:
+                  'The date by which the series of debentures were created'
+              },
+              more_than_four_persons_entitled: {
+                type: 'boolean',
+                description: 'Charge has more than four person entitled'
               }
             },
-            required: [
-              'classification',
-              'status',
-              'delivered_on',
-              'transactions',
-              'particulars',
-              'created_on',
-              'charge_number',
-              'links',
-              'persons_entitled'
-            ]
+            required: ['classification', 'status', 'charge_number']
           }
         },
         part_satisfied_count: { type: 'integer' },
         satisfied_count: { type: 'integer' },
         total_count: { type: 'integer' },
-        unfiltered_count: { type: 'integer' }
+        unfiltered_count: { type: 'integer' },
+        etag: { description: 'The ETag of the resource.', type: 'string' },
+        unfiletered_count: {
+          type: 'integer',
+          description: 'Number of satisfied charges'
+        }
       },
-      required: [
-        'items',
-        'part_satisfied_count',
-        'satisfied_count',
-        'total_count',
-        'unfiltered_count'
-      ],
+      required: ['items'],
       additionalProperties: false,
-      title: 'listCharge',
+      title: 'listCharges',
       example: {
         items: [
           {
             classification: {
-              description: 'A registered charge',
+              description: 'Legal charge',
               type: 'charge-description'
             },
-            status: 'outstanding',
-            etag: '042be5428363cea67284c5ebc9952e7f55254a9a',
-            delivered_on: '2022-01-11',
+            persons_entitled: [{ name: 'Peninsula Finance PLC' }],
+            satisfied_on: '2006-07-21',
+            secured_details: {
+              description:
+                'All monies due or to become due from the company to the chargee',
+              type: 'amount-secured'
+            },
+            created_on: '2005-07-17',
+            etag: '40ebd950858c2454d9d2f5d576d99dfd4e94baca',
+            links: {
+              self: '/company/05343375/charges/UzsQvPoNZDG383SZSfwiwb8O_rQ'
+            },
+            particulars: {
+              type: 'short-particulars',
+              description: '80 kenwyn streetn truro cornwall.'
+            },
+            status: 'fully-satisfied',
+            charge_number: 1,
             transactions: [
               {
-                filing_type: 'create-charge-with-deed',
+                delivered_on: '2005-07-28',
+                filing_type: 'create-charge-pre-2006-companies-act',
                 links: {
                   filing:
-                    '/company/13402420/filing-history/MzMyNjMxMDk5MGFkaXF6a2N4'
+                    '/company/05343375/filing-history/MDE0MjE3NTAxM2FkaXF6a2N4'
+                }
+              },
+              {
+                filing_type: 'charge-satisfaction-pre-2006-companies-act',
+                links: {
+                  filing:
+                    '/company/05343375/filing-history/MDE2MzAzMDI1NGFkaXF6a2N4'
                 },
-                delivered_on: '2022-01-11'
+                delivered_on: '2006-07-21'
               }
             ],
-            particulars: {
-              contains_fixed_charge: true,
-              contains_floating_charge: true,
-              floating_charge_covers_all: true,
-              contains_negative_pledge: true
-            },
-            created_on: '2022-01-06',
-            charge_number: 1,
-            charge_code: '134024200001',
-            links: {
-              self: '/company/13402420/charges/hVQSDyC7GrQ004Z70famRjrIw60'
-            },
-            persons_entitled: [{ name: 'Sanne Group (UK) Limited' }]
+            delivered_on: '2005-07-28'
           }
         ],
         part_satisfied_count: 0,
-        satisfied_count: 0,
+        satisfied_count: 1,
         total_count: 1,
         unfiltered_count: 1
       }

@@ -3,6 +3,7 @@ import { testRequests } from '../testRequests'
 fetch('https://httpbin.org/get').catch((e) => e) //to remove warning about fetch being experimental from test results
 
 describe('exemptions-service', function () {
+  this.timeout(5000)
   // tests for each path
   it('getExemptions: /company/{company_number}/exemptions', async function () {
     const schema = {
@@ -12,42 +13,6 @@ describe('exemptions-service', function () {
         exemptions: {
           type: 'object',
           properties: {
-            psc_exempt_as_trading_on_regulated_market: {
-              type: 'object',
-              properties: {
-                exemption_type: { type: 'string' },
-                items: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      exempt_to: { type: 'string' },
-                      exempt_from: { type: 'string' }
-                    },
-                    required: ['exempt_to', 'exempt_from']
-                  }
-                }
-              },
-              required: ['exemption_type', 'items']
-            },
-            disclosure_transparency_rules_chapter_five_applies: {
-              type: 'object',
-              properties: {
-                items: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      exempt_from: { type: 'string' },
-                      exempt_to: { type: 'string' }
-                    },
-                    required: ['exempt_from', 'exempt_to']
-                  }
-                },
-                exemption_type: { type: 'string' }
-              },
-              required: ['items', 'exemption_type']
-            },
             psc_exempt_as_trading_on_uk_regulated_market: {
               type: 'object',
               properties: {
@@ -56,8 +21,8 @@ describe('exemptions-service', function () {
                   items: {
                     type: 'object',
                     properties: {
-                      exempt_from: { type: 'string' },
-                      exempt_to: { type: 'string' }
+                      exempt_to: { type: 'string' },
+                      exempt_from: { type: 'string' }
                     },
                     required: ['exempt_from']
                   }
@@ -65,6 +30,82 @@ describe('exemptions-service', function () {
                 exemption_type: { type: 'string' }
               },
               required: ['items', 'exemption_type']
+            },
+            disclosure_transparency_rules_chapter_five_applies: {
+              type: 'object',
+              properties: {
+                exemption_type: { type: 'string' },
+                items: {
+                  anyOf: [
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          exempt_to: { type: 'string' },
+                          exempt_from: { type: 'string' }
+                        },
+                        required: ['exempt_to', 'exempt_from']
+                      }
+                    },
+                    {
+                      type: 'object',
+                      properties: {
+                        exempt_from: {
+                          description: 'Exemption valid from.',
+                          type: 'string',
+                          format: 'date'
+                        },
+                        exempt_to: {
+                          description: 'Exemption valid to.',
+                          type: 'string',
+                          format: 'date'
+                        }
+                      },
+                      required: ['exempt_from']
+                    }
+                  ]
+                }
+              },
+              required: ['exemption_type', 'items']
+            },
+            psc_exempt_as_trading_on_regulated_market: {
+              type: 'object',
+              properties: {
+                exemption_type: { type: 'string' },
+                items: {
+                  anyOf: [
+                    {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          exempt_to: { type: 'string' },
+                          exempt_from: { type: 'string' }
+                        },
+                        required: ['exempt_to', 'exempt_from']
+                      }
+                    },
+                    {
+                      type: 'object',
+                      properties: {
+                        exempt_from: {
+                          description: 'Exemption valid from.',
+                          type: 'string',
+                          format: 'date'
+                        },
+                        exempt_to: {
+                          description: 'Exemption valid to.',
+                          type: 'string',
+                          format: 'date'
+                        }
+                      },
+                      required: ['exempt_from']
+                    }
+                  ]
+                }
+              },
+              required: ['exemption_type', 'items']
             },
             psc_exempt_as_trading_on_eu_regulated_market: {
               type: 'object',
@@ -83,6 +124,36 @@ describe('exemptions-service', function () {
                 }
               },
               required: ['exemption_type', 'items']
+            },
+            psc_exempt_as_shares_admitted_on_market: {
+              description:
+                'If present the company has been or is exempt from keeping a PSC register, as it has voting shares admitted to trading on a market listed in the Register of People with Significant Control Regulations 2016.',
+              type: 'object',
+              required: ['exemption_type', 'items'],
+              properties: {
+                items: {
+                  description: 'List of dates',
+                  type: 'object',
+                  properties: {
+                    exempt_from: {
+                      description: 'Exemption valid from.',
+                      type: 'string',
+                      format: 'date'
+                    },
+                    exempt_to: {
+                      description: 'Exemption valid to.',
+                      type: 'string',
+                      format: 'date'
+                    }
+                  },
+                  required: ['exempt_from']
+                },
+                exemption_type: {
+                  description: 'The exemption type.',
+                  enum: ['psc-exempt-as-shares-admitted-on-market'],
+                  type: 'string'
+                }
+              }
             }
           }
         },
@@ -97,23 +168,20 @@ describe('exemptions-service', function () {
       additionalProperties: false,
       title: 'getExemptions',
       example: {
-        etag: 'd427c6d903475de1b7d15e352ece0b1e0ac99554',
+        etag: '8c96ca11d8c34efadb7c0eae5c2bc9a24c87bd46',
         exemptions: {
-          psc_exempt_as_trading_on_regulated_market: {
-            exemption_type: 'psc-exempt-as-trading-on-regulated-market',
-            items: [{ exempt_to: '2021-08-13', exempt_from: '2017-08-13' }]
+          psc_exempt_as_trading_on_uk_regulated_market: {
+            items: [{ exempt_to: '2020-12-28', exempt_from: '2017-12-28' }],
+            exemption_type: 'psc-exempt-as-trading-on-uk-regulated-market'
           },
           disclosure_transparency_rules_chapter_five_applies: {
-            items: [{ exempt_from: '2016-08-13', exempt_to: '2021-08-24' }],
-            exemption_type: 'disclosure-transparency-rules-chapter-five-applies'
-          },
-          psc_exempt_as_trading_on_uk_regulated_market: {
-            items: [{ exempt_from: '2021-08-13' }],
-            exemption_type: 'psc-exempt-as-trading-on-uk-regulated-market'
+            exemption_type:
+              'disclosure-transparency-rules-chapter-five-applies',
+            items: [{ exempt_to: '2020-12-28', exempt_from: '2016-12-28' }]
           }
         },
         kind: 'exemptions',
-        links: { self: '/company/00084492/exemptions' }
+        links: { self: '/company/07892904/exemptions' }
       }
     }
     await testRequests(

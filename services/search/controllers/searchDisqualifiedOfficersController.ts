@@ -21,6 +21,8 @@ export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
-    return searchDisqualifiedOfficers(q, items_per_page, start_index)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
+    return searchDisqualifiedOfficers(context, q, items_per_page, start_index)
   })
 }

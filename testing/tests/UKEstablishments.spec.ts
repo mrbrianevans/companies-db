@@ -3,6 +3,7 @@ import { testRequests } from '../testRequests'
 fetch('https://httpbin.org/get').catch((e) => e) //to remove warning about fetch being experimental from test results
 
 describe('ukestablishments-service', function () {
+  this.timeout(5000)
   // tests for each path
   it('getUKEstablishments: /company/{company_number}/uk-establishments', async function () {
     const schema = {
@@ -15,21 +16,37 @@ describe('ukestablishments-service', function () {
             type: 'object',
             properties: {
               links: {
-                type: 'object',
-                properties: { company: { type: 'string' } },
-                required: ['company']
+                anyOf: [
+                  {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        company: {
+                          type: 'string',
+                          description: 'The link to the company.'
+                        }
+                      },
+                      required: ['company']
+                    }
+                  },
+                  {
+                    type: 'object',
+                    properties: { company: { type: 'string' } },
+                    required: ['company']
+                  }
+                ]
               },
-              company_status: { type: 'string' },
-              company_number: { type: 'string' },
               locality: { type: 'string' },
-              company_name: { type: 'string' }
+              company_number: { type: 'string' },
+              company_name: { type: 'string' },
+              company_status: { type: 'string' }
             },
             required: [
               'links',
-              'company_status',
               'company_number',
-              'locality',
-              'company_name'
+              'company_name',
+              'company_status'
             ]
           }
         },
@@ -40,22 +57,22 @@ describe('ukestablishments-service', function () {
           required: ['self']
         }
       },
-      required: ['etag', 'items', 'kind', 'links'],
+      required: ['etag', 'items', 'kind'],
       additionalProperties: false,
-      title: 'listUkEstablishments',
+      title: 'getUKEstablishments',
       example: {
-        etag: '8ad9b7f6dc0c0d0f2fcb8ab6a41db35ccedce243',
+        etag: 'e107f7caacf1efb5019ac55144b1f8d0568a0f10',
         items: [
           {
-            links: { company: '/company/BR023780' },
-            company_status: 'open',
-            company_number: 'BR023780',
-            locality: 'London',
-            company_name: 'LINCOLN MIDCO PTE. LIMITED'
+            links: { company: '/company/BR023799' },
+            locality: 'Farnham',
+            company_number: 'BR023799',
+            company_name: 'UPPER FROYLE PROPERTY INVESTMENTS LIMITED',
+            company_status: 'open'
           }
         ],
         kind: 'related-companies',
-        links: { self: '/company/FC038685' }
+        links: { self: '/company/FC038704' }
       }
     }
     await testRequests(

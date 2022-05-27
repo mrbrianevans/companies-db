@@ -21,6 +21,8 @@ export const getUKEstablishmentsController: FastifyPluginAsync = async (
     for (const [header, value] of Object.entries(ratelimit))
       res.header(header, value)
     return reflect(req.url)
-    return getUKEstablishments(company_number)
+    const { redis, mongo } = fastify
+    const context = { redis, mongo, req }
+    return getUKEstablishments(context, company_number)
   })
 }
