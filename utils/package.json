@@ -1,0 +1,9 @@
+{
+  "name": "company-number-utils",
+  "description": "A collection of utilities for working with company numbers from Companies House in the UK.",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/ "
+  }
+}
