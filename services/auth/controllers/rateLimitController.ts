@@ -15,7 +15,7 @@ export const rateLimitController: FastifyPluginAsync = async (
       const authHeader = req.headers.authorization
       const {redis} = fastify
 
-      const service = new AuthService({redis, req}, authHeader)
+      const service = new AuthService({redis, req}, AuthService.getApiKeyFromHeader(authHeader))
       const responseAuthHeaders = await service.processRequest()
       if(responseAuthHeaders["X-Ratelimit-Remain"] === 0) {
         await service.recordViolation()

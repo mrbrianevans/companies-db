@@ -1,13 +1,25 @@
 import type { GetIndividualResponse } from '../schemas/getIndividualSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
-import type { FastifyMongo } from '@fastify/mongodb'
+import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
-interface Context {
+export interface Context {
   redis: FastifyRedis
-  mongo: FastifyMongo
+  mongo: FastifyMongoObject
   req: FastifyRequest
 }
+// the main database collection for the getIndividual service
+const colName = 'getIndividual'
+
+/** Must be called before any data is inserted */
+export async function initGetIndividualCollection(
+  db: FastifyMongoObject['db']
+) {
+  await db.createCollection(colName, {
+    storageEngine: { wiredTiger: { configString: 'blockCompressor=zstd' } }
+  })
+}
+
 /**
  * Get the individual person with significant control.
  *

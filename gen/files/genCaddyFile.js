@@ -25,7 +25,7 @@ export async function addCaddyFileEntry(SERVICES_DIR, path, tag){
     const caddyfile = await readFile(resolve(SERVICES_DIR, 'Caddyfile')).then(String).then(caddyfile => caddyfile.replace(`# proxy to microservices`, marker => `${marker}
         ${ruleName} {
                 header_regexp Authorization ^Basic\\s[a-zA-Z0-9]+={0,2}$
-                path_regexp ^${path.replace('{company_number}', '[A-Z\\d]{4,8}').replace(/\{(.*?)}/g, '.+').replace(/\//g, '\\/')}$
+                path_regexp ^${path.replace('{company_number}', '[A-Z\\d]{4,8}').replace(/\{[a-z_]+}/gi, '[a-zA-Z0-9_-]+').replace(/\//g, '\\/')}$
         }
         reverse_proxy ${ruleName} ${kebabCase(tag)}:3000 {
                 header_down Service companies-${kebabCase(tag)}

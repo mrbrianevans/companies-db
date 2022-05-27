@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getInsolvency } from '../service/getInsolvency.js'
+import { getInsolvency, Context } from '../service/getInsolvency.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetInsolvencySchema as schema,
@@ -22,7 +22,7 @@ export const getInsolvencyController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return getInsolvency(context, company_number)
   })
 }

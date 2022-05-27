@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getCompanyProfile } from '../service/getCompanyProfile.js'
+import { getCompanyProfile, Context } from '../service/getCompanyProfile.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetCompanyProfileSchema as schema,
@@ -22,7 +22,7 @@ export const getCompanyProfileController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return getCompanyProfile(context, company_number)
   })
 }

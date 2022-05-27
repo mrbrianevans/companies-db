@@ -1,5 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getRegisteredOfficeAddress } from '../service/getRegisteredOfficeAddress.js'
+import {
+  getRegisteredOfficeAddress,
+  Context
+} from '../service/getRegisteredOfficeAddress.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetRegisteredOfficeAddressSchema as schema,
@@ -25,7 +28,7 @@ export const getRegisteredOfficeAddressController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getRegisteredOfficeAddress(context, company_number)
     }
   )

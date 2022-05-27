@@ -121,6 +121,8 @@
       - "auth"
     "logging":
       "driver": "local"
+    "volumes":
+      - "auth_db:/data"
   "auth-service":
     "build": "auth"
     "networks":
@@ -140,6 +142,22 @@
       - "9090:9090"
     "networks":
       - "metrics"
+  "shared-mongo":
+    "image": "mongo"
+    "logging":
+      "driver": "local"
+    "networks":
+      - "microservices"
+    "volumes":
+      - "shared_mongo:/data/db"
+  "shared-redis":
+    "image": "redis"
+    "logging":
+      "driver": "local"
+    "networks":
+      - "microservices"
+    "volumes":
+      - "/data"
 "networks":
   "microservices":
     "driver": "bridge"
@@ -147,3 +165,8 @@
     "driver": "bridge"
   "metrics":
     "driver": "bridge"
+"volumes":
+  "shared_mongo":
+    "external": true
+  "auth_db":
+    "external": true

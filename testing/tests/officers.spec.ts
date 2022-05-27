@@ -3,7 +3,7 @@ import { testRequests } from '../testRequests'
 fetch('https://httpbin.org/get').catch((e) => e) //to remove warning about fetch being experimental from test results
 
 describe('officers-service', function () {
-  this.timeout(5000)
+  this.timeout(50000)
   // tests for each path
   it('getOfficers: /company/{company_number}/appointments/{appointment_id}', async function () {
     const schema = {

@@ -26,14 +26,22 @@ async function createTagDirectories(tags) {
     await genPrometheusConfig(SERVICES_DIR)
     await genDockerCompose(SERVICES_DIR, tags)
     await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(`import Fastify from 'fastify'
+import fastifyRedis from '@fastify/redis'
+import fastifyMongo from '@fastify/mongodb'
 import 'dotenv/config'
 // --- import controllers ---
 
 const fastify = Fastify({logger: true})
 
+if (!process.env.REDIS_URL)
+  throw new Error('REDIS_URL environment variable not set')
+fastify.register(fastifyRedis, { url: process.env.REDIS_URL })
+if (!process.env.MONGO_URL)
+  throw new Error('MONGO_URL environment variable not set')
+fastify.register(fastifyMongo, { url: process.env.MONGO_URL + '/charges' })
 // --- register controllers ---
 
-await fastify.listen(3000, '::')
+await fastify.listen({port: 3000, host: '::'})
 `))
     await writeFile(resolve(SERVICES_DIR, 'package.json'), JSON.stringify({
             "name": "services",
@@ -53,9 +61,11 @@ await fastify.listen(3000, '::')
                 "typescript": "^4.6.4"
             },
             "dependencies": {
-                "fastify": "^3.29.0",
                 "@fastify/mongodb": "^6.0.1",
-                "@fastify/redis": "^6.0.0"
+                "@fastify/redis": "^6.0.0",
+                "dotenv": "^16.0.1",
+                "fastify": "4.0.0-rc.3",
+                "pino": "^7.11.0"
             }
         }, null, 2)
     )
@@ -87,9 +97,10 @@ await fastify.listen(3000, '::')
             },
             "version": "1.0.0",
             "dependencies": {
-                "fastify": "^3.29.0",
                 "@fastify/mongodb": "^6.0.1",
-                "@fastify/redis": "^6.0.0"
+                "@fastify/redis": "^6.0.0",
+                "fastify": "4.0.0-rc.3",
+                "pino": "^7.11.0"
             },
             "devDependencies": {
                 "@types/node": "^17.0.34",
@@ -115,13 +126,19 @@ await fastify.listen(3000, '::')
         }
         await writeFile(resolve(SERVICES_DIR, tag.name, 'tsconfig.json'), JSON.stringify(tsconfig, null, 2))
         await writeFile(resolve(SERVICES_DIR, tag.name, 'index.ts'), prettyTs(`import Fastify from 'fastify'
+import fastifyRedis from "@fastify/redis";
+import fastifyMongo from "@fastify/mongodb";
 // --- import controllers ---
 
 const fastify = Fastify({logger: true})
 
+if(!process.env.REDIS_URL) throw new Error('REDIS_URL environment variable not set')
+fastify.register(fastifyRedis, {url: process.env.REDIS_URL})
+if(!process.env.MONGO_URL) throw new Error('MONGO_URL environment variable not set')
+fastify.register(fastifyMongo, {url: process.env.MONGO_URL + '/${tag.name}'})
 // --- register controllers ---
 
-await fastify.listen(3000, '::')
+await fastify.listen({port: 3000, host: '::'})
 `))
         await writeFile(resolve(SERVICES_DIR, tag.name, 'Dockerfile'), `FROM node:18
 
@@ -246,7 +263,7 @@ export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['respons
         `))
         await writeFile(resolve(SERVICES_DIR, tag, 'controllers', name + 'Controller.ts'), prettyTs(`
 import {FastifyPluginAsync} from "fastify";
-import {${name}} from "../service/${name}.js";
+import {${name}, Context} from "../service/${name}.js";
 import { reflect, auth } from "./reflect.js";
 import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${name}Schema.js";
 
@@ -261,7 +278,7 @@ export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
         res.header(header, value)
     return reflect(req.url)
     const {redis, mongo} = fastify
-    const context = {redis, mongo, req}
+    const context: Context = {redis, mongo, req}
     return ${name}(context,${processParams(parameters)})
   })
 }
@@ -298,14 +315,22 @@ try{
         await writeFile(resolve(SERVICES_DIR, tag, 'service', name + '.ts'), prettyTs(`
 import type { ${Name}Response } from "../schemas/${name}Schema.js";
 import type {FastifyRedis} from "@fastify/redis";
-import type {FastifyMongo} from "@fastify/mongodb";
+import type {FastifyMongoObject} from "@fastify/mongodb";
 import type {FastifyRequest} from "fastify";
 
-interface Context{
+export interface Context{
   redis: FastifyRedis,
-  mongo: FastifyMongo
+  mongo: FastifyMongoObject
   req: FastifyRequest
 }
+// the main database collection for the ${name} service
+const colName = '${name}'
+
+/** Must be called before any data is inserted */
+export async function init${Name}Collection(db: FastifyMongoObject['db']){
+  await db.createCollection(colName, {storageEngine: {wiredTiger: {configString: 'blockCompressor=zstd'}}})
+}
+
 /**
  * ${summary??''}.
  *

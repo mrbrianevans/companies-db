@@ -18,8 +18,8 @@ export const newKeyController: FastifyPluginAsync = async (
       await service.setQuota()
 
       const responseAuthHeaders = await service.getResponseHeaders()
-
-      return {key, ...responseAuthHeaders}
+      const header = AuthService.getHeaderFromApiKey(key)
+      return {header, key, ...responseAuthHeaders}
     }
   )
 }

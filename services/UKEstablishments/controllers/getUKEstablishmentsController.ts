@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getUKEstablishments } from '../service/getUKEstablishments.js'
+import { getUKEstablishments, Context } from '../service/getUKEstablishments.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetUKEstablishmentsSchema as schema,
@@ -22,7 +22,7 @@ export const getUKEstablishmentsController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return getUKEstablishments(context, company_number)
   })
 }

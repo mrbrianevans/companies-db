@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getExemptions } from '../service/getExemptions.js'
+import { getExemptions, Context } from '../service/getExemptions.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetExemptionsSchema as schema,
@@ -22,7 +22,7 @@ export const getExemptionsController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return getExemptions(context, company_number)
   })
 }

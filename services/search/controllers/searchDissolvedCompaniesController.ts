@@ -1,5 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
-import { searchDissolvedCompanies } from '../service/searchDissolvedCompanies.js'
+import {
+  searchDissolvedCompanies,
+  Context
+} from '../service/searchDissolvedCompanies.js'
 import { reflect, auth } from './reflect.js'
 import {
   SearchDissolvedCompaniesSchema as schema,
@@ -23,7 +26,7 @@ export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return searchDissolvedCompanies(
       context,
       q,

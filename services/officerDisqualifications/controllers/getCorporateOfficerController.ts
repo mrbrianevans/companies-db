@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getCorporateOfficer } from '../service/getCorporateOfficer.js'
+import { getCorporateOfficer, Context } from '../service/getCorporateOfficer.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetCorporateOfficerSchema as schema,
@@ -25,7 +25,7 @@ export const getCorporateOfficerController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getCorporateOfficer(context, officer_id)
     }
   )

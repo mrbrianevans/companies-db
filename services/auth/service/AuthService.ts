@@ -50,7 +50,8 @@ export class AuthService {
   }
   async getQuota(){
     const quota = await this.context.redis.get(this.getQuotaKey());
-    return parseInt(quota)
+    // this.context.req.log.info({apiKey: AuthService.declassifyKey(this.apiKey), quota},'Fetched quota from Redis')
+    return quota ? parseInt(quota) : 0
   }
   async getRemainingQuota(usage?: number){
     const quota = await this.getQuota()
@@ -70,6 +71,7 @@ export class AuthService {
   async processRequest(){
     const usage = await this.registerUsage()
     const responseHeaders = await this.getResponseHeaders(usage)
+    // this.context.req.log.info({apiKey: AuthService.declassifyKey(this.apiKey), responseHeaders, usage},'Processing request for API key')
     return responseHeaders
   }
 
@@ -79,6 +81,7 @@ export class AuthService {
     return `volations:${this.apiKey}:${date.getFullYear()}:${(date.getMonth()+1).toString().padStart(2, '0')}`
   }
   async recordViolation(){
+    this.context.req.log.info({apiKey: AuthService.declassifyKey(this.apiKey)},'Recorded rate limit violation')
     this.context.redis.incr(this.getViolationsKey())
   }
 
@@ -110,7 +113,22 @@ export class AuthService {
     const keyMatch = header?.match(/^Basic (.*)$/)
     if(!keyMatch) throw new Error('Basic authorization key not included in request!')
     const key = Buffer.from(keyMatch[1], "base64").toString()
-    return key
+    return key.slice(0,-1) // slice to remove trailing colon
+  }
+
+  static getHeaderFromApiKey(apiKey: string){
+    const token = Buffer.from(apiKey + ':', 'utf-8').toString('base64')
+    return `Basic ${token}`
+  }
+
+  /**
+   * Mask an API key with asterixes to log out securely.
+   */
+  static declassifyKey(apiKey: string, plainTextChars = 5){
+    const inFront = Math.ceil(plainTextChars / 2)
+    const atEnd = plainTextChars - inFront
+    const masked = apiKey.replace(/[\da-z]/i, '*')
+    return apiKey.slice(0,inFront) + masked.slice(inFront, -atEnd) + apiKey.slice(-atEnd)
   }
 }
 

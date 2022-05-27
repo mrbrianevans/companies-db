@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getStatement } from '../service/getStatement.js'
+import { getStatement, Context } from '../service/getStatement.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetStatementSchema as schema,
@@ -25,7 +25,7 @@ export const getStatementController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getStatement(context, company_number, statement_id)
     }
   )

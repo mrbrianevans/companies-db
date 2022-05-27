@@ -1,5 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getCorporateEntities } from '../service/getCorporateEntities.js'
+import {
+  getCorporateEntities,
+  Context
+} from '../service/getCorporateEntities.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetCorporateEntitiesSchema as schema,
@@ -25,7 +28,7 @@ export const getCorporateEntitiesController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getCorporateEntities(context, company_number, psc_id)
     }
   )

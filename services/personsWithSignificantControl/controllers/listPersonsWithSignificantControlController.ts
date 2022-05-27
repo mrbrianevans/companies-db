@@ -1,5 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
-import { listPersonsWithSignificantControl } from '../service/listPersonsWithSignificantControl.js'
+import {
+  listPersonsWithSignificantControl,
+  Context
+} from '../service/listPersonsWithSignificantControl.js'
 import { reflect, auth } from './reflect.js'
 import {
   ListPersonsWithSignificantControlSchema as schema,
@@ -25,7 +28,7 @@ export const listPersonsWithSignificantControlController: FastifyPluginAsync =
           res.header(header, value)
         return reflect(req.url)
         const { redis, mongo } = fastify
-        const context = { redis, mongo, req }
+        const context: Context = { redis, mongo, req }
         return listPersonsWithSignificantControl(
           context,
           company_number,

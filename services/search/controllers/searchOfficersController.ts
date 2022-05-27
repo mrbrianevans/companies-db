@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { searchOfficers } from '../service/searchOfficers.js'
+import { searchOfficers, Context } from '../service/searchOfficers.js'
 import { reflect, auth } from './reflect.js'
 import {
   SearchOfficersSchema as schema,
@@ -22,7 +22,7 @@ export const searchOfficersController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return searchOfficers(context, q, items_per_page, start_index)
   })
 }

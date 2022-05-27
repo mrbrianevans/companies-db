@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getCharges } from '../service/getCharges.js'
+import { getCharges, Context } from '../service/getCharges.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetChargesSchema as schema,
@@ -22,7 +22,7 @@ export const getChargesController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getCharges(context, company_number, charge_id)
     }
   )

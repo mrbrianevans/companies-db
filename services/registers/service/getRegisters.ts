@@ -1,13 +1,23 @@
 import type { GetRegistersResponse } from '../schemas/getRegistersSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
-import type { FastifyMongo } from '@fastify/mongodb'
+import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
-interface Context {
+export interface Context {
   redis: FastifyRedis
-  mongo: FastifyMongo
+  mongo: FastifyMongoObject
   req: FastifyRequest
 }
+// the main database collection for the getRegisters service
+const colName = 'getRegisters'
+
+/** Must be called before any data is inserted */
+export async function initGetRegistersCollection(db: FastifyMongoObject['db']) {
+  await db.createCollection(colName, {
+    storageEngine: { wiredTiger: { configString: 'blockCompressor=zstd' } }
+  })
+}
+
 /**
  * Company registers.
  *

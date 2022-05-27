@@ -1,5 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getSuperSecurePerson } from '../service/getSuperSecurePerson.js'
+import {
+  getSuperSecurePerson,
+  Context
+} from '../service/getSuperSecurePerson.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetSuperSecurePersonSchema as schema,
@@ -25,7 +28,7 @@ export const getSuperSecurePersonController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getSuperSecurePerson(context, company_number, super_secure_id)
     }
   )

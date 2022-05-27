@@ -1,13 +1,23 @@
 import type { SearchAllResponse } from '../schemas/searchAllSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
-import type { FastifyMongo } from '@fastify/mongodb'
+import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
-interface Context {
+export interface Context {
   redis: FastifyRedis
-  mongo: FastifyMongo
+  mongo: FastifyMongoObject
   req: FastifyRequest
 }
+// the main database collection for the searchAll service
+const colName = 'searchAll'
+
+/** Must be called before any data is inserted */
+export async function initSearchAllCollection(db: FastifyMongoObject['db']) {
+  await db.createCollection(colName, {
+    storageEngine: { wiredTiger: { configString: 'blockCompressor=zstd' } }
+  })
+}
+
 /**
  * Search All.
  *

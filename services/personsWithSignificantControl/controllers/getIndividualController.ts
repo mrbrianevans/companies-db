@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getIndividual } from '../service/getIndividual.js'
+import { getIndividual, Context } from '../service/getIndividual.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetIndividualSchema as schema,
@@ -25,7 +25,7 @@ export const getIndividualController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getIndividual(context, company_number, psc_id)
     }
   )

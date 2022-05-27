@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getNaturalOfficer } from '../service/getNaturalOfficer.js'
+import { getNaturalOfficer, Context } from '../service/getNaturalOfficer.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetNaturalOfficerSchema as schema,
@@ -22,7 +22,7 @@ export const getNaturalOfficerController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return getNaturalOfficer(context, officer_id)
   })
 }

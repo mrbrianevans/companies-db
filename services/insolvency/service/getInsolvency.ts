@@ -1,13 +1,25 @@
 import type { GetInsolvencyResponse } from '../schemas/getInsolvencySchema.js'
 import type { FastifyRedis } from '@fastify/redis'
-import type { FastifyMongo } from '@fastify/mongodb'
+import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
-interface Context {
+export interface Context {
   redis: FastifyRedis
-  mongo: FastifyMongo
+  mongo: FastifyMongoObject
   req: FastifyRequest
 }
+// the main database collection for the getInsolvency service
+const colName = 'getInsolvency'
+
+/** Must be called before any data is inserted */
+export async function initGetInsolvencyCollection(
+  db: FastifyMongoObject['db']
+) {
+  await db.createCollection(colName, {
+    storageEngine: { wiredTiger: { configString: 'blockCompressor=zstd' } }
+  })
+}
+
 /**
  * .
  *

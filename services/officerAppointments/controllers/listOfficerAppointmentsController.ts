@@ -1,5 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
-import { listOfficerAppointments } from '../service/listOfficerAppointments.js'
+import {
+  listOfficerAppointments,
+  Context
+} from '../service/listOfficerAppointments.js'
 import { reflect, auth } from './reflect.js'
 import {
   ListOfficerAppointmentsSchema as schema,
@@ -22,7 +25,7 @@ export const listOfficerAppointmentsController: FastifyPluginAsync = async (
       res.header(header, value)
     return reflect(req.url)
     const { redis, mongo } = fastify
-    const context = { redis, mongo, req }
+    const context: Context = { redis, mongo, req }
     return listOfficerAppointments(
       context,
       officer_id,

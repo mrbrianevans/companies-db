@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getFilingHistory } from '../service/getFilingHistory.js'
+import { getFilingHistory, Context } from '../service/getFilingHistory.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetFilingHistorySchema as schema,
@@ -25,7 +25,7 @@ export const getFilingHistoryController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return getFilingHistory(context, company_number, transaction_id)
     }
   )

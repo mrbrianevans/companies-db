@@ -1,6 +1,7 @@
 import {baseUrl} from "./url";
 import {headers} from "./headers";
 import assert from "assert";
+import {setTimeout} from "timers/promises";
 import { Temporal } from 'temporal-polyfill'
 import Ajv, {Schema} from "ajv";
 const ajv = new Ajv()
@@ -35,5 +36,6 @@ export async function testRequests(requests: { path: string }[], schema: Schema)
     assert(res.ok, 'Failed with status code ' + res.status + ' ' + res.statusText + ' on url ' + url + ' ' + json.message)
     const valid = validate(json)
     assert(valid, `${request.path} failed schema validation with ${validate.errors?.length} error(s): ${validate.errors?.map(e=>e.instancePath +' ' +e.message)}`)
+    await setTimeout(1000)
   }
 }

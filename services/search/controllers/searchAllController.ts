@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { searchAll } from '../service/searchAll.js'
+import { searchAll, Context } from '../service/searchAll.js'
 import { reflect, auth } from './reflect.js'
 import {
   SearchAllSchema as schema,
@@ -22,7 +22,7 @@ export const searchAllController: FastifyPluginAsync = async (
         res.header(header, value)
       return reflect(req.url)
       const { redis, mongo } = fastify
-      const context = { redis, mongo, req }
+      const context: Context = { redis, mongo, req }
       return searchAll(context, q, items_per_page, start_index)
     }
   )
