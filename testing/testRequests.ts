@@ -36,6 +36,6 @@ export async function testRequests(requests: { path: string }[], schema: Schema)
     assert(res.ok, 'Failed with status code ' + res.status + ' ' + res.statusText + ' on url ' + url + ' ' + json.message)
     const valid = validate(json)
     assert(valid, `${request.path} failed schema validation with ${validate.errors?.length} error(s): ${validate.errors?.map(e=>e.instancePath +' ' +e.message)}`)
-    await setTimeout(1000)
+    // await setTimeout(1000)
   }
 }

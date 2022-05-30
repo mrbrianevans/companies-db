@@ -1,5 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { listOfficers, Context } from '../service/listOfficers.js'
+import {
+  listOfficers,
+  Context,
+  initListOfficersCollection
+} from '../service/listOfficers.js'
 import { reflect, auth } from './reflect.js'
 import {
   ListOfficersSchema as schema,
@@ -11,6 +15,7 @@ export const listOfficersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initListOfficersCollection(fastify.mongo.db)
   fastify.get<{
     Params: ListOfficersParams
     Querystring: ListOfficersQueryString
@@ -24,12 +29,15 @@ export const listOfficersController: FastifyPluginAsync = async (
       order_by
     } = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
-    for (const [header, value] of Object.entries(ratelimit))
+    for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)
-    return reflect(req.url)
+    if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+      res.code(429).send('Rate limit hit')
+      return
+    }
     const { redis, mongo } = fastify
     const context: Context = { redis, mongo, req }
-    return listOfficers(
+    const result = listOfficers(
       context,
       company_number,
       items_per_page,
@@ -38,5 +46,7 @@ export const listOfficersController: FastifyPluginAsync = async (
       start_index,
       order_by
     )
+    if (result) return result
+    else res.code(404).send('Not found')
   })
 }

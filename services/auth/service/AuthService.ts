@@ -101,8 +101,8 @@ export class AuthService {
     resetDate.setMinutes(window * WINDOW_SIZE_MINUTES)
     resetDate.setSeconds(0)
     resetDate.setMilliseconds(0)
-    const reset = resetDate.getTime()
-    return reset
+    const resetMs = resetDate.getTime()
+    return resetMs / 1000 // convert milliseconds to seconds
   }
 
   /**

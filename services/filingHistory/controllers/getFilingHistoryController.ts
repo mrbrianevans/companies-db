@@ -1,5 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getFilingHistory, Context } from '../service/getFilingHistory.js'
+import {
+  getFilingHistory,
+  Context,
+  initGetFilingHistoryCollection
+} from '../service/getFilingHistory.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetFilingHistorySchema as schema,
@@ -11,6 +15,7 @@ export const getFilingHistoryController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initGetFilingHistoryCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetFilingHistoryParams
     Querystring: GetFilingHistoryQueryString
@@ -21,12 +26,17 @@ export const getFilingHistoryController: FastifyPluginAsync = async (
       const { company_number, transaction_id } = req.params
       const {} = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
-      for (const [header, value] of Object.entries(ratelimit))
+      for (const [header, value] of Object.entries(ratelimit ?? {}))
         res.header(header, value)
-      return reflect(req.url)
+      if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+        res.code(429).send('Rate limit hit')
+        return
+      }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      return getFilingHistory(context, company_number, transaction_id)
+      const result = getFilingHistory(context, company_number, transaction_id)
+      if (result) return result
+      else res.code(404).send('Not found')
     }
   )
 }

@@ -2,7 +2,6 @@ import { Db} from "mongodb";
 import 'dotenv/config'
 import {PassThrough, Writable} from "stream";
 import camelcase from "camelcase";
-import {ListOfficers} from "./listOfficersTypeDefs";
 import {WebSocket} from 'ws'
 import {setTimeout} from "timers/promises";
 
@@ -15,7 +14,8 @@ function* getQuery(){
 
 export class Crawler{
   db: Db
-  baseUrl = 'https://api.company-information.service.gov.uk'
+  // baseUrl = 'https://api.company-information.service.gov.uk'
+  baseUrl = 'http://localhost:3000'
   apiKey: string
   crawled: Set<string>
 
@@ -73,7 +73,7 @@ export class Crawler{
     let document = await this.getSavedDocument(path, operationName)
     if(!document) {
       document = await this.fetchPath(path)
-      await this.addDocument(path, operationName, document)
+      // await this.addDocument(path, operationName, document)
     }
     return document
   }
@@ -167,7 +167,7 @@ export class Crawler{
 
   async crawlOfficers(){
     console.log("Crawl officers")
-    const officers = this.db.collection<ListOfficers>('officers').find()
+    const officers = this.db.collection('officers').find()
     for await(const officerList of officers) {
       for(const officer of officerList.items){
         await this.fetchAndSave(officer.links.officer.appointments, 'appointments')
@@ -280,13 +280,14 @@ export class Crawler{
       const {resource_uri, resource_kind} = JSON.parse(data.toString())
       pass.push({resource_uri, resource_kind})
     })
+    events.addEventListener('close', ()=>pass.end())
     for await(const {resource_uri, resource_kind} of pass){
       try{
       // if(resource_kind === 'filing-history' || resource_kind === 'company-profile') continue
         const doc = await this.fetchAndSave(resource_uri, streamNames[resource_kind] ?? camelcase(resource_kind+'-stream'))
         // await this.crawlDocument(doc, resource_uri)
       }catch (e){
-
+        console.log("Failed on", resource_kind, resource_uri)
       }
     }
     events.close()

@@ -1,7 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
   listPersonsWithSignificantControl,
-  Context
+  Context,
+  initListPersonsWithSignificantControlCollection
 } from '../service/listPersonsWithSignificantControl.js'
 import { reflect, auth } from './reflect.js'
 import {
@@ -12,6 +13,7 @@ import {
 
 export const listPersonsWithSignificantControlController: FastifyPluginAsync =
   async (fastify, opts) => {
+    await initListPersonsWithSignificantControlCollection(fastify.mongo.db)
     fastify.get<{
       Params: ListPersonsWithSignificantControlParams
       Querystring: ListPersonsWithSignificantControlQueryString
@@ -24,18 +26,23 @@ export const listPersonsWithSignificantControlController: FastifyPluginAsync =
         const ratelimit = await auth({
           Authorization: req.headers.authorization
         })
-        for (const [header, value] of Object.entries(ratelimit))
+        for (const [header, value] of Object.entries(ratelimit ?? {}))
           res.header(header, value)
-        return reflect(req.url)
+        if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+          res.code(429).send('Rate limit hit')
+          return
+        }
         const { redis, mongo } = fastify
         const context: Context = { redis, mongo, req }
-        return listPersonsWithSignificantControl(
+        const result = listPersonsWithSignificantControl(
           context,
           company_number,
           items_per_page,
           start_index,
           register_view
         )
+        if (result) return result
+        else res.code(404).send('Not found')
       }
     )
   }

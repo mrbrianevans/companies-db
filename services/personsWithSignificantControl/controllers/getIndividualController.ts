@@ -1,5 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getIndividual, Context } from '../service/getIndividual.js'
+import {
+  getIndividual,
+  Context,
+  initGetIndividualCollection
+} from '../service/getIndividual.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetIndividualSchema as schema,
@@ -11,6 +15,7 @@ export const getIndividualController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initGetIndividualCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetIndividualParams
     Querystring: GetIndividualQueryString
@@ -21,12 +26,17 @@ export const getIndividualController: FastifyPluginAsync = async (
       const { company_number, psc_id } = req.params
       const {} = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
-      for (const [header, value] of Object.entries(ratelimit))
+      for (const [header, value] of Object.entries(ratelimit ?? {}))
         res.header(header, value)
-      return reflect(req.url)
+      if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+        res.code(429).send('Rate limit hit')
+        return
+      }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      return getIndividual(context, company_number, psc_id)
+      const result = getIndividual(context, company_number, psc_id)
+      if (result) return result
+      else res.code(404).send('Not found')
     }
   )
 }

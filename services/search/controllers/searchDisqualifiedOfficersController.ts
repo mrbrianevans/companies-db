@@ -1,7 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
   searchDisqualifiedOfficers,
-  Context
+  Context,
+  initSearchDisqualifiedOfficersCollection
 } from '../service/searchDisqualifiedOfficers.js'
 import { reflect, auth } from './reflect.js'
 import {
@@ -14,6 +15,7 @@ export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initSearchDisqualifiedOfficersCollection(fastify.mongo.db)
   fastify.get<{
     Params: SearchDisqualifiedOfficersParams
     Querystring: SearchDisqualifiedOfficersQueryString
@@ -21,11 +23,21 @@ export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
     const {} = req.params
     const { q, items_per_page, start_index } = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
-    for (const [header, value] of Object.entries(ratelimit))
+    for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)
-    return reflect(req.url)
+    if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+      res.code(429).send('Rate limit hit')
+      return
+    }
     const { redis, mongo } = fastify
     const context: Context = { redis, mongo, req }
-    return searchDisqualifiedOfficers(context, q, items_per_page, start_index)
+    const result = searchDisqualifiedOfficers(
+      context,
+      q,
+      items_per_page,
+      start_index
+    )
+    if (result) return result
+    else res.code(404).send('Not found')
   })
 }

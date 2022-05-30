@@ -1,7 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
   searchDissolvedCompanies,
-  Context
+  Context,
+  initSearchDissolvedCompaniesCollection
 } from '../service/searchDissolvedCompanies.js'
 import { reflect, auth } from './reflect.js'
 import {
@@ -14,6 +15,7 @@ export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initSearchDissolvedCompaniesCollection(fastify.mongo.db)
   fastify.get<{
     Params: SearchDissolvedCompaniesParams
     Querystring: SearchDissolvedCompaniesQueryString
@@ -22,12 +24,15 @@ export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
     const { q, search_type, search_above, search_below, size, start_index } =
       req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
-    for (const [header, value] of Object.entries(ratelimit))
+    for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)
-    return reflect(req.url)
+    if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+      res.code(429).send('Rate limit hit')
+      return
+    }
     const { redis, mongo } = fastify
     const context: Context = { redis, mongo, req }
-    return searchDissolvedCompanies(
+    const result = searchDissolvedCompanies(
       context,
       q,
       search_type,
@@ -36,5 +41,7 @@ export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
       size,
       start_index
     )
+    if (result) return result
+    else res.code(404).send('Not found')
   })
 }

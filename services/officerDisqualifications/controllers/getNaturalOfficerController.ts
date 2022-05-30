@@ -1,5 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getNaturalOfficer, Context } from '../service/getNaturalOfficer.js'
+import {
+  getNaturalOfficer,
+  Context,
+  initGetNaturalOfficerCollection
+} from '../service/getNaturalOfficer.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetNaturalOfficerSchema as schema,
@@ -11,6 +15,7 @@ export const getNaturalOfficerController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initGetNaturalOfficerCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetNaturalOfficerParams
     Querystring: GetNaturalOfficerQueryString
@@ -18,11 +23,16 @@ export const getNaturalOfficerController: FastifyPluginAsync = async (
     const { officer_id } = req.params
     const {} = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
-    for (const [header, value] of Object.entries(ratelimit))
+    for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)
-    return reflect(req.url)
+    if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+      res.code(429).send('Rate limit hit')
+      return
+    }
     const { redis, mongo } = fastify
     const context: Context = { redis, mongo, req }
-    return getNaturalOfficer(context, officer_id)
+    const result = getNaturalOfficer(context, officer_id)
+    if (result) return result
+    else res.code(404).send('Not found')
   })
 }

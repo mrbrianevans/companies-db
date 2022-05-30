@@ -1,5 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { searchAll, Context } from '../service/searchAll.js'
+import {
+  searchAll,
+  Context,
+  initSearchAllCollection
+} from '../service/searchAll.js'
 import { reflect, auth } from './reflect.js'
 import {
   SearchAllSchema as schema,
@@ -11,6 +15,7 @@ export const searchAllController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initSearchAllCollection(fastify.mongo.db)
   fastify.get<{ Params: SearchAllParams; Querystring: SearchAllQueryString }>(
     '/search',
     schema,
@@ -18,12 +23,17 @@ export const searchAllController: FastifyPluginAsync = async (
       const {} = req.params
       const { q, items_per_page, start_index } = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
-      for (const [header, value] of Object.entries(ratelimit))
+      for (const [header, value] of Object.entries(ratelimit ?? {}))
         res.header(header, value)
-      return reflect(req.url)
+      if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+        res.code(429).send('Rate limit hit')
+        return
+      }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      return searchAll(context, q, items_per_page, start_index)
+      const result = searchAll(context, q, items_per_page, start_index)
+      if (result) return result
+      else res.code(404).send('Not found')
     }
   )
 }

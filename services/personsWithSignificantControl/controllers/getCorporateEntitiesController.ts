@@ -1,7 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
   getCorporateEntities,
-  Context
+  Context,
+  initGetCorporateEntitiesCollection
 } from '../service/getCorporateEntities.js'
 import { reflect, auth } from './reflect.js'
 import {
@@ -14,6 +15,7 @@ export const getCorporateEntitiesController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initGetCorporateEntitiesCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetCorporateEntitiesParams
     Querystring: GetCorporateEntitiesQueryString
@@ -24,12 +26,17 @@ export const getCorporateEntitiesController: FastifyPluginAsync = async (
       const { company_number, psc_id } = req.params
       const {} = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
-      for (const [header, value] of Object.entries(ratelimit))
+      for (const [header, value] of Object.entries(ratelimit ?? {}))
         res.header(header, value)
-      return reflect(req.url)
+      if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+        res.code(429).send('Rate limit hit')
+        return
+      }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      return getCorporateEntities(context, company_number, psc_id)
+      const result = getCorporateEntities(context, company_number, psc_id)
+      if (result) return result
+      else res.code(404).send('Not found')
     }
   )
 }

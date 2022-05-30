@@ -1,5 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getRegisters, Context } from '../service/getRegisters.js'
+import {
+  getRegisters,
+  Context,
+  initGetRegistersCollection
+} from '../service/getRegisters.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetRegistersSchema as schema,
@@ -11,6 +15,7 @@ export const getRegistersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initGetRegistersCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetRegistersParams
     Querystring: GetRegistersQueryString
@@ -18,11 +23,16 @@ export const getRegistersController: FastifyPluginAsync = async (
     const { company_number } = req.params
     const {} = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
-    for (const [header, value] of Object.entries(ratelimit))
+    for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)
-    return reflect(req.url)
+    if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+      res.code(429).send('Rate limit hit')
+      return
+    }
     const { redis, mongo } = fastify
     const context: Context = { redis, mongo, req }
-    return getRegisters(context, company_number)
+    const result = getRegisters(context, company_number)
+    if (result) return result
+    else res.code(404).send('Not found')
   })
 }

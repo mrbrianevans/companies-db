@@ -3,6 +3,9 @@ import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
+import { GetCompanyProfileSchema } from '../schemas/getCompanyProfileSchema.js'
+import { reflect } from '../controllers/reflect.js'
+
 export interface Context {
   redis: FastifyRedis
   mongo: FastifyMongoObject
@@ -15,20 +18,74 @@ const colName = 'getCompanyProfile'
 export async function initGetCompanyProfileCollection(
   db: FastifyMongoObject['db']
 ) {
-  await db.createCollection(colName, {
-    storageEngine: { wiredTiger: { configString: 'blockCompressor=zstd' } }
-  })
+  const exists = await db
+    .listCollections({ name: colName })
+    .toArray()
+    .then((a) => a.length)
+  if (!exists) {
+    console.log('Creating collection', colName)
+    const schema = { ...GetCompanyProfileSchema['schema']['response']['200'] }
+    delete schema.example // not supported by mongodb
+    await db.createCollection(colName, {
+      storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
+      // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
+      // validator: {$jsonSchema: schema },
+      // validationAction: "error" || "warn" // if a write fails validation
+    })
+    await db.collection(colName).createIndex({ company_number: 1 })
+  }
 }
 
 /**
  * Company profile.
  *
  * Get the basic company information.
+ *
  */
 export async function getCompanyProfile(
   context: Context,
   company_number: string
 ): Promise<GetCompanyProfileResponse> {
-  //todo: Write logic for function here, access database, return response
-  return Promise.resolve(null)
+  const collection =
+    context.mongo.db.collection<GetCompanyProfileResponse>(colName)
+  let res = await collection.findOne({ company_number })
+  if (!res) {
+    res = await callGetCompanyProfileApi({ company_number }, {})
+    if (res) {
+      try {
+        await collection.updateOne(
+          { company_number },
+          { $set: res },
+          { upsert: true }
+        )
+      } catch (e) {
+        if (e.code === 121) {
+          context.req.log.warn(
+            { company_number },
+            'Failed to upsert document from API due to validation error'
+          )
+        } else {
+          context.req.log.error(
+            { err: e },
+            'Failed to insert document for a different reason to validation'
+          )
+        }
+      }
+    }
+  }
+  return res ?? null
+}
+
+async function callGetCompanyProfileApi(pathParams, queryParams) {
+  const nonNullQueryParams = Object.fromEntries(
+    Object.entries(queryParams)
+      .filter(([k, v]) => v)
+      .map(([k, v]) => [k, v.toString()])
+  )
+  const urlQuery = new URLSearchParams(nonNullQueryParams)
+  const path = '/company/{company_number}'.replace(
+    /\{(.+?)}/g,
+    (w, n) => pathParams[n]
+  )
+  return await reflect(path + '?' + urlQuery.toString())
 }

@@ -20,12 +20,14 @@ export async function reflect(path) {
     { path, status: res.status },
     'Requested official API - response status'
   )
-  return await res.json()
+  if (res.ok) return await res.json()
+  else return null
 }
 export async function auth(headers) {
   try {
-    const ratelimit = await fetch(process.env.AUTH_URL, { headers }).then((r) =>
-      r.json()
+    const url = new URL(process.env.AUTH_URL)
+    const ratelimit = await fetch(url, { headers }).then((r) =>
+      r.ok ? r.json() : null
     )
     logger.info({ ratelimit }, 'Fetched ratelimit from auth service')
     return ratelimit

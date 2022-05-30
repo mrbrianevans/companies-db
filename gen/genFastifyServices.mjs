@@ -6,6 +6,7 @@ import {addPathSystemTest, genSystemTest} from "./files/genSystemTest.js";
 import YAML from 'yaml'
 import {genDockerCompose} from "./files/genDockerCompose.js";
 import {genPrometheusConfig} from "./files/genPrometheus.js";
+import {genServiceIndexFile, registerFastifyPluginInIndexFile} from "./files/genServiceIndexFiles.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -125,21 +126,7 @@ await fastify.listen({port: 3000, host: '::'})
             "include": ["**/*.ts"]
         }
         await writeFile(resolve(SERVICES_DIR, tag.name, 'tsconfig.json'), JSON.stringify(tsconfig, null, 2))
-        await writeFile(resolve(SERVICES_DIR, tag.name, 'index.ts'), prettyTs(`import Fastify from 'fastify'
-import fastifyRedis from "@fastify/redis";
-import fastifyMongo from "@fastify/mongodb";
-// --- import controllers ---
-
-const fastify = Fastify({logger: true})
-
-if(!process.env.REDIS_URL) throw new Error('REDIS_URL environment variable not set')
-fastify.register(fastifyRedis, {url: process.env.REDIS_URL})
-if(!process.env.MONGO_URL) throw new Error('MONGO_URL environment variable not set')
-fastify.register(fastifyMongo, {url: process.env.MONGO_URL + '/${tag.name}'})
-// --- register controllers ---
-
-await fastify.listen({port: 3000, host: '::'})
-`))
+        await genServiceIndexFile(SERVICES_DIR, tag)
         await writeFile(resolve(SERVICES_DIR, tag.name, 'Dockerfile'), `FROM node:18
 
 WORKDIR /service
@@ -263,23 +250,29 @@ export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['respons
         `))
         await writeFile(resolve(SERVICES_DIR, tag, 'controllers', name + 'Controller.ts'), prettyTs(`
 import {FastifyPluginAsync} from "fastify";
-import {${name}, Context} from "../service/${name}.js";
+import {${name}, Context, init${Name}Collection} from "../service/${name}.js";
 import { reflect, auth } from "./reflect.js";
 import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${name}Schema.js";
 
 
 
 export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
+  await init${Name}Collection(fastify.mongo.db)
   fastify.get<{Params: ${Name}Params, Querystring: ${Name}QueryString}>('${path.replace(/\{(.*?)}/g, (whole, pName) => ':' + pName)}', schema, async (req, res)=>{
     const {${parameters.filter(isPath).map(getName).join(', ')}} = req.params
     const {${parameters.filter(isQuery).map(getName).join(', ')}} = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
-      for(const [header, value] of Object.entries(ratelimit))
+      for(const [header, value] of Object.entries(ratelimit??{}))
         res.header(header, value)
-    return reflect(req.url)
+    if(ratelimit?.['X-Ratelimit-Remain'] <= 0){
+      res.code(429).send("Rate limit hit")
+      return
+    }
     const {redis, mongo} = fastify
     const context: Context = {redis, mongo, req}
-    return ${name}(context,${processParams(parameters)})
+    const result = ${name}(context,${processParams(parameters)})
+    if(result) return result
+    else res.code(404).send("Not found")
   })
 }
 
@@ -298,11 +291,14 @@ export async function reflect(path){
   logger.info({path, apiUrl, keySet: Boolean(process.env.RESTAPIKEY)}, "Outgoing request to Official API")
   const res = await fetch(apiUrl + path, { headers })
   logger.info({ path, status: res.status }, 'Requested official API - response status')
- return await res.json()
+  if(res.ok)
+  return await res.json()
+  else return null
 }
 export async function auth(headers) {
 try{
-  const ratelimit = await fetch(process.env.AUTH_URL, { headers }).then(r=>r.json())
+    const url = new URL(process.env.AUTH_URL)
+  const ratelimit = await fetch(url, { headers }).then(r=>r.ok ? r.json() : null)
   logger.info({ratelimit}, 'Fetched ratelimit from auth service')
   return ratelimit
   }catch (e){
@@ -318,6 +314,9 @@ import type {FastifyRedis} from "@fastify/redis";
 import type {FastifyMongoObject} from "@fastify/mongodb";
 import type {FastifyRequest} from "fastify";
 
+import { ${Name}Schema } from "../schemas/${name}Schema.js";
+import {reflect} from "../controllers/reflect.js";
+
 export interface Context{
   redis: FastifyRedis,
   mongo: FastifyMongoObject
@@ -328,27 +327,56 @@ const colName = '${name}'
 
 /** Must be called before any data is inserted */
 export async function init${Name}Collection(db: FastifyMongoObject['db']){
-  await db.createCollection(colName, {storageEngine: {wiredTiger: {configString: 'blockCompressor=zstd'}}})
+  const exists = await db.listCollections({name:colName}).toArray().then(a=>a.length)
+  if(!exists) {
+    console.log('Creating collection', colName)
+    const schema = {...${Name}Schema['schema']['response']['200']}
+    delete schema.example // not supported by mongodb
+    await db.createCollection(colName, {
+      storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}},
+      // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
+      // validator: {$jsonSchema: schema },
+       // validationAction: "error" || "warn" // if a write fails validation
+    })
+    ${parameters.filter(isPath).length ?`await db.collection(colName).createIndex({${parameters.filter(isPath).map(p=>getName(p) + ': 1').join(', ')}})`:''}
+  }
 }
 
 /**
- * ${summary??''}.
- *
- * ${description??''}.
+ * ${summary ? summary + '.\n *' :''}
+ * ${description ? description + '.\n *' :''}
  */
 export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response>{
-  //todo: Write logic for function here, access database, return response  
-  return Promise.resolve(null) 
+  const collection = context.mongo.db.collection<${Name}Response>(colName)
+  let res = await collection.findOne({${processParams(parameters.filter(isPath))}})
+  if(!res){
+    res = await call${Name}Api({${processParams(parameters.filter(isPath))}}, {${processParams(parameters.filter(isQuery))}})
+    if(res){
+    try{
+    await collection.updateOne({${processParams(parameters.filter(isPath))}}, {$set: res}, {upsert: true})
+    }      catch (e) {
+        if(e.code === 121){
+          context.req.log.warn({${processParams(parameters)}},"Failed to upsert document from API due to validation error")
+        }else{
+          context.req.log.error({err: e},
+            'Failed to insert document for a different reason to validation'
+          )
+        }
+      }
+  }
+  }
+  return res ?? null
 }
 
+async function call${Name}Api(pathParams, queryParams) {
+const nonNullQueryParams = Object.fromEntries(Object.entries(queryParams).filter(([k,v])=>v).map(([k,v])=>[k, v.toString()]))
+  const urlQuery = new URLSearchParams(nonNullQueryParams)
+    const path = '${path}'.replace(/\\{(.+?)}/g, (w, n)=> pathParams[n])
+  return await reflect(path + '?' + urlQuery.toString())
+}
 
 `))
-        // inject register to index fastify listener
-        const index = await readFile(resolve(SERVICES_DIR, tag, 'index.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
-fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}
-import { ${name}Controller } from '${['.', 'controllers', name + 'Controller.js'].join('/')}'`))
-        await writeFile(resolve(SERVICES_DIR, tag, 'index.ts'), prettyTs(index))
-
+        await registerFastifyPluginInIndexFile(SERVICES_DIR, tag, name, Name)
         const monolith = await readFile(resolve(SERVICES_DIR, 'monolith.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
 fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}
 import { ${name}Controller } from '${['.', tag, 'controllers', name + 'Controller.js'].join('/')}'`))

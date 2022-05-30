@@ -1,5 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { getLegalPersons, Context } from '../service/getLegalPersons.js'
+import {
+  getLegalPersons,
+  Context,
+  initGetLegalPersonsCollection
+} from '../service/getLegalPersons.js'
 import { reflect, auth } from './reflect.js'
 import {
   GetLegalPersonsSchema as schema,
@@ -11,6 +15,7 @@ export const getLegalPersonsController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  await initGetLegalPersonsCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetLegalPersonsParams
     Querystring: GetLegalPersonsQueryString
@@ -21,12 +26,17 @@ export const getLegalPersonsController: FastifyPluginAsync = async (
       const { company_number, psc_id } = req.params
       const {} = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
-      for (const [header, value] of Object.entries(ratelimit))
+      for (const [header, value] of Object.entries(ratelimit ?? {}))
         res.header(header, value)
-      return reflect(req.url)
+      if (ratelimit?.['X-Ratelimit-Remain'] <= 0) {
+        res.code(429).send('Rate limit hit')
+        return
+      }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      return getLegalPersons(context, company_number, psc_id)
+      const result = getLegalPersons(context, company_number, psc_id)
+      if (result) return result
+      else res.code(404).send('Not found')
     }
   )
 }
