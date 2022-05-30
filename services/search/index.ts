@@ -10,7 +10,9 @@ import { searchOfficersController } from './controllers/searchOfficersController
 import { searchCompaniesController } from './controllers/searchCompaniesController.js'
 import { searchAllController } from './controllers/searchAllController.js'
 
-const fastify = Fastify({ logger: true })
+const fastify = Fastify({
+  logger: { level: 'trace', base: { service: 'search' } }
+})
 
 if (!process.env.REDIS_URL)
   throw new Error('REDIS_URL environment variable not set')

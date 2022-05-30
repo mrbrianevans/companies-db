@@ -10,7 +10,9 @@ import { getCorporateEntitiesController } from './controllers/getCorporateEntiti
 import { getIndividualController } from './controllers/getIndividualController.js'
 import { listPersonsWithSignificantControlController } from './controllers/listPersonsWithSignificantControlController.js'
 
-const fastify = Fastify({ logger: true })
+const fastify = Fastify({
+  logger: { level: 'trace', base: { service: 'personsWithSignificantControl' } }
+})
 
 if (!process.env.REDIS_URL)
   throw new Error('REDIS_URL environment variable not set')

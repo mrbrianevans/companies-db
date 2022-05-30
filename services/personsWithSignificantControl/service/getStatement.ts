@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { GetStatementSchema } from '../schemas/getStatementSchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -48,7 +49,13 @@ export async function getStatement(
   statement_id: string
 ): Promise<GetStatementResponse> {
   const collection = context.mongo.db.collection<GetStatementResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({ company_number, statement_id })
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callGetStatementApi({ company_number, statement_id }, {})
     if (res) {

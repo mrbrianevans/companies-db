@@ -4,9 +4,11 @@ import {addCaddyFileEntry, newCaddyFile} from "./files/genCaddyFile.js";
 import {camelCase, kebabCase, prettyTs} from "./utils.js";
 import {addPathSystemTest, genSystemTest} from "./files/genSystemTest.js";
 import YAML from 'yaml'
-import {genDockerCompose} from "./files/genDockerCompose.js";
+import {genDockerCompose, genDockerfile} from "./files/genDockerCompose.js";
 import {genPrometheusConfig} from "./files/genPrometheus.js";
 import {genServiceIndexFile, registerFastifyPluginInIndexFile} from "./files/genServiceIndexFiles.js";
+import {genPackageJson} from "./files/genPackageJson.js";
+import {genServiceMonolith} from "./files/genServiceMonolith.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -26,121 +28,13 @@ async function createTagDirectories(tags) {
     await newCaddyFile(SERVICES_DIR)
     await genPrometheusConfig(SERVICES_DIR)
     await genDockerCompose(SERVICES_DIR, tags)
-    await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(`import Fastify from 'fastify'
-import fastifyRedis from '@fastify/redis'
-import fastifyMongo from '@fastify/mongodb'
-import 'dotenv/config'
-// --- import controllers ---
-
-const fastify = Fastify({logger: true})
-
-if (!process.env.REDIS_URL)
-  throw new Error('REDIS_URL environment variable not set')
-fastify.register(fastifyRedis, { url: process.env.REDIS_URL })
-if (!process.env.MONGO_URL)
-  throw new Error('MONGO_URL environment variable not set')
-fastify.register(fastifyMongo, { url: process.env.MONGO_URL + '/charges' })
-// --- register controllers ---
-
-await fastify.listen({port: 3000, host: '::'})
-`))
-    await writeFile(resolve(SERVICES_DIR, 'package.json'), JSON.stringify({
-            "name": "services",
-            "description": "Run all services in a monolith process",
-            "version": "1.0.0",
-            "type": "module",
-            "scripts": {
-                "start": "node monolith | pino-pretty -c -t",
-                "build": "tsc -b",
-                "watch": "tsc -b -w",
-                "clean": "tsc -b --clean"
-            },
-            "devDependencies": {
-                "@types/node": "^17.0.34",
-                "json-schema-to-ts": "^2.4.0",
-                "pino-pretty": "^7.6.1",
-                "typescript": "^4.6.4"
-            },
-            "dependencies": {
-                "@fastify/mongodb": "^6.0.1",
-                "@fastify/redis": "^6.0.0",
-                "dotenv": "^16.0.1",
-                "fastify": "4.0.0-rc.3",
-                "pino": "^7.11.0"
-            }
-        }, null, 2)
-    )
-    await writeFile(resolve(SERVICES_DIR, 'tsconfig.json'), JSON.stringify({
-        "compilerOptions": {
-            "module": "ES2022",
-            "target": "ES2021",
-            "sourceMap": true,
-            "moduleResolution": "node",
-            // "strictNullChecks": true
-        },
-        "exclude": [
-            "node_modules"
-        ],
-        references: tags.map(tag => ({path: tag.name}))
-    }, null, 2))
+    await genServiceMonolith(SERVICES_DIR, tags)
     for (const tag of tags) {
         await mkdir(resolve(SERVICES_DIR, tag.name), {recursive: true})
         await genSystemTest(SYS_TEST_DIR, tag.name)
-        await writeFile(resolve(SERVICES_DIR, tag.name, 'package.json'), JSON.stringify({
-            "name": kebabCase(tag.name+'-service'),
-            "description": tag.description,
-            "type": "module",
-            "scripts": {
-                "start": "node index | pino-pretty -c -t",
-                "build": "tsc -b",
-                "watch": "tsc -b -w",
-                "clean": "tsc -b --clean"
-            },
-            "version": "1.0.0",
-            "dependencies": {
-                "@fastify/mongodb": "^6.0.1",
-                "@fastify/redis": "^6.0.0",
-                "fastify": "4.0.0-rc.3",
-                "pino": "^7.11.0"
-            },
-            "devDependencies": {
-                "@types/node": "^17.0.34",
-                "pino-pretty": "^7.6.1",
-                "json-schema-to-ts": "^2.4.0",
-                "typescript": "^4.6.4"
-            }
-        }, null, 2))
-
-        const tsconfig = {
-            "compilerOptions": {
-                "module": "ES2022",
-                "target": "ES2021",
-                "sourceMap": true,
-                "moduleResolution": "node",
-                // "strictNullChecks": true,
-                "composite": true
-            },
-            "exclude": [
-                "node_modules"
-            ],
-            "include": ["**/*.ts"]
-        }
-        await writeFile(resolve(SERVICES_DIR, tag.name, 'tsconfig.json'), JSON.stringify(tsconfig, null, 2))
+        await genPackageJson(SERVICES_DIR, tag) // also does tsconfig
         await genServiceIndexFile(SERVICES_DIR, tag)
-        await writeFile(resolve(SERVICES_DIR, tag.name, 'Dockerfile'), `FROM node:18
-
-WORKDIR /service
-COPY package*.json ./
-RUN npm i
-COPY tsconfig.json index.ts ./
-COPY controllers controllers/
-COPY service service/
-COPY schemas schemas/
-RUN npm exec tsc -- -b --clean
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "run", "start"]
-`)
+        await genDockerfile(SERVICES_DIR, tag)
         await mkdir(resolve(SERVICES_DIR, tag.name, 'controllers'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'service'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'schemas'), {recursive: true})
@@ -316,6 +210,7 @@ import type {FastifyRequest} from "fastify";
 
 import { ${Name}Schema } from "../schemas/${name}Schema.js";
 import {reflect} from "../controllers/reflect.js";
+import {performance} from "perf_hooks";
 
 export interface Context{
   redis: FastifyRedis,
@@ -348,7 +243,10 @@ export async function init${Name}Collection(db: FastifyMongoObject['db']){
  */
 export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response>{
   const collection = context.mongo.db.collection<${Name}Response>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({${processParams(parameters.filter(isPath))}})
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace({findDurationMs, found: Boolean(res)}, 'Find one operation in MongoDB')
   if(!res){
     res = await call${Name}Api({${processParams(parameters.filter(isPath))}}, {${processParams(parameters.filter(isQuery))}})
     if(res){

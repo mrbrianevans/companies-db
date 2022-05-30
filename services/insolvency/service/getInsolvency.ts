@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { GetInsolvencySchema } from '../schemas/getInsolvencySchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -46,7 +47,13 @@ export async function getInsolvency(
   company_number: string
 ): Promise<GetInsolvencyResponse> {
   const collection = context.mongo.db.collection<GetInsolvencyResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({ company_number })
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callGetInsolvencyApi({ company_number }, {})
     if (res) {

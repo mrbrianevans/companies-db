@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { SearchCompaniesSchema } from '../schemas/searchCompaniesSchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -50,7 +51,13 @@ export async function searchCompanies(
 ): Promise<SearchCompaniesResponse> {
   const collection =
     context.mongo.db.collection<SearchCompaniesResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({})
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callSearchCompaniesApi(
       {},

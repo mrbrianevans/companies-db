@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { GetUKEstablishmentsSchema } from '../schemas/getUKEstablishmentsSchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -48,7 +49,13 @@ export async function getUKEstablishments(
 ): Promise<GetUKEstablishmentsResponse> {
   const collection =
     context.mongo.db.collection<GetUKEstablishmentsResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({ company_number })
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callGetUKEstablishmentsApi({ company_number }, {})
     if (res) {

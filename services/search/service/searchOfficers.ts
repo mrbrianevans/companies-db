@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { SearchOfficersSchema } from '../schemas/searchOfficersSchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -49,7 +50,13 @@ export async function searchOfficers(
 ): Promise<SearchOfficersResponse> {
   const collection =
     context.mongo.db.collection<SearchOfficersResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({})
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callSearchOfficersApi({}, { q, items_per_page, start_index })
     if (res) {

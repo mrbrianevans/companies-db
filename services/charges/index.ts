@@ -5,7 +5,9 @@ import fastifyMongo from '@fastify/mongodb'
 import { getChargesController } from './controllers/getChargesController.js'
 import { listChargesController } from './controllers/listChargesController.js'
 
-const fastify = Fastify({ logger: true })
+const fastify = Fastify({
+  logger: { level: 'trace', base: { service: 'charges' } }
+})
 
 if (!process.env.REDIS_URL)
   throw new Error('REDIS_URL environment variable not set')

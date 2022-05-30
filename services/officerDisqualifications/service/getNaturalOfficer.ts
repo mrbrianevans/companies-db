@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { GetNaturalOfficerSchema } from '../schemas/getNaturalOfficerSchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -48,7 +49,13 @@ export async function getNaturalOfficer(
 ): Promise<GetNaturalOfficerResponse> {
   const collection =
     context.mongo.db.collection<GetNaturalOfficerResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({ officer_id })
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callGetNaturalOfficerApi({ officer_id }, {})
     if (res) {

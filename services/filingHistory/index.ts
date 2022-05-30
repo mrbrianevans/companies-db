@@ -5,7 +5,9 @@ import fastifyMongo from '@fastify/mongodb'
 import { listFilingHistoryController } from './controllers/listFilingHistoryController.js'
 import { getFilingHistoryController } from './controllers/getFilingHistoryController.js'
 
-const fastify = Fastify({ logger: true })
+const fastify = Fastify({
+  logger: { level: 'trace', base: { service: 'filingHistory' } }
+})
 
 if (!process.env.REDIS_URL)
   throw new Error('REDIS_URL environment variable not set')

@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { GetSuperSecurePersonSchema } from '../schemas/getSuperSecurePersonSchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -53,7 +54,13 @@ export async function getSuperSecurePerson(
 ): Promise<GetSuperSecurePersonResponse> {
   const collection =
     context.mongo.db.collection<GetSuperSecurePersonResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({ company_number, super_secure_id })
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callGetSuperSecurePersonApi(
       { company_number, super_secure_id },

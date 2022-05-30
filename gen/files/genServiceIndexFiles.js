@@ -12,7 +12,7 @@ import fastifyRedis from "@fastify/redis";
 import fastifyMongo from "@fastify/mongodb";
 ${importMarker}
 
-const fastify = Fastify({logger: true})
+const fastify = Fastify({ logger: { level: 'trace', base: { service: '${tag.name}'} } })
 
 if(!process.env.REDIS_URL) throw new Error('REDIS_URL environment variable not set')
 fastify.register(fastifyRedis, {url: process.env.REDIS_URL})

@@ -5,6 +5,7 @@ import type { FastifyRequest } from 'fastify'
 
 import { GetLegalPersonsSchema } from '../schemas/getLegalPersonsSchema.js'
 import { reflect } from '../controllers/reflect.js'
+import { performance } from 'perf_hooks'
 
 export interface Context {
   redis: FastifyRedis
@@ -49,7 +50,13 @@ export async function getLegalPersons(
 ): Promise<GetLegalPersonsResponse> {
   const collection =
     context.mongo.db.collection<GetLegalPersonsResponse>(colName)
+  const startFind = performance.now()
   let res = await collection.findOne({ company_number, psc_id })
+  const findDurationMs = performance.now() - startFind
+  context.req.log.trace(
+    { findDurationMs, found: Boolean(res) },
+    'Find one operation in MongoDB'
+  )
   if (!res) {
     res = await callGetLegalPersonsApi({ company_number, psc_id }, {})
     if (res) {
