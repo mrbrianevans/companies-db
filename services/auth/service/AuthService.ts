@@ -89,20 +89,21 @@ export class AuthService {
     return randomUUID()
   }
 
-  //todo: this logic is not perfect, but it at least stubs the service with some information
   static getCurrentWindow(){
-    const window = Math.ceil(new Date().getMinutes() / WINDOW_SIZE_MINUTES)
+    const minutes = new Date().getMinutes()
+    const window = Math.floor( minutes / WINDOW_SIZE_MINUTES)
+    console.log('Get current window, minutes=', minutes, {window})
     return window
   }
 
   static getCurrentWindowReset(){
     const window = AuthService.getCurrentWindow()
     const resetDate = new Date()
-    resetDate.setMinutes(window * WINDOW_SIZE_MINUTES)
-    resetDate.setSeconds(0)
+    resetDate.setMinutes((window + 1) * WINDOW_SIZE_MINUTES)
+    resetDate.setSeconds(12)
     resetDate.setMilliseconds(0)
     const resetMs = resetDate.getTime()
-    return resetMs / 1000 // convert milliseconds to seconds
+    return Math.ceil(resetMs / 1000) // convert milliseconds to seconds
   }
 
   /**

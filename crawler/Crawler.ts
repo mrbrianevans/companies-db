@@ -1,4 +1,4 @@
-import { Db} from "mongodb";
+import {Db} from "mongodb";
 import 'dotenv/config'
 import {PassThrough, Writable} from "stream";
 import camelcase from "camelcase";
@@ -57,6 +57,8 @@ export class Crawler{
       let rateLimitRemaining = parseInt(r.headers.get('X-Ratelimit-Remain'))
       let rateLimitReset = parseInt(r.headers.get('X-Ratelimit-Reset'))
       if(rateLimitRemaining < 5) {
+        const rl = Array.from(r.headers.entries()).filter(([header])=>header.startsWith('x-ratelimit'))
+        // console.log(new Date(), rl)
         const delay = Math.abs((rateLimitReset * 1000) - Date.now()) + 1
         console.log("Sleeping", delay/1000, 'seconds for ratelimit to reset', new Date())
         await setTimeout(delay)
