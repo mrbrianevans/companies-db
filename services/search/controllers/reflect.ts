@@ -26,7 +26,7 @@ export async function reflect(path) {
 export async function auth(headers) {
   try {
     const url = new URL(process.env.AUTH_URL)
-    const ratelimit = await fetch(url, { headers }).then((r) =>
+    const ratelimit = await fetch(url.toString(), { headers }).then((r) =>
       r.ok ? r.json() : null
     )
     logger.info({ ratelimit }, 'Fetched ratelimit from auth service')

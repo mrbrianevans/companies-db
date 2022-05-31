@@ -23,11 +23,10 @@ export async function reflect(path) {
   if (res.ok) return await res.json()
   else return null
 }
-// this would be better served by a context argument, which contains the headers and a logger. to tie up logs with req
 export async function auth(headers) {
   try {
     const url = new URL(process.env.AUTH_URL)
-    const ratelimit = await fetch(url, { headers }).then((r) =>
+    const ratelimit = await fetch(url.toString(), { headers }).then((r) =>
       r.ok ? r.json() : null
     )
     logger.info({ ratelimit }, 'Fetched ratelimit from auth service')
