@@ -21,7 +21,6 @@ export const getCompanyProfileController: FastifyPluginAsync = async (
     Querystring: GetCompanyProfileQueryString
   }>('/company/:company_number', schema, async (req, res) => {
     const { company_number } = req.params
-    const {} = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
     for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)

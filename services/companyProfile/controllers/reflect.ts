@@ -25,7 +25,7 @@ export async function reflect(path) {
 }
 export async function auth(headers) {
   try {
-    const url = new URL(process.env.AUTH_URL)
+    const url = new URL(process.env.AUTH_URL??'') // todo: make a getEnv() function which throws if env not set
     const ratelimit = await fetch(url.toString(), { headers }).then((r) =>
       r.ok ? r.json() : null
     )
