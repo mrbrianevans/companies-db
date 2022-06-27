@@ -1,0 +1,159 @@
+{
+  "type": "object",
+  "properties": {
+    "company_number": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "object",
+          "properties": {
+            "address_line_1": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "locality": {
+              "type": "string"
+            },
+            "postal_code": {
+              "type": "string"
+            },
+            "premises": {
+              "type": "string"
+            },
+            "address_line_2": {
+              "type": "string"
+            },
+            "region": {
+              "type": "string"
+            },
+            "po_box": {
+              "type": "string"
+            },
+            "care_of": {
+              "type": "string"
+            }
+          }
+        },
+        "ceased_on": {
+          "type": "string"
+        },
+        "country_of_residence": {
+          "type": "string"
+        },
+        "date_of_birth": {
+          "type": "object",
+          "properties": {
+            "month": {
+              "type": "integer"
+            },
+            "year": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "month",
+            "year"
+          ]
+        },
+        "etag": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "self": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "self"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_elements": {
+          "type": "object",
+          "properties": {
+            "forename": {
+              "type": "string"
+            },
+            "middle_name": {
+              "type": "string"
+            },
+            "surname": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "forename",
+            "surname"
+          ]
+        },
+        "nationality": {
+          "type": "string"
+        },
+        "natures_of_control": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notified_on": {
+          "type": "string"
+        },
+        "identification": {
+          "type": "object",
+          "properties": {
+            "legal_authority": {
+              "type": "string"
+            },
+            "legal_form": {
+              "type": "string"
+            },
+            "country_registered": {
+              "type": "string"
+            },
+            "place_registered": {
+              "type": "string"
+            },
+            "registration_number": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "legal_authority",
+            "legal_form"
+          ]
+        },
+        "statement": {
+          "type": "string"
+        },
+        "restrictions_notice_withdrawal_reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "etag",
+        "kind",
+        "links",
+        "notified_on"
+      ]
+    }
+  },
+  "required": [
+    "company_number",
+    "data"
+  ]
+}

@@ -44,3 +44,41 @@ interface Address {
   region?: string;
   po_box?: string;
 }
+
+
+export interface StoredPsc{
+  pscId: string,
+  pscKind: 'legal'|'individual'|'corporate'|'super-secure'|'statement'
+
+  address?: {
+    addressLine1?: string;
+    country?: string;
+    locality?: string;
+    postalCode?: string;
+    premises?: string;
+    addressLine2?: string;
+    region?: string;
+    poBox?: string;
+  };
+  ceasedOn?: string;
+  countryOfResidence?: string;
+  dateOfBirth?: {
+    month: number;
+    year: number;
+  };
+  etag: string;
+  kind: string;
+  links: {
+    self: string;
+  };
+  name?: string;
+  nameElements?: {
+    forename: string;
+    middleName?: string;
+    surname: string;
+    title?: string;
+  };
+  nationality?: string;
+  naturesOfControl?: string[];
+  notifiedOn: string;
+}
