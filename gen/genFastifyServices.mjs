@@ -9,6 +9,7 @@ import {genPrometheusConfig} from "./files/genPrometheus.js";
 import {genServiceIndexFile, registerFastifyPluginInIndexFile} from "./files/genServiceIndexFiles.js";
 import {genPackageJson} from "./files/genPackageJson.js";
 import {genServiceMonolith} from "./files/genServiceMonolith.js";
+import {genMongoInsertStream} from "./files/mongoInsertStream.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -38,6 +39,7 @@ async function createTagDirectories(tags) {
         await mkdir(resolve(SERVICES_DIR, tag.name, 'controllers'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'service'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'schemas'), {recursive: true})
+        await mkdir(resolve(SERVICES_DIR, tag.name, 'loadBulk'), { recursive: true })
     }
 }
 
@@ -111,6 +113,7 @@ async function createRoutes(paths, responsePaths) {
         }
         await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema)
         await addCaddyFileEntry(SERVICES_DIR, path, tag)
+        await genMongoInsertStream(SERVICES_DIR, tag)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
