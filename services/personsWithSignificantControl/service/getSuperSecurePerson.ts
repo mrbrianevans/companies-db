@@ -2,6 +2,7 @@ import type { GetSuperSecurePersonResponse } from '../schemas/getSuperSecurePers
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import type { Db } from 'mongodb'
 
 import { GetSuperSecurePersonSchema } from '../schemas/getSuperSecurePersonSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,18 +18,18 @@ const colName = 'getSuperSecurePerson'
 
 /** Must be called before any data is inserted */
 export async function initGetSuperSecurePersonCollection(
-  db: FastifyMongoObject['db']
+  db: FastifyMongoObject['db'] | Db
 ) {
+  if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
     .toArray()
     .then((a) => a.length)
   if (!exists) {
     console.log('Creating collection', colName)
-    const schema = {
+    const { example, ...schema } = {
       ...GetSuperSecurePersonSchema['schema']['response']['200']
     }
-    delete schema.example // not supported by mongodb
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -51,7 +52,8 @@ export async function getSuperSecurePerson(
   context: Context,
   company_number: string,
   super_secure_id: string
-): Promise<GetSuperSecurePersonResponse> {
+): Promise<GetSuperSecurePersonResponse | null> {
+  if (!context.mongo.db) throw new Error('DB not defined')
   const collection =
     context.mongo.db.collection<GetSuperSecurePersonResponse>(colName)
   const startFind = performance.now()
@@ -95,7 +97,7 @@ async function callGetSuperSecurePersonApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
-      .map(([k, v]) => [k, v.toString()])
+      .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
   const path =

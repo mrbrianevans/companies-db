@@ -20,7 +20,6 @@ export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
     Params: SearchDisqualifiedOfficersParams
     Querystring: SearchDisqualifiedOfficersQueryString
   }>('/search/disqualified-officers', schema, async (req, res) => {
-    const {} = req.params
     const { q, items_per_page, start_index } = req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })
     for (const [header, value] of Object.entries(ratelimit ?? {}))

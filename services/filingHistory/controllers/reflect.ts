@@ -3,18 +3,19 @@ const logger = pino()
 const apiUrl = 'https://api.company-information.service.gov.uk'
 const headers = {
   Authorization:
-    'Basic ' + Buffer.from(process.env.RESTAPIKEY + ':').toString('base64')
+    'Basic ' + Buffer.from(getEnv('RESTAPIKEY') + ':').toString('base64')
 }
 
-if (!process.env.AUTH_URL) logger.error('AUTH_URL environment variable not set')
-if (!process.env.RESTAPIKEY)
-  logger.error('RESTAPIKEY environment variable not set')
+/** Get an environment variable, or throw if its not set */
+export function getEnv(name: string): string {
+  const value = process.env[name]
+  if (value === undefined)
+    throw new Error(`${name} environment variable not set`)
+  return value
+}
 
 export async function reflect(path) {
-  logger.info(
-    { path, apiUrl, keySet: Boolean(process.env.RESTAPIKEY) },
-    'Outgoing request to Official API'
-  )
+  logger.info({ path, apiUrl }, 'Outgoing request to Official API')
   const res = await fetch(apiUrl + path, { headers })
   logger.info(
     { path, status: res.status },
@@ -25,7 +26,7 @@ export async function reflect(path) {
 }
 export async function auth(headers) {
   try {
-    const url = new URL(process.env.AUTH_URL)
+    const url = new URL(getEnv('AUTH_URL'))
     const ratelimit = await fetch(url.toString(), { headers }).then((r) =>
       r.ok ? r.json() : null
     )

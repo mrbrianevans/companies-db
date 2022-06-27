@@ -18,7 +18,6 @@ export const searchCompaniesAlphabeticallyController: FastifyPluginAsync =
       Params: SearchCompaniesAlphabeticallyParams
       Querystring: SearchCompaniesAlphabeticallyQueryString
     }>('/alphabetical-search/companies', schema, async (req, res) => {
-      const {} = req.params
       const { q, search_above, search_below, size } = req.query
       const ratelimit = await auth({ Authorization: req.headers.authorization })
       for (const [header, value] of Object.entries(ratelimit ?? {}))

@@ -20,7 +20,6 @@ export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
     Params: SearchDissolvedCompaniesParams
     Querystring: SearchDissolvedCompaniesQueryString
   }>('/dissolved-search/companies', schema, async (req, res) => {
-    const {} = req.params
     const { q, search_type, search_above, search_below, size, start_index } =
       req.query
     const ratelimit = await auth({ Authorization: req.headers.authorization })

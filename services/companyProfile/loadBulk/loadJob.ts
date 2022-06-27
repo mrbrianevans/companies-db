@@ -6,6 +6,7 @@ import {transformCompany} from "./transformCompanyFromBulk.js";
 import dot from 'dot-object'
 import type {GetCompanyProfileResponse} from "../schemas/getCompanyProfileSchema.js";
 import {initGetCompanyProfileCollection} from "../service/getCompanyProfile";
+import {getEnv} from "../controllers/reflect.js";
 
 const sample = `CompanyName, CompanyNumber,RegAddress.CareOf,RegAddress.POBox,RegAddress.AddressLine1, RegAddress.AddressLine2,RegAddress.PostTown,RegAddress.County,RegAddress.Country,RegAddress.PostCode,CompanyCategory,CompanyStatus,CountryOfOrigin,DissolutionDate,IncorporationDate,Accounts.AccountRefDay,Accounts.AccountRefMonth,Accounts.NextDueDate,Accounts.LastMadeUpDate,Accounts.AccountCategory,Returns.NextDueDate,Returns.LastMadeUpDate,Mortgages.NumMortCharges,Mortgages.NumMortOutstanding,Mortgages.NumMortPartSatisfied,Mortgages.NumMortSatisfied,SICCode.SicText_1,SICCode.SicText_2,SICCode.SicText_3,SICCode.SicText_4,LimitedPartnerships.NumGenPartners,LimitedPartnerships.NumLimPartners,URI,PreviousName_1.CONDATE, PreviousName_1.CompanyName, PreviousName_2.CONDATE, PreviousName_2.CompanyName,PreviousName_3.CONDATE, PreviousName_3.CompanyName,PreviousName_4.CONDATE, PreviousName_4.CompanyName,PreviousName_5.CONDATE, PreviousName_5.CompanyName,PreviousName_6.CONDATE, PreviousName_6.CompanyName,PreviousName_7.CONDATE, PreviousName_7.CompanyName,PreviousName_8.CONDATE, PreviousName_8.CompanyName,PreviousName_9.CONDATE, PreviousName_9.CompanyName,PreviousName_10.CONDATE, PreviousName_10.CompanyName,ConfStmtNextDueDate, ConfStmtLastMadeUpDate
 "! LIMITED","12778855","","","UNIT 3 NEWTON BUSINESS CENTRE","NEWTON CHAMBERS ROAD","SHEFFIELD","","UNITED KINGDOM","S35 2PH","Private Limited Company","Active","United Kingdom","","29/07/2020","31","7","29/04/2022","","NO ACCOUNTS FILED","26/08/2021","","0","0","0","0","78300 - Human resources provision and management of human resources functions","","","","0","0","http://business.data.gov.uk/id/company/12778855","","","","","","","","","","","","","","","","","","","","","11/08/2021",""
@@ -43,7 +44,7 @@ class MongoInserter extends Writable{
   }
   async _construct(callback: (error?: (Error | null)) => void) {
     try{
-      const mongo = new MongoClient(process.env.MONGO_URL??'')
+      const mongo = new MongoClient(getEnv('MONGO_URL'))
       await mongo.connect()
       this.mongo = mongo
       this.bulk = mongo.db(this.dbName).collection(this.collectionName).initializeUnorderedBulkOp({})
@@ -84,7 +85,7 @@ class MongoInserter extends Writable{
 
 const inserter = new MongoInserter('ch', 'blk')
 
-const mongo = new MongoClient(process.env.MONGO_URL??'')
+const mongo = new MongoClient(getEnv('MONGO_URL'))
 await mongo.connect()
 await initGetCompanyProfileCollection(mongo.db('company-profile'))
 await mongo.close()

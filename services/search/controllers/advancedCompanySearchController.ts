@@ -20,7 +20,6 @@ export const advancedCompanySearchController: FastifyPluginAsync = async (
     Params: AdvancedCompanySearchParams
     Querystring: AdvancedCompanySearchQueryString
   }>('/advanced-search/companies', schema, async (req, res) => {
-    const {} = req.params
     const {
       company_name,
       company_status,

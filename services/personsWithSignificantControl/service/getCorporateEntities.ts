@@ -2,6 +2,7 @@ import type { GetCorporateEntitiesResponse } from '../schemas/getCorporateEntiti
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import type { Db } from 'mongodb'
 
 import { GetCorporateEntitiesSchema } from '../schemas/getCorporateEntitiesSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,18 +18,18 @@ const colName = 'getCorporateEntities'
 
 /** Must be called before any data is inserted */
 export async function initGetCorporateEntitiesCollection(
-  db: FastifyMongoObject['db']
+  db: FastifyMongoObject['db'] | Db
 ) {
+  if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
     .toArray()
     .then((a) => a.length)
   if (!exists) {
     console.log('Creating collection', colName)
-    const schema = {
+    const { example, ...schema } = {
       ...GetCorporateEntitiesSchema['schema']['response']['200']
     }
-    delete schema.example // not supported by mongodb
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -49,7 +50,8 @@ export async function getCorporateEntities(
   context: Context,
   company_number: string,
   psc_id: string
-): Promise<GetCorporateEntitiesResponse> {
+): Promise<GetCorporateEntitiesResponse | null> {
+  if (!context.mongo.db) throw new Error('DB not defined')
   const collection =
     context.mongo.db.collection<GetCorporateEntitiesResponse>(colName)
   const startFind = performance.now()
@@ -90,7 +92,7 @@ async function callGetCorporateEntitiesApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
-      .map(([k, v]) => [k, v.toString()])
+      .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
   const path =

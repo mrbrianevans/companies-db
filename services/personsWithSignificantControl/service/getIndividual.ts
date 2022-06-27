@@ -2,6 +2,7 @@ import type { GetIndividualResponse } from '../schemas/getIndividualSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import type { Db } from 'mongodb'
 
 import { GetIndividualSchema } from '../schemas/getIndividualSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,16 +18,18 @@ const colName = 'getIndividual'
 
 /** Must be called before any data is inserted */
 export async function initGetIndividualCollection(
-  db: FastifyMongoObject['db']
+  db: FastifyMongoObject['db'] | Db
 ) {
+  if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
     .toArray()
     .then((a) => a.length)
   if (!exists) {
     console.log('Creating collection', colName)
-    const schema = { ...GetIndividualSchema['schema']['response']['200'] }
-    delete schema.example // not supported by mongodb
+    const { example, ...schema } = {
+      ...GetIndividualSchema['schema']['response']['200']
+    }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -47,7 +50,8 @@ export async function getIndividual(
   context: Context,
   company_number: string,
   psc_id: string
-): Promise<GetIndividualResponse> {
+): Promise<GetIndividualResponse | null> {
+  if (!context.mongo.db) throw new Error('DB not defined')
   const collection = context.mongo.db.collection<GetIndividualResponse>(colName)
   const startFind = performance.now()
   let res = await collection.findOne({ company_number, psc_id })
@@ -87,7 +91,7 @@ async function callGetIndividualApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
-      .map(([k, v]) => [k, v.toString()])
+      .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
   const path =

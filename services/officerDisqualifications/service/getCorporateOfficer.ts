@@ -2,6 +2,7 @@ import type { GetCorporateOfficerResponse } from '../schemas/getCorporateOfficer
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import type { Db } from 'mongodb'
 
 import { GetCorporateOfficerSchema } from '../schemas/getCorporateOfficerSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,16 +18,18 @@ const colName = 'getCorporateOfficer'
 
 /** Must be called before any data is inserted */
 export async function initGetCorporateOfficerCollection(
-  db: FastifyMongoObject['db']
+  db: FastifyMongoObject['db'] | Db
 ) {
+  if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
     .toArray()
     .then((a) => a.length)
   if (!exists) {
     console.log('Creating collection', colName)
-    const schema = { ...GetCorporateOfficerSchema['schema']['response']['200'] }
-    delete schema.example // not supported by mongodb
+    const { example, ...schema } = {
+      ...GetCorporateOfficerSchema['schema']['response']['200']
+    }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -46,7 +49,8 @@ export async function initGetCorporateOfficerCollection(
 export async function getCorporateOfficer(
   context: Context,
   officer_id: string
-): Promise<GetCorporateOfficerResponse> {
+): Promise<GetCorporateOfficerResponse | null> {
+  if (!context.mongo.db) throw new Error('DB not defined')
   const collection =
     context.mongo.db.collection<GetCorporateOfficerResponse>(colName)
   const startFind = performance.now()
@@ -87,7 +91,7 @@ async function callGetCorporateOfficerApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
-      .map(([k, v]) => [k, v.toString()])
+      .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
   const path = '/disqualified-officers/corporate/{officer_id}'.replace(

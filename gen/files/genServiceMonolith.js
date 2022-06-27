@@ -46,7 +46,10 @@ await fastify.listen({port: 3000, host: '::'})
                 "@fastify/mongodb": "^6.0.1",
                 "@fastify/redis": "^6.0.0",
                 "dotenv": "^16.0.1",
+                "dot-object": "^2.1.4", // used for converting bulk CSV file to JSON
                 "fastify": "4.0.0-rc.3",
+                "mongodb": "^4.0.1", // used for bulk inserting data into Mongo
+                "papaparse": "^5.3.2", // used for parsing CSV
                 "pino": "^7.11.0"
             }
         }, null, 2)

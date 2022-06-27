@@ -4,6 +4,7 @@
     "target": "ES2021",
     "sourceMap": true,
     "moduleResolution": "node",
+    "strictNullChecks": true,
     "composite": true
   },
   "exclude": [

@@ -2,6 +2,7 @@ import type { GetCompanyProfileResponse } from '../schemas/getCompanyProfileSche
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import type { Db } from 'mongodb'
 
 import { GetCompanyProfileSchema } from '../schemas/getCompanyProfileSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,16 +18,18 @@ const colName = 'getCompanyProfile'
 
 /** Must be called before any data is inserted */
 export async function initGetCompanyProfileCollection(
-  db: FastifyMongoObject['db']
+  db: FastifyMongoObject['db'] | Db
 ) {
-  if(!db) throw new Error('DB not defined')
+  if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
     .toArray()
     .then((a) => a.length)
   if (!exists) {
     console.log('Creating collection', colName)
-    const {example, ...schema} = { ...GetCompanyProfileSchema['schema']['response']['200'] }
+    const { example, ...schema } = {
+      ...GetCompanyProfileSchema['schema']['response']['200']
+    }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -46,8 +49,8 @@ export async function initGetCompanyProfileCollection(
 export async function getCompanyProfile(
   context: Context,
   company_number: string
-): Promise<GetCompanyProfileResponse|null> {
-  if(!context.mongo.db) throw new Error('DB not defined')
+): Promise<GetCompanyProfileResponse | null> {
+  if (!context.mongo.db) throw new Error('DB not defined')
   const collection =
     context.mongo.db.collection<GetCompanyProfileResponse>(colName)
   const startFind = performance.now()

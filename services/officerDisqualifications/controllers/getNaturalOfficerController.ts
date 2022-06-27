@@ -21,7 +21,7 @@ export const getNaturalOfficerController: FastifyPluginAsync = async (
     Querystring: GetNaturalOfficerQueryString
   }>('/disqualified-officers/natural/:officer_id', schema, async (req, res) => {
     const { officer_id } = req.params
-    const {} = req.query
+
     const ratelimit = await auth({ Authorization: req.headers.authorization })
     for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)

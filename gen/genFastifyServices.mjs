@@ -153,8 +153,8 @@ import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../sc
 export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
   await init${Name}Collection(fastify.mongo.db)
   fastify.get<{Params: ${Name}Params, Querystring: ${Name}QueryString}>('${path.replace(/\{(.*?)}/g, (whole, pName) => ':' + pName)}', schema, async (req, res)=>{
-    const {${parameters.filter(isPath).map(getName).join(', ')}} = req.params
-    const {${parameters.filter(isQuery).map(getName).join(', ')}} = req.query
+    ${parameters.filter(isPath).length ? `const {${parameters.filter(isPath).map(getName).join(', ')}} = req.params`:''}
+     ${parameters.filter(isQuery).length ? `const {${parameters.filter(isQuery).map(getName).join(', ')}} = req.query`:''}
       const ratelimit = await auth({ Authorization: req.headers.authorization })
       for(const [header, value] of Object.entries(ratelimit??{}))
         res.header(header, value)
@@ -176,13 +176,18 @@ export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
         import pino from 'pino'
 const logger = pino()
         const apiUrl = 'https://api.company-information.service.gov.uk'
-const headers =  {Authorization: 'Basic '+Buffer.from(process.env.RESTAPIKEY+':').toString('base64')}
+const headers =  {Authorization: 'Basic '+Buffer.from(getEnv('RESTAPIKEY')+':').toString('base64')}
 
-if(!process.env.AUTH_URL) logger.error('AUTH_URL environment variable not set')
-if(!process.env.RESTAPIKEY) logger.error('RESTAPIKEY environment variable not set')
+/** Get an environment variable, or throw if its not set */
+export function getEnv(name: string): string{
+    const value = process.env[name]
+    if(value === undefined) throw new Error(\`$\{name} environment variable not set\`)
+    return value
+}
+
 
 export async function reflect(path){
-  logger.info({path, apiUrl, keySet: Boolean(process.env.RESTAPIKEY)}, "Outgoing request to Official API")
+  logger.info({path, apiUrl}, "Outgoing request to Official API")
   const res = await fetch(apiUrl + path, { headers })
   logger.info({ path, status: res.status }, 'Requested official API - response status')
   if(res.ok)
@@ -191,7 +196,7 @@ export async function reflect(path){
 }
 export async function auth(headers) {
 try{
-    const url = new URL(process.env.AUTH_URL)
+    const url = new URL(getEnv('AUTH_URL'))
   const ratelimit = await fetch(url.toString(), { headers }).then(r=>r.ok ? r.json() : null)
   logger.info({ratelimit}, 'Fetched ratelimit from auth service')
   return ratelimit
@@ -207,6 +212,7 @@ import type { ${Name}Response } from "../schemas/${name}Schema.js";
 import type {FastifyRedis} from "@fastify/redis";
 import type {FastifyMongoObject} from "@fastify/mongodb";
 import type {FastifyRequest} from "fastify";
+import type {Db} from "mongodb";
 
 import { ${Name}Schema } from "../schemas/${name}Schema.js";
 import {reflect} from "../controllers/reflect.js";
@@ -221,12 +227,12 @@ export interface Context{
 const colName = '${name}'
 
 /** Must be called before any data is inserted */
-export async function init${Name}Collection(db: FastifyMongoObject['db']){
+export async function init${Name}Collection(db: FastifyMongoObject['db']|Db){
+  if(!db) throw new Error('DB not defined')
   const exists = await db.listCollections({name:colName}).toArray().then(a=>a.length)
   if(!exists) {
     console.log('Creating collection', colName)
-    const schema = {...${Name}Schema['schema']['response']['200']}
-    delete schema.example // not supported by mongodb
+    const {example, ...schema} = { ...${Name}Schema['schema']['response']['200'] }
     await db.createCollection(colName, {
       storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}},
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -241,7 +247,8 @@ export async function init${Name}Collection(db: FastifyMongoObject['db']){
  * ${summary ? summary + '.\n *' :''}
  * ${description ? description + '.\n *' :''}
  */
-export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response>{
+export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response|null>{
+  if(!context.mongo.db) throw new Error('DB not defined')
   const collection = context.mongo.db.collection<${Name}Response>(colName)
   const startFind = performance.now()
   let res = await collection.findOne({${processParams(parameters.filter(isPath))}})
@@ -267,7 +274,7 @@ export async function ${name}(context: Context, ${processParams(parameters, true
 }
 
 async function call${Name}Api(pathParams, queryParams) {
-const nonNullQueryParams = Object.fromEntries(Object.entries(queryParams).filter(([k,v])=>v).map(([k,v])=>[k, v.toString()]))
+const nonNullQueryParams = Object.fromEntries(Object.entries(queryParams).filter(([k,v])=>v).map(([k,v])=>[k, String(v)]))
   const urlQuery = new URLSearchParams(nonNullQueryParams)
     const path = '${path}'.replace(/\\{(.+?)}/g, (w, n)=> pathParams[n])
   return await reflect(path + '?' + urlQuery.toString())

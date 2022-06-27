@@ -21,7 +21,7 @@ export const getRegistersController: FastifyPluginAsync = async (
     Querystring: GetRegistersQueryString
   }>('/company/:company_number/registers', schema, async (req, res) => {
     const { company_number } = req.params
-    const {} = req.query
+
     const ratelimit = await auth({ Authorization: req.headers.authorization })
     for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)

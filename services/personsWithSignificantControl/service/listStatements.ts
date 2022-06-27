@@ -2,6 +2,7 @@ import type { ListStatementsResponse } from '../schemas/listStatementsSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import type { Db } from 'mongodb'
 
 import { ListStatementsSchema } from '../schemas/listStatementsSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,16 +18,18 @@ const colName = 'listStatements'
 
 /** Must be called before any data is inserted */
 export async function initListStatementsCollection(
-  db: FastifyMongoObject['db']
+  db: FastifyMongoObject['db'] | Db
 ) {
+  if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
     .toArray()
     .then((a) => a.length)
   if (!exists) {
     console.log('Creating collection', colName)
-    const schema = { ...ListStatementsSchema['schema']['response']['200'] }
-    delete schema.example // not supported by mongodb
+    const { example, ...schema } = {
+      ...ListStatementsSchema['schema']['response']['200']
+    }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -49,7 +52,8 @@ export async function listStatements(
   items_per_page?: number,
   start_index?: number,
   register_view?: undefined
-): Promise<ListStatementsResponse> {
+): Promise<ListStatementsResponse | null> {
+  if (!context.mongo.db) throw new Error('DB not defined')
   const collection =
     context.mongo.db.collection<ListStatementsResponse>(colName)
   const startFind = performance.now()
@@ -93,7 +97,7 @@ async function callListStatementsApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
-      .map(([k, v]) => [k, v.toString()])
+      .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
   const path =

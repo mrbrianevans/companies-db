@@ -2,6 +2,7 @@ import type { GetChargesResponse } from '../schemas/getChargesSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import type { Db } from 'mongodb'
 
 import { GetChargesSchema } from '../schemas/getChargesSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -16,15 +17,19 @@ export interface Context {
 const colName = 'getCharges'
 
 /** Must be called before any data is inserted */
-export async function initGetChargesCollection(db: FastifyMongoObject['db']) {
+export async function initGetChargesCollection(
+  db: FastifyMongoObject['db'] | Db
+) {
+  if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
     .toArray()
     .then((a) => a.length)
   if (!exists) {
     console.log('Creating collection', colName)
-    const schema = { ...GetChargesSchema['schema']['response']['200'] }
-    delete schema.example // not supported by mongodb
+    const { example, ...schema } = {
+      ...GetChargesSchema['schema']['response']['200']
+    }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
@@ -46,7 +51,8 @@ export async function getCharges(
   context: Context,
   company_number: string,
   charge_id: string
-): Promise<GetChargesResponse> {
+): Promise<GetChargesResponse | null> {
+  if (!context.mongo.db) throw new Error('DB not defined')
   const collection = context.mongo.db.collection<GetChargesResponse>(colName)
   const startFind = performance.now()
   let res = await collection.findOne({ company_number, charge_id })
@@ -86,7 +92,7 @@ async function callGetChargesApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
-      .map(([k, v]) => [k, v.toString()])
+      .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
   const path = '/company/{company_number}/charges/{charge_id}'.replace(
