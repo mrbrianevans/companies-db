@@ -1,6 +1,6 @@
 import {FastifyRedis} from "@fastify/redis";
 import {FastifyRequest} from "fastify";
-import {randomBytes} from "crypto";
+import {randomUUID} from "crypto";
 
 const WINDOW_SIZE_MINUTES = 5
 const DEFAULT_QUOTA = 600
@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   static getNewApiKey(){
-    return randomBytes(33).toString('base64').replaceAll(/[^a-zA-Z0-9=]/g, '')
+    return randomUUID()
   }
 
   static getCurrentWindow(){
