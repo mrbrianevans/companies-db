@@ -2,7 +2,6 @@ import type { GetIndividualResponse } from '../schemas/getIndividualSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
-import type { Db } from 'mongodb'
 
 import { GetIndividualSchema } from '../schemas/getIndividualSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -18,7 +17,7 @@ const colName = 'getIndividual'
 
 /** Must be called before any data is inserted */
 export async function initGetIndividualCollection(
-  db: FastifyMongoObject['db'] | Db
+  db: FastifyMongoObject['db']
 ) {
   if (!db) throw new Error('DB not defined')
   const exists = await db
@@ -36,7 +35,9 @@ export async function initGetIndividualCollection(
       // validator: {$jsonSchema: schema },
       // validationAction: "error" || "warn" // if a write fails validation
     })
-    await db.collection(colName).createIndex({ company_number: 1, psc_id: 1 })
+    await db
+      .collection(colName)
+      .createIndex({ company_number: 1, psc_id: 1 }, { unique: true })
   }
 }
 

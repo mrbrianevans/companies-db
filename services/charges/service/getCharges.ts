@@ -2,7 +2,6 @@ import type { GetChargesResponse } from '../schemas/getChargesSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
-import type { Db } from 'mongodb'
 
 import { GetChargesSchema } from '../schemas/getChargesSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,9 +16,7 @@ export interface Context {
 const colName = 'getCharges'
 
 /** Must be called before any data is inserted */
-export async function initGetChargesCollection(
-  db: FastifyMongoObject['db'] | Db
-) {
+export async function initGetChargesCollection(db: FastifyMongoObject['db']) {
   if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
@@ -38,7 +35,7 @@ export async function initGetChargesCollection(
     })
     await db
       .collection(colName)
-      .createIndex({ company_number: 1, charge_id: 1 })
+      .createIndex({ company_number: 1, charge_id: 1 }, { unique: true })
   }
 }
 

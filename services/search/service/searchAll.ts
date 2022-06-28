@@ -2,7 +2,6 @@ import type { SearchAllResponse } from '../schemas/searchAllSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
-import type { Db } from 'mongodb'
 
 import { SearchAllSchema } from '../schemas/searchAllSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -17,9 +16,7 @@ export interface Context {
 const colName = 'searchAll'
 
 /** Must be called before any data is inserted */
-export async function initSearchAllCollection(
-  db: FastifyMongoObject['db'] | Db
-) {
+export async function initSearchAllCollection(db: FastifyMongoObject['db']) {
   if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })

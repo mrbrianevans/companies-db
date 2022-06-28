@@ -215,7 +215,6 @@ import type { ${Name}Response } from "../schemas/${name}Schema.js";
 import type {FastifyRedis} from "@fastify/redis";
 import type {FastifyMongoObject} from "@fastify/mongodb";
 import type {FastifyRequest} from "fastify";
-import type {Db} from "mongodb";
 
 import { ${Name}Schema } from "../schemas/${name}Schema.js";
 import {reflect} from "../controllers/reflect.js";
@@ -230,7 +229,7 @@ export interface Context{
 const colName = '${name}'
 
 /** Must be called before any data is inserted */
-export async function init${Name}Collection(db: FastifyMongoObject['db']|Db){
+export async function init${Name}Collection(db: FastifyMongoObject['db']){
   if(!db) throw new Error('DB not defined')
   const exists = await db.listCollections({name:colName}).toArray().then(a=>a.length)
   if(!exists) {
@@ -242,7 +241,7 @@ export async function init${Name}Collection(db: FastifyMongoObject['db']|Db){
       // validator: {$jsonSchema: schema },
        // validationAction: "error" || "warn" // if a write fails validation
     })
-    ${parameters.filter(isPath).length ?`await db.collection(colName).createIndex({${parameters.filter(isPath).map(p=>getName(p) + ': 1').join(', ')}})`:''}
+    ${parameters.filter(isPath).length ?`await db.collection(colName).createIndex({${parameters.filter(isPath).map(p=>getName(p) + ': 1').join(', ')}},{unique: true})`:''}
   }
 }
 

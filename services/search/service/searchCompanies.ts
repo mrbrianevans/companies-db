@@ -2,7 +2,6 @@ import type { SearchCompaniesResponse } from '../schemas/searchCompaniesSchema.j
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
-import type { Db } from 'mongodb'
 
 import { SearchCompaniesSchema } from '../schemas/searchCompaniesSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -18,7 +17,7 @@ const colName = 'searchCompanies'
 
 /** Must be called before any data is inserted */
 export async function initSearchCompaniesCollection(
-  db: FastifyMongoObject['db'] | Db
+  db: FastifyMongoObject['db']
 ) {
   if (!db) throw new Error('DB not defined')
   const exists = await db

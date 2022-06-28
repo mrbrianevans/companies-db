@@ -21,10 +21,10 @@ export async function genPackageJson(SERVICES_DIR, tag){
             "@fastify/mongodb": "^6.0.1",
             "@fastify/redis": "^6.0.0",
             "dot-object": "^2.1.4", // used for converting bulk CSV file to JSON
-            "fastify": "4.0.0-rc.3",
-            "mongodb": "^4.0.1", // used for bulk inserting data into Mongo
+            "fastify": "4.2.0",
+            "mongodb": "^4.0.1",// used for bulk inserting data into Mongo
             "papaparse": "^5.3.2", // used for parsing CSV
-            "pino": "^7.11.0"
+            "pino": "^8.1.0",
         },
         "devDependencies": {
             "@types/node": "^17.0.34",
