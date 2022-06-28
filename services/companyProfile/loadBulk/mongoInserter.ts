@@ -9,6 +9,8 @@ export class MongoInserter<ChunkType = any> extends Writable {
   collectionName: string
   dbName: string
   uidField: keyof ChunkType
+  private readonly startTime: number
+  private counter: number
   /**
    * @param dbName - mongo DB name
    * @param collectionName - mongo collection name
@@ -19,10 +21,12 @@ export class MongoInserter<ChunkType = any> extends Writable {
     collectionName: string,
     uidField: keyof ChunkType
   ) {
-    super({ objectMode: true, highWaterMark: 1000 })
+    super({ objectMode: true, highWaterMark: 10000 })
     this.dbName = dbName
     this.collectionName = collectionName
     this.uidField = uidField
+    this.startTime = performance.now()
+    this.counter = 0
   }
   async _construct(callback: (error?: Error | null) => void) {
     try {
@@ -50,19 +54,23 @@ export class MongoInserter<ChunkType = any> extends Writable {
     const startTime = performance.now()
     await bulk.execute()
     const execTime = performance.now() - startTime
-    console.log(
-      'WriteV perf:',
-      chunks.length,
-      'in',
-      execTime.toFixed(2),
-      'millis. ',
-      (chunks.length / (execTime / 1000)).toFixed(2),
-      'per second'
-    )
+    const numChunks = chunks.length;
+    this.counter += numChunks
+    // console.log(
+    //   'WriteV perf:',
+    //   numChunks,
+    //   'in',
+    //   execTime.toFixed(2),
+    //   'millis. ',
+    //   (numChunks / (execTime / 1000)).toFixed(2),
+    //   'per second'
+    // )
     callback()
   }
 
   async _final(callback: (error?: Error | null) => void) {
+    const execTime = performance.now() - this.startTime
+    console.log('Processed',this.counter,'chunks in', execTime.toFixed(2), 'milliseconds. Avg', (this.counter/(execTime/1000)).toFixed(2),'per second')
     await this.mongo.close()
     callback()
   }
