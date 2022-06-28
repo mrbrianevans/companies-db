@@ -9,7 +9,14 @@ interface Data {
   country_of_residence?: string;
   date_of_birth?: Dateofbirth;
   etag: string;
-  kind: string;
+  kind:
+    | 'individual-person-with-significant-control'
+    | 'legal-person-person-with-significant-control'
+    |'corporate-entity-person-with-significant-control'
+    |'super-secure-person-with-significant-control'
+    |'persons-with-significant-control-statement'
+    | 'exemptions'
+    | "totals#persons-of-significant-control-snapshot";
   links: Links;
   name?: string;
   name_elements?: Nameelements;

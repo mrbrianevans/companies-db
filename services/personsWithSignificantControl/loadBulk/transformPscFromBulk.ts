@@ -5,8 +5,10 @@ export function transformPscFromBulk(bulkPscRecord: PscBulk): StoredPsc{
   const {data} = bulkPscRecord
   const {address} = data;
   const linkRegex = /^\/company\/[A-Z\d]{8}\/persons-with-significant-control(-statements)|(\/[a-z-]+)?\//
-  const linkMatch = data.links.self.match(linkRegex)
-  if(linkMatch === null) throw new Error('Could not parse ID from PSC in bulk file record '+data.links.self)
+  const linkMatch = data.links?.self?.match(linkRegex)
+  if(linkMatch === null)
+    throw new Error('Could not parse ID from PSC in bulk file record ' + data.links?.self??JSON.stringify(data))
+
   const pscId = data.links.self.replace(linkRegex, '')
   if(!(data.kind in PscKindsConverter)) throw new Error('Could not match PSC kind: '+data.kind)
   return {
@@ -68,5 +70,7 @@ const PscKindsConverter = {
   'legal-person-person-with-significant-control':'legal',
   'corporate-entity-person-with-significant-control': 'corporate',
   'super-secure-person-with-significant-control': 'super-secure',
-  'persons-with-significant-control-statement':'statement'
+  'persons-with-significant-control-statement':'statement',
+  exemptions: 'exemptions',
+  "totals#persons-of-significant-control-snapshot": "summary"
 } as const

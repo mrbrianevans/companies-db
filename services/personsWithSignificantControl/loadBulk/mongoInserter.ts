@@ -21,7 +21,7 @@ export class MongoInserter<ChunkType = any> extends Writable {
     collectionName: string,
     uidField: keyof ChunkType
   ) {
-    super({ objectMode: true, highWaterMark: 1000 })
+    super({ objectMode: true, highWaterMark: 10000 })
     this.dbName = dbName
     this.collectionName = collectionName
     this.uidField = uidField
@@ -56,15 +56,15 @@ export class MongoInserter<ChunkType = any> extends Writable {
     const execTime = performance.now() - startTime
     const numChunks = chunks.length;
     this.counter += numChunks
-    console.log(
-      'WriteV perf:',
-      numChunks,
-      'in',
-      execTime.toFixed(2),
-      'millis. ',
-      (numChunks / (execTime / 1000)).toFixed(2),
-      'per second'
-    )
+    // console.log(
+    //   'WriteV perf:',
+    //   numChunks,
+    //   'in',
+    //   execTime.toFixed(2),
+    //   'millis. ',
+    //   (numChunks / (execTime / 1000)).toFixed(2),
+    //   'per second'
+    // )
     callback()
   }
 
