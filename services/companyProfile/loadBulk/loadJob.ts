@@ -1,6 +1,6 @@
 import Papa from 'papaparse'
 import {MongoClient} from "mongodb";
-import {createReadStream, createWriteStream} from "fs";
+import {createWriteStream} from "fs";
 import {transformCompany} from "./transformCompanyFromBulk.js";
 import dot from 'dot-object'
 import type {GetCompanyProfileResponse} from "../schemas/getCompanyProfileSchema.js";
@@ -13,9 +13,8 @@ import {pipeline} from "stream/promises";
 import {once} from "node:events";
 import {promisify} from "util";
 import {Readable, Transform} from "node:stream";
-
 import * as yauzl from 'yauzl'
-import {PassThrough} from "stream";
+
 const yauzlOpenZip = promisify(yauzl.open)
 
 
@@ -48,14 +47,11 @@ async function downloadFile(index:number,total = 7){
 async function unzipFile(zipFilename: string){
   // @ts-ignore
   const zipfile = await yauzlOpenZip(zipFilename, {lazyEntries: true, autoClose: true})
-  zipfile.on('end', ()=>console.log('zip file ended'))
   if(zipfile.entryCount === 1){
     let openReadStream = promisify(zipfile.openReadStream.bind(zipfile));
     zipfile.readEntry();
     const [entry] = await once(zipfile, 'entry')
-    const stream = await openReadStream(entry)
-    // stream.on('end', ()=>console.log('file read stream ended'))
-    return stream
+    return await openReadStream(entry)
   }else{
     throw new Error('More than one file in zip archive')
   }
@@ -82,29 +78,18 @@ async function loadAll(total = 7, limit?:number){
         const apiResponse = transformCompany(obj)
         callback( null, apiResponse )
       }
-    })// transform objects from their shape in the bulk file to API response shape
-    const stringify = new Transform({
-      writableObjectMode: true,
-      readableObjectMode: false,
-      transform(chunk: any, encoding: BufferEncoding, callback) {
-        callback( null, JSON.stringify(chunk)+'\n' )
-      }
     })
 
     console.time("Pipeline "+i)
-    // const ac = new AbortController()
-    // unzipStream.on('end', ()=>console.log("unzipStream end event fired"))
-    // parseStream.on('end', ()=>ac.abort())
-    // unzipStream.on('finish', ()=>console.log("finish event fired"))
-    // unzipStream.on('close', ()=>console.log("Close event fired"))
     // unzip => parse CSV => transform objects => insert to mongo
-    await pipeline(unzipStream, parseStream, transformer, inserter) // todo: doesn't ever resolve for some reason??
-    // unzipStream.pipe(parseStream).pipe(transformer).pipe(inserter).on('end', ()=>console.log("Whole pipe ended"))
-    // unzipStream.pipe(parseStream).pipe(transformer).take(10000).pipe(stringify).pipe(createWriteStream(`./test${i}.csv`))
-      // .on('end', ()=>console.log("Whole pipe ended"))
-    // await pipeline(createReadStream(`./test${i}.csv`), parseStream, stringify, createWriteStream(`./test${i}.json`), {signal:ac.signal})
+    await pipeline(unzipStream, parseStream, transformer, inserter)
     console.timeEnd("Pipeline "+i)
-  }, {concurrency: 8}).toArray()
+  }, {concurrency: 1}).toArray()
+  // tried a few values for concurrency:
+  // - concurrency=8 avg 856 per second
+  // - concurrency=2 avg 2642 per second
+  // - concurrency=1 avg 5446 per second
+  // not sure what the bottle neck is? maybe network?
 }
 
 async function createIndex(){
@@ -118,4 +103,4 @@ async function createIndex(){
 await loadAll(7)
 
 // this can load a file of 4,957,745 companies in 17m28s (averages 5,000 per second on my machine)
-// gonna be faster when chunks are working
+// gonna be faster when chunks are working. each chunk took 16 min to insert into mongo. avg 850 per second
