@@ -129,6 +129,7 @@ async function genLoadBulkPackageJson(SERVICES_DIR, tagName){
         main: "loadJob.js",
         "scripts": {
             "build": "tsc --build",
+            "watch": "tsc --build --watch",
             "start": "node loadJob.js"
         },
         "version": "1.0.0",

@@ -7,12 +7,15 @@ import {transformPscFromBulk} from "./transformPscFromBulk.js";
 import {pipeline} from "stream/promises";
 import {once} from 'node:events'
 import {request} from "http";
-
+import {setTimeout} from "timers/promises";
 import { resolve } from "path";
 import { stat , mkdir} from "node:fs/promises";
 import {promisify} from "util";
 import * as yauzl from 'yauzl'
 import type {PscBulk} from "./bulkFileTypes.js";
+import {MongoClient} from "mongodb";
+import {getEnv} from "./utils.js";
+import {PassThrough, Transform, Writable} from "stream";
 const yauzlOpenZip = promisify(yauzl.open)
 /*
 unfortunately, its impossible to stream the zip file through a pipeline due to the format used (.ZIP).
@@ -21,6 +24,8 @@ The best way to do this is going to be to download the "chunks" of 60mb from CH,
 Readable.map({concurrency:8}) to download 8 chunks at a time. Need a library like archiver to unzip files.
 Could also use a worker_thread() for each chunk.
  */
+const DB_NAME = 'ch';
+const concurrency = 11
 const date = new Date().toISOString().split('T')[0]
 /** using HTTP
  * @param index - the index of the file to download. eg 1of21
@@ -66,6 +71,38 @@ async function unzipFile(zipFilename: string){
   }
 }
 
+// a transform stream that slows down a stream and only writes in batches of HWM. More efficient mongo inserts this way.
+// buffers chunks until the buffer reaches a certain size, then it corks, writes all chunks, and uncorks.
+class SlowDown extends Transform{
+  bufferedChunks: any[]
+  bufferSize: number
+  constructor(bufferSize: number) {
+    super({objectMode: true});
+    this.bufferSize = bufferSize
+    this.bufferedChunks = []
+  }
+  releaseChunks(){
+    this.cork()
+    for (const i in this.bufferedChunks) {
+      this.push(this.bufferedChunks.pop()) // atomic operation to pop and push in a single line.
+    }
+    this.uncork()
+  }
+  _transform(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
+    this.bufferedChunks.push(chunk)
+    if(this.bufferedChunks.length > this.bufferSize){
+      // console.log("releasing chunks due to filled buffer",this.bufferedChunks.length)
+      this.releaseChunks()
+    }
+    callback()
+  }
+  _flush(callback) {
+    // console.log("Flushed with", this.bufferedChunks.length, 'chunks still in buffer')
+    this.releaseChunks()
+    callback()
+  }
+}
+
 
 async function loadAllFiles(total = 21, limit ?:number){
   console.time(`Load ${limit??total} files`)
@@ -73,6 +110,8 @@ async function loadAllFiles(total = 21, limit ?:number){
   const segments = Array.from({length:total},(v,i)=>i+1)
   // @ts-ignore
   await Readable.from(segments).take(limit??total).map(async (i)=>{
+    //staggered start
+    await setTimeout((i-1) % concurrency * 5_000) // sleep for the number of seconds of the file
     console.time('Full process file '+i)
     console.time('Download ZIP file '+i)
     const zipFilename = await downloadFile(i, total)
@@ -86,24 +125,67 @@ async function loadAllFiles(total = 21, limit ?:number){
     // stream and parse the json (.txt) file
     const file = createReadStream(textFile, {highWaterMark: 65536}) // could pipe output of unzip straight to an interface, and avoid an unnecessary file save
     const lines = createInterface({input: file})
-    const inserter = new MongoInserter<StoredPsc>('ch', 'psc','pscId')
+    const individualInserter = new SlowDown(10000)
+    individualInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'individual', "pscId"))
+    const legalInserter = new SlowDown(10000)
+    legalInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'legal', "pscId"))
+    const corporateInserter = new SlowDown(10000)
+    corporateInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'corporate', "pscId"))
+    const superSecureInserter = new SlowDown(10000)
+    superSecureInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'super-secure', "pscId"))
+    const statementInserter = new SlowDown(10000)
+    statementInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'statement', "pscId"))
+    const summaryInserter = new MongoInserter<StoredPsc>(DB_NAME, 'summary', "pscId")
+    const exemptionsInserter = new SlowDown(10000)
+    exemptionsInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'exemptions', "pscId"))
+
+    const splitterStream = new Writable({
+      objectMode: true,
+      highWaterMark: 3000,
+      write(chunk: PscBulk, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
+        switch (chunk.data.kind) {
+          case "individual-person-with-significant-control":
+            individualInserter.write(transformPscFromBulk(chunk), callback)
+            break;
+          case "legal-person-person-with-significant-control":
+            legalInserter.write(transformPscFromBulk(chunk), callback)
+            break;
+          case "corporate-entity-person-with-significant-control":
+            corporateInserter.write(transformPscFromBulk(chunk), callback)
+            break;
+          case "super-secure-person-with-significant-control":
+            superSecureInserter.write(transformPscFromBulk(chunk), callback)
+            break;
+          case "persons-with-significant-control-statement":
+            statementInserter.write(transformPscFromBulk(chunk), callback)
+            break;
+          case "totals#persons-of-significant-control-snapshot":
+            summaryInserter.write(chunk, callback)
+            break;
+          case "exemptions":
+            exemptionsInserter.write(transformPscFromBulk(chunk), callback)
+            break;
+        }
+      },
+      async final(callback: (error?: (Error | null)) => void) {
+        await new Promise(res=>individualInserter.end(res))
+        await new Promise(res=>legalInserter.end(res))
+        await new Promise(res=>corporateInserter.end(res))
+        await new Promise(res=>superSecureInserter.end(res))
+        await new Promise(res=>statementInserter.end(res))
+        await new Promise(res=>summaryInserter.end(res))
+        await new Promise(res=>exemptionsInserter.end(res))
+        callback()
+      }
+    })
     // insert to mongo
     console.time('Insert file '+i)
-    const insertStream= Readable.from(lines)
+    const insertStream = Readable.from(lines)
       // @ts-ignore
       // .take(100_000)
       // .drop(300_000)
       .map(JSON.parse)
-      .filter((l: PscBulk)=> {
-        if(l.data.kind === "totals#persons-of-significant-control-snapshot"){
-          console.log('file contents summary',l.data)
-          return false
-        }else{
-          return true
-        }
-      })
-      .map(transformPscFromBulk)
-      .pipe(inserter)
+      .pipe(splitterStream)
     await once(insertStream, 'finish')
     console.timeEnd('Insert file '+i)
     lines.close()
@@ -111,8 +193,29 @@ async function loadAllFiles(total = 21, limit ?:number){
     console.log()
     console.timeEnd('Full process file '+i)
     console.log()
-  }, {concurrency: 10}).toArray()
+  }, {concurrency}).toArray()
   console.timeEnd(`Load ${limit??total} files`)
 }
+const collections = ['legal','individual','corporate','super-secure','statement','exemptions','summary']
+/**
+ * Creates collections with compression and an index on pscId (if not exists).
+ */
+async function createIndexes(){
+  const mongo = new MongoClient(getEnv('MONGO_URL'))
+  await mongo.connect()
+  for (const collection of collections) {
+    const exists = await mongo.db(DB_NAME)
+      .listCollections({ name: collection })
+      .toArray()
+      .then((a) => a.length)
+    if (!exists) {
+      console.log("Creating collection and index", {DB_NAME, collection})
+      await mongo.db(DB_NAME).createCollection(collection, {storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}}})
+      await mongo.db(DB_NAME).collection(collection).createIndex({pscId: 1}, {unique: true})
+    }
+  }
+  await mongo.close()
+}
 
+await createIndexes()
 await loadAllFiles(21)

@@ -64,8 +64,38 @@ async function unzipFile(zipFilename: string){
   }
 }
 
+// buffers chunks until the buffer reaches a certain size, then it corks, writes all chunks, and uncorks.
+class SlowDown extends Transform{
+  bufferedChunks: any[]
+  bufferSize: number
+  constructor(bufferSize: number) {
+    super({objectMode: true});
+    this.bufferSize = bufferSize
+    this.bufferedChunks = []
+  }
+  releaseChunks(){
+    this.cork()
+    for (const i in this.bufferedChunks) {
+      this.push(this.bufferedChunks.pop())
+    }
+    this.uncork()
+  }
+  _transform(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
+    this.bufferedChunks.push(chunk)
+    if(this.bufferedChunks.length > this.bufferSize){
+      this.releaseChunks()
+    }
+    callback()
+  }
+  _flush(callback) {
+    console.log("Flushed")
+    this.releaseChunks()
+    callback()
+  }
+}
 
 async function loadAll(total = 7, limit?:number){
+  console.time(`Load ${limit??total} files`)
 
   const segments = Array.from({length:total},(v,i)=>i+1)
   // @ts-ignore
@@ -87,11 +117,14 @@ async function loadAll(total = 7, limit?:number){
       }
     })
 
+    const slower = new SlowDown(1000)
+    slower.pipe(inserter)
     console.time("Pipeline "+i)
     // unzip => parse CSV => transform objects => insert to mongo
-    await pipeline(unzipStream, parseStream, transformer, inserter)
+    await pipeline(unzipStream, parseStream, transformer, slower)
     console.timeEnd("Pipeline "+i)
   }, {concurrency: 1}).toArray()
+  console.timeEnd(`Load ${limit??total} files`)
   // tried a few values for concurrency:
   // - concurrency=8 avg 856 per second
   // - concurrency=2 avg 2642 per second

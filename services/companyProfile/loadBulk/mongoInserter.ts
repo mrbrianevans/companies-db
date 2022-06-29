@@ -56,6 +56,7 @@ export class MongoInserter<ChunkType = any> extends Writable {
     const execTime = performance.now() - startTime
     const numChunks = chunks.length
     this.counter += numChunks
+    console.log('WriteV perf:', chunks.length,'in', execTime.toFixed(2),'millis. ', (chunks.length / (execTime/1000)).toFixed(2),'per second',this.dbName,this.collectionName)
     callback()
   }
 
