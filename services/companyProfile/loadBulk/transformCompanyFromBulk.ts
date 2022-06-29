@@ -1,6 +1,7 @@
 import type {BulkCompaniesCsvMongo, IntermediateCompany, EurDateString} from "./CompanyProfileTypes";
-import {GetCompanyProfileResponse} from "../schemas/getCompanyProfileSchema";
+
 import {randomUUID} from "crypto";
+import {GetCompanyProfile} from "./ApiResponseType";
 
 function convertDateFromChToEur(dateString?: undefined): undefined
 function convertDateFromChToEur(dateString: string): EurDateString
@@ -66,15 +67,25 @@ export function transformCompanyFromBulk(company: BulkCompaniesCsvMongo.Company)
   }
 
   // transforms a company into the shape of an API response to store in mongo to be served on an endpoint
-  export function transformCompany(company: BulkCompaniesCsvMongo.Company): GetCompanyProfileResponse{
+  export function transformCompany(company: BulkCompaniesCsvMongo.Company): GetCompanyProfile{
   const intermediate = transformCompanyFromBulk(company)
     return {
+      jurisdiction: "", undeliverable_registered_office_address: false,
       can_file: false, //todo: work out what this actually means
       company_name: intermediate.name,
       company_number: intermediate.companyNumber,
       etag: randomUUID(), //todo: not good! this ought to be changed?
       date_of_creation: intermediate.incorporationDate,
-      registered_office_address: intermediate.address,
+      registered_office_address: {
+        address_line_1: intermediate.address.addressLine1,
+        address_line_2: intermediate.address.addressLine2,
+        country: intermediate.address.country,
+        care_of: intermediate.address.careOf,
+         locality: intermediate.address.county, //todo: not sure if this is right
+        po_box: intermediate.address.poBox,
+        region: intermediate.address.county, //todo: not sure if this is right
+        postal_code: intermediate.address.postCode
+      },
       links: {
         self: `/company/${intermediate.companyNumber}`,
         filing_history: `/company/${intermediate.companyNumber}/filing-history`
@@ -85,8 +96,10 @@ export function transformCompanyFromBulk(company: BulkCompaniesCsvMongo.Company)
       confirmation_statement: {
         last_made_up_to: intermediate.confirmationStatement?.lastMadeUpTo,
         next_due: intermediate.confirmationStatement?.nextDueDate??'undefined',
-        next_made_up_to: 'undefined' //todo: can perhaps calculate this by the accounts reference period and last made up to?
+        next_made_up_to: 'undefined', //todo: can perhaps calculate this by the accounts reference period and last made up to?
+        overdue: false //todo: this needs to be calculated by accounting reference date and last_made_up_to etc
       },
+      //todo: previous names. work out effective from and ceased on dates.
       accounts:{
         accounting_reference_date: {
           month: intermediate.accounts?.accountingReference.month?.toString()??'undefined',

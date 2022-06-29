@@ -1,22 +1,29 @@
+//native imports
+import {createWriteStream} from "node:fs";
+import {resolve} from "node:path";
+import {mkdir, stat} from "node:fs/promises";
+import {request} from "node:http";
+import {pipeline} from "node:stream/promises";
+import {once} from "node:events";
+import {promisify} from "node:util";
+import {Readable, Transform} from "node:stream";
+
+// package imports
 import Papa from 'papaparse'
 import {MongoClient} from "mongodb";
-import {createWriteStream} from "fs";
-import {transformCompany} from "./transformCompanyFromBulk.js";
 import dot from 'dot-object'
-import type {GetCompanyProfileResponse} from "../schemas/getCompanyProfileSchema.js";
-import {getEnv} from "../controllers/reflect.js";
-import {MongoInserter} from './mongoInserter.js';
-import {resolve} from "path";
-import {mkdir, stat} from "node:fs/promises";
-import {request} from "http";
-import {pipeline} from "stream/promises";
-import {once} from "node:events";
-import {promisify} from "util";
-import {Readable, Transform} from "node:stream";
 import * as yauzl from 'yauzl'
+
+//project imports
+import {transformCompany} from "./transformCompanyFromBulk.js";
+import type {GetCompanyProfile} from "./ApiResponseType.js";
+import {getEnv} from "./utils.js";
+import {MongoInserter} from './mongoInserter.js';
 
 const yauzlOpenZip = promisify(yauzl.open)
 
+const DB_NAME = 'ch'
+const COLL_NAME = 'blk'
 
 const today = new Date()
 today.setUTCDate(1)
@@ -68,7 +75,7 @@ async function loadAll(total = 7, limit?:number){
     console.timeEnd("Download file "+i)
     const unzipStream = await unzipFile(zipFilename)
     const parseStream = Papa.parse(Papa.NODE_STREAM_INPUT, {header: true, fastMode: false, transformHeader: h=>h.trim(), dynamicTyping: h=>h!=='CompanyNumber', transform: val=>val===''?undefined:val})
-    const inserter = new MongoInserter<GetCompanyProfileResponse>('ch', 'blk', 'company_number')
+    const inserter = new MongoInserter<GetCompanyProfile>(DB_NAME, COLL_NAME, 'company_number')
 
     // transform objects from their shape in the bulk file to API response shape
     const transformer = new Transform({
@@ -92,14 +99,25 @@ async function loadAll(total = 7, limit?:number){
   // not sure what the bottle neck is? maybe network?
 }
 
+/**
+ * Creates collection with compression and an index on company number (if not exists).
+ */
 async function createIndex(){
   const mongo = new MongoClient(getEnv('MONGO_URL'))
   await mongo.connect()
-  await mongo.db('ch').createCollection('blk', {storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }})
-  await mongo.db('ch').collection('blk').createIndex({company_number:1}, {unique: true})
+  const exists = await mongo.db(DB_NAME)
+    .listCollections({ name: COLL_NAME })
+    .toArray()
+    .then((a) => a.length)
+  if (!exists) {
+    console.log("Creating collection and index", {DB_NAME, COLL_NAME})
+    await mongo.db(DB_NAME).createCollection(COLL_NAME, {storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}}})
+    await mongo.db(DB_NAME).collection(COLL_NAME).createIndex({company_number: 1}, {unique: true})
+  }
   await mongo.close()
 }
 
+await createIndex()
 await loadAll(7)
 
 // this can load a file of 4,957,745 companies in 17m28s (averages 5,000 per second on my machine)
