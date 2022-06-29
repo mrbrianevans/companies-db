@@ -1,13 +1,14 @@
 FROM node:18
 
+RUN corepack enable && corepack prepare pnpm@7.4.0 --activate
 WORKDIR /service
 COPY package*.json ./
-RUN npm i
+RUN pnpm install
 COPY tsconfig.json index.ts ./
 COPY controllers controllers/
 COPY service service/
 COPY schemas schemas/
-RUN npm exec tsc -- -b --clean
-RUN npm run build
+RUN pnpm run clean
+RUN pnpm run build
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["pnpm", "run", "start"]

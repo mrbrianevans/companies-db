@@ -10,14 +10,15 @@ export async function genServiceIndexFile(SERVICES_DIR, tag){
     await writeFile(resolve(SERVICES_DIR, tag.name, 'index.ts'), prettyTs(`import Fastify from 'fastify'
 import fastifyRedis from "@fastify/redis";
 import fastifyMongo from "@fastify/mongodb";
+import {getEnv} from "./controllers/reflect.js";
 ${importMarker}
 
-const fastify = Fastify({ logger: { level: 'trace', base: { service: '${tag.name}'} } })
+const fastify = Fastify({
+  logger: { level: 'trace', base: { service: 'companyProfile' } }
+})
 
-if(!process.env.REDIS_URL) throw new Error('REDIS_URL environment variable not set')
-fastify.register(fastifyRedis, {url: process.env.REDIS_URL})
-if(!process.env.MONGO_URL) throw new Error('MONGO_URL environment variable not set')
-fastify.register(fastifyMongo, {url: process.env.MONGO_URL + '/${tag.name}'})
+fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })
+fastify.register(fastifyMongo, { url: getEnv('MONGO_URL') + '/${tag.name}'})
 ${registerMarker}
 
 await fastify.listen({port: 3000, host: '::'})

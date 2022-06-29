@@ -1,6 +1,7 @@
 import Fastify from 'fastify'
 import fastifyRedis from '@fastify/redis'
 import fastifyMongo from '@fastify/mongodb'
+import { getEnv } from './controllers/reflect.js'
 // --- import controllers ---
 import { getSuperSecurePersonController } from './controllers/getSuperSecurePersonController.js'
 import { getStatementController } from './controllers/getStatementController.js'
@@ -11,16 +12,12 @@ import { getIndividualController } from './controllers/getIndividualController.j
 import { listPersonsWithSignificantControlController } from './controllers/listPersonsWithSignificantControlController.js'
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'personsWithSignificantControl' } }
+  logger: { level: 'trace', base: { service: 'companyProfile' } }
 })
 
-if (!process.env.REDIS_URL)
-  throw new Error('REDIS_URL environment variable not set')
-fastify.register(fastifyRedis, { url: process.env.REDIS_URL })
-if (!process.env.MONGO_URL)
-  throw new Error('MONGO_URL environment variable not set')
+fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })
 fastify.register(fastifyMongo, {
-  url: process.env.MONGO_URL + '/personsWithSignificantControl'
+  url: getEnv('MONGO_URL') + '/personsWithSignificantControl'
 })
 // --- register controllers ---
 fastify.register(getSuperSecurePersonController)

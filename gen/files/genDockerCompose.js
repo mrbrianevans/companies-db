@@ -35,16 +35,65 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
 export async function genDockerfile(SERVICES_DIR, tag){
     await writeFile(resolve(SERVICES_DIR, tag.name, 'Dockerfile'), `FROM node:18
 
+RUN corepack enable && corepack prepare pnpm@7.4.0 --activate
 WORKDIR /service
 COPY package*.json ./
-RUN npm i
+RUN pnpm install
 COPY tsconfig.json index.ts ./
 COPY controllers controllers/
 COPY service service/
 COPY schemas schemas/
-RUN npm exec tsc -- -b --clean
-RUN npm run build
+RUN pnpm run clean
+RUN pnpm run build
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["pnpm", "run", "start"]
 `)
+}
+/** docker compose file for each service */
+export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
+    const content = {
+        "version": "3.9",
+        "services": {
+            "db": {
+                "image": "mongo",
+                "volumes": [
+                    "data:/data/db"
+                ]
+            },
+            "cache": {
+                "image": "redis",
+                "volumes": [
+                    "redisdata:/data"
+                ]
+            },
+            "loader": {
+                "build": "loadBulk",
+                "volumes": [
+                    "downloads:/loadBulk/downloads"
+                ],
+                "environment": {
+                    "MONGO_URL": "mongodb://db"
+                }
+            },
+            "endpoints": {
+                "build": ".",
+                "environment": {
+                    "MONGO_URL": "mongodb://db:27017",
+                    "REDIS_URL": "redis://cache:6379"
+                },
+                "env_file": [
+                    "../.api.env"
+                ],
+                "ports": [
+                    "3000:3000"
+                ]
+            }
+        },
+        "volumes": {
+            "data": null,
+            "downloads": null,
+            "redisdata": null
+        }
+    }
+    await writeFile(resolve(SERVICES_DIR, tag.name, 'docker-compose.yaml'), YAML.stringify(content, {defaultStringType: 'QUOTE_DOUBLE'}))
 }

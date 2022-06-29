@@ -4,12 +4,12 @@ import {addCaddyFileEntry, newCaddyFile} from "./files/genCaddyFile.js";
 import {camelCase, kebabCase, prettyTs} from "./utils.js";
 import {addPathSystemTest, genSystemTest} from "./files/genSystemTest.js";
 import YAML from 'yaml'
-import {genDockerCompose, genDockerfile} from "./files/genDockerCompose.js";
+import {genDockerCompose, genDockerfile, genServiceDockerComposeFile} from "./files/genDockerCompose.js";
 import {genPrometheusConfig} from "./files/genPrometheus.js";
 import {genServiceIndexFile, registerFastifyPluginInIndexFile} from "./files/genServiceIndexFiles.js";
 import {genPackageJson} from "./files/genPackageJson.js";
 import {genServiceMonolith} from "./files/genServiceMonolith.js";
-import {genMongoInsertStream} from "./files/mongoInsertStream.js";
+import {genLoadBulk} from "./files/genLoadBulk.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -36,6 +36,7 @@ async function createTagDirectories(tags) {
         await genPackageJson(SERVICES_DIR, tag) // also does tsconfig
         await genServiceIndexFile(SERVICES_DIR, tag)
         await genDockerfile(SERVICES_DIR, tag)
+        await genServiceDockerComposeFile(SERVICES_DIR, tag)
         await mkdir(resolve(SERVICES_DIR, tag.name, 'controllers'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'service'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'schemas'), {recursive: true})
@@ -113,7 +114,7 @@ async function createRoutes(paths, responsePaths) {
         }
         await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema)
         await addCaddyFileEntry(SERVICES_DIR, path, tag)
-        await genMongoInsertStream(SERVICES_DIR, tag)
+        await genLoadBulk(SERVICES_DIR, tag)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 

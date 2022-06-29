@@ -10,6 +10,7 @@ export async function genPackageJson(SERVICES_DIR, tag){
         "name": kebabCase(tag.name+'-service'),
         "description": tag.description,
         "type": "module",
+        main: "index.js",
         "scripts": {
             "start": "node index | pino-pretty -c -t",
             "build": "tsc -b",
@@ -20,10 +21,7 @@ export async function genPackageJson(SERVICES_DIR, tag){
         "dependencies": {
             "@fastify/mongodb": "^6.0.1",
             "@fastify/redis": "^6.0.0",
-            "dot-object": "^2.1.4", // used for converting bulk CSV file to JSON
             "fastify": "4.2.0",
-            "mongodb": "^4.0.1",// used for bulk inserting data into Mongo
-            "papaparse": "^5.3.2", // used for parsing CSV
             "pino": "^8.1.0",
         },
         "devDependencies": {

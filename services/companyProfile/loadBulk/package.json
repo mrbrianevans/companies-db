@@ -1,16 +1,13 @@
 {
-  "name": "load-bulk",
-  "version": "1.0.0",
-  "description": "",
-  "main": "loadJob.js",
+  "name": "company-profile-load-bulk",
+  "description": "Bulk loader for companyProfile service",
   "type": "module",
+  "main": "loadJob.js",
   "scripts": {
     "build": "tsc --build",
     "start": "node loadJob.js"
   },
-  "keywords": [],
-  "author": "Brian Evans",
-  "license": "ISC",
+  "version": "1.0.0",
   "dependencies": {
     "dot-object": "^2.1.4",
     "mongodb": "^4.7.0",

@@ -1,0 +1,4 @@
+packages:
+  - './**'
+# run pnpm i -r to install packages in all services
+# run pnpm -r run build to build all packages
