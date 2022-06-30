@@ -6,7 +6,7 @@ WORKDIR loadBulk
 
 COPY package.json .
 
-RUN pnpm i
+RUN pnpm install
 
 COPY . .
 

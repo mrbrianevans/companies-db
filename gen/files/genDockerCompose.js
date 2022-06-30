@@ -58,13 +58,16 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
                 "image": "mongo",
                 "volumes": [
                     "data:/data/db"
-                ]
+                ],
+                "command": " --quiet --wiredTigerCacheSizeGB 0.5",
+                logging: {driver: 'local'}
             },
             "cache": {
                 "image": "redis",
                 "volumes": [
                     "redisdata:/data"
-                ]
+                ],
+                logging: {driver: 'local'}
             },
             "loader": {
                 "build": "loadBulk",

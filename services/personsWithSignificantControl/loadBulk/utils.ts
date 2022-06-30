@@ -6,5 +6,8 @@ export function getEnv(name: string): string {
   return value
 }
 export function average<T>(arr: T[], valueGetter = (a: T) => Number(a)) {
-  return arr.reduce((avg, current, index) => (index * avg + valueGetter(current)) / (index + 1), 0)
+  return arr.reduce(
+    (avg, current, index) => (index * avg + valueGetter(current)) / (index + 1),
+    0
+  )
 }
