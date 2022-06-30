@@ -55,15 +55,14 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
         "version": "3.9",
         "services": {
             "db": {
-                "image": "mongo",
+                build: "databases/mongo",
                 "volumes": [
                     "data:/data/db"
                 ],
-                "command": " --quiet --wiredTigerCacheSizeGB 0.5",
                 logging: {driver: 'local'}
             },
             "cache": {
-                "image": "redis",
+                build: "databases/redis",
                 "volumes": [
                     "redisdata:/data"
                 ],
@@ -78,7 +77,7 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
                     "MONGO_URL": "mongodb://db"
                 }
             },
-            "endpoints": {
+            "web-service": {
                 "build": ".",
                 "environment": {
                     "MONGO_URL": "mongodb://db:27017",

@@ -10,6 +10,7 @@ import {genServiceIndexFile, registerFastifyPluginInIndexFile} from "./files/gen
 import {genPackageJson} from "./files/genPackageJson.js";
 import {genServiceMonolith} from "./files/genServiceMonolith.js";
 import {genLoadBulk} from "./files/genLoadBulk.js";
+import {genDatabases} from "./files/genDatabases.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -115,6 +116,7 @@ async function createRoutes(paths, responsePaths) {
         await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema)
         await addCaddyFileEntry(SERVICES_DIR, path, tag)
         await genLoadBulk(SERVICES_DIR, tag)
+        await genDatabases(SERVICES_DIR, tag)
         await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 

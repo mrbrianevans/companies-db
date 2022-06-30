@@ -1,13 +1,13 @@
 "version": "3.9"
 "services":
   "db":
-    build: databases/mongo
+    "build": "databases/mongo"
     "volumes":
       - "data:/data/db"
     "logging":
       "driver": "local"
   "cache":
-    build: databases/redis
+    "build": "databases/redis"
     "volumes":
       - "redisdata:/data"
     "logging":
