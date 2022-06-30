@@ -76,35 +76,6 @@ async function unzipFile(zipFilename: string){
 
 // a transform stream that slows down a stream and only writes in batches of HWM. More efficient mongo inserts this way.
 // buffers chunks until the buffer reaches a certain size, then it corks, writes all chunks, and uncorks.
-class SlowDown extends Transform{
-  bufferedChunks: any[]
-  bufferSize: number
-  constructor(bufferSize: number) {
-    super({objectMode: true});
-    this.bufferSize = bufferSize
-    this.bufferedChunks = []
-  }
-  releaseChunks(){
-    this.cork()
-    for (const i in this.bufferedChunks) {
-      this.push(this.bufferedChunks.pop()) // atomic operation to pop and push in a single line.
-    }
-    this.uncork()
-  }
-  _transform(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
-    this.bufferedChunks.push(chunk)
-    if(this.bufferedChunks.length > this.bufferSize){
-      // console.log("releasing chunks due to filled buffer",this.bufferedChunks.length)
-      this.releaseChunks()
-    }
-    callback()
-  }
-  _flush(callback) {
-    // console.log("Flushed with", this.bufferedChunks.length, 'chunks still in buffer')
-    this.releaseChunks()
-    callback()
-  }
-}
 
 
 console.time('Full process file '+i)
@@ -120,19 +91,13 @@ console.timeEnd('Unzip ZIP file '+i)
 // stream and parse the json (.txt) file
 const file = createReadStream(textFile, {highWaterMark: 65536}) // could pipe output of unzip straight to an interface, and avoid an unnecessary file save
 const lines = createInterface({input: file})
-const individualInserter = new SlowDown(10000)
-individualInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'individual', "pscId"))
-const legalInserter = new SlowDown(10000)
-legalInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'legal', "pscId"))
-const corporateInserter = new SlowDown(10000)
-corporateInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'corporate', "pscId"))
-const superSecureInserter = new SlowDown(10000)
-superSecureInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'super-secure', "pscId"))
-const statementInserter = new SlowDown(10000)
-statementInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'statement', "pscId"))
-const summaryInserter = new MongoInserter<StoredPsc>(DB_NAME, 'summary', "pscId")
-const exemptionsInserter = new SlowDown(10000)
-exemptionsInserter.pipe(new MongoInserter<StoredPsc>(DB_NAME, 'exemptions', "pscId"))
+const individualInserter = new MongoInserter<StoredPsc>(DB_NAME, 'individual', "pscId", 2)
+const legalInserter =new MongoInserter<StoredPsc>(DB_NAME, 'legal', "pscId", 0)
+const corporateInserter = new MongoInserter<StoredPsc>(DB_NAME, 'corporate', "pscId", 1)
+const superSecureInserter = new MongoInserter<StoredPsc>(DB_NAME, 'super-secure', "pscId", 0)
+const statementInserter = new MongoInserter<StoredPsc>(DB_NAME, 'statement', "pscId", 2)
+const summaryInserter = new MongoInserter<{kind: string, generated_at: string}>(DB_NAME, 'summary', "generated_at", 0)
+const exemptionsInserter = new MongoInserter<StoredPsc>(DB_NAME, 'exemptions', "pscId", 2)
 
 const splitterStream = new Writable({
   objectMode: true,
@@ -156,7 +121,7 @@ const splitterStream = new Writable({
         break;
       case "totals#persons-of-significant-control-snapshot":
         const {data} = chunk as unknown as {data:{kind: string, generated_at: string}}
-        summaryInserter.write({...data, _id: data.generated_at}, callback)
+        summaryInserter.write(data, callback)
         break;
       case "exemptions":
         exemptionsInserter.write(transformPscFromBulk(chunk), callback)
