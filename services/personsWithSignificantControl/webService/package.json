@@ -4,10 +4,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node index | pino-pretty -c -t",
-    "build": "tsc -b",
-    "watch": "tsc -b -w",
-    "clean": "tsc -b --clean"
+    "start": "node index | ../node_modules/.bin/pino-pretty -c -t",
+    "build": "../node_modules/.bin/tsc -b",
+    "watch": "../node_modules/.bin/tsc -b -w",
+    "clean": "../node_modules/.bin/tsc -b --clean"
   },
   "version": "1.0.0",
   "dependencies": {

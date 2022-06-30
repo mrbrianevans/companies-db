@@ -1,0 +1,18 @@
+{
+  "name": "stream-updater",
+  "version": "1.0.0",
+  "author": "Brian Evans",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --build --watch",
+    "start": "node index.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^4.7.4"
+  }
+}
