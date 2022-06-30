@@ -1,4 +1,7 @@
-{
+
+import {FromSchema} from "json-schema-to-ts";
+
+const bulkFileIndividualPscSchema = {
   "type": "object",
   "properties": {
     "company_number": {
@@ -25,22 +28,19 @@
             "premises": {
               "type": "string"
             },
-            "address_line_2": {
-              "type": "string"
-            },
             "region": {
               "type": "string"
             },
-            "po_box": {
+            "address_line_2": {
               "type": "string"
             },
             "care_of": {
               "type": "string"
+            },
+            "po_box": {
+              "type": "string"
             }
           }
-        },
-        "ceased_on": {
-          "type": "string"
         },
         "country_of_residence": {
           "type": "string"
@@ -64,7 +64,7 @@
           "type": "string"
         },
         "kind": {
-          "type": "string"
+          const: 'individual-person-with-significant-control'
         },
         "links": {
           "type": "object",
@@ -113,47 +113,26 @@
         "notified_on": {
           "type": "string"
         },
-        "identification": {
-          "type": "object",
-          "properties": {
-            "legal_authority": {
-              "type": "string"
-            },
-            "legal_form": {
-              "type": "string"
-            },
-            "country_registered": {
-              "type": "string"
-            },
-            "place_registered": {
-              "type": "string"
-            },
-            "registration_number": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "legal_authority",
-            "legal_form"
-          ]
-        },
-        "statement": {
-          "type": "string"
-        },
-        "restrictions_notice_withdrawal_reason": {
+        "ceased_on": {
           "type": "string"
         }
       },
       "required": [
+        "address",
+        "country_of_residence",
         "etag",
         "kind",
         "links",
+        "name",
+        "name_elements",
+        "nationality",
+        "natures_of_control",
         "notified_on"
       ]
     }
   },
-  "required": [
-    "company_number",
-    "data"
-  ]
-}
+  required: ['data', 'company_number'],
+  additionalProperties: false
+} as const
+
+export type BulkFileIndividualPsc = FromSchema<typeof bulkFileIndividualPscSchema>
