@@ -29,7 +29,7 @@ job "mongo" {
         }
         resources {
           cpu    = 500 # 500 MHz
-          memory = 512 # 256MB
+          memory = 512 # 512MB
         }
 
       }

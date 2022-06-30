@@ -31,32 +31,12 @@ importers:
       pino-pretty: 7.6.1
       typescript: 4.7.2
 
-  UKEstablishments:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
-
   UKEstablishments/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -69,6 +49,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   UKEstablishments/streamUpdater:
@@ -83,21 +64,21 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
 
   auth:
@@ -124,6 +105,7 @@ importers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -136,6 +118,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   charges/streamUpdater:
@@ -172,6 +155,7 @@ importers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -184,6 +168,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   companyProfile/streamUpdater:
@@ -198,49 +183,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  exemptions:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   exemptions/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -253,6 +218,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   exemptions/streamUpdater:
@@ -267,49 +233,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  filingHistory:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   filingHistory/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -322,6 +268,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   filingHistory/streamUpdater:
@@ -336,49 +283,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  insolvency:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   insolvency/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -391,6 +318,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   insolvency/streamUpdater:
@@ -405,49 +333,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  officerAppointments:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   officerAppointments/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -460,6 +368,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   officerAppointments/streamUpdater:
@@ -474,49 +383,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  officerDisqualifications:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   officerDisqualifications/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -529,6 +418,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   officerDisqualifications/streamUpdater:
@@ -543,49 +433,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  officers:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   officers/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -598,6 +468,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   officers/streamUpdater:
@@ -612,49 +483,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  personsWithSignificantControl:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   personsWithSignificantControl/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -667,6 +518,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   personsWithSignificantControl/streamUpdater:
@@ -681,49 +533,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  registeredOfficeAddress:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   registeredOfficeAddress/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -736,6 +568,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   registeredOfficeAddress/streamUpdater:
@@ -750,49 +583,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  registers:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   registers/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -805,6 +618,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   registers/streamUpdater:
@@ -819,49 +633,29 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
-
-  search:
-    specifiers:
-      '@fastify/mongodb': ^6.0.1
-      '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
-      fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
-      pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
-    dependencies:
-      '@fastify/mongodb': 6.0.1
-      '@fastify/redis': 6.0.0
-      fastify: 4.2.0
-      pino: 8.1.0
-    devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
-      typescript: 4.7.2
 
   search/loadBulk:
     specifiers:
       '@types/node': ^18.0.0
       '@types/yauzl': ^2.10.0
       dot-object: ^2.1.4
+      json-schema-to-ts: ^2.5.3
       mongodb: ^4.7.0
       papaparse: ^5.3.2
       typescript: ^4.7.4
@@ -874,6 +668,7 @@ importers:
     devDependencies:
       '@types/node': 18.0.0
       '@types/yauzl': 2.10.0
+      json-schema-to-ts: 2.5.3
       typescript: 4.7.4
 
   search/streamUpdater:
@@ -888,21 +683,21 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^17.0.34
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.4.0
+      json-schema-to-ts: ^2.5.3
       pino: ^8.1.0
-      pino-pretty: ^7.6.1
-      typescript: ^4.6.4
+      pino-pretty: ^8.1.0
+      typescript: ^4.7.4
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
       fastify: 4.2.0
       pino: 8.1.0
     devDependencies:
-      '@types/node': 17.0.35
-      json-schema-to-ts: 2.5.2
-      pino-pretty: 7.6.1
+      '@types/node': 18.0.0
+      json-schema-to-ts: 2.5.3
+      pino-pretty: 8.1.0
       typescript: 4.7.4
 
 packages:

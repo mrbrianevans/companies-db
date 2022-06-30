@@ -17,7 +17,7 @@ import { listChargesController } from './charges/controllers/listChargesControll
 import { listOfficerAppointmentsController } from './officerAppointments/controllers/listOfficerAppointmentsController.js'
 import { getCorporateOfficerController } from './officerDisqualifications/controllers/getCorporateOfficerController.js'
 import { getNaturalOfficerController } from './officerDisqualifications/controllers/getNaturalOfficerController.js'
-import { getExemptionsController } from './exemptions/controllers/getExemptionsController.js'
+import { getExemptionsController } from './personsWithSignificantControl/controllers/getExemptionsController.js'
 import { listFilingHistoryController } from './filingHistory/controllers/listFilingHistoryController.js'
 import { getFilingHistoryController } from './filingHistory/controllers/getFilingHistoryController.js'
 import { getRegistersController } from './registers/controllers/getRegistersController.js'

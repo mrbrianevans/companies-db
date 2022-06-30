@@ -181,6 +181,7 @@ async function genLoadBulkPackageJson(SERVICES_DIR, tagName){
         "devDependencies": {
             "@types/node": "^18.0.0",
             "@types/yauzl": "^2.10.0",
+            "json-schema-to-ts": "^2.5.3",
             "typescript": "^4.7.4"
         }
     }

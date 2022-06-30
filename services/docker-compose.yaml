@@ -3,7 +3,7 @@
   "registered-office-address":
     "build": "registeredOfficeAddress/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -11,7 +11,7 @@
   "company-profile":
     "build": "companyProfile/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -19,7 +19,7 @@
   "search":
     "build": "search/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -27,7 +27,7 @@
   "officers":
     "build": "officers/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -35,7 +35,7 @@
   "registers":
     "build": "registers/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -43,7 +43,7 @@
   "charges":
     "build": "charges/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -51,7 +51,7 @@
   "filing-history":
     "build": "filingHistory/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -59,7 +59,7 @@
   "insolvency":
     "build": "insolvency/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -67,7 +67,7 @@
   "exemptions":
     "build": "exemptions/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -75,7 +75,7 @@
   "officer-disqualifications":
     "build": "officerDisqualifications/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -83,7 +83,7 @@
   "officer-appointments":
     "build": "officerAppointments/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -91,7 +91,7 @@
   "ukestablishments":
     "build": "UKEstablishments/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -99,7 +99,7 @@
   "persons-with-significant-control":
     "build": "personsWithSignificantControl/webService"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "env_file":
       - ".env"
     "logging":
@@ -111,14 +111,14 @@
     "ports":
       - "3000:80"
     "networks":
-      - "microservices"
-      - "metrics"
+      - "companiesv2_microservices"
+      - "companiesv2_metrics"
     "logging":
       "driver": "local"
   "auth-db":
     "image": "redis"
     "networks":
-      - "auth"
+      - "companiesv2_auth"
     "logging":
       "driver": "local"
     "volumes":
@@ -126,8 +126,8 @@
   "auth-service":
     "build": "auth"
     "networks":
-      - "auth"
-      - "microservices"
+      - "companiesv2_auth"
+      - "companiesv2_microservices"
     "logging":
       "driver": "local"
     "environment":
@@ -141,13 +141,13 @@
     "ports":
       - "9090:9090"
     "networks":
-      - "metrics"
+      - "companiesv2_metrics"
   "shared-mongo":
     "image": "mongo"
     "logging":
       "driver": "local"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "volumes":
       - "shared_mongo:/data/db"
   "shared-redis":
@@ -155,16 +155,16 @@
     "logging":
       "driver": "local"
     "networks":
-      - "microservices"
+      - "companiesv2_microservices"
     "volumes":
       - "/data"
 "networks":
-  "microservices":
-    "driver": "bridge"
-  "auth":
-    "driver": "bridge"
-  "metrics":
-    "driver": "bridge"
+  "companiesv2_microservices":
+    "external": true
+  "companiesv2_auth":
+    "external": true
+  "companiesv2_metrics":
+    "external": true
 "volumes":
   "shared_mongo":
     "external": true

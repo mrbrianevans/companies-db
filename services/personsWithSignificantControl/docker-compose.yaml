@@ -6,34 +6,62 @@
       - "data:/data/db"
     "logging":
       "driver": "local"
+    "networks":
+      - psc
   "cache":
     "build": "databases/redis"
     "volumes":
       - "redisdata:/data"
     "logging":
       "driver": "local"
+    "networks":
+      - psc
   "loader":
     "build": "loadBulk"
+    depends_on:
+      - db
     "volumes":
       - "downloads:/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
+    "networks":
+      - psc
   "updater":
     "build": "streamUpdater"
+    depends_on:
+      - cache
+      - db
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://cache:6379"
     "env_file":
       - "../.api.env"
+    "networks":
+      - psc
   "web-service":
     "build": "webService"
+    depends_on:
+      - cache
+      - db
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://cache:6379"
+      "AUTH_URL": "http://auth-service:3000"
     "env_file":
       - "../.api.env"
     "ports":
       - "3000:3000"
+    "networks":
+      - psc
+      - "companiesv2_microservices"
+"networks":
+  "companiesv2_microservices":
+    "external": true
+  "companiesv2_auth":
+    "external": true
+  "companiesv2_metrics":
+    "external": true
+  psc:
 "volumes":
   "data": null
   "downloads": null

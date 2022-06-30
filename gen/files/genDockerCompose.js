@@ -7,26 +7,26 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
         version: '3.7',
         services: Object.fromEntries(tags.map((tag) => [kebabCase(tag.name), {
             build: tag.name+'/webService',
-            networks: ['microservices'],
+            networks: ['companiesv2_microservices'],
             env_file: ['.env'], logging: {driver: 'local'}
         }]).concat([['gateway', {
             image: 'caddy',
             volumes: ['./Caddyfile:/etc/caddy/Caddyfile'],
-            ports: ['3000:80'], networks: ['microservices', 'metrics'], logging:{driver: 'local'}
-        }], ['auth-db', {image: 'redis', networks: ['auth'], logging:{driver: 'local'}, volumes: ['auth_db:/data']}],
-            ['auth-service', {build: 'auth', networks: ['auth', 'microservices'], logging:{driver: 'local'}, environment: {AUTH_DB_URL: 'auth-db'}}],
+            ports: ['3000:80'], networks: ['companiesv2_microservices', 'companiesv2_metrics'], logging:{driver: 'local'}
+        }], ['auth-db', {image: 'redis', networks: ['companiesv2_auth'], logging:{driver: 'local'}, volumes: ['auth_db:/data']}],
+            ['auth-service', {build: 'auth', networks: ['companiesv2_auth', 'companiesv2_microservices'], logging:{driver: 'local'}, environment: {AUTH_DB_URL: 'auth-db'}}],
             ['metrics', {image: 'prom/prometheus', logging:{driver: 'local'},
                 volumes: ['./prometheus.yaml:/etc/prometheus/prometheus.yml'],
-                ports: ['9090:9090'], networks: ['metrics']
+                ports: ['9090:9090'], networks: ['companiesv2_metrics']
             }],
             ['shared-mongo', {
-                image: 'mongo', logging:{driver: 'local'},networks: ['microservices'], volumes: ['shared_mongo:/data/db']
+                image: 'mongo', logging:{driver: 'local'},networks: ['companiesv2_microservices'], volumes: ['shared_mongo:/data/db']
             }],
             ['shared-redis', {
-                image: 'redis', logging:{driver: 'local'},networks: ['microservices'], volumes: ['/data']
+                image: 'redis', logging:{driver: 'local'},networks: ['companiesv2_microservices'], volumes: ['/data']
             }]
         ])),
-        networks: {microservices: {driver: 'bridge'}, auth: {driver: 'bridge'}, metrics: {driver: 'bridge'}},
+        networks: {companiesv2_microservices: {external: true}, companiesv2_auth: {external: true}, companiesv2_metrics: {external: true}},
         volumes: {shared_mongo:{external: true},auth_db:{external: true}}
     }, {defaultStringType: 'QUOTE_DOUBLE'}))
 }
@@ -92,16 +92,21 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
                 "build": "webService",
                 "environment": {
                     "MONGO_URL": "mongodb://db:27017",
-                    "REDIS_URL": "redis://cache:6379"
+                    "REDIS_URL": "redis://cache:6379",
+                    "AUTH_URL": "http://auth-service:3000"
                 },
                 "env_file": [
                     "../.api.env"
                 ],
                 "ports": [
                     "3000:3000"
+                ],
+                networks: [
+                    'companiesv2_microservices'
                 ]
             }
         },
+        networks: {companiesv2_microservices: {external: true}, companiesv2_auth: {external: true}, companiesv2_metrics: {external: true}},
         "volumes": {
             "data": null,
             "downloads": null,

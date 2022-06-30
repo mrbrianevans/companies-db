@@ -125,8 +125,8 @@
                 header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
                 path_regexp ^\/company\/[A-Z\d]{4,8}\/exemptions$
         }
-        reverse_proxy @company-company_number-exemptions exemptions:3000 {
-                header_down Service companies-exemptions
+        reverse_proxy @company-company_number-exemptions persons-with-significant-control:3000 {
+                header_down Service companies-persons-with-significant-control
         }
 
         @company-company_number-filing-history {

@@ -20,7 +20,9 @@ const bulkFilePscExemptionsSchema = {
               "type": "object",
               "properties": {
                 "exemption_type": {
-                  "type": "string"
+                  description: 'The exemption type.',
+                  enum: ['psc-exempt-as-shares-admitted-on-market'],
+                  type: 'string'
                 },
                 "items": {
                   "type": "array",

@@ -47,7 +47,7 @@ interface Address {
 
 
 export interface StoredPsc{
-  pscId: string,
+  company_number: string, psc_id: string,
   pscKind: 'legal'|'individual'|'corporate'|'super-secure'|'statement'|'exemptions'|'summary'
 
   address?: {

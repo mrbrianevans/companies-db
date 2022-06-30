@@ -1,9 +1,9 @@
-import type { ListStatementsResponse } from '../schemas/listStatementsSchema.js'
+import type { GetExemptionsResponse } from '../schemas/getExemptionsSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
-import { ListStatementsSchema } from '../schemas/listStatementsSchema.js'
+import { GetExemptionsSchema } from '../schemas/getExemptionsSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
 
@@ -12,11 +12,11 @@ export interface Context {
   mongo: FastifyMongoObject
   req: FastifyRequest
 }
-// the main database collection for the listStatements service
-const colName = 'listStatements'
+// the main database collection for the getExemptions service
+const colName = 'getExemptions'
 
 /** Must be called before any data is inserted */
-export async function initListStatementsCollection(
+export async function initGetExemptionsCollection(
   db: FastifyMongoObject['db']
 ) {
   if (!db) throw new Error('DB not defined')
@@ -27,7 +27,7 @@ export async function initListStatementsCollection(
   if (!exists) {
     console.log('Creating collection', colName)
     const { example, ...schema } = {
-      ...ListStatementsSchema['schema']['response']['200']
+      ...GetExemptionsSchema['schema']['response']['200']
     }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
@@ -42,21 +42,16 @@ export async function initListStatementsCollection(
 }
 
 /**
- * List the company persons with significant control statements.
  *
- * List of all persons with significant control statements.
+ * Company exemptions information.
  *
  */
-export async function listStatements(
+export async function getExemptions(
   context: Context,
-  company_number: string,
-  items_per_page?: number,
-  start_index?: number,
-  register_view?: undefined
-): Promise<ListStatementsResponse | null> {
+  company_number: string
+): Promise<GetExemptionsResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
-  const collection =
-    context.mongo.db.collection<ListStatementsResponse>(colName)
+  const collection = context.mongo.db.collection<GetExemptionsResponse>(colName)
   const startFind = performance.now()
   let res = await collection.findOne({ company_number })
   const findDurationMs = performance.now() - startFind
@@ -65,10 +60,7 @@ export async function listStatements(
     'Find one operation in MongoDB'
   )
   if (!res) {
-    res = await callListStatementsApi(
-      { company_number },
-      { items_per_page, start_index, register_view }
-    )
+    res = await callGetExemptionsApi({ company_number }, {})
     if (res) {
       try {
         await collection.updateOne(
@@ -79,7 +71,7 @@ export async function listStatements(
       } catch (e) {
         if (e.code === 121) {
           context.req.log.warn(
-            { company_number, items_per_page, start_index, register_view },
+            { company_number },
             'Failed to upsert document from API due to validation error'
           )
         } else {
@@ -94,17 +86,16 @@ export async function listStatements(
   return res ?? null
 }
 
-async function callListStatementsApi(pathParams, queryParams) {
+async function callGetExemptionsApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path =
-    '/company/{company_number}/persons-with-significant-control-statements'.replace(
-      /\{(.+?)}/g,
-      (w, n) => pathParams[n]
-    )
+  const path = '/company/{company_number}/exemptions'.replace(
+    /\{(.+?)}/g,
+    (w, n) => pathParams[n]
+  )
   return await reflect(path + '?' + urlQuery.toString())
 }

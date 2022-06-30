@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  "auth-db":
+    "image": "redis"
+    "networks":
+      - "companiesv2_auth"
+    "logging":
+      "driver": "local"
+    "volumes":
+      - "auth_db:/data"
+  "auth-service":
+    "build": "."
+    "networks":
+      - "companiesv2_auth"
+      - "companiesv2_microservices"
+    "logging":
+      "driver": "local"
+    "environment":
+      "AUTH_DB_URL": "auth-db"
+
+"networks":
+  "companiesv2_microservices":
+    external: true
+  "companiesv2_auth":
+    external: true
+  "companiesv2_metrics":
+    external: true
+
+"volumes":
+  "auth_db":
+    "external": true
+

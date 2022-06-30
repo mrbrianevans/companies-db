@@ -6328,7 +6328,8 @@ paths:
           content: {}
           description: Resource not found
       tags:
-        - exemptions
+        - personsWithSignificantControl
+      x-operationName: get exemptions
       x-eov-operation-handler: controllers/ExemptionsController
   "/disqualified-officers/natural/{officer_id}":
     get:
@@ -8193,7 +8194,7 @@ paths:
                             - description: >
                                 Indicates the nature of control the person with significant control
                                 holds.
-                                 For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file. 
+                                 For enumeration descriptions see `description` section in the [enumeration mappings](https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml) file.
                               type: string
                             - type: array
                               items:
@@ -9092,7 +9093,7 @@ paths:
                   ceased:
                     description: >
                       Presence of that indicator means the super secure person status is
-                      ceased 
+                      ceased
                     type: boolean
                 required:
                   - description

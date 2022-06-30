@@ -2,3 +2,5 @@
 **/*.env
 /terraform/terraform.tfvars
 **/downloads
+**/tsconfig.tsbuildinfo
+**/*.js.map

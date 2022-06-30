@@ -52,7 +52,7 @@ export const GetSuperSecurePersonSchema = {
           },
           ceased: {
             description:
-              'Presence of that indicator means the super secure person status is ceased \n',
+              'Presence of that indicator means the super secure person status is ceased\n',
             type: 'boolean'
           }
         },

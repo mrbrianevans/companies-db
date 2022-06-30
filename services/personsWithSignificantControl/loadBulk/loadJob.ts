@@ -10,7 +10,7 @@ The best way to do this is going to be to download the "chunks" of 60mb from CH,
 Readable.map({concurrency:8}) to download 8 chunks at a time. Need a library like archiver to unzip files.
 Could also use a worker_thread() for each chunk.
  */
-const DB_NAME = 'ch';
+const DB_NAME = 'personsWithSignificantControl';
 const concurrency = 10
 
 async function loadAllFiles(total = 21, limit ?:number){
@@ -24,7 +24,7 @@ async function loadAllFiles(total = 21, limit ?:number){
   }, {concurrency}).toArray()
   console.timeEnd(`Load ${limit??total} files`)
 }
-const collections = ['legal','individual','corporate','super-secure','statement','exemptions','summary']
+const collections = []
 /**
  * Creates collections with compression and an index on pscId (if not exists).
  */
@@ -39,7 +39,7 @@ async function createIndexes(){
     if (!exists) {
       console.log("Creating collection and index", {DB_NAME, collection})
       await mongo.db(DB_NAME).createCollection(collection, {storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}}})
-      if(collection !== 'summary') await mongo.db(DB_NAME).collection(collection).createIndex({pscId: 1}, {unique: true})
+      await mongo.db(DB_NAME).collection(collection).createIndex({pscId: 1}, {unique: true})
     }
   }
   await mongo.close()

@@ -10,6 +10,7 @@ import { getLegalPersonsController } from './controllers/getLegalPersonsControll
 import { getCorporateEntitiesController } from './controllers/getCorporateEntitiesController.js'
 import { getIndividualController } from './controllers/getIndividualController.js'
 import { listPersonsWithSignificantControlController } from './controllers/listPersonsWithSignificantControlController.js'
+import { getExemptionsController } from './controllers/getExemptionsController.js'
 
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'personsWithSignificantControl' } }
@@ -27,5 +28,6 @@ fastify.register(getLegalPersonsController)
 fastify.register(getCorporateEntitiesController)
 fastify.register(getIndividualController)
 fastify.register(listPersonsWithSignificantControlController)
+fastify.register(getExemptionsController)
 
 await fastify.listen({ port: 3000, host: '::' })
