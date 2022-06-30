@@ -65,6 +65,6 @@ await fastify.listen({port: 3000, host: '::'})
         "exclude": [
             "node_modules"
         ],
-        references: tags.map(tag => ({path: tag.name}))
+        references: tags.map(tag => ({path: tag.name+'/webService'}))
     }, null, 2))
 }

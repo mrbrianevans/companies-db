@@ -4,14 +4,15 @@ import {addCaddyFileEntry, newCaddyFile} from "./files/genCaddyFile.js";
 import {camelCase, kebabCase, prettyTs} from "./utils.js";
 import {addPathSystemTest, genSystemTest} from "./files/genSystemTest.js";
 import YAML from 'yaml'
-import {genDockerCompose, genDockerfile, genServiceDockerComposeFile} from "./files/genDockerCompose.js";
+import {genDockerCompose, genWebServiceDockerfile, genServiceDockerComposeFile} from "./files/genDockerCompose.js";
 import {genPrometheusConfig} from "./files/genPrometheus.js";
-import {genServiceIndexFile, registerFastifyPluginInIndexFile} from "./files/genServiceIndexFiles.js";
-import {genPackageJson} from "./files/genPackageJson.js";
+import {genWebServiceIndexFile, registerFastifyPluginInIndexFile} from "./files/genServiceIndexFiles.js";
+import {genWebServicePackageJson} from "./files/genWebServicePackageJson.js";
 import {genServiceMonolith} from "./files/genServiceMonolith.js";
 import {genLoadBulk} from "./files/genLoadBulk.js";
 import {genDatabases} from "./files/genDatabases.js";
 import {genUpdater} from "./files/genUpdater.js";
+import {generateWebServicePath, genWebService} from "./files/genWebService.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -35,13 +36,14 @@ async function createTagDirectories(tags) {
     for (const tag of tags) {
         await mkdir(resolve(SERVICES_DIR, tag.name), {recursive: true})
         await genSystemTest(SYS_TEST_DIR, tag.name)
-        await genPackageJson(SERVICES_DIR, tag) // also does tsconfig
-        await genServiceIndexFile(SERVICES_DIR, tag)
-        await genDockerfile(SERVICES_DIR, tag)
+        await genWebService(SERVICES_DIR, tag)
         await genServiceDockerComposeFile(SERVICES_DIR, tag)
-        await mkdir(resolve(SERVICES_DIR, tag.name, 'controllers'), {recursive: true})
-        await mkdir(resolve(SERVICES_DIR, tag.name, 'service'), {recursive: true})
-        await mkdir(resolve(SERVICES_DIR, tag.name, 'schemas'), {recursive: true})
+        await genLoadBulk(SERVICES_DIR, tag.name)
+        await genDatabases(SERVICES_DIR, tag.name)
+        await genUpdater(SERVICES_DIR, tag.name)
+        await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'controllers'), {recursive: true})
+        await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'service'), {recursive: true})
+        await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'schemas'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'loadBulk'), { recursive: true })
     }
 }
@@ -116,178 +118,7 @@ async function createRoutes(paths, responsePaths) {
         }
         await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema)
         await addCaddyFileEntry(SERVICES_DIR, path, tag)
-        await genLoadBulk(SERVICES_DIR, tag)
-        await genDatabases(SERVICES_DIR, tag)
-        await genUpdater(SERVICES_DIR, tag)
-        await writeFile(resolve(SERVICES_DIR, tag, 'schemas', name + 'Schema.ts'), prettyTs(`
-import { FromSchema } from "json-schema-to-ts";
-
-export interface ${Name}Params {
-  ${processParams(parameters.filter(isPath), true, ';\n\t', true)}
-}
-
-export interface ${Name}QueryString {
-  ${processParams(parameters.filter(isQuery), true, ';\n\t', true)}
-}
-
-export const ${Name}Schema = {
-  schema: ${JSON.stringify({
-            params: {
-                type: 'object',
-                properties: Object.fromEntries(parameters.filter(isPath).map(p => [getName(p), p.schema])),
-                required: parameters.filter(isPath).filter(p => p.required).map(getName)
-            },
-            querystring: {
-                type: 'object',
-                properties: Object.fromEntries(parameters.filter(isQuery).map(p => [getName(p), p.schema])),
-                required: parameters.filter(isQuery).filter(p => p.required).map(getName)
-            },
-            response: {200: responseSchema}
-        }, null, 2)}
-} as const
-
-export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['response']['200']>
-//export type ${Name}Response = any // temporary until schemas can be fixed
-        
-        `))
-        await writeFile(resolve(SERVICES_DIR, tag, 'controllers', name + 'Controller.ts'), prettyTs(`
-import {FastifyPluginAsync} from "fastify";
-import {${name}, Context, init${Name}Collection} from "../service/${name}.js";
-import { reflect, auth } from "./reflect.js";
-import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${name}Schema.js";
-
-
-
-export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
-  await init${Name}Collection(fastify.mongo.db)
-  fastify.get<{Params: ${Name}Params, Querystring: ${Name}QueryString}>('${path.replace(/\{(.*?)}/g, (whole, pName) => ':' + pName)}', schema, async (req, res)=>{
-    ${parameters.filter(isPath).length ? `const {${parameters.filter(isPath).map(getName).join(', ')}} = req.params`:''}
-     ${parameters.filter(isQuery).length ? `const {${parameters.filter(isQuery).map(getName).join(', ')}} = req.query`:''}
-      const ratelimit = await auth({ Authorization: req.headers.authorization })
-      for(const [header, value] of Object.entries(ratelimit??{}))
-        res.header(header, value)
-    if(ratelimit?.['X-Ratelimit-Remain'] <= 0){
-      res.code(429).send("Rate limit hit")
-      return
-    }
-    const {redis, mongo} = fastify
-    const context: Context = {redis, mongo, req}
-    const result = ${name}(context,${processParams(parameters)})
-    if(result) return result
-    else res.code(404).send("Not found")
-  })
-}
-
-        `))
-        // this reflects requests to the companies house api
-        await writeFile(resolve(SERVICES_DIR, tag, 'controllers', 'reflect.ts'), prettyTs(`
-        import pino from 'pino'
-const logger = pino()
-        const apiUrl = 'https://api.company-information.service.gov.uk'
-const headers =  {Authorization: 'Basic '+Buffer.from(getEnv('RESTAPIKEY')+':').toString('base64')}
-
-/** Get an environment variable, or throw if its not set */
-export function getEnv(name: string): string{
-    const value = process.env[name]
-    if(value === undefined) throw new Error(\`$\{name} environment variable not set\`)
-    return value
-}
-
-
-export async function reflect(path){
-  logger.info({path, apiUrl}, "Outgoing request to Official API")
-  const res = await fetch(apiUrl + path, { headers })
-  logger.info({ path, status: res.status }, 'Requested official API - response status')
-  if(res.ok)
-  return await res.json()
-  else return null
-}
-export async function auth(headers) {
-try{
-    const url = new URL(getEnv('AUTH_URL'))
-  const ratelimit = await fetch(url.toString(), { headers }).then(r=>r.ok ? r.json() : null)
-  logger.info({ratelimit}, 'Fetched ratelimit from auth service')
-  return ratelimit
-  }catch (e){
-  logger.error("Failed to get authorization headers")
-  throw e
-  }
-}
-        `))
-        // write service stub
-        await writeFile(resolve(SERVICES_DIR, tag, 'service', name + '.ts'), prettyTs(`
-import type { ${Name}Response } from "../schemas/${name}Schema.js";
-import type {FastifyRedis} from "@fastify/redis";
-import type {FastifyMongoObject} from "@fastify/mongodb";
-import type {FastifyRequest} from "fastify";
-
-import { ${Name}Schema } from "../schemas/${name}Schema.js";
-import {reflect} from "../controllers/reflect.js";
-import {performance} from "perf_hooks";
-
-export interface Context{
-  redis: FastifyRedis,
-  mongo: FastifyMongoObject
-  req: FastifyRequest
-}
-// the main database collection for the ${name} service
-const colName = '${name}'
-
-/** Must be called before any data is inserted */
-export async function init${Name}Collection(db: FastifyMongoObject['db']){
-  if(!db) throw new Error('DB not defined')
-  const exists = await db.listCollections({name:colName}).toArray().then(a=>a.length)
-  if(!exists) {
-    console.log('Creating collection', colName)
-    const {example, ...schema} = { ...${Name}Schema['schema']['response']['200'] }
-    await db.createCollection(colName, {
-      storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}},
-      // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
-      // validator: {$jsonSchema: schema },
-       // validationAction: "error" || "warn" // if a write fails validation
-    })
-    ${parameters.filter(isPath).length ?`await db.collection(colName).createIndex({${parameters.filter(isPath).map(p=>getName(p) + ': 1').join(', ')}},{unique: true})`:''}
-  }
-}
-
-/**
- * ${summary ? summary + '.\n *' :''}
- * ${description ? description + '.\n *' :''}
- */
-export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response|null>{
-  if(!context.mongo.db) throw new Error('DB not defined')
-  const collection = context.mongo.db.collection<${Name}Response>(colName)
-  const startFind = performance.now()
-  let res = await collection.findOne({${processParams(parameters.filter(isPath))}})
-  const findDurationMs = performance.now() - startFind
-  context.req.log.trace({findDurationMs, found: Boolean(res)}, 'Find one operation in MongoDB')
-  if(!res){
-    res = await call${Name}Api({${processParams(parameters.filter(isPath))}}, {${processParams(parameters.filter(isQuery))}})
-    if(res){
-    try{
-    await collection.updateOne({${processParams(parameters.filter(isPath))}}, {$set: res}, {upsert: true})
-    }      catch (e) {
-        if(e.code === 121){
-          context.req.log.warn({${processParams(parameters)}},"Failed to upsert document from API due to validation error")
-        }else{
-          context.req.log.error({err: e},
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-  }
-  }
-  return res ?? null
-}
-
-async function call${Name}Api(pathParams, queryParams) {
-const nonNullQueryParams = Object.fromEntries(Object.entries(queryParams).filter(([k,v])=>v).map(([k,v])=>[k, String(v)]))
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-    const path = '${path}'.replace(/\\{(.+?)}/g, (w, n)=> pathParams[n])
-  return await reflect(path + '?' + urlQuery.toString())
-}
-
-`))
+        await generateWebServicePath({path,description,SERVICES_DIR, tag, name,Name,parameters,processParams,isPath,isQuery,getName,responseSchema,summary})
         await registerFastifyPluginInIndexFile(SERVICES_DIR, tag, name, Name)
         const monolith = await readFile(resolve(SERVICES_DIR, 'monolith.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
 fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}

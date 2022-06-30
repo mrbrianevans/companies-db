@@ -1,7 +1,7 @@
 "version": "3.7"
 "services":
   "registered-office-address":
-    "build": "registeredOfficeAddress"
+    "build": "registeredOfficeAddress/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -9,7 +9,7 @@
     "logging":
       "driver": "local"
   "company-profile":
-    "build": "companyProfile"
+    "build": "companyProfile/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -17,7 +17,7 @@
     "logging":
       "driver": "local"
   "search":
-    "build": "search"
+    "build": "search/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -25,7 +25,7 @@
     "logging":
       "driver": "local"
   "officers":
-    "build": "officers"
+    "build": "officers/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -33,7 +33,7 @@
     "logging":
       "driver": "local"
   "registers":
-    "build": "registers"
+    "build": "registers/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -41,7 +41,7 @@
     "logging":
       "driver": "local"
   "charges":
-    "build": "charges"
+    "build": "charges/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -49,7 +49,7 @@
     "logging":
       "driver": "local"
   "filing-history":
-    "build": "filingHistory"
+    "build": "filingHistory/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -57,7 +57,7 @@
     "logging":
       "driver": "local"
   "insolvency":
-    "build": "insolvency"
+    "build": "insolvency/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -65,7 +65,7 @@
     "logging":
       "driver": "local"
   "exemptions":
-    "build": "exemptions"
+    "build": "exemptions/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -73,7 +73,7 @@
     "logging":
       "driver": "local"
   "officer-disqualifications":
-    "build": "officerDisqualifications"
+    "build": "officerDisqualifications/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -81,7 +81,7 @@
     "logging":
       "driver": "local"
   "officer-appointments":
-    "build": "officerAppointments"
+    "build": "officerAppointments/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -89,7 +89,7 @@
     "logging":
       "driver": "local"
   "ukestablishments":
-    "build": "UKEstablishments"
+    "build": "UKEstablishments/webService"
     "networks":
       - "microservices"
     "env_file":
@@ -97,7 +97,7 @@
     "logging":
       "driver": "local"
   "persons-with-significant-control":
-    "build": "personsWithSignificantControl"
+    "build": "personsWithSignificantControl/webService"
     "networks":
       - "microservices"
     "env_file":

@@ -88,5 +88,3 @@ async function genUpdaterIndex(SERVICES_DIR, tag){
     await writeFile(resolve(SERVICES_DIR, tag, 'streamUpdater','index.ts'), prettyTs(content))
 }
 
-
-//todo: move all the generation of webservice files to its own genService.js generator, and then have functions in that file for generating each files content

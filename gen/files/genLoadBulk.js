@@ -1,9 +1,10 @@
-import { writeFile} from "node:fs/promises";
+import {mkdir, writeFile} from "node:fs/promises";
 import {resolve} from "path";
 import {kebabCase, prettyTs} from "../utils.js";
 
 /** Generates a loadBulk directory for bulk loading data */
 export async function genLoadBulk(SERVICES_DIR,tagName){
+    await mkdir(resolve(SERVICES_DIR, tagName, 'loadBulk'), {recursive: true})
     await genMongoInsertStream(SERVICES_DIR,tagName)
     await genLoadBulkUtils(SERVICES_DIR, tagName)
     await genLoadBulkPackageJson(SERVICES_DIR, tagName)

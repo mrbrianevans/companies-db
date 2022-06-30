@@ -10,43 +10,43 @@
   ],
   "references": [
     {
-      "path": "registeredOfficeAddress"
+      "path": "registeredOfficeAddress/webService"
     },
     {
-      "path": "companyProfile"
+      "path": "companyProfile/webService"
     },
     {
-      "path": "search"
+      "path": "search/webService"
     },
     {
-      "path": "officers"
+      "path": "officers/webService"
     },
     {
-      "path": "registers"
+      "path": "registers/webService"
     },
     {
-      "path": "charges"
+      "path": "charges/webService"
     },
     {
-      "path": "filingHistory"
+      "path": "filingHistory/webService"
     },
     {
-      "path": "insolvency"
+      "path": "insolvency/webService"
     },
     {
-      "path": "exemptions"
+      "path": "exemptions/webService"
     },
     {
-      "path": "officerDisqualifications"
+      "path": "officerDisqualifications/webService"
     },
     {
-      "path": "officerAppointments"
+      "path": "officerAppointments/webService"
     },
     {
-      "path": "UKEstablishments"
+      "path": "UKEstablishments/webService"
     },
     {
-      "path": "personsWithSignificantControl"
+      "path": "personsWithSignificantControl/webService"
     }
   ]
 }

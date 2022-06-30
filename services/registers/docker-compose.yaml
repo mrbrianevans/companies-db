@@ -26,7 +26,7 @@
     "env_file":
       - "../.api.env"
   "web-service":
-    "build": "."
+    "build": "webService"
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://cache:6379"

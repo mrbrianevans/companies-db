@@ -1,0 +1,23 @@
+{
+  "name": "search-load-bulk",
+  "description": "Bulk loader for search service",
+  "type": "module",
+  "main": "loadJob.js",
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --build --watch",
+    "start": "node loadJob.js"
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "dot-object": "^2.1.4",
+    "mongodb": "^4.7.0",
+    "papaparse": "^5.3.2",
+    "yauzl": "^2.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/yauzl": "^2.10.0",
+    "typescript": "^4.7.4"
+  }
+}

@@ -6,7 +6,7 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
     await writeFile(resolve(SERVICES_DIR, 'docker-compose.yaml'), YAML.stringify({
         version: '3.7',
         services: Object.fromEntries(tags.map((tag) => [kebabCase(tag.name), {
-            build: tag.name,
+            build: tag.name+'/webService',
             networks: ['microservices'],
             env_file: ['.env'], logging: {driver: 'local'}
         }]).concat([['gateway', {
@@ -32,8 +32,8 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
 }
 
 
-export async function genDockerfile(SERVICES_DIR, tag){
-    await writeFile(resolve(SERVICES_DIR, tag.name, 'Dockerfile'), `FROM node:18
+export async function genWebServiceDockerfile(SERVICES_DIR, tag){
+    await writeFile(resolve(SERVICES_DIR, tag.name,'webService', 'Dockerfile'), `FROM node:18
 
 RUN corepack enable && corepack prepare pnpm@7.4.0 --activate
 WORKDIR /service
@@ -48,6 +48,7 @@ RUN pnpm run build
 EXPOSE 3000
 CMD ["pnpm", "run", "start"]
 `)
+    await writeFile(resolve(SERVICES_DIR, tag.name,'webService','.dockerignore'), `node_modules\n`)
 }
 /** docker compose file for each service */
 export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
@@ -88,7 +89,7 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
                 ]
             },
             "web-service": {
-                "build": ".",
+                "build": "webService",
                 "environment": {
                     "MONGO_URL": "mongodb://db:27017",
                     "REDIS_URL": "redis://cache:6379"
