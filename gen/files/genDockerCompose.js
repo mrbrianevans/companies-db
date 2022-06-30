@@ -77,6 +77,16 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag){
                     "MONGO_URL": "mongodb://db"
                 }
             },
+            updater: {
+                build: "streamUpdater",
+                "environment": {
+                    "MONGO_URL": "mongodb://db:27017",
+                    "REDIS_URL": "redis://cache:6379"
+                },
+                "env_file": [
+                    "../.api.env"
+                ]
+            },
             "web-service": {
                 "build": ".",
                 "environment": {
