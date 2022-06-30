@@ -7,7 +7,7 @@ import { listFilingHistoryController } from './controllers/listFilingHistoryCont
 import { getFilingHistoryController } from './controllers/getFilingHistoryController.js'
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'companyProfile' } }
+  logger: { level: 'trace', base: { service: 'filingHistory' } }
 })
 
 fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })

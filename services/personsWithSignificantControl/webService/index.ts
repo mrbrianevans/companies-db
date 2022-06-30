@@ -12,7 +12,7 @@ import { getIndividualController } from './controllers/getIndividualController.j
 import { listPersonsWithSignificantControlController } from './controllers/listPersonsWithSignificantControlController.js'
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'companyProfile' } }
+  logger: { level: 'trace', base: { service: 'personsWithSignificantControl' } }
 })
 
 fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })

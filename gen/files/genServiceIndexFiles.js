@@ -14,7 +14,7 @@ import {getEnv} from "./controllers/reflect.js";
 ${importMarker}
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'companyProfile' } }
+  logger: { level: 'trace', base: { service: '${tag.name}' } }
 })
 
 fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })

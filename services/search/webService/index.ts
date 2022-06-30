@@ -12,7 +12,7 @@ import { searchCompaniesController } from './controllers/searchCompaniesControll
 import { searchAllController } from './controllers/searchAllController.js'
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'companyProfile' } }
+  logger: { level: 'trace', base: { service: 'search' } }
 })
 
 fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })

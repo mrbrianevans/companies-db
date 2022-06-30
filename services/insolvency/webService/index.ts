@@ -6,7 +6,7 @@ import { getEnv } from './controllers/reflect.js'
 import { getInsolvencyController } from './controllers/getInsolvencyController.js'
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'companyProfile' } }
+  logger: { level: 'trace', base: { service: 'insolvency' } }
 })
 
 fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })

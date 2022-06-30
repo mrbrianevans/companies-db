@@ -7,7 +7,7 @@ import { getCorporateOfficerController } from './controllers/getCorporateOfficer
 import { getNaturalOfficerController } from './controllers/getNaturalOfficerController.js'
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'companyProfile' } }
+  logger: { level: 'trace', base: { service: 'officerDisqualifications' } }
 })
 
 fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })
