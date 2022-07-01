@@ -3,13 +3,13 @@ import {BulkFileIndividualPsc} from "./bulkFileSchemas/bulkFileIndividualPsc.js"
 import {BulkFileLegalPsc} from "./bulkFileSchemas/bulkFileLegalPsc.js";
 import {BulkFileSuperSecurePsc} from "./bulkFileSchemas/bulkFileSuperSecurePsc.js";
 import {BulkFilePscStatement} from "./bulkFileSchemas/bulkFilePscStatement.js";
-import {StatementStorage} from "./storageTypes/statementStorage.js";
-import {SuperSecureStorage} from "./storageTypes/superSecureStorage.js";
+import {StatementStorage} from "../shared/storageTypes/statementStorage.js";
+import {SuperSecureStorage} from "../shared/storageTypes/superSecureStorage.js";
 import {BulkFilePscExemptions} from "./bulkFileSchemas/bulkFilePscExemptions.js";
-import {ExemptionsStorage} from "./storageTypes/exemptionsStorage.js";
-import {IndividualPscStorage} from "./storageTypes/individualPscStorage.js";
-import {LegalPscStorage} from "./storageTypes/legalPscStorage.js";
-import {CorporatePscStorage} from "./storageTypes/corporatePscStorage.js";
+import {ExemptionsStorage} from "../shared/storageTypes/exemptionsStorage.js";
+import {IndividualPscStorage} from "../shared/storageTypes/individualPscStorage.js";
+import {LegalPscStorage} from "../shared/storageTypes/legalPscStorage.js";
+import {CorporatePscStorage} from "../shared/storageTypes/corporatePscStorage.js";
 
 // guesses the different parts of a name by splitting the string.
 function getNamePartsFromName(name?: string){

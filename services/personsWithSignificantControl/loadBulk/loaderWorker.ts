@@ -28,12 +28,12 @@ import {BulkFilePscSummary} from "./bulkFileSchemas/bulkFilePscSummary.js";
 import {BulkFileIndividualPsc} from "./bulkFileSchemas/bulkFileIndividualPsc.js";
 import {BulkFileSuperSecurePsc} from "./bulkFileSchemas/bulkFileSuperSecurePsc.js";
 import {BulkFileLegalPsc} from "./bulkFileSchemas/bulkFileLegalPsc.js";
-import {StatementStorage} from "./storageTypes/statementStorage.js";
-import {SuperSecureStorage} from "./storageTypes/superSecureStorage.js";
-import {IndividualPscStorage} from "./storageTypes/individualPscStorage.js";
-import {LegalPscStorage} from "./storageTypes/legalPscStorage.js";
-import {CorporatePscStorage} from "./storageTypes/corporatePscStorage.js";
-import {ExemptionsStorage} from "./storageTypes/exemptionsStorage.js";
+import {StatementStorage} from "../shared/storageTypes/statementStorage.js";
+import {SuperSecureStorage} from "../shared/storageTypes/superSecureStorage.js";
+import {IndividualPscStorage} from "../shared/storageTypes/individualPscStorage.js";
+import {LegalPscStorage} from "../shared/storageTypes/legalPscStorage.js";
+import {CorporatePscStorage} from "../shared/storageTypes/corporatePscStorage.js";
+import {ExemptionsStorage} from "../shared/storageTypes/exemptionsStorage.js";
 import {Writable} from "stream";
 
 const yauzlOpenZip = promisify(yauzl.open)

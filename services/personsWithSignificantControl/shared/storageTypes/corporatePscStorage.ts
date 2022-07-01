@@ -34,7 +34,8 @@ const CorporatePscStorageSchema = {
           "description": "Care of name.",
           "type": "string"
         }
-      }
+      },
+      additionalProperties: false
     },
     "ceased_on": {
       "type": "string"
@@ -64,7 +65,8 @@ const CorporatePscStorageSchema = {
       "required": [
         "legal_form",
         "legal_authority"
-      ]
+      ],
+      additionalProperties: false
     },
     "kind": {
       "type": "string"
@@ -82,7 +84,8 @@ const CorporatePscStorageSchema = {
       },
       "required": [
         "self"
-      ]
+      ],
+      additionalProperties: false
     },
     "name": {
       "type": "string"

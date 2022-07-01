@@ -5,17 +5,12 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "strictNullChecks": true,
-    "allowSyntheticDefaultImports": true
+    "composite": true
   },
   "exclude": [
     "node_modules"
   ],
   "include": [
     "**/*.ts"
-  ],
-  "references": [
-    {
-      "path": "../shared"
-    }
   ]
 }
