@@ -34,9 +34,6 @@
       "path": "insolvency/webService"
     },
     {
-      "path": "exemptions/webService"
-    },
-    {
       "path": "officerDisqualifications/webService"
     },
     {

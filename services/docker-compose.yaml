@@ -64,14 +64,6 @@
       - ".env"
     "logging":
       "driver": "local"
-  "exemptions":
-    "build": "exemptions/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
   "officer-disqualifications":
     "build": "officerDisqualifications/webService"
     "networks":
