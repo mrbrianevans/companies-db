@@ -1,4 +1,3 @@
-import {constants} from "fs";
 import {FromSchema} from "json-schema-to-ts";
 
 const StatementStorageSchema = {

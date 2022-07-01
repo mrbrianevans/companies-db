@@ -4,10 +4,11 @@ import {MongoInserter} from "./mongoInserter.js";
 import {createReadStream, createWriteStream} from "fs";
 import {createInterface} from "readline";
 import {Readable} from "node:stream";
-import type {StoredPsc} from "./PscTypes.js";
 import {
+  transformCorporatePsc,
+  transformIndividualPsc,
+  transformLegalPsc,
   transformPscExemptions,
-  transformPscFromBulk,
   transformPscStatement,
   transformSuperSecurePsc
 } from "./transformPscFromBulk.js";
@@ -18,7 +19,6 @@ import {resolve} from "path";
 import {mkdir, stat} from "node:fs/promises";
 import {promisify} from "util";
 import * as yauzl from 'yauzl'
-import {Transform, Writable} from "stream";
 import {isMainThread, parentPort, workerData} from "worker_threads";
 import {BulkFileCorporatePsc} from "./bulkFileSchemas/bulkFileCorporatePsc.js";
 import {BulkFileRecord} from "./bulkFileTypes.js";
@@ -30,6 +30,11 @@ import {BulkFileSuperSecurePsc} from "./bulkFileSchemas/bulkFileSuperSecurePsc.j
 import {BulkFileLegalPsc} from "./bulkFileSchemas/bulkFileLegalPsc.js";
 import {StatementStorage} from "./storageTypes/statementStorage.js";
 import {SuperSecureStorage} from "./storageTypes/superSecureStorage.js";
+import {IndividualPscStorage} from "./storageTypes/individualPscStorage.js";
+import {LegalPscStorage} from "./storageTypes/legalPscStorage.js";
+import {CorporatePscStorage} from "./storageTypes/corporatePscStorage.js";
+import {ExemptionsStorage} from "./storageTypes/exemptionsStorage.js";
+import {Writable} from "stream";
 
 const yauzlOpenZip = promisify(yauzl.open)
 
@@ -105,13 +110,13 @@ console.timeEnd('Unzip ZIP file '+i)
 // stream and parse the json (.txt) file
 const file = createReadStream(textFile, {highWaterMark: 65536}) // could pipe output of unzip straight to an interface, and avoid an unnecessary file save
 const lines = createInterface({input: file})
-const individualInserter = new MongoInserter<StoredPsc>(DB_NAME, 'getIndividual', ["company_number","psc_id"], 2)
-const legalInserter = new MongoInserter<StoredPsc>(DB_NAME, 'getLegalPersons', ["company_number","psc_id"], 0)
-const corporateInserter = new MongoInserter<StoredPsc>(DB_NAME, 'getCorporateEntities', ["company_number","psc_id"], 1)
+const individualInserter = new MongoInserter<IndividualPscStorage>(DB_NAME, 'getIndividual', ["company_number","psc_id"], 2)
+const legalInserter = new MongoInserter<LegalPscStorage>(DB_NAME, 'getLegalPersons', ["company_number","psc_id"], 0)
+const corporateInserter = new MongoInserter<CorporatePscStorage>(DB_NAME, 'getCorporateEntities', ["company_number","psc_id"], 1)
 const superSecureInserter = new MongoInserter<SuperSecureStorage>(DB_NAME, 'getSuperSecurePerson', ["company_number","super_secure_id"], 0)
 const statementInserter = new MongoInserter<StatementStorage>(DB_NAME, 'getStatement', ["company_number","statement_id"], 2)
 const summaryInserter = new MongoInserter<BulkFilePscSummary['data']>(DB_NAME, 'summary', ["generated_at"], 0)
-const exemptionsInserter = new MongoInserter<BulkFilePscExemptions>(DB_NAME, 'getExemptions', ["company_number"], 2)
+const exemptionsInserter = new MongoInserter<ExemptionsStorage>(DB_NAME, 'getExemptions', ["company_number"], 2)
 
 const splitterStream = new Writable({
   objectMode: true,
@@ -119,13 +124,13 @@ const splitterStream = new Writable({
   write(chunk: BulkFileRecord, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
     switch (chunk.data.kind) {//this should be a typeguard, not sure why it doesn't work
       case "individual-person-with-significant-control":
-        individualInserter.write(transformPscFromBulk(<BulkFileIndividualPsc>chunk), callback)
+        individualInserter.write(transformIndividualPsc(<BulkFileIndividualPsc>chunk), callback)
         break;
       case "legal-person-person-with-significant-control":
-        legalInserter.write(transformPscFromBulk(<BulkFileLegalPsc>chunk), callback)
+        legalInserter.write(transformLegalPsc(<BulkFileLegalPsc>chunk), callback)
         break;
       case "corporate-entity-person-with-significant-control":
-        corporateInserter.write(transformPscFromBulk(<BulkFileCorporatePsc>chunk), callback)
+        corporateInserter.write(transformCorporatePsc(<BulkFileCorporatePsc>chunk), callback)
         break;
       case "super-secure-person-with-significant-control":
         superSecureInserter.write(transformSuperSecurePsc(<BulkFileSuperSecurePsc>chunk), callback)

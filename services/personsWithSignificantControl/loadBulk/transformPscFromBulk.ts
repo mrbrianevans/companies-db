@@ -1,5 +1,3 @@
-import type {PscBulkFile, StoredPsc} from "./PscTypes.js";
-import {BulkFileRecord} from "./bulkFileTypes.js";
 import {BulkFileCorporatePsc} from "./bulkFileSchemas/bulkFileCorporatePsc.js";
 import {BulkFileIndividualPsc} from "./bulkFileSchemas/bulkFileIndividualPsc.js";
 import {BulkFileLegalPsc} from "./bulkFileSchemas/bulkFileLegalPsc.js";
@@ -9,51 +7,12 @@ import {StatementStorage} from "./storageTypes/statementStorage.js";
 import {SuperSecureStorage} from "./storageTypes/superSecureStorage.js";
 import {BulkFilePscExemptions} from "./bulkFileSchemas/bulkFilePscExemptions.js";
 import {ExemptionsStorage} from "./storageTypes/exemptionsStorage.js";
+import {IndividualPscStorage} from "./storageTypes/individualPscStorage.js";
+import {LegalPscStorage} from "./storageTypes/legalPscStorage.js";
+import {CorporatePscStorage} from "./storageTypes/corporatePscStorage.js";
 
-export function transformPscFromBulk(bulkPscRecord: BulkFileCorporatePsc
-  | BulkFileIndividualPsc
-  | BulkFileLegalPsc): StoredPsc{
-  const {data} = bulkPscRecord
-  const {address} = data;
-  const linkRegex = /^\/company\/([A-Z\d]{8})\/persons-with-significant-control\/[a-z-]+\/(.+)/
-  const linkMatch = data.links?.self?.match(linkRegex)
-  if(!linkMatch)
-    throw new Error('Could not parse ID from PSC in bulk file record ' + (data.links?.self??JSON.stringify(data)))
-
-  const [,company_number, psc_id] = linkMatch
-  if(!(data.kind in PscKindsConverter)) throw new Error('Could not match PSC kind: '+data.kind)
-  return {
-    address: address ? {
-      addressLine1: address.address_line_1,
-      addressLine2: address.address_line_2,
-      postalCode: address.postal_code,
-      poBox: address.po_box,
-      region: address.region,
-      country: address.country,
-      locality: address.locality,
-      premises: address.premises
-    }: undefined,
-    ceasedOn: data.ceased_on,
-    // @ts-ignore
-    countryOfResidence: data.country_of_residence,
-    // @ts-ignore
-    dateOfBirth: data.date_of_birth?{month: data.date_of_birth.month, year: data.date_of_birth.year}:undefined,
-    etag: data.etag,
-    kind: data.kind,
-    links: {self: data.links.self},
-    name: data.name,
-    // @ts-ignore
-    nameElements: data.name_elements?{forename: data.name_elements.forename, middleName: data.name_elements.middle_name, title: data.name_elements.title, surname: data.name_elements.surname}:getNamePartsFromName(data.name),
-    // @ts-ignore
-    nationality: data.nationality,
-    naturesOfControl: data.natures_of_control,
-    notifiedOn: data.notified_on,
-    psc_id,company_number,
-    pscKind: PscKindsConverter[data.kind]
-  }
-}
-
-function getNamePartsFromName(name?: string): StoredPsc['nameElements']{
+// guesses the different parts of a name by splitting the string.
+function getNamePartsFromName(name?: string){
   if(name === undefined) return undefined
   const parts = name.split(' ')
   if(parts.length < 2){
@@ -80,17 +39,6 @@ function getNamePartsFromName(name?: string): StoredPsc['nameElements']{
   }
 }
 
-const PscKindsConverter = {
-  'individual-person-with-significant-control': 'individual',
-  'legal-person-person-with-significant-control':'legal',
-  'corporate-entity-person-with-significant-control': 'corporate',
-  'super-secure-person-with-significant-control': 'super-secure',
-  'persons-with-significant-control-statement':'statement',
-  exemptions: 'exemptions',
-  "totals#persons-of-significant-control-snapshot": "summary"
-} as const
-
-
 export function transformPscStatement(bulkPscStatement: BulkFilePscStatement): StatementStorage{
   const statement_ids = bulkPscStatement.data.links.self.match(/\/company\/[A-Z\d]{8}\/persons-with-significant-control-statements\/(.+)/)
   if(!statement_ids) throw new Error('Cannot match PSC ID for record from bulk file: '+JSON.stringify(bulkPscStatement.data.links))
@@ -113,4 +61,28 @@ export function transformPscExemptions(bulkPscExemptions: BulkFilePscExemptions)
   if(!company_numbers) throw new Error('Cannot match PSC ID for record from bulk file: '+JSON.stringify(bulkPscExemptions.data.links))
   const [,company_number] = company_numbers
   return {...bulkPscExemptions.data, company_number}
+}
+
+export function transformLegalPsc(bulkLegalPsc: BulkFileLegalPsc): LegalPscStorage{
+  const psc_ids = bulkLegalPsc.data.links.self.match(/\/company\/([A-Z\d]{8})\/persons-with-significant-control\/legal-person\/(.+)/)
+  if(!psc_ids) throw new Error('Cannot match PSC ID for record from bulk file: '+JSON.stringify(bulkLegalPsc.data.links))
+  const [,company_number,psc_id] = psc_ids
+  if(company_number !== bulkLegalPsc.company_number) throw new Error('Company number parsed from link does not match: '+JSON.stringify([company_number, bulkLegalPsc.company_number, bulkLegalPsc.data.links, {psc_id}]))
+  return {...bulkLegalPsc.data, psc_id,company_number: bulkLegalPsc.company_number}
+}
+
+export function transformIndividualPsc(bulkIndividualPsc: BulkFileIndividualPsc): IndividualPscStorage{
+  const psc_ids = bulkIndividualPsc.data.links.self.match(/\/company\/([A-Z\d]{8})\/persons-with-significant-control\/individual\/(.+)/)
+  if(!psc_ids) throw new Error('Cannot match PSC ID for record from bulk file: '+JSON.stringify(bulkIndividualPsc.data.links))
+  const [,company_number,psc_id] = psc_ids
+  if(company_number !== bulkIndividualPsc.company_number) throw new Error('Company number parsed from link does not match: '+JSON.stringify([company_number, bulkIndividualPsc.company_number, bulkIndividualPsc.data.links, {psc_id}]))
+  return {...bulkIndividualPsc.data, psc_id,company_number: bulkIndividualPsc.company_number}
+}
+
+export function transformCorporatePsc(bulkCorporatePsc: BulkFileCorporatePsc): CorporatePscStorage{
+  const psc_ids = bulkCorporatePsc.data.links.self.match(/\/company\/([A-Z\d]{8})\/persons-with-significant-control\/corporate-entity\/(.+)/)
+  if(!psc_ids) throw new Error('Cannot match PSC ID for record from bulk file: '+JSON.stringify(bulkCorporatePsc.data.links))
+  const [,company_number,psc_id] = psc_ids
+  if(company_number !== bulkCorporatePsc.company_number) throw new Error('Company number parsed from link does not match: '+JSON.stringify([company_number, bulkCorporatePsc.company_number, bulkCorporatePsc.data.links, {psc_id}]))
+  return {...bulkCorporatePsc.data, psc_id,company_number: bulkCorporatePsc.company_number}
 }

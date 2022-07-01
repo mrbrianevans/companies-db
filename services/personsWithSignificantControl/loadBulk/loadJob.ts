@@ -24,7 +24,7 @@ async function loadAllFiles(total = 21, limit ?:number){
   }, {concurrency}).toArray()
   console.timeEnd(`Load ${limit??total} files`)
 }
-const collections = []
+const collections = ['getIndividual','getLegalPersons','getCorporateEntities','getSuperSecurePerson','getStatement','getExemptions']
 /**
  * Creates collections with compression and an index on pscId (if not exists).
  */
@@ -37,9 +37,7 @@ async function createIndexes(){
       .toArray()
       .then((a) => a.length)
     if (!exists) {
-      console.log("Creating collection and index", {DB_NAME, collection})
-      await mongo.db(DB_NAME).createCollection(collection, {storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}}})
-      await mongo.db(DB_NAME).collection(collection).createIndex({pscId: 1}, {unique: true})
+      console.log("Collection does not exist. Cannot do bulk operation without compression and index", {DB_NAME, collection})
     }
   }
   await mongo.close()

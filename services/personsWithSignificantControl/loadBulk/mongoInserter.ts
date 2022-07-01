@@ -58,6 +58,14 @@ export class MongoInserter<ChunkType = any> extends Writable {
     callback()
   }
 
+  write(chunk: ChunkType, callback?: (error: Error | null | undefined) => void): boolean
+  write(chunk: ChunkType, encoding: BufferEncoding, callback?: (error: Error | null | undefined) => void): boolean
+  write(chunk: ChunkType, encoding?: any, callback?:  (error: Error | null | undefined) => void): boolean{
+    // this declaration is here just to type the method with generic types. pass through to super class
+    return super.write(chunk, encoding, callback)
+  }
+
+
   async bulkWrite() {
     const bulk = this.mongo
       .db(this.dbName)
