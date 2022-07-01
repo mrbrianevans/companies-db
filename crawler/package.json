@@ -13,6 +13,7 @@
     "genson-js": "^0.0.8",
     "json-to-ts": "^1.7.0",
     "mongodb": "^4.6.0",
+    "split2": "^4.1.0",
     "ts-node": "^10.8.0",
     "typescript-json-schema": "^0.53.1",
     "ws": "^8.6.0",
