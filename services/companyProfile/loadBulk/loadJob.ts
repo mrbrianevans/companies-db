@@ -105,7 +105,7 @@ async function loadAll(total = 7, limit?:number){
     console.timeEnd("Download file "+i)
     const unzipStream = await unzipFile(zipFilename)
     const parseStream = Papa.parse(Papa.NODE_STREAM_INPUT, {header: true, fastMode: false, transformHeader: h=>h.trim(), dynamicTyping: h=>h!=='CompanyNumber', transform: val=>val===''?undefined:val})
-    const inserter = new MongoInserter<GetCompanyProfile>(DB_NAME, COLL_NAME, 'company_number')
+    const inserter = new MongoInserter<GetCompanyProfile>(DB_NAME, COLL_NAME, ['company_number'])
 
     // transform objects from their shape in the bulk file to API response shape
     const transformer = new Transform({

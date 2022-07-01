@@ -6,27 +6,43 @@
       - "data:/data/db"
     "logging":
       "driver": "local"
+    "networks":
+      - "filingHistory"
   "cache":
     "build": "databases/redis"
     "volumes":
       - "redisdata:/data"
     "logging":
       "driver": "local"
+    "networks":
+      - "filingHistory"
   "loader":
     "build": "loadBulk"
+    "depends_on":
+      - "db"
     "volumes":
       - "downloads:/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
+    "networks":
+      - "filingHistory"
   "updater":
     "build": "streamUpdater"
+    "depends_on":
+      - "db"
+      - "cache"
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://cache:6379"
     "env_file":
       - "../.api.env"
+    "networks":
+      - "filingHistory"
   "web-service":
     "build": "webService"
+    "depends_on":
+      - "db"
+      - "cache"
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://cache:6379"
@@ -37,6 +53,7 @@
       - "3000:3000"
     "networks":
       - "companiesv2_microservices"
+      - "filingHistory"
 "networks":
   "companiesv2_microservices":
     "external": true
@@ -44,6 +61,7 @@
     "external": true
   "companiesv2_metrics":
     "external": true
+  "filingHistory": null
 "volumes":
   "data": null
   "downloads": null

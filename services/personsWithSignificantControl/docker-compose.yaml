@@ -7,7 +7,7 @@
     "logging":
       "driver": "local"
     "networks":
-      - psc
+      - "personsWithSignificantControl"
   "cache":
     "build": "databases/redis"
     "volumes":
@@ -15,34 +15,34 @@
     "logging":
       "driver": "local"
     "networks":
-      - psc
+      - "personsWithSignificantControl"
   "loader":
     "build": "loadBulk"
-    depends_on:
-      - db
+    "depends_on":
+      - "db"
     "volumes":
       - "downloads:/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
     "networks":
-      - psc
+      - "personsWithSignificantControl"
   "updater":
     "build": "streamUpdater"
-    depends_on:
-      - cache
-      - db
+    "depends_on":
+      - "db"
+      - "cache"
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://cache:6379"
     "env_file":
       - "../.api.env"
     "networks":
-      - psc
+      - "personsWithSignificantControl"
   "web-service":
     "build": "webService"
-    depends_on:
-      - cache
-      - db
+    "depends_on":
+      - "db"
+      - "cache"
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://cache:6379"
@@ -52,8 +52,8 @@
     "ports":
       - "3000:3000"
     "networks":
-      - psc
       - "companiesv2_microservices"
+      - "personsWithSignificantControl"
 "networks":
   "companiesv2_microservices":
     "external": true
@@ -61,7 +61,7 @@
     "external": true
   "companiesv2_metrics":
     "external": true
-  psc:
+  "personsWithSignificantControl": null
 "volumes":
   "data": null
   "downloads": null

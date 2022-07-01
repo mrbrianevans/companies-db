@@ -13,10 +13,9 @@ export async function genLoadBulk(SERVICES_DIR,tagName){
 
 async function genMongoInsertStream(SERVICES_DIR,tagName){
     const content = `
-    
-import { Writable } from 'stream'
+    import { Writable } from 'stream'
 import { MongoClient } from 'mongodb'
-import {average, getEnv} from './utils.js'
+import { average, getEnv } from './utils.js'
 /**
  * Writable stream to save data to MongoDB. Uses bulk operations to be faster than individual writes. Can do about 5,000 ops/sec on my computer.
  */
@@ -24,30 +23,30 @@ export class MongoInserter<ChunkType = any> extends Writable {
   private mongo: MongoClient
   collectionName: string
   dbName: string
-  uidField: keyof ChunkType
+  uidFields: (keyof ChunkType)[]
   private readonly startTime: number
   private counter: number
   private batches: number[]
   private timeTaken: number
-  bufferedChunks: any[]
+  bufferedChunks: ChunkType[]
   bufferSize: number
   /**
    * @param dbName - mongo DB name
    * @param collectionName - mongo collection name
-   * @param uidField - the top level field in each chunk which gives the UID of the entity.
+   * @param uidFields - the top level fields in each chunk which gives the UID of the entity.
    * @param batchesPerOp - how many mongodb batches to send in each bulk write operation. Will buffer accordingly. Recommended 0 <= x <= 5. Zero will disable buffering.
    */
   constructor(
     dbName: string,
     collectionName: string,
-    uidField: keyof ChunkType,
-    batchesPerOp =  3
+    uidFields: (keyof ChunkType)[],
+    batchesPerOp = 3
   ) {
     const bufferSize = 1998 * batchesPerOp // must be a multiple of 1998 due to mongo db internal batch size
     super({ objectMode: true, highWaterMark: bufferSize + 1 })
     this.dbName = dbName
     this.collectionName = collectionName
-    this.uidField = uidField
+    this.uidFields = uidFields
     this.startTime = performance.now()
     this.counter = 0
     this.timeTaken = 0
@@ -65,17 +64,16 @@ export class MongoInserter<ChunkType = any> extends Writable {
     }
   }
 
-  async _write(chunk: ChunkType, encoding, callback){
+  async _write(chunk: ChunkType, encoding, callback) {
     this.bufferedChunks.push(chunk)
-    if(this.bufferedChunks.length >= this.bufferSize){
+    if (this.bufferedChunks.length >= this.bufferSize) {
       // console.log("writing chunks due to filled buffer",this.bufferedChunks.length)
       await this.bulkWrite()
     }
     callback()
   }
 
-  async bulkWrite(
-  ) {
+  async bulkWrite() {
     const bulk = this.mongo
       .db(this.dbName)
       .collection(this.collectionName)
@@ -83,8 +81,9 @@ export class MongoInserter<ChunkType = any> extends Writable {
     const numChunks = this.bufferedChunks.length
     for (const i in this.bufferedChunks) {
       const chunk = this.bufferedChunks.shift() // take from beginning
+      if(!chunk) continue // shouldn't ever be called
       bulk
-        .find({ [this.uidField]: chunk[this.uidField] })
+        .find(Object.fromEntries(Object.entries(chunk).filter(([key,value])=>this.uidFields.includes(<keyof ChunkType>key))))
         .upsert()
         .replaceOne(chunk)
     }
@@ -99,17 +98,23 @@ export class MongoInserter<ChunkType = any> extends Writable {
   }
 
   async _final(callback: (error?: Error | null) => void) {
-    if(this.bufferedChunks.length > 0) await this.bulkWrite()
+    if (this.bufferedChunks.length > 0) await this.bulkWrite()
     const execTime = this.timeTaken
-    if(execTime > 0) console.log(
-      'Processed',
-      this.counter,
-      'chunks in',
-      execTime.toFixed(2),
-      'milliseconds. Avg',
-      (this.counter / (execTime / 1000)).toFixed(2),
-      'per second',this.dbName,this.collectionName, this.batches.length, 'bulk ops', \`Average bulk batch size: $\{average(this.batches).toFixed(1)}\`
-    )
+    if (execTime > 0)
+      console.log(
+        'Processed',
+        this.counter,
+        'chunks in',
+        execTime.toFixed(2),
+        'milliseconds. Avg',
+        (this.counter / (execTime / 1000)).toFixed(2),
+        'per second',
+        this.dbName,
+        this.collectionName,
+        this.batches.length,
+        'bulk ops',
+        \`Average bulk batch size: $\{average(this.batches).toFixed(1)}\`
+      )
     await this.mongo.close()
     callback()
   }

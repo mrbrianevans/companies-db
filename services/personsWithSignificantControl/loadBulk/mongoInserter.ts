@@ -66,9 +66,15 @@ export class MongoInserter<ChunkType = any> extends Writable {
     const numChunks = this.bufferedChunks.length
     for (const i in this.bufferedChunks) {
       const chunk = this.bufferedChunks.shift() // take from beginning
-      if(!chunk) continue // shouldn't ever be called
+      if (!chunk) continue // shouldn't ever be called
       bulk
-        .find(Object.fromEntries(Object.entries(chunk).filter(([key,value])=>this.uidFields.includes(<keyof ChunkType>key))))
+        .find(
+          Object.fromEntries(
+            Object.entries(chunk).filter(([key, value]) =>
+              this.uidFields.includes(<keyof ChunkType>key)
+            )
+          )
+        )
         .upsert()
         .replaceOne(chunk)
     }
