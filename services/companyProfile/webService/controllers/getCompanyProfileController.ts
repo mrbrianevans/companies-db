@@ -4,7 +4,7 @@ import {
   Context,
   initGetCompanyProfileCollection
 } from '../service/getCompanyProfile.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetCompanyProfileSchema as schema,
   GetCompanyProfileQueryString,
@@ -15,6 +15,7 @@ export const getCompanyProfileController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getCompanyProfile' })
   await initGetCompanyProfileCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetCompanyProfileParams

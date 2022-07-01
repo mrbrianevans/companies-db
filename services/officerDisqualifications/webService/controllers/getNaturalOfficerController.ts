@@ -4,7 +4,7 @@ import {
   Context,
   initGetNaturalOfficerCollection
 } from '../service/getNaturalOfficer.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetNaturalOfficerSchema as schema,
   GetNaturalOfficerQueryString,
@@ -15,6 +15,7 @@ export const getNaturalOfficerController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getNaturalOfficer' })
   await initGetNaturalOfficerCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetNaturalOfficerParams

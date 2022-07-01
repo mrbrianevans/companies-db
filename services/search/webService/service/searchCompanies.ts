@@ -94,6 +94,7 @@ async function callSearchCompaniesApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/search/companies'.replace(/\{(.+?)}/g, (w, n) => pathParams[n])
+
+  const path = `/search/companies`
   return await reflect(path + '?' + urlQuery.toString())
 }

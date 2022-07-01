@@ -4,7 +4,7 @@ import {
   Context,
   initAdvancedCompanySearchCollection
 } from '../service/advancedCompanySearch.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   AdvancedCompanySearchSchema as schema,
   AdvancedCompanySearchQueryString,
@@ -15,6 +15,7 @@ export const advancedCompanySearchController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'advancedCompanySearch' })
   await initAdvancedCompanySearchCollection(fastify.mongo.db)
   fastify.get<{
     Params: AdvancedCompanySearchParams

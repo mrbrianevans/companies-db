@@ -4,7 +4,7 @@ import {
   Context,
   initGetIndividualCollection
 } from '../service/getIndividual.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetIndividualSchema as schema,
   GetIndividualQueryString,
@@ -15,6 +15,7 @@ export const getIndividualController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getIndividual' })
   await initGetIndividualCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetIndividualParams

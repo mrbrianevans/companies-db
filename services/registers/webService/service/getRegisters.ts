@@ -92,9 +92,7 @@ async function callGetRegistersApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/company/{company_number}/registers'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+  const { company_number } = pathParams
+  const path = `/company/${company_number}/registers`
   return await reflect(path + '?' + urlQuery.toString())
 }

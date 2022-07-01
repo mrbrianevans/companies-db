@@ -93,10 +93,7 @@ async function callGetStatementApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path =
-    '/company/{company_number}/persons-with-significant-control-statements/{statement_id}'.replace(
-      /\{(.+?)}/g,
-      (w, n) => pathParams[n]
-    )
+  const { company_number, statement_id } = pathParams
+  const path = `/company/${company_number}/persons-with-significant-control-statements/${statement_id}`
   return await reflect(path + '?' + urlQuery.toString())
 }

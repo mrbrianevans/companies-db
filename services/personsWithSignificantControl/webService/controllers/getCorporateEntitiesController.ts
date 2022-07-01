@@ -4,7 +4,7 @@ import {
   Context,
   initGetCorporateEntitiesCollection
 } from '../service/getCorporateEntities.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetCorporateEntitiesSchema as schema,
   GetCorporateEntitiesQueryString,
@@ -15,6 +15,7 @@ export const getCorporateEntitiesController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getCorporateEntities' })
   await initGetCorporateEntitiesCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetCorporateEntitiesParams

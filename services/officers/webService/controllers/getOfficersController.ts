@@ -4,7 +4,7 @@ import {
   Context,
   initGetOfficersCollection
 } from '../service/getOfficers.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetOfficersSchema as schema,
   GetOfficersQueryString,
@@ -15,6 +15,7 @@ export const getOfficersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getOfficers' })
   await initGetOfficersCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetOfficersParams

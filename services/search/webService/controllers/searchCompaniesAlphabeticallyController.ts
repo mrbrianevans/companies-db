@@ -4,7 +4,7 @@ import {
   Context,
   initSearchCompaniesAlphabeticallyCollection
 } from '../service/searchCompaniesAlphabetically.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   SearchCompaniesAlphabeticallySchema as schema,
   SearchCompaniesAlphabeticallyQueryString,
@@ -13,6 +13,7 @@ import {
 
 export const searchCompaniesAlphabeticallyController: FastifyPluginAsync =
   async (fastify, opts) => {
+    fastify.log = fastify.log.child({ route: 'searchCompaniesAlphabetically' })
     await initSearchCompaniesAlphabeticallyCollection(fastify.mongo.db)
     fastify.get<{
       Params: SearchCompaniesAlphabeticallyParams

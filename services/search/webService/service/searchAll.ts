@@ -87,6 +87,7 @@ async function callSearchAllApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/search'.replace(/\{(.+?)}/g, (w, n) => pathParams[n])
+
+  const path = `/search`
   return await reflect(path + '?' + urlQuery.toString())
 }

@@ -95,9 +95,7 @@ async function callGetNaturalOfficerApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/disqualified-officers/natural/{officer_id}'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+  const { officer_id } = pathParams
+  const path = `/disqualified-officers/natural/${officer_id}`
   return await reflect(path + '?' + urlQuery.toString())
 }

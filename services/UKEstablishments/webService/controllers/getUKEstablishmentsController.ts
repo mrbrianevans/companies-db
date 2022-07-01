@@ -4,7 +4,7 @@ import {
   Context,
   initGetUKEstablishmentsCollection
 } from '../service/getUKEstablishments.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetUKEstablishmentsSchema as schema,
   GetUKEstablishmentsQueryString,
@@ -15,6 +15,7 @@ export const getUKEstablishmentsController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getUKEstablishments' })
   await initGetUKEstablishmentsCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetUKEstablishmentsParams

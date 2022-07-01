@@ -4,7 +4,7 @@ import {
   Context,
   initListFilingHistoryCollection
 } from '../service/listFilingHistory.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   ListFilingHistorySchema as schema,
   ListFilingHistoryQueryString,
@@ -15,6 +15,7 @@ export const listFilingHistoryController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'listFilingHistory' })
   await initListFilingHistoryCollection(fastify.mongo.db)
   fastify.get<{
     Params: ListFilingHistoryParams

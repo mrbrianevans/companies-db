@@ -90,6 +90,7 @@ async function callSearchOfficersApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/search/officers'.replace(/\{(.+?)}/g, (w, n) => pathParams[n])
+
+  const path = `/search/officers`
   return await reflect(path + '?' + urlQuery.toString())
 }

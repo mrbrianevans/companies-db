@@ -93,10 +93,7 @@ async function callGetOfficersApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path =
-    '/company/{company_number}/appointments/{appointment_id}'.replace(
-      /\{(.+?)}/g,
-      (w, n) => pathParams[n]
-    )
+  const { company_number, appointment_id } = pathParams
+  const path = `/company/${company_number}/appointments/${appointment_id}`
   return await reflect(path + '?' + urlQuery.toString())
 }

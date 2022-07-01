@@ -1,34 +1,28 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
-  listOfficers,
+  getExemptions,
   Context,
-  initListOfficersCollection
-} from '../service/listOfficers.js'
+  initGetExemptionsCollection
+} from '../service/getExemptions.js'
 import { auth } from './reflect.js'
 import {
-  ListOfficersSchema as schema,
-  ListOfficersQueryString,
-  ListOfficersParams
-} from '../schemas/listOfficersSchema.js'
+  GetExemptionsSchema as schema,
+  GetExemptionsQueryString,
+  GetExemptionsParams
+} from '../schemas/getExemptionsSchema.js'
 
-export const listOfficersController: FastifyPluginAsync = async (
+export const getExemptionsController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
-  fastify.log = fastify.log.child({ route: 'listOfficers' })
-  await initListOfficersCollection(fastify.mongo.db)
+  fastify.log = fastify.log.child({ route: 'getExemptions' })
+  await initGetExemptionsCollection(fastify.mongo.db)
   fastify.get<{
-    Params: ListOfficersParams
-    Querystring: ListOfficersQueryString
-  }>('/company/:company_number/officers', schema, async (req, res) => {
+    Params: GetExemptionsParams
+    Querystring: GetExemptionsQueryString
+  }>('/company/:company_number/exemptions', schema, async (req, res) => {
     const { company_number } = req.params
-    const {
-      items_per_page,
-      register_type,
-      register_view,
-      start_index,
-      order_by
-    } = req.query
+
     const ratelimit = await auth({ Authorization: req.headers.authorization })
     for (const [header, value] of Object.entries(ratelimit ?? {}))
       res.header(header, value)
@@ -55,15 +49,7 @@ export const listOfficersController: FastifyPluginAsync = async (
     }
     const { redis, mongo } = fastify
     const context: Context = { redis, mongo, req }
-    const result = listOfficers(
-      context,
-      company_number,
-      items_per_page,
-      register_type,
-      register_view,
-      start_index,
-      order_by
-    )
+    const result = getExemptions(context, company_number)
     if (result) return result
     else
       res

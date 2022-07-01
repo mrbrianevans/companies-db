@@ -8,8 +8,6 @@ const registerMarker = '// --- register controllers ---'
 
 export async function genWebServiceIndexFile(SERVICES_DIR, tag){
     await writeFile(resolve(SERVICES_DIR, tag.name,'webService', 'index.ts'), prettyTs(`import Fastify from 'fastify'
-import fastifyRedis from "@fastify/redis";
-import fastifyMongo from "@fastify/mongodb";
 import {getEnv} from "./controllers/reflect.js";
 ${importMarker}
 
@@ -17,8 +15,8 @@ const fastify = Fastify({
   logger: { level: 'trace', base: { service: '${tag.name}' } }
 })
 
-fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })
-fastify.register(fastifyMongo, { url: getEnv('MONGO_URL') + '/${tag.name}'})
+fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+fastify.register(import('@fastify/mongodb'), { url: getEnv('MONGO_URL') + '/${tag.name}'})
 ${registerMarker}
 
 await fastify.listen({port: 3000, host: '::'})

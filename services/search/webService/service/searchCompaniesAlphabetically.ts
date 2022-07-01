@@ -94,9 +94,7 @@ async function callSearchCompaniesAlphabeticallyApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/alphabetical-search/companies'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+
+  const path = `/alphabetical-search/companies`
   return await reflect(path + '?' + urlQuery.toString())
 }

@@ -128,9 +128,7 @@ async function callAdvancedCompanySearchApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/advanced-search/companies'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+
+  const path = `/advanced-search/companies`
   return await reflect(path + '?' + urlQuery.toString())
 }

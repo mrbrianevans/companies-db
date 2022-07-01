@@ -4,7 +4,7 @@ import {
   Context,
   initSearchAllCollection
 } from '../service/searchAll.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   SearchAllSchema as schema,
   SearchAllQueryString,
@@ -15,6 +15,7 @@ export const searchAllController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'searchAll' })
   await initSearchAllCollection(fastify.mongo.db)
   fastify.get<{ Params: SearchAllParams; Querystring: SearchAllQueryString }>(
     '/search',

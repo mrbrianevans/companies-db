@@ -96,10 +96,7 @@ async function callGetFilingHistoryApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path =
-    '/company/{company_number}/filing-history/{transaction_id}'.replace(
-      /\{(.+?)}/g,
-      (w, n) => pathParams[n]
-    )
+  const { company_number, transaction_id } = pathParams
+  const path = `/company/${company_number}/filing-history/${transaction_id}`
   return await reflect(path + '?' + urlQuery.toString())
 }

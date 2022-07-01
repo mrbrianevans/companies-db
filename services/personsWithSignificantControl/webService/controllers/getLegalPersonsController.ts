@@ -4,7 +4,7 @@ import {
   Context,
   initGetLegalPersonsCollection
 } from '../service/getLegalPersons.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetLegalPersonsSchema as schema,
   GetLegalPersonsQueryString,
@@ -15,6 +15,7 @@ export const getLegalPersonsController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getLegalPersons' })
   await initGetLegalPersonsCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetLegalPersonsParams

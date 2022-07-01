@@ -4,7 +4,7 @@ import {
   Context,
   initSearchDisqualifiedOfficersCollection
 } from '../service/searchDisqualifiedOfficers.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   SearchDisqualifiedOfficersSchema as schema,
   SearchDisqualifiedOfficersQueryString,
@@ -15,6 +15,7 @@ export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'searchDisqualifiedOfficers' })
   await initSearchDisqualifiedOfficersCollection(fastify.mongo.db)
   fastify.get<{
     Params: SearchDisqualifiedOfficersParams

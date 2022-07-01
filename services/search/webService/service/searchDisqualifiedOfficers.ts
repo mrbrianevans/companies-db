@@ -93,9 +93,7 @@ async function callSearchDisqualifiedOfficersApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/search/disqualified-officers'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+
+  const path = `/search/disqualified-officers`
   return await reflect(path + '?' + urlQuery.toString())
 }

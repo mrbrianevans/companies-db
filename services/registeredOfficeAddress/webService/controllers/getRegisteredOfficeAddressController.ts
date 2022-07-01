@@ -4,7 +4,7 @@ import {
   Context,
   initGetRegisteredOfficeAddressCollection
 } from '../service/getRegisteredOfficeAddress.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetRegisteredOfficeAddressSchema as schema,
   GetRegisteredOfficeAddressQueryString,
@@ -15,6 +15,7 @@ export const getRegisteredOfficeAddressController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getRegisteredOfficeAddress' })
   await initGetRegisteredOfficeAddressCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetRegisteredOfficeAddressParams

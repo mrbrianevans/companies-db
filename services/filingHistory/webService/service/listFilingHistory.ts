@@ -101,9 +101,7 @@ async function callListFilingHistoryApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/company/{company_number}/filing-history'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+  const { company_number } = pathParams
+  const path = `/company/${company_number}/filing-history`
   return await reflect(path + '?' + urlQuery.toString())
 }

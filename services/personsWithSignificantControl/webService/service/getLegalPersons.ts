@@ -96,10 +96,7 @@ async function callGetLegalPersonsApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path =
-    '/company/{company_number}/persons-with-significant-control/legal-person/{psc_id}'.replace(
-      /\{(.+?)}/g,
-      (w, n) => pathParams[n]
-    )
+  const { company_number, psc_id } = pathParams
+  const path = `/company/${company_number}/persons-with-significant-control/legal-person/${psc_id}`
   return await reflect(path + '?' + urlQuery.toString())
 }

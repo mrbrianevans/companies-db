@@ -4,7 +4,7 @@ import {
   Context,
   initSearchDissolvedCompaniesCollection
 } from '../service/searchDissolvedCompanies.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   SearchDissolvedCompaniesSchema as schema,
   SearchDissolvedCompaniesQueryString,
@@ -15,6 +15,7 @@ export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'searchDissolvedCompanies' })
   await initSearchDissolvedCompaniesCollection(fastify.mongo.db)
   fastify.get<{
     Params: SearchDissolvedCompaniesParams

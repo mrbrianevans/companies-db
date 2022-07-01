@@ -4,7 +4,7 @@ import {
   Context,
   initGetCorporateOfficerCollection
 } from '../service/getCorporateOfficer.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetCorporateOfficerSchema as schema,
   GetCorporateOfficerQueryString,
@@ -15,6 +15,7 @@ export const getCorporateOfficerController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getCorporateOfficer' })
   await initGetCorporateOfficerCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetCorporateOfficerParams

@@ -55,12 +55,13 @@ export type ${Name}Response = FromSchema<typeof ${Name}Schema['schema']['respons
     await writeFile(resolve(SERVICES_DIR, tag,'webService', 'controllers', name + 'Controller.ts'), prettyTs(`
 import {FastifyPluginAsync} from "fastify";
 import {${name}, Context, init${Name}Collection} from "../service/${name}.js";
-import { reflect, auth } from "./reflect.js";
+import { auth } from "./reflect.js";
 import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../schemas/${name}Schema.js";
 
 
 
 export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
+  fastify.log = fastify.log.child({route: '${name}'})
   await init${Name}Collection(fastify.mongo.db)
   fastify.get<{Params: ${Name}Params, Querystring: ${Name}QueryString}>('${path.replace(/\{(.*?)}/g, (whole, pName) => ':' + pName)}', schema, async (req, res)=>{
     ${parameters.filter(isPath).length ? `const {${parameters.filter(isPath).map(getName).join(', ')}} = req.params`:''}
@@ -190,7 +191,8 @@ export async function ${name}(context: Context, ${processParams(parameters, true
 async function call${Name}Api(pathParams, queryParams) {
 const nonNullQueryParams = Object.fromEntries(Object.entries(queryParams).filter(([k,v])=>v).map(([k,v])=>[k, String(v)]))
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-    const path = '${path}'.replace(/\\{(.+?)}/g, (w, n)=> pathParams[n])
+    ${parameters.filter(isPath).length ? `const {${parameters.filter(isPath).map(getName).join(', ')}} = pathParams`:''}
+    const path = \`${path.replaceAll('{','${')}\`
   return await reflect(path + '?' + urlQuery.toString())
 }
 

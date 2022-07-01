@@ -107,9 +107,7 @@ async function callListOfficersApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/company/{company_number}/officers'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+  const { company_number } = pathParams
+  const path = `/company/${company_number}/officers`
   return await reflect(path + '?' + urlQuery.toString())
 }

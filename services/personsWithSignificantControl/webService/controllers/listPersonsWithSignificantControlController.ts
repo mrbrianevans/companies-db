@@ -4,7 +4,7 @@ import {
   Context,
   initListPersonsWithSignificantControlCollection
 } from '../service/listPersonsWithSignificantControl.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   ListPersonsWithSignificantControlSchema as schema,
   ListPersonsWithSignificantControlQueryString,
@@ -13,6 +13,9 @@ import {
 
 export const listPersonsWithSignificantControlController: FastifyPluginAsync =
   async (fastify, opts) => {
+    fastify.log = fastify.log.child({
+      route: 'listPersonsWithSignificantControl'
+    })
     await initListPersonsWithSignificantControlCollection(fastify.mongo.db)
     fastify.get<{
       Params: ListPersonsWithSignificantControlParams

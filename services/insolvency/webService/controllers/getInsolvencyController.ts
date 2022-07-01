@@ -4,7 +4,7 @@ import {
   Context,
   initGetInsolvencyCollection
 } from '../service/getInsolvency.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetInsolvencySchema as schema,
   GetInsolvencyQueryString,
@@ -15,6 +15,7 @@ export const getInsolvencyController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getInsolvency' })
   await initGetInsolvencyCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetInsolvencyParams

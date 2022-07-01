@@ -96,9 +96,7 @@ async function callSearchDissolvedCompaniesApi(pathParams, queryParams) {
       .map(([k, v]) => [k, String(v)])
   )
   const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const path = '/dissolved-search/companies'.replace(
-    /\{(.+?)}/g,
-    (w, n) => pathParams[n]
-  )
+
+  const path = `/dissolved-search/companies`
   return await reflect(path + '?' + urlQuery.toString())
 }

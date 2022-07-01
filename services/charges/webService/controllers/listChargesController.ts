@@ -4,7 +4,7 @@ import {
   Context,
   initListChargesCollection
 } from '../service/listCharges.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   ListChargesSchema as schema,
   ListChargesQueryString,
@@ -15,6 +15,7 @@ export const listChargesController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'listCharges' })
   await initListChargesCollection(fastify.mongo.db)
   fastify.get<{
     Params: ListChargesParams

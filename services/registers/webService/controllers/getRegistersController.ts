@@ -4,7 +4,7 @@ import {
   Context,
   initGetRegistersCollection
 } from '../service/getRegisters.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetRegistersSchema as schema,
   GetRegistersQueryString,
@@ -15,6 +15,7 @@ export const getRegistersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getRegisters' })
   await initGetRegistersCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetRegistersParams

@@ -4,7 +4,7 @@ import {
   Context,
   initGetSuperSecurePersonCollection
 } from '../service/getSuperSecurePerson.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   GetSuperSecurePersonSchema as schema,
   GetSuperSecurePersonQueryString,
@@ -15,6 +15,7 @@ export const getSuperSecurePersonController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'getSuperSecurePerson' })
   await initGetSuperSecurePersonCollection(fastify.mongo.db)
   fastify.get<{
     Params: GetSuperSecurePersonParams

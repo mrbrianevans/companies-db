@@ -1,6 +1,4 @@
 import Fastify from 'fastify'
-import fastifyRedis from '@fastify/redis'
-import fastifyMongo from '@fastify/mongodb'
 import { getEnv } from './controllers/reflect.js'
 // --- import controllers ---
 import { listFilingHistoryController } from './controllers/listFilingHistoryController.js'
@@ -10,8 +8,10 @@ const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'filingHistory' } }
 })
 
-fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })
-fastify.register(fastifyMongo, { url: getEnv('MONGO_URL') + '/filingHistory' })
+fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+fastify.register(import('@fastify/mongodb'), {
+  url: getEnv('MONGO_URL') + '/filingHistory'
+})
 // --- register controllers ---
 fastify.register(listFilingHistoryController)
 fastify.register(getFilingHistoryController)

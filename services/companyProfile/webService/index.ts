@@ -1,6 +1,4 @@
 import Fastify from 'fastify'
-import fastifyRedis from '@fastify/redis'
-import fastifyMongo from '@fastify/mongodb'
 import { getEnv } from './controllers/reflect.js'
 // --- import controllers ---
 import { getCompanyProfileController } from './controllers/getCompanyProfileController.js'
@@ -9,8 +7,10 @@ const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'companyProfile' } }
 })
 
-fastify.register(fastifyRedis, { url: getEnv('REDIS_URL') })
-fastify.register(fastifyMongo, { url: getEnv('MONGO_URL') + '/companyProfile' })
+fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+fastify.register(import('@fastify/mongodb'), {
+  url: getEnv('MONGO_URL') + '/companyProfile'
+})
 // --- register controllers ---
 fastify.register(getCompanyProfileController)
 

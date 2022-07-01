@@ -4,7 +4,7 @@ import {
   Context,
   initListOfficerAppointmentsCollection
 } from '../service/listOfficerAppointments.js'
-import { reflect, auth } from './reflect.js'
+import { auth } from './reflect.js'
 import {
   ListOfficerAppointmentsSchema as schema,
   ListOfficerAppointmentsQueryString,
@@ -15,6 +15,7 @@ export const listOfficerAppointmentsController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
+  fastify.log = fastify.log.child({ route: 'listOfficerAppointments' })
   await initListOfficerAppointmentsCollection(fastify.mongo.db)
   fastify.get<{
     Params: ListOfficerAppointmentsParams
