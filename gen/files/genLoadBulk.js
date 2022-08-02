@@ -152,23 +152,26 @@ export function average<T>(arr: T[], valueGetter = (a: T) => Number(a)) {
 async function genLoadBulkDockerfile(SERVICES_DIR, tagName){
     const content = `FROM node:18
 
-RUN corepack enable && corepack prepare pnpm@7.4.0 --activate
+# tried with PNPM but causes too many issues
 
-WORKDIR loadBulk
+COPY loadBulk/package.json /loadBulk/
+COPY shared/package.json /shared/
 
-COPY package.json .
+RUN cd loadBulk && npm install && cd ../shared && npm install
 
-RUN pnpm install
+COPY shared /shared
+COPY loadBulk /loadBulk
 
-COPY . .
+WORKDIR /loadBulk
 
-RUN pnpm run build
+RUN npm run build
 
-CMD ["pnpm", "run", "start"]
+CMD ["npm", "run", "start"]
+
 
 `
-    await writeFile(resolve(SERVICES_DIR, tagName, 'loadBulk','Dockerfile'), content)
-    await writeFile(resolve(SERVICES_DIR, tagName, 'loadBulk','.dockerignore'), `node_modules\ndownloads`)
+    await writeFile(resolve(SERVICES_DIR, tagName, 'Loader.Dockerfile'), content)
+    await writeFile(resolve(SERVICES_DIR, tagName, '.dockerignore'), `**/node_modules\nloadBulk/downloads`)
 
 }
 
@@ -186,14 +189,14 @@ async function genLoadBulkPackageJson(SERVICES_DIR, tagName){
         "version": "1.0.0",
         "dependencies": {
             "dot-object": "^2.1.4",
-            "mongodb": "^4.7.0",
+            "mongodb": "^4.8.1",
             "papaparse": "^5.3.2",
             "yauzl": "^2.10.0"
         },
         "devDependencies": {
-            "@types/node": "^18.0.0",
+            "@types/node": "^18.6.3",
             "@types/yauzl": "^2.10.0",
-            "json-schema-to-ts": "^2.5.3",
+            "json-schema-to-ts": "^2.5.5",
             "typescript": "^4.7.4"
         }
     }

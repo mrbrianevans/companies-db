@@ -118,6 +118,7 @@ async function loadAll(total = 7, limit?:number){
     })
 
     const slower = new SlowDown(1000)
+    // @ts-ignore
     slower.pipe(inserter)
     console.time("Pipeline "+i)
     // unzip => parse CSV => transform objects => insert to mongo
