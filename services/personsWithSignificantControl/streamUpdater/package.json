@@ -10,6 +10,10 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "camelcase": "^7.0.0",
+    "event-iterator": "^2.0.0",
+    "genson-js": "^0.0.8",
+    "json-schema-to-ts": "^2.5.5",
     "mongodb": "^4.7.0",
     "split2": "^4.1.0",
     "ws": "^8.8.0"

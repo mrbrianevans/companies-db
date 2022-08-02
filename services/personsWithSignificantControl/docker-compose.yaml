@@ -17,7 +17,8 @@
     "networks":
       - "personsWithSignificantControl"
   "loader":
-    "build": "loadBulk"
+    "build":
+      dockerfile: Loader.Dockerfile
     "depends_on":
       - "db"
     "volumes":
@@ -27,7 +28,8 @@
     "networks":
       - "personsWithSignificantControl"
   "updater":
-    "build": "streamUpdater"
+    "build":
+      dockerfile: Updater.Dockerfile
     "depends_on":
       - "db"
       - "cache"
