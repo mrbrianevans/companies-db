@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/mocha/lib/cli/cli.js tests\\**\\*.spec.ts --reporter=spec",
+    "test": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/mocha/lib/cli/cli.js tests\\**\\personsWithSignificantControl.spec.ts --reporter=spec",
     "index": "node --loader ts-node/esm index.ts",
     "benchmark": "node --loader ts-node/esm benchmark.ts",
     "getTestData": "node --loader ts-node/esm getTestData.ts"

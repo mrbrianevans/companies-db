@@ -13,7 +13,7 @@ Could also use a worker_thread() for each chunk.
 const DB_NAME = 'personsWithSignificantControl';
 const concurrency = 10
 
-async function loadAllFiles(total = 21, limit ?:number){
+async function loadAllFiles(total = 22, limit ?:number){
   console.time(`Load ${limit??total} files`)
   const segments = Array.from({length:total},(v,i)=>i+1)
   // @ts-ignore
@@ -44,4 +44,4 @@ async function createIndexes(){
 }
 
 await createIndexes()
-await loadAllFiles(21)
+await loadAllFiles(22)
