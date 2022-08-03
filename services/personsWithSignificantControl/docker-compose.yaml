@@ -30,6 +30,7 @@
   "updater":
     "build":
       dockerfile: Updater.Dockerfile
+    command: npm run start
     "depends_on":
       - "db"
       - "cache"

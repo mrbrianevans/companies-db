@@ -60,6 +60,12 @@
         "particulars": {
           "type": "object",
           "properties": {
+            "contains_fixed_charge": {
+              "type": "boolean"
+            },
+            "contains_floating_charge": {
+              "type": "boolean"
+            },
             "contains_negative_pledge": {
               "type": "boolean"
             },
@@ -68,12 +74,6 @@
             },
             "type": {
               "type": "string"
-            },
-            "contains_fixed_charge": {
-              "type": "boolean"
-            },
-            "contains_floating_charge": {
-              "type": "boolean"
             },
             "floating_charge_covers_all": {
               "type": "boolean"
@@ -156,6 +156,9 @@
         "assets_ceased_released": {
           "type": "string"
         },
+        "more_than_four_persons_entitled": {
+          "type": "boolean"
+        },
         "insolvency_cases": {
           "type": "array",
           "items": {
@@ -231,4 +234,60 @@
 } as const
   
   export type CompanyCharges = FromSchema<typeof CompanyChargesSchema>
+  
+  const sampleCompanyCharges: CompanyCharges = {
+  "resource_kind": "company-charges",
+  "resource_uri": "/company/05155434/charges/P2zOyddJrIvX4pCiLto7F7lqH_4",
+  "resource_id": "P2zOyddJrIvX4pCiLto7F7lqH_4",
+  "data": {
+    "charge_code": "051554340008",
+    "charge_number": 8,
+    "classification": {
+      "description": "A registered charge",
+      "type": "charge-description"
+    },
+    "created_on": "2016-07-26",
+    "delivered_on": "2016-07-28",
+    "etag": "d546f20f156289e0056193bac8098af5a48d8031",
+    "links": {
+      "self": "/company/05155434/charges/P2zOyddJrIvX4pCiLto7F7lqH_4"
+    },
+    "particulars": {
+      "contains_fixed_charge": true,
+      "contains_floating_charge": true,
+      "contains_negative_pledge": true,
+      "description": "76 whitchurch road shrewsbury.",
+      "type": "brief-description"
+    },
+    "persons_entitled": [
+      {
+        "name": "Lloyds Bank PLC"
+      }
+    ],
+    "satisfied_on": "2022-08-03",
+    "status": "fully-satisfied",
+    "transactions": [
+      {
+        "delivered_on": "2016-07-28",
+        "filing_type": "create-charge-with-deed",
+        "links": {
+          "filing": "/company/05155434/filing-history/MzE1NDI1MDE1NWFkaXF6a2N4"
+        }
+      },
+      {
+        "delivered_on": "2022-08-03",
+        "filing_type": "charge-satisfaction",
+        "links": {
+          "filing": "/company/05155434/filing-history/MzM0NzcwMzk0NGFkaXF6a2N4"
+        }
+      }
+    ]
+  },
+  "event": {
+    "timepoint": 1487036,
+    "published_at": "2022-08-03T12:58:01",
+    "type": "changed"
+  },
+  "received": 1659528079109.5159
+}
   

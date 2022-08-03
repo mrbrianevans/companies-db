@@ -123,21 +123,12 @@
         "etag": {
           "type": "string"
         },
-        "has_charges": {
-          "type": "boolean"
-        },
         "jurisdiction": {
-          "type": "string"
-        },
-        "last_full_members_list_date": {
           "type": "string"
         },
         "links": {
           "type": "object",
           "properties": {
-            "charges": {
-              "type": "string"
-            },
             "filing_history": {
               "type": "string"
             },
@@ -147,22 +138,72 @@
             "persons_with_significant_control": {
               "type": "string"
             },
-            "persons_with_significant_control_statements": {
-              "type": "string"
-            },
-            "registers": {
-              "type": "string"
-            },
             "self": {
               "type": "string"
             },
+            "persons_with_significant_control_statements": {
+              "type": "string"
+            },
+            "charges": {
+              "type": "string"
+            },
             "insolvency": {
+              "type": "string"
+            },
+            "registers": {
               "type": "string"
             }
           },
           "required": [
             "self"
           ]
+        },
+        "registered_office_address": {
+          "type": "object",
+          "properties": {
+            "address_line_1": {
+              "type": "string"
+            },
+            "address_line_2": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "locality": {
+              "type": "string"
+            },
+            "postal_code": {
+              "type": "string"
+            },
+            "region": {
+              "type": "string"
+            },
+            "care_of": {
+              "type": "string"
+            },
+            "po_box": {
+              "type": "string"
+            }
+          }
+        },
+        "sic_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string"
+        },
+        "last_full_members_list_date": {
+          "type": "string"
+        },
+        "date_of_cessation": {
+          "type": "string"
+        },
+        "has_charges": {
+          "type": "boolean"
         },
         "previous_company_names": {
           "type": "array",
@@ -186,49 +227,11 @@
             ]
           }
         },
-        "registered_office_address": {
-          "type": "object",
-          "properties": {
-            "address_line_1": {
-              "type": "string"
-            },
-            "country": {
-              "type": "string"
-            },
-            "locality": {
-              "type": "string"
-            },
-            "postal_code": {
-              "type": "string"
-            },
-            "address_line_2": {
-              "type": "string"
-            },
-            "region": {
-              "type": "string"
-            },
-            "po_box": {
-              "type": "string"
-            },
-            "care_of": {
-              "type": "string"
-            }
-          }
-        },
-        "sic_codes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "type": {
+        "company_status_detail": {
           "type": "string"
         },
-        "registered_office_is_in_dispute": {
+        "has_insolvency_history": {
           "type": "boolean"
-        },
-        "date_of_cessation": {
-          "type": "string"
         },
         "is_community_interest_company": {
           "type": "boolean"
@@ -236,11 +239,25 @@
         "subtype": {
           "type": "string"
         },
-        "has_insolvency_history": {
+        "registered_office_is_in_dispute": {
           "type": "boolean"
         },
-        "company_status_detail": {
-          "type": "string"
+        "has_been_liquidated": {
+          "type": "boolean"
+        },
+        "annual_return": {
+          "type": "object",
+          "properties": {
+            "last_made_up_to": {
+              "type": "string"
+            },
+            "overdue": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "last_made_up_to"
+          ]
         },
         "external_registration_number": {
           "type": "string"
@@ -262,33 +279,6 @@
                 "foreign_account_type",
                 "terms_of_account_publication"
               ]
-            },
-            "business_activity": {
-              "type": "string"
-            },
-            "governed_by": {
-              "type": "string"
-            },
-            "legal_form": {
-              "type": "string"
-            },
-            "originating_registry": {
-              "type": "object",
-              "properties": {
-                "country": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "country",
-                "name"
-              ]
-            },
-            "registration_number": {
-              "type": "string"
             },
             "accounts": {
               "type": "object",
@@ -340,34 +330,67 @@
                 "account_period_to",
                 "must_file_within"
               ]
+            },
+            "business_activity": {
+              "type": "string"
+            },
+            "governed_by": {
+              "type": "string"
+            },
+            "legal_form": {
+              "type": "string"
+            },
+            "originating_registry": {
+              "type": "object",
+              "properties": {
+                "country": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "country",
+                "name"
+              ]
+            },
+            "registration_number": {
+              "type": "string"
             }
           },
           "required": [
-            "accounting_requirement",
+            "governed_by",
             "legal_form",
             "originating_registry",
             "registration_number"
           ]
         },
-        "has_been_liquidated": {
-          "type": "boolean"
-        },
-        "annual_return": {
+        "service_address": {
           "type": "object",
           "properties": {
-            "last_made_up_to": {
+            "address_line_1": {
               "type": "string"
             },
-            "overdue": {
-              "type": "boolean"
+            "country": {
+              "type": "string"
+            },
+            "locality": {
+              "type": "string"
+            },
+            "postal_code": {
+              "type": "string"
             }
           },
           "required": [
-            "last_made_up_to"
+            "address_line_1",
+            "country",
+            "locality",
+            "postal_code"
           ]
         },
-        "has_super_secure_pscs": {
-          "type": "boolean"
+        "super_secure_managing_officer_count": {
+          "type": "integer"
         }
       },
       "required": [
@@ -415,4 +438,66 @@
 } as const
   
   export type CompanyProfile = FromSchema<typeof CompanyProfileSchema>
+  
+  const sampleCompanyProfile: CompanyProfile = {
+  "resource_kind": "company-profile",
+  "resource_uri": "/company/SC571653",
+  "resource_id": "SC571653",
+  "data": {
+    "accounts": {
+      "accounting_reference_date": {
+        "day": "31",
+        "month": "07"
+      },
+      "last_accounts": {
+        "made_up_to": "2021-07-31",
+        "period_end_on": "2021-07-31",
+        "period_start_on": "2020-08-01",
+        "type": "total-exemption-full"
+      },
+      "next_accounts": {
+        "due_on": "2023-04-30",
+        "period_end_on": "2022-07-31",
+        "period_start_on": "2021-08-01"
+      },
+      "next_due": "2023-04-30",
+      "next_made_up_to": "2022-07-31"
+    },
+    "can_file": true,
+    "company_name": "FC KIOSKS LTD",
+    "company_number": "SC571653",
+    "company_status": "active",
+    "confirmation_statement": {
+      "last_made_up_to": "2022-07-19",
+      "next_due": "2023-08-02",
+      "next_made_up_to": "2023-07-19"
+    },
+    "date_of_creation": "2017-07-20",
+    "etag": "e861f92b4d7814ad3bbae90536c5ff4c1ac238bb",
+    "jurisdiction": "scotland",
+    "links": {
+      "filing_history": "/company/SC571653/filing-history",
+      "officers": "/company/SC571653/officers",
+      "persons_with_significant_control": "/company/SC571653/persons-with-significant-control",
+      "self": "/company/SC571653"
+    },
+    "registered_office_address": {
+      "address_line_1": "Suite 4f, Ingram House",
+      "address_line_2": "227 Ingram Street",
+      "country": "Scotland",
+      "locality": "Glasgow",
+      "postal_code": "G1 1DA"
+    },
+    "sic_codes": [
+      "56290"
+    ],
+    "type": "ltd"
+  },
+  "event": {
+    "timepoint": 47695461,
+    "published_at": "2022-08-02T15:21:06",
+    "type": "changed"
+  },
+  "received": 1659450343326.8445
+}
   

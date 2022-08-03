@@ -94,6 +94,12 @@
               "type": {
                 "type": "string"
               },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "links": {
                 "type": "object",
                 "properties": {
@@ -162,4 +168,46 @@
 } as const
   
   export type CompanyInsolvency = FromSchema<typeof CompanyInsolvencySchema>
+  
+  const sampleCompanyInsolvency: CompanyInsolvency = {
+  "resource_kind": "company-insolvency",
+  "resource_uri": "/company/11519482/insolvency",
+  "resource_id": "11519482",
+  "data": {
+    "cases": [
+      {
+        "dates": [
+          {
+            "date": "2022-07-27",
+            "type": "wound-up-on"
+          }
+        ],
+        "number": "1",
+        "practitioners": [
+          {
+            "address": {
+              "address_line_1": "4th Floor Churchgate House",
+              "locality": "Bolton",
+              "postal_code": "BL1 1HL"
+            },
+            "appointed_on": "2022-07-27",
+            "name": "Rikki Burton",
+            "role": "practitioner"
+          }
+        ],
+        "type": "creditors-voluntary-liquidation"
+      }
+    ],
+    "etag": "0204bf1f01b6bcb1bbe21f946e775b5fd34a1fff",
+    "status": [
+      "liquidation"
+    ]
+  },
+  "event": {
+    "timepoint": 1293709,
+    "published_at": "2022-08-02T14:51:01.704338+01:00",
+    "type": "changed"
+  },
+  "received": 1659448483132.9688
+}
   

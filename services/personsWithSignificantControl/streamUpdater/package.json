@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "start": "node index.js"
+    "start": "node index.js",
+    "schemas": "node schemas/generateSchemas.js"
   },
   "dependencies": {
     "camelcase": "^7.0.0",
