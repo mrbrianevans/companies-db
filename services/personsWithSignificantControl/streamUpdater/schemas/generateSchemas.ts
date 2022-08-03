@@ -69,6 +69,7 @@ async function getKinds(){
 //   'company-psc-legal',
 //   'company-psc-supersecure',
 //   'filing-history',
+//   'individual-beneficial-owner'
 // ]
 
 const kinds = await getKinds()
