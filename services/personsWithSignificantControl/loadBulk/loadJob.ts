@@ -29,6 +29,7 @@ const collections = ['getIndividual','getLegalPersons','getCorporateEntities','g
  * Creates collections with compression and an index on pscId (if not exists).
  */
 async function createIndexes(){
+  // the index creation logic is now in a startup script for the mongo database, so that there is never a database which does not have the required indexes, as this poses a serious performance risk
   const mongo = new MongoClient(getEnv('MONGO_URL'))
   await mongo.connect()
   for (const collection of collections) {
