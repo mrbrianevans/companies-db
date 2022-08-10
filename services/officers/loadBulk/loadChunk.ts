@@ -24,7 +24,7 @@ const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION
 const fileStream = createReadStream(filepath)
 
 const companyInserter = new MongoInserter(DB_NAME, COMPANY_COLLECTION, ['companyNumber'])
-const personInserter = new MongoInserter(DB_NAME, OFFICER_COLLECTION, ['personNumber'])
+const personInserter = new MongoInserter(DB_NAME, OFFICER_COLLECTION, ['companyNumber','personNumber'])
 const inserterStreams = new Writable({
   objectMode: true,
   write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {

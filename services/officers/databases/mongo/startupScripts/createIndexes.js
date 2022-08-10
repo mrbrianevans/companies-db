@@ -9,7 +9,7 @@ db = db.getSiblingDB('officers')
 const collectionsToCreate = {
     getOfficers: { company_number: 1, appointment_id: 1 },
     listOfficers: { company_number: 1 },
-    officers: {personNumber: 1},
+    officers: {companyNumber: 1,personNumber: 1},
     companies: {companyNumber: 1}
 }
 

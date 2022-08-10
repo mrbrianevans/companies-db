@@ -14,8 +14,8 @@ import {getTransformer} from "./transformers.js";
 export function parseRecordByFormat(recordString: string, format: RecordTypeFormat){
   return Object.fromEntries(format.map(segment=> {
     const rawValue = recordString.slice(segment.start, segment.start + segment.length)
-    const transformer = dataTypeParsers[segment.dataType]
-    const parsedValue = transformer(segment)(rawValue)
+    const dataTypeParser = dataTypeParsers[segment.dataType]
+    const parsedValue = dataTypeParser(segment)(rawValue)
     return [segment.name, parsedValue];
   }))
 }

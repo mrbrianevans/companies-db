@@ -34,14 +34,14 @@ function companyTransformer(parsedRecord: ParsedCompanyRecord) {
 
 function personTransformer(parsedRecord: ParsedPersonRecord) {
   const v = parsedRecord['Variable Data (Name/ Address/ Occupation Nationality/Usual Residential Country )']
-  return {
+  return {//todo: should be undefined if not parsed
     personNumber: parsedRecord['Person Number'],
     companyNumber: parsedRecord['Company Number'],
     appointmentDateOrigin: parsedRecord['App Date Origin'],
     appointmentType: parsedRecord['Appointment Type'],
     corporateIndicator: parsedRecord['Corporate indicator'],
     appointmentDate: parsedRecord['Appointment Date'],
-    resignationDate: parsedRecord['Resignation Date'],//todo: should be undefined if not parsed
+    resignationDate: parsedRecord['Resignation Date'],
     dateOfBirth: parsedRecord['Partial Date of Birth'],//todo: need to coalesce here
     name: {
       title: v['TITLE'], forenames: v['FORENAMES'], surname: v['SURNAME'], honours: v['HONOURS']

@@ -1,4 +1,4 @@
-//todo:
+//
 // load officers bulk file into mongo
 // parse file line by line, inserting each record into the appropriate collection as it loops through
 // for each line:
@@ -22,7 +22,7 @@ async function loadAllFiles(directory: string, limit ?:number){
   const files = await readdir(directory)
   console.time(`Load ${limit??files.length} files`)
   // @ts-ignore
-  await Readable.from(files).take(limit??total).map(async (filename)=>{
+  await Readable.from(files).take(limit??files.length).map(async (filename)=>{
     const filepath = resolve(directory, filename)
     const w = new Worker('./loadChunk.js', {argv: [filepath], workerData: {}})
     const [output] = await once(w, 'message') // worker only messages at end of process
@@ -30,5 +30,5 @@ async function loadAllFiles(directory: string, limit ?:number){
   }, {concurrency}).toArray()
   console.timeEnd(`Load ${limit??files.length} files`)
 }
-
+// takes about 20 minutes to load all 9 files like this
 await loadAllFiles('N:\\CompaniesHouse\\officersdata\\Prod195_2898')
