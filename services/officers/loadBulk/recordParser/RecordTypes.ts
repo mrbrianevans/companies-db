@@ -6,11 +6,11 @@ export interface ParsedPersonRecord {
   'Person Number': number;
   'Corporate indicator': string;
   'Filler': string;
-  'Appointment Date': string;
-  'Resignation Date': string;
+  'Appointment Date': {day:string, month: string, year: string};
+  'Resignation Date': {day:string, month: string, year: string};
   'Person Postcode': string;
-  'Partial Date of Birth': string;
-  'Full Date of Birth': string;
+  'Partial Date of Birth': {day:string, month: string, year: string};
+  'Full Date of Birth': {day:string, month: string, year: string};
   'Variable Data Length': number;
   'Variable Data (Name/ Address/ Occupation Nationality/Usual Residential Country )': {
     TITLE: string;
