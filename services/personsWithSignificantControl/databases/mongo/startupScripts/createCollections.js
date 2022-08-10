@@ -41,7 +41,7 @@ for (const colName in collectionsToCreate) {
         if (!indexExists) {
             console.log('Creating index on collection', colName, targetIndex)
             db[colName]
-                .createIndex({company_number: 1, psc_id: 1}, {unique: true})
+                .createIndex(targetIndex, {unique: true})
         }else{
             console.log('Index already exists on collection', colName, indexes.map(i=>i.name))
         }

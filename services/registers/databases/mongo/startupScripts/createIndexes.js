@@ -1,32 +1,13 @@
-import {mkdir, writeFile} from "node:fs/promises";
-import {resolve} from "path";
 
-const collectionMarkers = '// collections go here like this collectionName: { indexColumn: 1 }'
-export async function genDatabases(SERVICES_DIR, tag){
-    // generate Dockerfiles for mongo and redis databases
-
-    await mkdir(resolve(SERVICES_DIR, tag, 'databases', 'mongo', 'startupScripts'), {recursive: true})
-    await mkdir(resolve(SERVICES_DIR, tag, 'databases', 'redis'), {recursive: true})
-
-    await writeFile(resolve(SERVICES_DIR, tag, 'databases', 'redis', 'Dockerfile'), 'FROM redis\n')
-
-    const mongoDockerfile = `FROM mongo:5
-    
-ADD startupScripts docker-entrypoint-initdb.d
-
-CMD ["--quiet", "--wiredTigerCacheSizeGB", "0.5"]
-`
-    await writeFile(resolve(SERVICES_DIR, tag, 'databases', 'mongo', 'Dockerfile'), mongoDockerfile)
-    const mongoSampleScript = `
 /* this script should be run automatically on the creation of a new database instance, but in the event
  * that it needs to be run again, either:
- *  - in a mongo shell run \`.load /docker-entrypoint-initdb.d/createCollections.js\`
- *  - in a bash shell run \`mongosh /docker-entrypoint-initdb.d/createCollections.js\`
+ *  - in a mongo shell run `.load /docker-entrypoint-initdb.d/createCollections.js`
+ *  - in a bash shell run `mongosh /docker-entrypoint-initdb.d/createCollections.js`
  */
 db.disableFreeMonitoring()
-db = db.getSiblingDB('${tag}')
+db = db.getSiblingDB('registers')
 const collectionsToCreate = {
-    ${collectionMarkers}
+    // collections go here like this collectionName: { indexColumn: 1 }
 }
 
 const existingCollections = db.getCollectionNames()
@@ -53,14 +34,10 @@ for (const colName in collectionsToCreate) {
         if (!indexExists) {
             console.log('Creating index on collection', colName, targetIndex)
             db[colName]
-                .createIndex(targetIndex, {unique: true})
+                .createIndex({company_number: 1, psc_id: 1}, {unique: true})
         }else{
             console.log('Index already exists on collection', colName, indexes.map(i=>i.name))
         }
     }
 }
 
-`
-
-    await writeFile(resolve(SERVICES_DIR, tag, 'databases', 'mongo', 'startupScripts', 'createIndexes.js'), mongoSampleScript)
-}
