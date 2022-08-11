@@ -18,6 +18,8 @@
       "driver": "local"
     "networks":
       - "officers"
+    ports:
+      - "6379:6379"
   "loader":
     "build": "loadBulk"
     "depends_on":

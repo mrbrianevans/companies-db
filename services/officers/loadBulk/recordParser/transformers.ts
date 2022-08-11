@@ -99,7 +99,10 @@ function personTransformer(parsedRecord: ParsedPersonRecord) {
     resignationDate: coalesceDates(parsedRecord['Resignation Date']),
     dateOfBirth: coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
     name: {
-      title: v['TITLE']||undefined, forenames: v['FORENAMES']||undefined, surname: v['SURNAME']||undefined, honours: v['HONOURS']||undefined
+      title: v['TITLE'].replaceAll('.', '').trim()||undefined,
+      forenames: v['FORENAMES'].trim()||undefined,
+      surname: v['SURNAME'].trim()||undefined,
+      honours: v['HONOURS'].trim()||undefined
     },
     address: {
       careOf: v['CARE OF']||undefined,
