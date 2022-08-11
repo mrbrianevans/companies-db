@@ -30,9 +30,11 @@ const inserterStreams = new Writable({
   write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
     switch (chunk.recordType) {
       case RecordType.Company:
+        delete chunk.recordType
         companyInserter.write(chunk, callback)
         break;
       case RecordType.Person:
+        delete chunk.recordType
         personInserter.write(chunk, callback)
         break;
       default:

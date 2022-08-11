@@ -20,7 +20,8 @@ export function getTransformer(recordType: RecordType) {
 }
 
 const companyStatuses = {
-  '': 'other', 'C': 'closed', 'D': 'dissolved', 'L': 'liquidation', 'R': 'receivership'
+  '': 'active',
+  'C': 'converted-closed', 'D': 'dissolved', 'L': 'liquidation', 'R': 'receivership'
 }
 
 function companyTransformer(parsedRecord: ParsedCompanyRecord) {
@@ -39,12 +40,16 @@ function coalesceEmptyStrings(strings: string[]): string|undefined{
   return undefined
 }
 
-function coalesceDates(...dates: {day:string, month: string, year: string}[]): {day?:string, month?: string, year?: string}|undefined{
+function coalesceDates(...dates: {day:string, month: string, year: string}[]): {day?:number, month?: number, year?: number}|undefined{
   const day = coalesceEmptyStrings(dates.map(d=>d.day))
   const month = coalesceEmptyStrings(dates.map(d=>d.month))
   const year = coalesceEmptyStrings(dates.map(d=>d.year))
-  if(day !== undefined || month !== undefined || year !== undefined)
-    return {day,month,year}
+  const date: {day?:number, month?: number, year?: number} = {}
+  if(day) date.day = parseInt(day)
+  if(month) date.month = parseInt(month)
+  if(year) date.year = parseInt(year)
+  if(Object.keys(date).length > 0)
+    return date
   else
     return undefined
 }
@@ -57,21 +62,33 @@ const appointmentDateOrigins = {
   '5':'llp-incorporation-document',
   '6':'overseas-appointment-document'
 } as const
+// these enum values have been chosen from the official companies house enum constants on github https://github.com/companieshouse/api-enumerations/blob/master/constants.yml
 const appointmentTypes = {
   0: 'secretary',
   1: 'director',
-  4: 'non-designated-llp-member',
-  5: 'designated-llp-member',
+  4: 'llp-member',
+  5: 'llp-designated-member',
   11: 'judicial-factor',
-  12: 'charities-act-receiver-or-manager',
-  13: 'caice-act-manager',
-  17: 'se-member-of-administrative-organ',
-  18: 'se-member-of-supervisory-organ',
-  19: 'se-member-of-management-organ'
+  12: 'charities-act-receiver-or-manager', // only 9 officers in dataset are this appointment type
+  13: 'caice-act-manager', // only 1 officer in dataset is this appointment type
+  17: 'member-of-an-administrative-organ',
+  18: 'member-of-a-supervisory-organ',
+  19: 'member-of-a-management-organ'
 }
+/** modifies an object in place to remove any null or undefined values. recurses sub-objects to do the same. */
+function removeNulls(obj){
+  for (const key in obj) {
+    if (obj[key] === null || obj[key] === undefined) {
+      delete obj[key];
+    }else if(typeof obj[key] === "object"){
+      removeNulls(obj[key])
+    }
+  }
+}
+
 function personTransformer(parsedRecord: ParsedPersonRecord) {
   const v = parsedRecord['Variable Data (Name/ Address/ Occupation Nationality/Usual Residential Country )']
-  return {
+  const transformedRecord = {
     personNumber: parsedRecord['Person Number'],
     personNumberPrefix: parsedRecord['Person Number'].toString().padStart(12, '0').slice(0,8),
     companyNumber: parsedRecord['Company Number'],
@@ -98,14 +115,14 @@ function personTransformer(parsedRecord: ParsedPersonRecord) {
     nationality: v['NATIONALITY']||undefined,
     usualResidentialCountry: v['USUAL RESIDENTIAL COUNTRY']||undefined
   }
+  removeNulls(transformedRecord)
+  return transformedRecord
 }
 
 function headerTransformer(parsedRecord: ParsedHeaderRecord) {
   return parsedRecord
-
 }
 
 function trailerTransformer(parsedRecord: ParsedTrailerRecord) {
   return parsedRecord
-
 }

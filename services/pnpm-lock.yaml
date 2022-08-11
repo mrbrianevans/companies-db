@@ -54,7 +54,7 @@ importers:
 
   UKEstablishments/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -64,10 +64,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -123,7 +123,7 @@ importers:
 
   charges/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -133,10 +133,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -173,7 +173,7 @@ importers:
 
   companyProfile/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -183,10 +183,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -223,7 +223,7 @@ importers:
 
   filingHistory/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -233,10 +233,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -273,7 +273,7 @@ importers:
 
   insolvency/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -283,10 +283,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -323,7 +323,7 @@ importers:
 
   officerAppointments/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -333,10 +333,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -373,7 +373,7 @@ importers:
 
   officerDisqualifications/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -383,10 +383,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -403,29 +403,23 @@ importers:
   officers/loadBulk:
     specifiers:
       '@types/node': ^18.6.3
-      '@types/yauzl': ^2.10.0
-      dot-object: ^2.1.4
-      json-schema-to-ts: ^2.5.5
+      command-line-args: ^5.2.1
+      command-line-usage: ^6.1.3
       mongodb: ^4.8.1
-      papaparse: ^5.3.2
       split2: ^4.1.0
       typescript: ^4.7.4
-      yauzl: ^2.10.0
     dependencies:
-      dot-object: 2.1.4
+      command-line-args: 5.2.1
+      command-line-usage: 6.1.3
       mongodb: 4.8.1
-      papaparse: 5.3.2
       split2: 4.1.0
-      yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.6.3
-      '@types/yauzl': 2.10.0
-      json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
   officers/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -435,10 +429,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -476,36 +470,29 @@ importers:
   personsWithSignificantControl/shared:
     specifiers:
       '@types/node': ^18.6.3
+      json-schema-to-ts: ^2.5.5
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
+      json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
   personsWithSignificantControl/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
-      '@types/ws': ^8.5.3
-      mongodb: ^4.8.1
-      split2: ^4.1.0
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
-      ws: ^8.8.1
-    dependencies:
-      mongodb: 4.8.1
-      split2: 4.1.0
-      ws: 8.8.1
     devDependencies:
       '@types/node': 18.6.3
-      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   personsWithSignificantControl/webService:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -542,7 +529,7 @@ importers:
 
   registeredOfficeAddress/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -552,10 +539,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -592,7 +579,7 @@ importers:
 
   registers/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -602,10 +589,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -642,7 +629,7 @@ importers:
 
   search/streamUpdater:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       typescript: ^4.7.4
     devDependencies:
       '@types/node': 18.6.3
@@ -652,10 +639,10 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.6.3
+      '@types/node': ^18.0.0
       fastify: 4.2.0
-      json-schema-to-ts: ^2.5.5
-      pino: ^8.3.1
+      json-schema-to-ts: ^2.5.3
+      pino: ^8.1.0
       pino-pretty: ^8.1.0
       typescript: ^4.7.4
     dependencies:
@@ -756,12 +743,6 @@ packages:
       '@types/webidl-conversions': 6.1.1
     dev: false
 
-  /@types/ws/8.5.3:
-    resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
-    dependencies:
-      '@types/node': 18.6.3
-    dev: true
-
   /@types/yauzl/2.10.0:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     dependencies:
@@ -810,7 +791,6 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       color-convert: 1.9.3
-    dev: true
 
   /archy/1.0.0:
     resolution: {integrity: sha512-Xg+9RwCg/0p32teKdGMPTPnVXKD0w3DfHnFTficozsAgsvq2XenPJq/MYpzzQ/v8zrOyJn6Ds39VA4JIDwFfqw==}
@@ -825,6 +805,16 @@ packages:
       leven: 2.1.0
       mri: 1.1.4
     dev: true
+
+  /array-back/3.1.0:
+    resolution: {integrity: sha512-TkuxA4UCOvxuDK6NZYXCalszEzj+TLszyASooky+i742l9TqsOdYCMJJupxRic61hwquNtppB3hgcuq9SVSH1Q==}
+    engines: {node: '>=6'}
+    dev: false
+
+  /array-back/4.0.2:
+    resolution: {integrity: sha512-NbdMezxqf94cnNfWLL7V/im0Ub+Anbb0IoZhvzie8+4HJ4nMQuzHuy49FkGYCJK2yAloZ3meiB6AVMClbrI1vg==}
+    engines: {node: '>=8'}
+    dev: false
 
   /atomic-sleep/1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
@@ -901,7 +891,6 @@ packages:
       ansi-styles: 3.2.1
       escape-string-regexp: 1.0.5
       supports-color: 5.5.0
-    dev: true
 
   /cluster-key-slot/1.1.0:
     resolution: {integrity: sha512-2Nii8p3RwAPiFwsnZvukotvow2rIHM+yQ6ZcBXGHdniadkYGZYiGmkHJIbZPIV9nfv7m/U1IPMVVcAhoWFeklw==}
@@ -912,15 +901,33 @@ packages:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
     dependencies:
       color-name: 1.1.3
-    dev: true
 
   /color-name/1.1.3:
     resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
-    dev: true
 
   /colorette/2.0.19:
     resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
     dev: true
+
+  /command-line-args/5.2.1:
+    resolution: {integrity: sha512-H4UfQhZyakIjC74I9d34fGYDwk3XpSr17QhEd0Q3I9Xq1CETHo4Hcuo87WyWHpAF1aSLjLRf5lD9ZGX2qStUvg==}
+    engines: {node: '>=4.0.0'}
+    dependencies:
+      array-back: 3.1.0
+      find-replace: 3.0.0
+      lodash.camelcase: 4.3.0
+      typical: 4.0.0
+    dev: false
+
+  /command-line-usage/6.1.3:
+    resolution: {integrity: sha512-sH5ZSPr+7UStsloltmDh7Ce5fb8XPlHyoPzTpyyMuYCtervL65+ubVZ6Q61cFtFl62UyJlc8/JwERRbAFPUqgw==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      array-back: 4.0.2
+      chalk: 2.4.2
+      table-layout: 1.0.2
+      typical: 5.2.0
+    dev: false
 
   /commander/4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
@@ -950,6 +957,11 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: false
+
+  /deep-extend/0.6.0:
+    resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
+    engines: {node: '>=4.0.0'}
     dev: false
 
   /deepmerge/4.2.2:
@@ -996,7 +1008,6 @@ packages:
   /escape-string-regexp/1.0.5:
     resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}
     engines: {node: '>=0.8.0'}
-    dev: true
 
   /event-target-shim/5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -1172,6 +1183,13 @@ packages:
       safe-regex2: 2.0.0
     dev: false
 
+  /find-replace/3.0.0:
+    resolution: {integrity: sha512-6Tb2myMioCAgv5kfvP5/PkZZ/ntTpVK39fHY7WkWBgvbeE+VHd/tZuZ4mrC+bxh4cfOZeYKVPaJIZtZXV7GNCQ==}
+    engines: {node: '>=4.0.0'}
+    dependencies:
+      array-back: 3.1.0
+    dev: false
+
   /flatstr/1.0.12:
     resolution: {integrity: sha512-4zPxDyhCyiN2wIAtSLI6gc82/EjqZc1onI4Mz/l0pWrAlsSfYH/2ZIcU+e3oA2wDwbzIWNKwa23F8rh6+DRWkw==}
     dev: false
@@ -1209,7 +1227,6 @@ packages:
   /has-flag/3.0.0:
     resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==}
     engines: {node: '>=4'}
-    dev: true
 
   /help-me/4.0.1:
     resolution: {integrity: sha512-PLv01Z+OhEPKj2QPYB4kjoCUkopYNPUK3EROlaPIf5bib752fZ+VCvGDAoA+FXo/OwCyLEA4D2e0mX8+Zhcplw==}
@@ -1317,6 +1334,10 @@ packages:
       cookie: 0.5.0
       process-warning: 2.0.0
       set-cookie-parser: 2.5.1
+    dev: false
+
+  /lodash.camelcase/4.3.0:
+    resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
     dev: false
 
   /lodash.defaults/4.2.0:
@@ -1608,6 +1629,11 @@ packages:
       redis-errors: 1.2.0
     dev: false
 
+  /reduce-flatten/2.0.0:
+    resolution: {integrity: sha512-EJ4UNY/U1t2P/2k6oqotuX2Cc3T6nxJwsM0N0asT7dhrtH1ltUxDn4NalSYmPE2rCkVpcf/X6R0wDwcFpzhd4w==}
+    engines: {node: '>=6'}
+    dev: false
+
   /require-from-string/2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
@@ -1735,7 +1761,16 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       has-flag: 3.0.0
-    dev: true
+
+  /table-layout/1.0.2:
+    resolution: {integrity: sha512-qd/R7n5rQTRFi+Zf2sk5XVVd9UQl6ZkduPFC3S7WEGJAmetDTjY3qPN50eSKzwuzEyQKy5TN2TiZdkIjos2L6A==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      array-back: 4.0.2
+      deep-extend: 0.6.0
+      typical: 5.2.0
+      wordwrapjs: 4.0.1
+    dev: false
 
   /thread-stream/0.15.2:
     resolution: {integrity: sha512-UkEhKIg2pD+fjkHQKyJO3yoIvAP3N6RlNFt2dUhcS1FGvCD1cQa1M/PGknCLFIyZdtJOWQjejp7bdNqmN7zwdA==}
@@ -1777,6 +1812,16 @@ packages:
     hasBin: true
     dev: true
 
+  /typical/4.0.0:
+    resolution: {integrity: sha512-VAH4IvQ7BDFYglMd7BPRDfLgxZZX4O4TFcRDA6EN5X7erNJJq+McIEp8np9aVtxrCJ6qx4GTYVfOWNjcqwZgRw==}
+    engines: {node: '>=8'}
+    dev: false
+
+  /typical/5.2.0:
+    resolution: {integrity: sha512-dvdQgNDNJo+8B2uBQoqdb11eUCE1JQXhvjC/CZtgvZseVd5TYMXnq0+vuUemXbd/Se29cTaUuPX3YIc2xgbvIg==}
+    engines: {node: '>=8'}
+    dev: false
+
   /uri-js/4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
@@ -1799,21 +1844,16 @@ packages:
       webidl-conversions: 7.0.0
     dev: false
 
+  /wordwrapjs/4.0.1:
+    resolution: {integrity: sha512-kKlNACbvHrkpIw6oPeYDSmdCTu2hdMHoyXLTcUKala++lx5Y+wjJ/e474Jqv5abnVmwxw08DiTuHmw69lJGksA==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      reduce-flatten: 2.0.0
+      typical: 5.2.0
+    dev: false
+
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
-
-  /ws/8.8.1:
-    resolution: {integrity: sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: false
 
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
