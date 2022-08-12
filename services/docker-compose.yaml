@@ -72,14 +72,6 @@
       - ".env"
     "logging":
       "driver": "local"
-  "officer-appointments":
-    "build": "officerAppointments/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
   "ukestablishments":
     "build": "UKEstablishments/webService"
     "networks":

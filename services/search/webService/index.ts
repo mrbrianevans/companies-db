@@ -5,7 +5,6 @@ import { advancedCompanySearchController } from './controllers/advancedCompanySe
 import { searchCompaniesAlphabeticallyController } from './controllers/searchCompaniesAlphabeticallyController.js'
 import { searchDissolvedCompaniesController } from './controllers/searchDissolvedCompaniesController.js'
 import { searchDisqualifiedOfficersController } from './controllers/searchDisqualifiedOfficersController.js'
-import { searchOfficersController } from './controllers/searchOfficersController.js'
 import { searchCompaniesController } from './controllers/searchCompaniesController.js'
 import { searchAllController } from './controllers/searchAllController.js'
 
@@ -22,7 +21,6 @@ fastify.register(advancedCompanySearchController)
 fastify.register(searchCompaniesAlphabeticallyController)
 fastify.register(searchDissolvedCompaniesController)
 fastify.register(searchDisqualifiedOfficersController)
-fastify.register(searchOfficersController)
 fastify.register(searchCompaniesController)
 fastify.register(searchAllController)
 

@@ -37,9 +37,6 @@
       "path": "officerDisqualifications/webService"
     },
     {
-      "path": "officerAppointments/webService"
-    },
-    {
       "path": "UKEstablishments/webService"
     },
     {

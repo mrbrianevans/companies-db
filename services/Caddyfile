@@ -101,8 +101,8 @@
                 header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
                 path_regexp ^\/officers\/[a-zA-Z0-9_-]+\/appointments$
         }
-        reverse_proxy @officers-officer_id-appointments officer-appointments:3000 {
-                header_down Service companies-officer-appointments
+        reverse_proxy @officers-officer_id-appointments officers:3000 {
+                header_down Service companies-officers
         }
 
         @disqualified-officerscorporate-officer_id {
@@ -205,8 +205,8 @@
                 header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
                 path_regexp ^\/search\/officers$
         }
-        reverse_proxy @searchofficers search:3000 {
-                header_down Service companies-search
+        reverse_proxy @searchofficers officers:3000 {
+                header_down Service companies-officers
         }
 
         @searchcompanies {
