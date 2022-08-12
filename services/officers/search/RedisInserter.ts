@@ -1,12 +1,12 @@
 import { Writable } from 'stream'
-import { MongoClient } from 'mongodb'
-import { average, getEnv } from '../shared/utils.js'
-import {createClient} from "redis";
+import { average } from '../shared/utils.js'
+import { getRedisClient } from '../shared/dbClients.js';
+import {RedisClientType, RedisDefaultModules, RedisFunctions, RedisScripts} from "redis";
 /**
  * Writable stream to save data to MongoDB. Uses bulk operations to be faster than individual writes. Can do about 5,000 ops/sec on my computer.
  */
 export class RedisInserter<ChunkType extends {id:string,value:Record<string,string>} = any> extends Writable {
-  private redis = createClient()
+  private redis: RedisClientType<Pick<RedisDefaultModules, 'ft'>, RedisFunctions, RedisScripts>
   prefix: string
   private readonly startTime: number
   private counter: number
@@ -31,8 +31,7 @@ export class RedisInserter<ChunkType extends {id:string,value:Record<string,stri
   }
   async _construct(callback: (error?: Error | null) => void) {
     try {
-      this.redis = createClient({url: getEnv('REDIS_URL')})
-      await this.redis.connect()
+      this.redis = await getRedisClient()
       callback()
     } catch (e) {
       callback(e)
