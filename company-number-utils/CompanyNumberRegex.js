@@ -1,10 +1,16 @@
-export const CompanyNumberRegex = /^((AC|ZC|FC|GE|LP|OC|SE|SA|SZ|SF|GS|SL|SO|SC|ES|NA|NZ|NF|GN|NL|NC|R0|NI|EN|\d{2}|SG|FE)\d{6})|(RS\d{3}(\d{3}|\d{2}[WSRCZF]|\d(FI|RS|SA|IP|US|EN|AS)|CUS))|(SL\d{5}[\dA])$/
+export const CompanyNumberRegex = /^((AC|ZC|FC|GE|LP|OC|SE|SA|SZ|SF|GS|SL|SO|SC|ES|NA|NZ|NF|GN|NL|NC|R0|NI|EN|\d{2}|SG|FE)\d{5}(\d|C|R))|(RS\d{3}(\d{3}|\d{2}[WSRCZF]|\d(FI|RS|SA|IP|US|EN|AS)|CUS))|((SL|NI)\d{5}[\dA])$/
 // company numbers matching this pattern exist, but Companies House does not hold information about them.
 const NoInfoCompanyNumberRegex = /^(IP|SP|IC|SI|NP|NV|RC|SR|NR|NO|CE|CS|PC)[\dA-Z]{6}/
 // when prefix is RS, suffix is 1 or 2 or 3 letters
 const RegisteredSocietyCompanyNumberRegex = /^RS\d{3}(\d{3}|\d{2}[WSRCZF]|\d(FI|RS|SA|IP|US|EN|AS)|CUS)$/
 // when prefix is SL, suffix can be A
 const ScottishLimitedPartnershipCompanyNumberRegex = /^SL\d{5}[\dA]$/
+
+const EnglandWalesLimitedLiabilityPartnershipCompanyNumberRegex = /^OC(([\dP]{5}[CWERTB])|([\dP]{4}(OC|CU)))$/
+// credit unions end in a C suffix
+// northern ireland companies can end with an A
+// can end in R
+
 // from the official documentation: (officers bulk file word document)
 // The majority of company numbers are 8 digit numeric; however, some consist of a prefix of 2 alphanumeric characters followed by 6 digits.  Valid prefixes are:
 // SC		Company registered in Scotland
