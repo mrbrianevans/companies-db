@@ -1,0 +1,29 @@
+name: 'build-typescript'
+on: # rebuild any PRs and any branch changes
+  pull_request:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install PNPM
+        run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7 && pnpm config set store-dir .pnpm-store
+        working-directory: services
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: pnpm
+          cache-dependency-path: 'services/pnpm-lock.yaml'
+      - name: Install dependencies
+        run: pnpm -r install
+        working-directory: services
+      - name: Build all workspace packages
+        run: pnpm -r run build
+        working-directory: services
+      - name: Build monolith
+        run: pnpm run build
+        working-directory: services
