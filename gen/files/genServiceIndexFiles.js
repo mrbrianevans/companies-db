@@ -14,15 +14,35 @@ ${importMarker}
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: '${tag.name}' } }
 })
-
+// @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+// @ts-ignore
 fastify.register(import('@fastify/mongodb'), { url: getEnv('MONGO_URL') + '/${tag.name}'})
 ${registerMarker}
 
 await fastify.listen({port: 3000, host: '::'})
 `))
+    await genFastifyTypeDeclarationFile(SERVICES_DIR, tag.name)
 }
 
+async function genFastifyTypeDeclarationFile(SERVICES_DIR, tagName){
+    const content = `
+import {FastifyMongoNestedObject, FastifyMongoObject} from "@fastify/mongodb";
+import {FastifyRedis} from "@fastify/redis";
+
+declare module 'fastify' {
+  export interface FastifyInstance {
+    // fastify mongo
+    mongo: FastifyMongoObject & FastifyMongoNestedObject
+    // fastify redis
+    redis: FastifyRedis;
+  }
+}
+export {}
+
+`
+    await writeFile(resolve(SERVICES_DIR, tagName, 'webService', 'fastify.d.ts'), prettyTs(content))
+}
 
 export async function registerFastifyPluginInIndexFile(SERVICES_DIR, tagName, name, Name){
     // inject register to index fastify listener

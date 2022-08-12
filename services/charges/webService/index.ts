@@ -7,8 +7,9 @@ import { listChargesController } from './controllers/listChargesController.js'
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'charges' } }
 })
-
+// @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+// @ts-ignore
 fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/charges'
 })

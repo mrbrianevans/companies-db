@@ -13,8 +13,9 @@ import { getExemptionsController } from './controllers/getExemptionsController.j
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'personsWithSignificantControl' } }
 })
-
+// @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+// @ts-ignore
 fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/personsWithSignificantControl'
 })

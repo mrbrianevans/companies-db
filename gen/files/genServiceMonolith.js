@@ -37,13 +37,20 @@ await fastify.listen({port: 3000, host: '::'})
             "clean": "tsc -b --clean"
         },
         "devDependencies": {
-            "@types/node": "^18.6.3", "json-schema-to-ts": "^2.5.5", "pino-pretty": "^7.6.1", "typescript": "^4.7.4"
+            "@types/node": "^18.7.2",
+            "json-schema-to-ts": "^2.5.5",
+            "pino-pretty": "^9.0.0",
+            "typescript": "^4.7.4"
         },
         "dependencies": {
-            "@fastify/mongodb": "^6.0.1", "@fastify/redis": "^6.0.0", "dot-object": "^2.1.4", // used for converting bulk CSV file to JSON
-            "dotenv": "^16.0.1", "fastify": "4.0.0-rc.3", "mongodb": "^4.8.1", // used for bulk inserting data into Mongo
-            "papaparse": "^5.3.2", // used for parsing CSV
-            "pino": "^7.11.0"
+            "@fastify/mongodb": "^6.0.1",
+            "@fastify/redis": "^6.0.0",
+            "dot-object": "^2.1.4",
+            "dotenv": "^16.0.1",
+            "fastify": "4.4.0",
+            "mongodb": "^4.8.1",
+            "papaparse": "^5.3.2",
+            "pino": "^8.4.1"
         }
     }, null, 2))
     await writeFile(resolve(SERVICES_DIR, 'tsconfig.json'), JSON.stringify({

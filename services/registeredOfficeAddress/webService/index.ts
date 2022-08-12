@@ -6,8 +6,9 @@ import { getRegisteredOfficeAddressController } from './controllers/getRegistere
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'registeredOfficeAddress' } }
 })
-
+// @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+// @ts-ignore
 fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/registeredOfficeAddress'
 })

@@ -8,7 +8,7 @@ export async function genDatabases(SERVICES_DIR, tag){
     await mkdir(resolve(SERVICES_DIR, tag, 'databases', 'mongo', 'startupScripts'), {recursive: true})
     await mkdir(resolve(SERVICES_DIR, tag, 'databases', 'redis'), {recursive: true})
 
-    await writeFile(resolve(SERVICES_DIR, tag, 'databases', 'redis', 'Dockerfile'), 'FROM redis\n')
+    await writeFile(resolve(SERVICES_DIR, tag, 'databases', 'redis', 'Dockerfile'), 'FROM redislabs/redisearch:latest\n')
 
     const mongoDockerfile = `FROM mongo:5
     

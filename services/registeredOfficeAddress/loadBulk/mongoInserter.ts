@@ -41,7 +41,9 @@ export class MongoInserter<ChunkType = any> extends Writable {
   }
   async _construct(callback: (error?: Error | null) => void) {
     try {
-      this.mongo = new MongoClient(getEnv('MONGO_URL'))
+      this.mongo = new MongoClient(getEnv('MONGO_URL'), {
+        connectTimeoutMS: 5000
+      })
       await this.mongo.connect()
       callback()
     } catch (e) {

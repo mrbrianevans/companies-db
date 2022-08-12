@@ -122,7 +122,7 @@ async function createRoutes(paths, responsePaths) {
         await registerFastifyPluginInIndexFile(SERVICES_DIR, tag, name, Name)
         const monolith = await readFile(resolve(SERVICES_DIR, 'monolith.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
 fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}
-import { ${name}Controller } from '${['.', tag, 'controllers', name + 'Controller.js'].join('/')}'`))
+import { ${name}Controller } from '${['.', tag, 'webService', 'controllers', name + 'Controller.js'].join('/')}'`))
         await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(monolith))
 
 

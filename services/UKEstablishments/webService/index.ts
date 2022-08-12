@@ -6,8 +6,9 @@ import { getUKEstablishmentsController } from './controllers/getUKEstablishments
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'UKEstablishments' } }
 })
-
+// @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+// @ts-ignore
 fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/UKEstablishments'
 })

@@ -1,1 +1,1 @@
-FROM redis
+FROM redislabs/redisearch:latest

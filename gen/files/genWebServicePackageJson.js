@@ -21,13 +21,13 @@ export async function genWebServicePackageJson(SERVICES_DIR, tag){
         "dependencies": {
             "@fastify/mongodb": "^6.0.1",
             "@fastify/redis": "^6.0.0",
-            "fastify": "4.2.0",
-            "pino": "^8.1.0",
+            "fastify": "4.4.0",
+            "pino": "^8.4.1"
         },
         "devDependencies": {
-            "@types/node": "^18.0.0",
-            "json-schema-to-ts": "^2.5.3",
-            "pino-pretty": "^8.1.0",
+            "@types/node": "^18.7.2",
+            "json-schema-to-ts": "^2.5.5",
+            "pino-pretty": "^9.0.0",
             "typescript": "^4.7.4"
         }
     }

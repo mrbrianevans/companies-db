@@ -6,8 +6,9 @@ import { getInsolvencyController } from './controllers/getInsolvencyController.j
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'insolvency' } }
 })
-
+// @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+// @ts-ignore
 fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/insolvency'
 })

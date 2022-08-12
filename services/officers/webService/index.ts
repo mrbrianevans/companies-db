@@ -9,8 +9,9 @@ import { searchOfficersController } from './controllers/searchOfficersController
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'officers' } }
 })
-
+// @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
+// @ts-ignore
 fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/officers'
 })

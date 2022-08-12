@@ -78,7 +78,7 @@ for (const kind of kinds){
   const events = savedEvents(kind)
   const name = capitalize(camelcase(kind))
   const firstEvent = await events.next().then(e=>e.value)
-  if(firstEvent === undefined) continue
+  if(firstEvent === undefined || !firstEvent) continue
   let schema = createSchema(firstEvent, {noRequired: false})
   for await(const event of events){
     schema = extendSchema(schema, event, {noRequired: false})
