@@ -13,6 +13,7 @@
     "dot-object": "^2.1.4",
     "mongodb": "^4.8.1",
     "papaparse": "^5.3.2",
+    "split2": "^4.1.0",
     "yauzl": "^2.10.0"
   },
   "devDependencies": {

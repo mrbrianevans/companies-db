@@ -44,7 +44,12 @@ export async function genWebServicePackageJson(SERVICES_DIR, tag){
         "exclude": [
             "node_modules"
         ],
-        "include": ["**/*.ts"]
+        "include": ["**/*.ts"],
+        "references": [
+            {
+                "path": "../shared"
+            }
+        ]
     }
     await writeFile(resolve(SERVICES_DIR, tag.name, 'webService','tsconfig.json'), JSON.stringify(tsconfig, null, 2)+'\n')
 }

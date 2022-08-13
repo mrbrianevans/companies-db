@@ -8,7 +8,7 @@
       "driver": "local"
     "networks":
       - "registers"
-  "cache":
+  "red":
     "build": "databases/redis"
     "volumes":
       - "redisdata:/data"
@@ -17,35 +17,39 @@
     "networks":
       - "registers"
   "loader":
-    "build": "loadBulk"
+    "build":
+      "dockerfile": "Loader.Dockerfile"
     "depends_on":
       - "db"
     "volumes":
       - "downloads:/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
+      "REDIS_URL": "redis://red:6379"
     "networks":
       - "registers"
   "updater":
-    "build": "streamUpdater"
+    "build":
+      "dockerfile": "Updater.Dockerfile"
     "depends_on":
       - "db"
-      - "cache"
+      - "red"
     "environment":
       "MONGO_URL": "mongodb://db:27017"
-      "REDIS_URL": "redis://cache:6379"
+      "REDIS_URL": "redis://red:6379"
     "env_file":
       - "../.api.env"
     "networks":
       - "registers"
   "web-service":
-    "build": "webService"
+    "build":
+      "dockerfile": "WebService.Dockerfile"
     "depends_on":
       - "db"
-      - "cache"
+      - "red"
     "environment":
       "MONGO_URL": "mongodb://db:27017"
-      "REDIS_URL": "redis://cache:6379"
+      "REDIS_URL": "redis://red:6379"
       "AUTH_URL": "http://auth-service:3000"
     "env_file":
       - "../.api.env"

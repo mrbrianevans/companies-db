@@ -13,6 +13,7 @@ import {genLoadBulk} from "./files/genLoadBulk.js";
 import {genDatabases} from "./files/genDatabases.js";
 import {genUpdater} from "./files/genUpdater.js";
 import {generateWebServicePath, genWebService} from "./files/genWebService.js";
+import {genSharedDirectory} from "./files/genSharedDirectory.js";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -41,6 +42,7 @@ async function createTagDirectories(tags) {
         await genLoadBulk(SERVICES_DIR, tag.name)
         await genDatabases(SERVICES_DIR, tag.name)
         await genUpdater(SERVICES_DIR, tag.name)
+        await genSharedDirectory(SERVICES_DIR, tag)
         await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'controllers'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'service'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'schemas'), {recursive: true})

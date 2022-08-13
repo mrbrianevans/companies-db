@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "start": "node loadJob.js"
+    "start": "node index.js"
   },
   "version": "1.0.0",
   "dependencies": {

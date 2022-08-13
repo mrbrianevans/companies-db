@@ -29,9 +29,17 @@ async function genUpdaterPackage(SERVICES_DIR, tag){
             "start": "node index.js"
         },
         "dependencies": {
+            "camelcase": "^7.0.0",
+            "event-iterator": "^2.0.0",
+            "genson-js": "^0.0.8",
+            "json-schema-to-ts": "^2.5.5",
+            "mongodb": "^4.7.0",
+            "split2": "^4.1.0",
+            "ws": "^8.8.0"
         },
         "devDependencies": {
             "@types/node": "^18.0.0",
+            "@types/ws": "^8.5.3",
             "typescript": "^4.7.4"
         }
     }
@@ -50,6 +58,11 @@ async function genUpdaterPackage(SERVICES_DIR, tag){
         ],
         "include": [
             "**/*.ts"
+        ],
+        "references": [
+            {
+                "path": "../shared"
+            }
         ]
     }
 
@@ -61,23 +74,25 @@ async function genUpdaterPackage(SERVICES_DIR, tag){
 async function genUpdaterDockerfile(SERVICES_DIR, tag){
     const content = `FROM node:18
 
-RUN corepack enable && corepack prepare pnpm@7.4.0 --activate
+# tried with PNPM but causes too many issues
 
-WORKDIR streamUpdater
+COPY streamUpdater/package.json /streamUpdater/
+COPY shared/package.json /shared/
 
-COPY package.json .
+RUN cd streamUpdater && npm install && cd ../shared && npm install
 
-RUN pnpm install
+COPY shared /shared
+COPY streamUpdater /streamUpdater
 
-COPY . .
+WORKDIR /streamUpdater
 
-RUN pnpm run build
+RUN npm run build
 
-CMD ["pnpm", "run", "start"]
+CMD ["npm", "run", "start"]
 
 `
-    await writeFile(resolve(SERVICES_DIR, tag, 'streamUpdater','Dockerfile'), content)
-    await writeFile(resolve(SERVICES_DIR, tag, 'streamUpdater','.dockerignore'), `node_modules\n`)
+    await writeFile(resolve(SERVICES_DIR, tag, 'Updater.Dockerfile'), content)
+    // await writeFile(resolve(SERVICES_DIR, tag, '.dockerignore'), `node_modules\n`)
 }
 
 async function genUpdaterIndex(SERVICES_DIR, tag){

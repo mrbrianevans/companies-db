@@ -39,12 +39,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -52,12 +54,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  UKEstablishments/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   UKEstablishments/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   UKEstablishments/webService:
@@ -108,12 +142,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -121,12 +157,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  charges/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   charges/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   charges/webService:
@@ -158,12 +226,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -171,12 +241,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  companyProfile/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   companyProfile/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   companyProfile/webService:
@@ -208,12 +310,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -221,12 +325,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  filingHistory/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   filingHistory/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   filingHistory/webService:
@@ -258,12 +394,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -271,12 +409,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  insolvency/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   insolvency/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   insolvency/webService:
@@ -308,12 +478,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -321,12 +493,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  officerDisqualifications/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   officerDisqualifications/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   officerDisqualifications/webService:
@@ -396,9 +600,26 @@ importers:
   officers/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   officers/webService:
@@ -430,12 +651,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -445,9 +668,14 @@ importers:
 
   personsWithSignificantControl/shared:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.7.2
       json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
       typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -507,12 +735,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -520,12 +750,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  registeredOfficeAddress/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   registeredOfficeAddress/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   registeredOfficeAddress/webService:
@@ -557,12 +819,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -570,12 +834,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  registers/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   registers/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   registers/webService:
@@ -607,12 +903,14 @@ importers:
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
       papaparse: ^5.3.2
+      split2: ^4.1.0
       typescript: ^4.7.4
       yauzl: ^2.10.0
     dependencies:
       dot-object: 2.1.4
       mongodb: 4.8.1
       papaparse: 5.3.2
+      split2: 4.1.0
       yauzl: 2.10.0
     devDependencies:
       '@types/node': 18.7.2
@@ -620,12 +918,44 @@ importers:
       json-schema-to-ts: 2.5.5
       typescript: 4.7.4
 
+  search/shared:
+    specifiers:
+      '@types/node': ^18.7.2
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.8.1
+      redis: ^4.2.0
+      typescript: ^4.7.4
+    dependencies:
+      mongodb: 4.8.1
+      redis: 4.2.0
+    devDependencies:
+      '@types/node': 18.7.2
+      json-schema-to-ts: 2.5.5
+      typescript: 4.7.4
+
   search/streamUpdater:
     specifiers:
       '@types/node': ^18.0.0
+      '@types/ws': ^8.5.3
+      camelcase: ^7.0.0
+      event-iterator: ^2.0.0
+      genson-js: ^0.0.8
+      json-schema-to-ts: ^2.5.5
+      mongodb: ^4.7.0
+      split2: ^4.1.0
       typescript: ^4.7.4
+      ws: ^8.8.0
+    dependencies:
+      camelcase: 7.0.0
+      event-iterator: 2.0.0
+      genson-js: 0.0.8
+      json-schema-to-ts: 2.5.5
+      mongodb: 4.8.1
+      split2: 4.1.0
+      ws: 8.8.1
     devDependencies:
       '@types/node': 18.7.2
+      '@types/ws': 8.5.3
       typescript: 4.7.4
 
   search/webService:

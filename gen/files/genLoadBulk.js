@@ -191,6 +191,7 @@ async function genLoadBulkPackageJson(SERVICES_DIR, tagName){
             "dot-object": "^2.1.4",
             "mongodb": "^4.8.1",
             "papaparse": "^5.3.2",
+            "split2": "^4.1.0",
             "yauzl": "^2.10.0"
         },
         "devDependencies": {
@@ -212,7 +213,12 @@ async function genLoadBulkPackageJson(SERVICES_DIR, tagName){
         "exclude": [
             "node_modules"
         ],
-        "include": ["**/*.ts"]
+        "include": ["**/*.ts"],
+        "references": [
+            {
+                "path": "../shared"
+            }
+        ]
     }
     await writeFile(resolve(SERVICES_DIR, tagName,'loadBulk', 'tsconfig.json'), JSON.stringify(tsconfig, null, 2)+'\n')
 }

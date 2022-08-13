@@ -52,22 +52,21 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
 
 
 export async function genWebServiceDockerfile(SERVICES_DIR, tag) {
-    await writeFile(resolve(SERVICES_DIR, tag.name, 'webService', 'Dockerfile'), `FROM node:18
+    await writeFile(resolve(SERVICES_DIR, tag.name,  'WebService.Dockerfile'), `FROM node:18
 
 RUN corepack enable && corepack prepare pnpm@7.4.0 --activate
-WORKDIR /service
-COPY package*.json ./
-RUN pnpm install
-COPY tsconfig.json index.ts ./
-COPY controllers controllers/
-COPY service service/
-COPY schemas schemas/
+WORKDIR /webService
+COPY webService/package.json /webService/
+COPY shared/package.json /shared/
+RUN cd /webService && pnpm install && cd /shared && pnpm install
+COPY webService /webService
+COPY shared /shared
 RUN pnpm run clean
 RUN pnpm run build
 EXPOSE 3000
 CMD ["pnpm", "run", "start"]
 `)
-    await writeFile(resolve(SERVICES_DIR, tag.name, 'webService', '.dockerignore'), `node_modules\n`)
+    // await writeFile(resolve(SERVICES_DIR, tag.name, 'webService', '.dockerignore'), `node_modules\n`)
 }
 
 /** docker compose file for each service */
@@ -78,28 +77,28 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag) {
             "db": {
                 build: "databases/mongo", "volumes": ["data:/data/db"], logging: {driver: 'local'}, networks: [tag.name]
             },
-            "cache": {
+            "red": {
                 build: "databases/redis",
                 "volumes": ["redisdata:/data"],
                 logging: {driver: 'local'},
                 networks: [tag.name]
             },
             "loader": {
-                "build": "loadBulk", depends_on: ['db'], "volumes": ["downloads:/loadBulk/downloads"], "environment": {
-                    "MONGO_URL": "mongodb://db"
+                "build": {dockerfile:"Loader.Dockerfile"}, depends_on: ['db'], "volumes": ["downloads:/loadBulk/downloads"], "environment": {
+                    "MONGO_URL": "mongodb://db", "REDIS_URL": "redis://red:6379"
                 }, networks: [tag.name]
             },
             updater: {
-                build: "streamUpdater", depends_on: ['db', 'cache'], "environment": {
-                    "MONGO_URL": "mongodb://db:27017", "REDIS_URL": "redis://cache:6379"
+                build: {dockerfile:"Updater.Dockerfile"}, depends_on: ['db', 'red'], "environment": {
+                    "MONGO_URL": "mongodb://db:27017", "REDIS_URL": "redis://red:6379"
                 }, "env_file": ["../.api.env"], networks: [tag.name]
             },
             "web-service": {
-                "build": "webService",
-                depends_on: ['db', 'cache'],
+                "build": {dockerfile:"WebService.Dockerfile"},
+                depends_on: ['db', 'red'],
                 "environment": {
                     "MONGO_URL": "mongodb://db:27017",
-                    "REDIS_URL": "redis://cache:6379",
+                    "REDIS_URL": "redis://red:6379",
                     "AUTH_URL": "http://auth-service:3000"
                 },
                 "env_file": ["../.api.env"],
