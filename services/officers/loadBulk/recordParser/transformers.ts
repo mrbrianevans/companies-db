@@ -1,32 +1,27 @@
-import {
-  ParsedCompanyRecord, ParsedHeaderRecord, ParsedPersonRecord, ParsedTrailerRecord, RecordType
-} from "./RecordTypes.js";
+import type {ParsedCompanyRecord, ParsedHeaderRecord, ParsedPersonRecord, ParsedTrailerRecord} from "./RecordTypes.js";
+import {RecordType} from "./RecordTypes.js";
 import {removeNulls} from '../../shared/utils.js'
-
+import type {OfficerStorage} from '../../shared/storageTypes/Officer.js'
+import type {CompanyStorage} from '../../shared/storageTypes/Company.js'
 
 export function getTransformer(recordType: RecordType) {
   switch (recordType) {
     case RecordType.Header:
       return headerTransformer
-      break;
     case RecordType.Company:
       return companyTransformer
-      break;
     case RecordType.Person:
       return personTransformer
-      break;
     case RecordType.Trailer:
       return trailerTransformer
-      break;
   }
 }
 
 const companyStatuses = {
-  '': 'active',
-  'C': 'converted-closed', 'D': 'dissolved', 'L': 'liquidation', 'R': 'receivership'
+  '': 'active', 'C': 'converted-closed', 'D': 'dissolved', 'L': 'liquidation', 'R': 'receivership'
 }
 
-function companyTransformer(parsedRecord: ParsedCompanyRecord) {
+function companyTransformer(parsedRecord: ParsedCompanyRecord): CompanyStorage {
   return {
     companyNumber: parsedRecord['Company Number'],
     status: companyStatuses[parsedRecord['Company Status']],
@@ -34,35 +29,34 @@ function companyTransformer(parsedRecord: ParsedCompanyRecord) {
     name: parsedRecord['Company Name (Delimited by "<")']['COMPANY NAME']
   }
 }
+
 /** Returns first non-empty string */
-function coalesceEmptyStrings(strings: string[]): string|undefined{
+function coalesceEmptyStrings(strings: string[]): string | undefined {
   for (const str of strings) {
-    if(str) return str
+    if (str) return str
   }
   return undefined
 }
 
-function coalesceDates(...dates: {day:string, month: string, year: string}[]): {day?:number, month?: number, year?: number}|undefined{
-  const day = coalesceEmptyStrings(dates.map(d=>d.day))
-  const month = coalesceEmptyStrings(dates.map(d=>d.month))
-  const year = coalesceEmptyStrings(dates.map(d=>d.year))
-  const date: {day?:number, month?: number, year?: number} = {}
-  if(day) date.day = parseInt(day)
-  if(month) date.month = parseInt(month)
-  if(year) date.year = parseInt(year)
-  if(Object.keys(date).length > 0)
-    return date
-  else
-    return undefined
+function coalesceDates(...dates: { day: string, month: string, year: string }[]): { day?: number, month?: number, year?: number } | undefined {
+  const day = coalesceEmptyStrings(dates.map(d => d.day))
+  const month = coalesceEmptyStrings(dates.map(d => d.month))
+  const year = coalesceEmptyStrings(dates.map(d => d.year))
+  const date: { day?: number, month?: number, year?: number } = {}
+  if (day) date.day = parseInt(day)
+  if (month) date.month = parseInt(month)
+  if (year) date.year = parseInt(year)
+  if (Object.keys(date).length > 0) return date
+  else return undefined
 }
 
 const appointmentDateOrigins = {
-  '1':'appointment-document',
-  '2':'annual-return',
-  '3':'incorporation-document',
-  '4':'llp-appointment-document',
-  '5':'llp-incorporation-document',
-  '6':'overseas-appointment-document'
+  '1': 'appointment-document',
+  '2': 'annual-return',
+  '3': 'incorporation-document',
+  '4': 'llp-appointment-document',
+  '5': 'llp-incorporation-document',
+  '6': 'overseas-appointment-document'
 } as const
 // these enum values have been chosen from the official companies house enum constants on github https://github.com/companieshouse/api-enumerations/blob/master/constants.yml
 const appointmentTypes = {
@@ -78,37 +72,37 @@ const appointmentTypes = {
   19: 'member-of-a-management-organ'
 }
 
-function personTransformer(parsedRecord: ParsedPersonRecord) {
+function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
   const v = parsedRecord['Variable Data (Name/ Address/ Occupation Nationality/Usual Residential Country )']
-  const transformedRecord = {
+  const transformedRecord: OfficerStorage = {
     personNumber: parsedRecord['Person Number'],
-    personNumberPrefix: parsedRecord['Person Number'].toString().padStart(12, '0').slice(0,8),
+    personNumberPrefix: parsedRecord['Person Number'].toString().padStart(12, '0').slice(0, 8),
     companyNumber: parsedRecord['Company Number'],
     appointmentDateOrigin: appointmentDateOrigins[parsedRecord['App Date Origin']],
-    appointmentType: appointmentTypes[parsedRecord['Appointment Type']],
+    officer_role: appointmentTypes[parsedRecord['Appointment Type']],
     corporateIndicator: parsedRecord['Corporate indicator'] === 'Y',
-    appointmentDate: coalesceDates(parsedRecord['Appointment Date']),
-    resignationDate: coalesceDates(parsedRecord['Resignation Date']),
-    dateOfBirth: coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
-    name: {
-      title: v['TITLE'].replaceAll('.', '').trim()||undefined,
-      forenames: v['FORENAMES'].trim()||undefined,
-      surname: v['SURNAME'].trim()||undefined,
-      honours: v['HONOURS'].trim()||undefined
+    appointment_date: <{ day: number, month: number, year: number }>coalesceDates(parsedRecord['Appointment Date']),
+    resignation_date: coalesceDates(parsedRecord['Resignation Date']),
+    date_of_birth: coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
+    name_elements: {
+      title: v['TITLE'].replaceAll('.', '').trim() || undefined,
+      forenames: v['FORENAMES'].trim() || undefined,
+      surname: v['SURNAME'].trim(),
+      honours: v['HONOURS'].trim() || undefined
     },
     address: {
-      careOf: v['CARE OF']||undefined,
-      poBox: v['PO BOX']||undefined,
-      postCode: parsedRecord['Person Postcode']||undefined,
-      addressLine1: v['ADDRESS LINE 1']||undefined,
-      addressLine2: v['ADDRESS LINE 2']||undefined,
-      postTown: v['POST TOWN']||undefined,
-      county: v['COUNTY']||undefined,
-      country: v['COUNTRY']||undefined
+      care_of: v['CARE OF'] || undefined,
+      po_box: v['PO BOX'] || undefined,
+      postal_code: parsedRecord['Person Postcode'] || undefined,
+      address_line_1: v['ADDRESS LINE 1'] || undefined,
+      address_line_2: v['ADDRESS LINE 2'] || undefined,
+      locality: v['POST TOWN'] || undefined,
+      region: v['COUNTY'] || undefined,
+      country: v['COUNTRY'] || undefined
     },
-    occupation: v['OCCUPATION']||undefined,
-    nationality: v['NATIONALITY']||undefined,
-    usualResidentialCountry: v['USUAL RESIDENTIAL COUNTRY']||undefined
+    occupation: v['OCCUPATION'] || undefined,
+    nationality: v['NATIONALITY'] || undefined,
+    country_of_residence: v['USUAL RESIDENTIAL COUNTRY'] || undefined
   }
   removeNulls(transformedRecord)
   return transformedRecord

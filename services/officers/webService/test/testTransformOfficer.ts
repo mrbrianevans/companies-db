@@ -1,46 +1,45 @@
 import test from 'node:test'
-import assert from "assert";
+import {strict as assert} from "assert";
 import {
     transformGetOfficerAppointment,
     transformListCompanyOfficers,
     transformListOfficerAppointments
 } from "../transformOfficer.js";
+import { OfficerStorage } from '../../shared/storageTypes/Officer.js';
+import { CompanyStorage } from '../../shared/storageTypes/Company.js';
 
 
-test('transform officer from bulk database to response format', function(t){
-    t.test('list officer appointments', function(){
-        const input = {
-            officer : {
-                _id: "62f3a7c20b7769c34b237fa3",
+test('transform officer from bulk database to response format', async function(t){
+    await t.test('list officer appointments', async function(){
+        const inputOfficer: OfficerStorage = {
                 personNumber: 168056490001,
                 personNumberPrefix: '16805649',
                 companyNumber: 'OC370085',
                 appointmentDateOrigin: 'appointment-document',
-                appointmentType: 'llp-member',
+                officer_role: 'llp-member',
                 corporateIndicator: false,
-                appointmentDate: { day: 2, month: 4, year: 2012 },
-                dateOfBirth: { month: 4, year: 1971 },
-                name: {
+                appointment_date: { day: 2, month: 4, year: 2012 },
+                // date_of_birth: { month: 4, year: 1971 },
+                name_elements: {
                     title: 'MR',
                     forenames: 'MARK CHARLES DAVID',
                     surname: 'DOWDING'
                 },
                 address: {
-                    postCode: 'W1K 3JR',
-                    addressLine1: '77 GROSVENOR STREET',
-                    postTown: 'LONDON',
-                    county: 'GREATER LONDON'
+                    postal_code: 'W1K 3JR',
+                    address_line_1: '77 GROSVENOR STREET',
+                    locality: 'LONDON',
+                    region: 'GREATER LONDON'
                 },
-                nationality: 'BRITISH',
-                usualResidentialCountry: 'UNITED KINGDOM'
-            },
-            company : {
-                _id: "62f385680b7769c34bc20d87",
+                // nationality: 'BRITISH',
+                country_of_residence: 'UNITED KINGDOM'
+            }
+            const inputCompany : CompanyStorage = {
+                // _id: "62f385680b7769c34bc20d87",
                 companyNumber: 'OC370085',
                 status: 'active',
                 numberOfOfficers: 7,
                 name: 'BLUEBAY ASSET MANAGEMENT LLP'
-            }
         }
 
         const expectedOutput = {
@@ -71,35 +70,35 @@ test('transform officer from bulk database to response format', function(t){
             }
         }
 
-        const actualOutput = transformListOfficerAppointments(input.officer, input.company)
+        const actualOutput = transformListOfficerAppointments(inputOfficer, inputCompany)
 
         assertObjectsEqualCaseInsensitive(actualOutput, expectedOutput)
 
     })
 
-    t.test('list company officers item', function(){
-        const inputOfficer = {
-            _id: "62f3a48f0b7769c34b2a28ff",
+    await t.test('list company officers item', async function(){
+        const inputOfficer: OfficerStorage = {
+            // _id: "62f3a48f0b7769c34b2a28ff",
             personNumber: 65020360001,
             personNumberPrefix: '06502036',
             companyNumber: '09870307',
             appointmentDateOrigin: 'incorporation-document',
-            appointmentType: 'director',
+            officer_role: 'director',
             corporateIndicator: false,
-            appointmentDate: { day: 12, month: 11, year: 2015 },
-            dateOfBirth: { month: 12, year: 1944 },
-            name: { title: 'LORD', forenames: 'GRAHAM', surname: 'KIRKHAM' },
+            appointment_date: { day: 12, month: 11, year: 2015 },
+            date_of_birth: { month: 12, year: 1944 },
+            name_elements: { title: 'LORD', forenames: 'GRAHAM', surname: 'KIRKHAM' },
             address: {
-                postCode: 'DN6 7FE',
-                addressLine1: '8, EBOR COURT',
-                addressLine2: 'REDHOUSE INTERCHANGE, ARDWICK-LE-STREET',
-                postTown: 'DONCASTER',
-                county: 'SOUTH YORKSHIRE',
+                postal_code: 'DN6 7FE',
+                address_line_1: '8, EBOR COURT',
+                address_line_2: 'REDHOUSE INTERCHANGE, ARDWICK-LE-STREET',
+                locality: 'DONCASTER',
+                region: 'SOUTH YORKSHIRE',
                 country: 'ENGLAND'
             },
             occupation: 'COMPANY DIRECTOR',
             nationality: 'BRITISH',
-            usualResidentialCountry: 'ENGLAND'
+            country_of_residence: 'ENGLAND'
         }
 
         const expectedOutput = {
@@ -144,7 +143,7 @@ function assertObjectsEqualCaseInsensitive(actual, expected, objectName = ''){
         keys.delete(key)
         const actualValue = actual[key];
         const expectedValue = expected[key];
-        assert.equal(typeof actualValue, typeof expectedValue, 'Values are not the same type for key '+printKey+' : \n'+JSON.stringify({actualValue,expectedValue}))
+        assert(typeof actualValue === typeof expectedValue, 'Values are not the same type for key '+printKey+' : \n'+JSON.stringify({actualValue,expectedValue}))
         if(typeof actualValue !== 'object')
             assert.equal(actualValue.toString().toLowerCase(), expectedValue.toString().toLowerCase(), 'Values are not the same for key '+printKey+' : \n'+JSON.stringify({actualValue,expectedValue}))
         else assertObjectsEqualCaseInsensitive(actualValue, expectedValue, printKey)
