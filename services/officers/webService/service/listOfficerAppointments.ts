@@ -6,6 +6,9 @@ import type { FastifyRequest } from 'fastify'
 import { ListOfficerAppointmentsSchema } from '../schemas/listOfficerAppointmentsSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
+import { OfficerStorage } from '../../shared/storageTypes/Officer.js'
+import {transformListOfficerAppointments} from "../transformOfficer.js";
+import { CompanyStorage } from '../../shared/storageTypes/Company.js'
 
 export interface Context {
   redis: FastifyRedis
@@ -50,57 +53,39 @@ export async function initListOfficerAppointmentsCollection(
 export async function listOfficerAppointments(
   context: Context,
   officer_id: string,
-  items_per_page?: number,
-  start_index?: number
+  items_per_page = 35,
+  start_index = 0
 ): Promise<ListOfficerAppointmentsResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
-  const collection =
-    context.mongo.db.collection<ListOfficerAppointmentsResponse>(colName)
+  if(items_per_page > 100) items_per_page = 100
+  if(items_per_page < 0) items_per_page = 0
+  const officersCollection =
+    context.mongo.db.collection<OfficerStorage>('officers')
+  const companiesCollection =
+    context.mongo.db.collection<CompanyStorage>('companies')
   const startFind = performance.now()
-  let res = await collection.findOne({ officer_id })
+  const total_results = await officersCollection.countDocuments({ personNumber: parseInt(officer_id) })
+  const appointments = await officersCollection.find({ personNumber: parseInt(officer_id) }).skip(start_index).limit(items_per_page).toArray()
+  const companies = await companiesCollection.find({ company_number: {$in: appointments.map(a=>a.company_number)} }).skip(start_index).limit(items_per_page).toArray()
   const findDurationMs = performance.now() - startFind
   context.req.log.trace(
-    { findDurationMs, found: Boolean(res) },
-    'Find one operation in MongoDB'
+    { findDurationMs, total_results, returned_results: appointments.length },
+    'Find operation in MongoDB'
   )
-  if (!res) {
-    res = await callListOfficerAppointmentsApi(
-      { officer_id },
-      { items_per_page, start_index }
-    )
-    if (res) {
-      try {
-        await collection.updateOne(
-          { officer_id },
-          { $set: res },
-          { upsert: true }
-        )
-      } catch (e) {
-        if (e.code === 121) {
-          context.req.log.warn(
-            { officer_id, items_per_page, start_index },
-            'Failed to upsert document from API due to validation error'
-          )
-        } else {
-          context.req.log.error(
-            { err: e },
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-    }
+  const items = appointments.map(a=>transformListOfficerAppointments(a, <CompanyStorage>companies.find(c=>c.company_number===a.company_number)))
+  return {
+    date_of_birth: appointments[0]?.date_of_birth,
+    etag: 'c12a22174815a08d78fe2888639d5ddbfdab5779',
+    is_corporate_officer: appointments[0]?.is_corporate_officer,
+    name: items[0]?.name,
+    items,
+    items_per_page,
+    kind: 'personal-appointment',
+    links: {
+      self: `/officers/${officer_id}/appointments`
+    },
+    start_index,
+    total_results
   }
-  return res ?? null
 }
 
-async function callListOfficerAppointmentsApi(pathParams, queryParams) {
-  const nonNullQueryParams = Object.fromEntries(
-    Object.entries(queryParams)
-      .filter(([k, v]) => v)
-      .map(([k, v]) => [k, String(v)])
-  )
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const { officer_id } = pathParams
-  const path = `/officers/${officer_id}/appointments`
-  return await reflect(path + '?' + urlQuery.toString())
-}

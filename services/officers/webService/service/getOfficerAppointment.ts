@@ -1,11 +1,12 @@
-import type { GetOfficerAppointmentResponse } from '../schemas/getOfficerAppointmentSchema.js'
-import type { FastifyRedis } from '@fastify/redis'
-import type { FastifyMongoObject } from '@fastify/mongodb'
-import type { FastifyRequest } from 'fastify'
-
-import { GetOfficerAppointmentSchema } from '../schemas/getOfficerAppointmentSchema.js'
-import { reflect } from '../controllers/reflect.js'
-import { performance } from 'perf_hooks'
+import type {GetOfficerAppointmentResponse} from '../schemas/getOfficerAppointmentSchema.js'
+import {GetOfficerAppointmentSchema} from '../schemas/getOfficerAppointmentSchema.js'
+import type {FastifyRedis} from '@fastify/redis'
+import type {FastifyMongoObject} from '@fastify/mongodb'
+import type {FastifyRequest} from 'fastify'
+import {reflect} from '../controllers/reflect.js'
+import {performance} from 'perf_hooks'
+import {OfficerStorage} from '../../shared/storageTypes/Officer.js'
+import {transformGetOfficerAppointment} from "../transformOfficer.js";
 
 export interface Context {
   redis: FastifyRedis
@@ -54,42 +55,19 @@ export async function getOfficerAppointment(
 ): Promise<GetOfficerAppointmentResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
   const collection =
-    context.mongo.db.collection<GetOfficerAppointmentResponse>(colName)
+    context.mongo.db.collection<OfficerStorage>('officers')
   const startFind = performance.now()
-  let res = await collection.findOne({ company_number, appointment_id })
+  let res = await collection.findOne({ company_number, personNumber: parseInt(appointment_id) })
   const findDurationMs = performance.now() - startFind
   context.req.log.trace(
     { findDurationMs, found: Boolean(res) },
     'Find one operation in MongoDB'
   )
   if (!res) {
-    res = await callGetOfficerAppointmentApi(
-      { company_number, appointment_id },
-      {}
-    )
-    if (res) {
-      try {
-        await collection.updateOne(
-          { company_number, appointment_id },
-          { $set: res },
-          { upsert: true }
-        )
-      } catch (e) {
-        if (e.code === 121) {
-          context.req.log.warn(
-            { company_number, appointment_id },
-            'Failed to upsert document from API due to validation error'
-          )
-        } else {
-          context.req.log.error(
-            { err: e },
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-    }
+    return null
+  }else{
+    return transformGetOfficerAppointment(res)
   }
-  return res ?? null
 }
 
 async function callGetOfficerAppointmentApi(pathParams, queryParams) {

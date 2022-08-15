@@ -7,10 +7,8 @@
 db.disableFreeMonitoring()
 db = db.getSiblingDB('officers')
 const collectionsToCreate = {
-    getOfficers: { company_number: 1, appointment_id: 1 },
-    listOfficers: { company_number: 1 },
-    officers: {companyNumber: 1,personNumber: 1},
-    companies: {companyNumber: 1}
+    officers: {company_number: 1, personNumber: 1}, // also needs an additional index on only personNumber
+    companies: {company_number: 1}
 }
 
 const existingCollections = db.getCollectionNames()

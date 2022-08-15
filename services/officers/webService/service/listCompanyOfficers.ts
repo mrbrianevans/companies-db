@@ -6,6 +6,8 @@ import type { FastifyRequest } from 'fastify'
 import { ListCompanyOfficersSchema } from '../schemas/listCompanyOfficersSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
+import { OfficerStorage } from '../../shared/storageTypes/Officer.js'
+import {transformListCompanyOfficers} from "../transformOfficer.js";
 
 export interface Context {
   redis: FastifyRedis
@@ -50,67 +52,37 @@ export async function initListCompanyOfficersCollection(
 export async function listCompanyOfficers(
   context: Context,
   company_number: string,
-  items_per_page?: number,
+  items_per_page = 35,
   register_type?: string,
   register_view?: string,
-  start_index?: number,
-  order_by?: string
+  start_index = 0,
+  order_by: 'appointed_on'| 'resigned_on'|'surname' = 'appointed_on'
 ): Promise<ListCompanyOfficersResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
+  if(items_per_page > 100) items_per_page = 100
+  if(items_per_page < 0) items_per_page = 0
   const collection =
-    context.mongo.db.collection<ListCompanyOfficersResponse>(colName)
+    context.mongo.db.collection<OfficerStorage>('officers')
   const startFind = performance.now()
-  let res = await collection.findOne({ company_number })
+  let total_results = await collection.countDocuments({ company_number })
+  let res = await collection.find({ company_number }).sort(order_by, 'ascending').skip(start_index).limit(items_per_page).toArray()
   const findDurationMs = performance.now() - startFind
   context.req.log.trace(
     { findDurationMs, found: Boolean(res) },
     'Find one operation in MongoDB'
   )
-  if (!res) {
-    res = await callListCompanyOfficersApi(
-      { company_number },
-      { items_per_page, register_type, register_view, start_index, order_by }
-    )
-    if (res) {
-      try {
-        await collection.updateOne(
-          { company_number },
-          { $set: res },
-          { upsert: true }
-        )
-      } catch (e) {
-        if (e.code === 121) {
-          context.req.log.warn(
-            {
-              company_number,
-              items_per_page,
-              register_type,
-              register_view,
-              start_index,
-              order_by
-            },
-            'Failed to upsert document from API due to validation error'
-          )
-        } else {
-          context.req.log.error(
-            { err: e },
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-    }
-  }
-  return res ?? null
-}
-
-async function callListCompanyOfficersApi(pathParams, queryParams) {
-  const nonNullQueryParams = Object.fromEntries(
-    Object.entries(queryParams)
-      .filter(([k, v]) => v)
-      .map(([k, v]) => [k, String(v)])
-  )
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const { company_number } = pathParams
-  const path = `/company/${company_number}/officers`
-  return await reflect(path + '?' + urlQuery.toString())
+ return {
+   active_count: res.filter(o=>o.resignation_date === undefined).length, // not sure what this should be?? I think it's if the companies are active
+   etag: '490e7c1c96f85192cf3f3973d59e9b33e47cade0',
+   inactive_count: res.filter(o=>o.resignation_date !== undefined).length, // not sure what this should be??
+   items: res.map(transformListCompanyOfficers),
+   items_per_page,
+   kind: 'officer-list',
+   links: {
+     self: `/company/${company_number}/officers`
+   },
+   resigned_count: res.filter(o=>o.resignation_date !== undefined).length,
+   start_index,
+   total_results
+ }
 }

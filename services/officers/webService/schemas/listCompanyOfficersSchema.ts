@@ -15,7 +15,7 @@ export interface ListCompanyOfficersQueryString {
   /** The offset into the entire result set that this page starts. */
   start_index?: number
   /** The field by which to order the result set. */
-  order_by?: string
+  order_by?: 'appointed_on'| 'resigned_on'| 'surname'
 }
 
 export const ListCompanyOfficersSchema = {

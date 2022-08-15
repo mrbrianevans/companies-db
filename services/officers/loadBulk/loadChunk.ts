@@ -7,6 +7,8 @@ import {Writable} from "stream";
 import {MongoInserter} from "./mongoInserter.js";
 import {once} from "node:events";
 import {RecordType} from "./recordParser/RecordTypes.js";
+import { CompanyStorage } from "../shared/storageTypes/Company.js";
+import { OfficerStorage } from "../shared/storageTypes/Officer.js";
 
 const filepath = process.argv[2] // path to data file (required)
 if(!filepath) throw new Error('Filepath not specified. Please provide argv.2 as the path to data file.')
@@ -20,11 +22,11 @@ if (isMainThread) {
 console.time('Process file '+filename)
 
 const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
-//todo: could also allow a file to be piped in and get a stream from process.stdin ??
+
 const fileStream = createReadStream(filepath)
 
-const companyInserter = new MongoInserter(DB_NAME, COMPANY_COLLECTION, ['companyNumber'])
-const personInserter = new MongoInserter(DB_NAME, OFFICER_COLLECTION, ['companyNumber','personNumber'])
+const companyInserter = new MongoInserter<CompanyStorage>(DB_NAME, COMPANY_COLLECTION, ['company_number'])
+const personInserter = new MongoInserter<OfficerStorage>(DB_NAME, OFFICER_COLLECTION, ['company_number','personNumber'])
 const inserterStreams = new Writable({
   objectMode: true,
   write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {

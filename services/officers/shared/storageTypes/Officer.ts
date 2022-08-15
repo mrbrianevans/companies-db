@@ -4,10 +4,8 @@ export interface OfficerStorage {
   // these are not (directly) sent in API responses
   personNumber: number,
   personNumberPrefix: string,
-  companyNumber: string,
+  company_number: string,
   appointmentDateOrigin: string,
-  corporateIndicator: boolean,
-
   // these require some modification before they can sent in an API response
   appointment_date: Date,
   resignation_date?: Date,
@@ -16,8 +14,9 @@ export interface OfficerStorage {
   },
 
   // these are in the right format for API responses, no modification needed
+  is_corporate_officer: boolean,
   officer_role: string,
-  date_of_birth?: Date,
+  date_of_birth?: { month: number , year: number  },
   address: {
     care_of?: string , po_box?: string , postal_code?: string , address_line_1?: string ,
     address_line_2?: string , locality?: string , region?: string , country?: string

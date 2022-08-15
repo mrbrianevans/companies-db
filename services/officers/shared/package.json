@@ -10,6 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "capital-case": "^1.0.4",
     "mongodb": "^4.8.1",
     "redis": "^4.2.0"
   },

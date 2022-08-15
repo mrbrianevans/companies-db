@@ -14,10 +14,10 @@ test('transform officer from bulk database to response format', async function(t
         const inputOfficer: OfficerStorage = {
                 personNumber: 168056490001,
                 personNumberPrefix: '16805649',
-                companyNumber: 'OC370085',
+                company_number: 'OC370085',
                 appointmentDateOrigin: 'appointment-document',
                 officer_role: 'llp-member',
-                corporateIndicator: false,
+                is_corporate_officer: false,
                 appointment_date: { day: 2, month: 4, year: 2012 },
                 // date_of_birth: { month: 4, year: 1971 },
                 name_elements: {
@@ -36,10 +36,10 @@ test('transform officer from bulk database to response format', async function(t
             }
             const inputCompany : CompanyStorage = {
                 // _id: "62f385680b7769c34bc20d87",
-                companyNumber: 'OC370085',
-                status: 'active',
-                numberOfOfficers: 7,
-                name: 'BLUEBAY ASSET MANAGEMENT LLP'
+                company_number: 'OC370085',
+                company_status: 'active',
+                number_of_officers: 7,
+                company_name: 'BLUEBAY ASSET MANAGEMENT LLP'
         }
 
         const expectedOutput = {
@@ -81,10 +81,10 @@ test('transform officer from bulk database to response format', async function(t
             // _id: "62f3a48f0b7769c34b2a28ff",
             personNumber: 65020360001,
             personNumberPrefix: '06502036',
-            companyNumber: '09870307',
+            company_number: '09870307',
             appointmentDateOrigin: 'incorporation-document',
             officer_role: 'director',
-            corporateIndicator: false,
+            is_corporate_officer: false,
             appointment_date: { day: 12, month: 11, year: 2015 },
             date_of_birth: { month: 12, year: 1944 },
             name_elements: { title: 'LORD', forenames: 'GRAHAM', surname: 'KIRKHAM' },

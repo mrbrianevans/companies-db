@@ -23,10 +23,10 @@ const companyStatuses = {
 
 function companyTransformer(parsedRecord: ParsedCompanyRecord): CompanyStorage {
   return {
-    companyNumber: parsedRecord['Company Number'],
-    status: companyStatuses[parsedRecord['Company Status']],
-    numberOfOfficers: parsedRecord['Number of Officers'],
-    name: parsedRecord['Company Name (Delimited by "<")']['COMPANY NAME']
+    company_number: parsedRecord['Company Number'],
+    company_status: companyStatuses[parsedRecord['Company Status']],
+    number_of_officers: parsedRecord['Number of Officers'],
+    company_name: parsedRecord['Company Name (Delimited by "<")']['COMPANY NAME']
   }
 }
 
@@ -77,13 +77,14 @@ function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
   const transformedRecord: OfficerStorage = {
     personNumber: parsedRecord['Person Number'],
     personNumberPrefix: parsedRecord['Person Number'].toString().padStart(12, '0').slice(0, 8),
-    companyNumber: parsedRecord['Company Number'],
+    company_number: parsedRecord['Company Number'],
     appointmentDateOrigin: appointmentDateOrigins[parsedRecord['App Date Origin']],
     officer_role: appointmentTypes[parsedRecord['Appointment Type']],
-    corporateIndicator: parsedRecord['Corporate indicator'] === 'Y',
+    is_corporate_officer: parsedRecord['Corporate indicator'] === 'Y',
+    //todo: save appointment and resignation dates as YYYY-MM-DD format to allow sorting on these fields
     appointment_date: <{ day: number, month: number, year: number }>coalesceDates(parsedRecord['Appointment Date']),
     resignation_date: coalesceDates(parsedRecord['Resignation Date']),
-    date_of_birth: coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
+    date_of_birth: <{ month: number, year: number }>coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
     name_elements: {
       title: v['TITLE'].replaceAll('.', '').trim() || undefined,
       forenames: v['FORENAMES'].trim() || undefined,

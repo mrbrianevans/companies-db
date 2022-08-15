@@ -1,3 +1,3 @@
 
 
-export interface CompanyStorage{companyNumber: string, status: any, numberOfOfficers: number, name: string}
+export interface CompanyStorage{company_number: string, company_status: any, number_of_officers: number, company_name: string}
