@@ -1,6 +1,8 @@
 import {
   ParsedCompanyRecord, ParsedHeaderRecord, ParsedPersonRecord, ParsedTrailerRecord, RecordType
 } from "./RecordTypes.js";
+import {removeNulls} from '../../shared/utils.js'
+
 
 export function getTransformer(recordType: RecordType) {
   switch (recordType) {
@@ -74,16 +76,6 @@ const appointmentTypes = {
   17: 'member-of-an-administrative-organ',
   18: 'member-of-a-supervisory-organ',
   19: 'member-of-a-management-organ'
-}
-/** modifies an object in place to remove any null or undefined values. recurses sub-objects to do the same. */
-function removeNulls(obj){
-  for (const key in obj) {
-    if (obj[key] === null || obj[key] === undefined) {
-      delete obj[key];
-    }else if(typeof obj[key] === "object"){
-      removeNulls(obj[key])
-    }
-  }
 }
 
 function personTransformer(parsedRecord: ParsedPersonRecord) {

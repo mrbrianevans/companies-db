@@ -260,7 +260,7 @@ describe('officers-service', function () {
     )
   })
 
-  it('getOfficers: /company/{company_number}/appointments/{appointment_id}', async function () {
+  it('getOfficerAppointment: /company/{company_number}/appointments/{appointment_id}', async function () {
     const schema = {
       type: 'object',
       properties: {
@@ -506,12 +506,12 @@ describe('officers-service', function () {
       }
     }
     await testRequests(
-      testUrls.getOfficers.map((path) => ({ path })),
+      testUrls.getOfficerAppointment.map((path) => ({ path })),
       schema
     )
   })
 
-  it('listOfficers: /company/{company_number}/officers', async function () {
+  it('listCompanyOfficers: /company/{company_number}/officers', async function () {
     const schema = {
       type: 'object',
       properties: {
@@ -815,7 +815,7 @@ describe('officers-service', function () {
       }
     }
     await testRequests(
-      testUrls.listOfficers.map((path) => ({ path })),
+      testUrls.listCompanyOfficers.map((path) => ({ path })),
       schema
     )
   })

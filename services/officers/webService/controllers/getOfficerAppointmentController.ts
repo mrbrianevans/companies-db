@@ -1,25 +1,25 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
-  getOfficers,
+  getOfficerAppointment,
   Context,
-  initGetOfficersCollection
-} from '../service/getOfficers.js'
+  initGetOfficerAppointmentCollection
+} from '../service/getOfficerAppointment.js'
 import { auth } from './reflect.js'
 import {
-  GetOfficersSchema as schema,
-  GetOfficersQueryString,
-  GetOfficersParams
-} from '../schemas/getOfficersSchema.js'
+  GetOfficerAppointmentSchema as schema,
+  GetOfficerAppointmentQueryString,
+  GetOfficerAppointmentParams
+} from '../schemas/getOfficerAppointmentSchema.js'
 
-export const getOfficersController: FastifyPluginAsync = async (
+export const getOfficerAppointmentController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
-  fastify.log = fastify.log.child({ route: 'getOfficers' })
-  await initGetOfficersCollection(fastify.mongo.db)
+  fastify.log = fastify.log.child({ route: 'getOfficerAppointment' })
+  await initGetOfficerAppointmentCollection(fastify.mongo.db)
   fastify.get<{
-    Params: GetOfficersParams
-    Querystring: GetOfficersQueryString
+    Params: GetOfficerAppointmentParams
+    Querystring: GetOfficerAppointmentQueryString
   }>(
     '/company/:company_number/appointments/:appointment_id',
     schema,
@@ -53,7 +53,11 @@ export const getOfficersController: FastifyPluginAsync = async (
       }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      const result = getOfficers(context, company_number, appointment_id)
+      const result = getOfficerAppointment(
+        context,
+        company_number,
+        appointment_id
+      )
       if (result) return result
       else
         res

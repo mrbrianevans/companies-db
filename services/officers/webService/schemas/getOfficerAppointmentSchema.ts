@@ -1,15 +1,15 @@
 import { FromSchema } from 'json-schema-to-ts'
 
-export interface GetOfficersParams {
+export interface GetOfficerAppointmentParams {
   /** The company number of the officer list being requested. */
   company_number: string
   /** The appointment id of the company officer appointment being requested. */
   appointment_id: string
 }
 
-export interface GetOfficersQueryString {}
+export interface GetOfficerAppointmentQueryString {}
 
-export const GetOfficersSchema = {
+export const GetOfficerAppointmentSchema = {
   schema: {
     params: {
       type: 'object',
@@ -351,7 +351,7 @@ export const GetOfficersSchema = {
   }
 } as const
 
-export type GetOfficersResponse = FromSchema<
-  typeof GetOfficersSchema['schema']['response']['200']
+export type GetOfficerAppointmentResponse = FromSchema<
+  typeof GetOfficerAppointmentSchema['schema']['response']['200']
 >
-//export type GetOfficersResponse = any // temporary until schemas can be fixed
+//export type GetOfficerAppointmentResponse = any // temporary until schemas can be fixed

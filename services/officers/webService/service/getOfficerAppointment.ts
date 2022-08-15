@@ -1,9 +1,9 @@
-import type { GetOfficersResponse } from '../schemas/getOfficersSchema.js'
+import type { GetOfficerAppointmentResponse } from '../schemas/getOfficerAppointmentSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
-import { GetOfficersSchema } from '../schemas/getOfficersSchema.js'
+import { GetOfficerAppointmentSchema } from '../schemas/getOfficerAppointmentSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
 
@@ -12,11 +12,13 @@ export interface Context {
   mongo: FastifyMongoObject
   req: FastifyRequest
 }
-// the main database collection for the getOfficers service
-const colName = 'getOfficers'
+// the main database collection for the getOfficerAppointment service
+const colName = 'getOfficerAppointment'
 
 /** Must be called before any data is inserted */
-export async function initGetOfficersCollection(db: FastifyMongoObject['db']) {
+export async function initGetOfficerAppointmentCollection(
+  db: FastifyMongoObject['db']
+) {
   if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
@@ -25,7 +27,7 @@ export async function initGetOfficersCollection(db: FastifyMongoObject['db']) {
   if (!exists) {
     console.log('Creating collection', colName)
     const { example, ...schema } = {
-      ...GetOfficersSchema['schema']['response']['200']
+      ...GetOfficerAppointmentSchema['schema']['response']['200']
     }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
@@ -45,13 +47,14 @@ export async function initGetOfficersCollection(db: FastifyMongoObject['db']) {
  * Get details of an individual company officer appointment.
  *
  */
-export async function getOfficers(
+export async function getOfficerAppointment(
   context: Context,
   company_number: string,
   appointment_id: string
-): Promise<GetOfficersResponse | null> {
+): Promise<GetOfficerAppointmentResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
-  const collection = context.mongo.db.collection<GetOfficersResponse>(colName)
+  const collection =
+    context.mongo.db.collection<GetOfficerAppointmentResponse>(colName)
   const startFind = performance.now()
   let res = await collection.findOne({ company_number, appointment_id })
   const findDurationMs = performance.now() - startFind
@@ -60,7 +63,10 @@ export async function getOfficers(
     'Find one operation in MongoDB'
   )
   if (!res) {
-    res = await callGetOfficersApi({ company_number, appointment_id }, {})
+    res = await callGetOfficerAppointmentApi(
+      { company_number, appointment_id },
+      {}
+    )
     if (res) {
       try {
         await collection.updateOne(
@@ -86,7 +92,7 @@ export async function getOfficers(
   return res ?? null
 }
 
-async function callGetOfficersApi(pathParams, queryParams) {
+async function callGetOfficerAppointmentApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)

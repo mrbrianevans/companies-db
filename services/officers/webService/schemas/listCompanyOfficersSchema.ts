@@ -1,11 +1,11 @@
 import { FromSchema } from 'json-schema-to-ts'
 
-export interface ListOfficersParams {
+export interface ListCompanyOfficersParams {
   /** The company number of the officer list being requested. */
   company_number: string
 }
 
-export interface ListOfficersQueryString {
+export interface ListCompanyOfficersQueryString {
   /** The number of officers to return per page. */
   items_per_page?: number
   /** The register_type determines which officer type is returned for the registers view.The register_type field will only work if registers_view is set to true */
@@ -18,7 +18,7 @@ export interface ListOfficersQueryString {
   order_by?: string
 }
 
-export const ListOfficersSchema = {
+export const ListCompanyOfficersSchema = {
   schema: {
     params: {
       type: 'object',
@@ -447,7 +447,7 @@ export const ListOfficersSchema = {
   }
 } as const
 
-export type ListOfficersResponse = FromSchema<
-  typeof ListOfficersSchema['schema']['response']['200']
+export type ListCompanyOfficersResponse = FromSchema<
+  typeof ListCompanyOfficersSchema['schema']['response']['200']
 >
-//export type ListOfficersResponse = any // temporary until schemas can be fixed
+//export type ListCompanyOfficersResponse = any // temporary until schemas can be fixed

@@ -2,8 +2,8 @@ import Fastify from 'fastify'
 import { getEnv } from './controllers/reflect.js'
 // --- import controllers ---
 import { listOfficerAppointmentsController } from './controllers/listOfficerAppointmentsController.js'
-import { getOfficersController } from './controllers/getOfficersController.js'
-import { listOfficersController } from './controllers/listOfficersController.js'
+import { getOfficerAppointmentController } from './controllers/getOfficerAppointmentController.js'
+import { listCompanyOfficersController } from './controllers/listCompanyOfficersController.js'
 import { searchOfficersController } from './controllers/searchOfficersController.js'
 
 const fastify = Fastify({
@@ -17,8 +17,8 @@ fastify.register(import('@fastify/mongodb'), {
 })
 // --- register controllers ---
 fastify.register(listOfficerAppointmentsController)
-fastify.register(getOfficersController)
-fastify.register(listOfficersController)
+fastify.register(getOfficerAppointmentController)
+fastify.register(listCompanyOfficersController)
 fastify.register(searchOfficersController)
 
 await fastify.listen({ port: 3000, host: '::' })

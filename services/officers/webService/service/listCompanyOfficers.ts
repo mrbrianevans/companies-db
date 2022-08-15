@@ -1,9 +1,9 @@
-import type { ListOfficersResponse } from '../schemas/listOfficersSchema.js'
+import type { ListCompanyOfficersResponse } from '../schemas/listCompanyOfficersSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
 
-import { ListOfficersSchema } from '../schemas/listOfficersSchema.js'
+import { ListCompanyOfficersSchema } from '../schemas/listCompanyOfficersSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
 
@@ -12,11 +12,13 @@ export interface Context {
   mongo: FastifyMongoObject
   req: FastifyRequest
 }
-// the main database collection for the listOfficers service
-const colName = 'listOfficers'
+// the main database collection for the listCompanyOfficers service
+const colName = 'listCompanyOfficers'
 
 /** Must be called before any data is inserted */
-export async function initListOfficersCollection(db: FastifyMongoObject['db']) {
+export async function initListCompanyOfficersCollection(
+  db: FastifyMongoObject['db']
+) {
   if (!db) throw new Error('DB not defined')
   const exists = await db
     .listCollections({ name: colName })
@@ -25,7 +27,7 @@ export async function initListOfficersCollection(db: FastifyMongoObject['db']) {
   if (!exists) {
     console.log('Creating collection', colName)
     const { example, ...schema } = {
-      ...ListOfficersSchema['schema']['response']['200']
+      ...ListCompanyOfficersSchema['schema']['response']['200']
     }
     await db.createCollection(colName, {
       storageEngine: { wiredTiger: { configString: 'block_compressor=zstd' } }
@@ -45,7 +47,7 @@ export async function initListOfficersCollection(db: FastifyMongoObject['db']) {
  * List of all company officers.
  *
  */
-export async function listOfficers(
+export async function listCompanyOfficers(
   context: Context,
   company_number: string,
   items_per_page?: number,
@@ -53,9 +55,10 @@ export async function listOfficers(
   register_view?: string,
   start_index?: number,
   order_by?: string
-): Promise<ListOfficersResponse | null> {
+): Promise<ListCompanyOfficersResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
-  const collection = context.mongo.db.collection<ListOfficersResponse>(colName)
+  const collection =
+    context.mongo.db.collection<ListCompanyOfficersResponse>(colName)
   const startFind = performance.now()
   let res = await collection.findOne({ company_number })
   const findDurationMs = performance.now() - startFind
@@ -64,7 +67,7 @@ export async function listOfficers(
     'Find one operation in MongoDB'
   )
   if (!res) {
-    res = await callListOfficersApi(
+    res = await callListCompanyOfficersApi(
       { company_number },
       { items_per_page, register_type, register_view, start_index, order_by }
     )
@@ -100,7 +103,7 @@ export async function listOfficers(
   return res ?? null
 }
 
-async function callListOfficersApi(pathParams, queryParams) {
+async function callListCompanyOfficersApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)

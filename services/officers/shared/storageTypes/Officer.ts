@@ -11,7 +11,7 @@ export interface OfficerStorage {
   resignationDate: Date,
   dateOfBirth: Date,
   name: {
-    title: string | undefined, forenames: string | undefined, surname: string | undefined, honours: string | undefined
+    title: string | undefined, forenames: string | undefined, surname: string , honours: string | undefined
   },
   address: {
     careOf: string | undefined, poBox: string | undefined, postCode: string | undefined, addressLine1: string | undefined, addressLine2: string | undefined, postTown: string | undefined, county: string | undefined, country: string | undefined

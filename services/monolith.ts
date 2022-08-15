@@ -21,8 +21,8 @@ import { getExemptionsController } from './personsWithSignificantControl/webServ
 import { listFilingHistoryController } from './filingHistory/webService/controllers/listFilingHistoryController.js'
 import { getFilingHistoryController } from './filingHistory/webService/controllers/getFilingHistoryController.js'
 import { getRegistersController } from './registers/webService/controllers/getRegistersController.js'
-import { getOfficersController } from './officers/webService/controllers/getOfficersController.js'
-import { listOfficersController } from './officers/webService/controllers/listOfficersController.js'
+import { getOfficerAppointmentController } from './officers/webService/controllers/getOfficerAppointmentController.js'
+import { listCompanyOfficersController } from './officers/webService/controllers/listCompanyOfficersController.js'
 import { advancedCompanySearchController } from './search/webService/controllers/advancedCompanySearchController.js'
 import { searchCompaniesAlphabeticallyController } from './search/webService/controllers/searchCompaniesAlphabeticallyController.js'
 import { searchDissolvedCompaniesController } from './search/webService/controllers/searchDissolvedCompaniesController.js'
@@ -60,8 +60,8 @@ fastify.register(getExemptionsController)
 fastify.register(listFilingHistoryController)
 fastify.register(getFilingHistoryController)
 fastify.register(getRegistersController)
-fastify.register(getOfficersController)
-fastify.register(listOfficersController)
+fastify.register(getOfficerAppointmentController)
+fastify.register(listCompanyOfficersController)
 fastify.register(advancedCompanySearchController)
 fastify.register(searchCompaniesAlphabeticallyController)
 fastify.register(searchDissolvedCompaniesController)

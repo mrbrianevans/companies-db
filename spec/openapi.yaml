@@ -28,8 +28,6 @@ tags:
     name: insolvency
   - description: Officer disqualifications
     name: officerDisqualifications
-#  - description: Officer appointments
-#    name: officerAppointments
   - description: UK Establishments
     name: UKEstablishments
   - description: Persons with significant control
@@ -4288,7 +4286,7 @@ paths:
       summary: Company Officers
       tags:
         - officers
-      x-operationName: list
+      x-operationName: list company officers
       x-eov-operation-handler: controllers/OfficersController
   "/company/{company_number}/appointments/{appointment_id}":
     get:
@@ -4570,6 +4568,7 @@ paths:
       tags:
         - officers
       x-eov-operation-handler: controllers/OfficersController
+      x-operationName: get officer appointment
   "/company/{company_number}/registers":
     get:
       description: Get the company registers information

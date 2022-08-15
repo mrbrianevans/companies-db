@@ -1,25 +1,25 @@
 import { FastifyPluginAsync } from 'fastify'
 import {
-  listOfficers,
+  listCompanyOfficers,
   Context,
-  initListOfficersCollection
-} from '../service/listOfficers.js'
+  initListCompanyOfficersCollection
+} from '../service/listCompanyOfficers.js'
 import { auth } from './reflect.js'
 import {
-  ListOfficersSchema as schema,
-  ListOfficersQueryString,
-  ListOfficersParams
-} from '../schemas/listOfficersSchema.js'
+  ListCompanyOfficersSchema as schema,
+  ListCompanyOfficersQueryString,
+  ListCompanyOfficersParams
+} from '../schemas/listCompanyOfficersSchema.js'
 
-export const listOfficersController: FastifyPluginAsync = async (
+export const listCompanyOfficersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
-  fastify.log = fastify.log.child({ route: 'listOfficers' })
-  await initListOfficersCollection(fastify.mongo.db)
+  fastify.log = fastify.log.child({ route: 'listCompanyOfficers' })
+  await initListCompanyOfficersCollection(fastify.mongo.db)
   fastify.get<{
-    Params: ListOfficersParams
-    Querystring: ListOfficersQueryString
+    Params: ListCompanyOfficersParams
+    Querystring: ListCompanyOfficersQueryString
   }>('/company/:company_number/officers', schema, async (req, res) => {
     const { company_number } = req.params
     const {
@@ -55,7 +55,7 @@ export const listOfficersController: FastifyPluginAsync = async (
     }
     const { redis, mongo } = fastify
     const context: Context = { redis, mongo, req }
-    const result = listOfficers(
+    const result = listCompanyOfficers(
       context,
       company_number,
       items_per_page,
