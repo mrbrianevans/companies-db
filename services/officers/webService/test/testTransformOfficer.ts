@@ -18,7 +18,7 @@ test('transform officer from bulk database to response format', async function(t
                 appointmentDateOrigin: 'appointment-document',
                 officer_role: 'llp-member',
                 is_corporate_officer: false,
-                appointment_date: { day: 2, month: 4, year: 2012 },
+                appointed_on: '2012-04-02',
                 // date_of_birth: { month: 4, year: 1971 },
                 name_elements: {
                     title: 'MR',
@@ -85,7 +85,7 @@ test('transform officer from bulk database to response format', async function(t
             appointmentDateOrigin: 'incorporation-document',
             officer_role: 'director',
             is_corporate_officer: false,
-            appointment_date: { day: 12, month: 11, year: 2015 },
+            appointed_on: '2015-11-12',
             date_of_birth: { month: 12, year: 1944 },
             name_elements: { title: 'LORD', forenames: 'GRAHAM', surname: 'KIRKHAM' },
             address: {

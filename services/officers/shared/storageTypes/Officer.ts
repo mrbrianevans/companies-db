@@ -7,13 +7,13 @@ export interface OfficerStorage {
   company_number: string,
   appointmentDateOrigin: string,
   // these require some modification before they can sent in an API response
-  appointment_date: Date,
-  resignation_date?: Date,
   name_elements: {
     title?: string , forenames?: string , surname: string , honours?: string
   },
 
   // these are in the right format for API responses, no modification needed
+  appointed_on: string,
+  resigned_on?: string,
   is_corporate_officer: boolean,
   officer_role: string,
   date_of_birth?: { month: number , year: number  },

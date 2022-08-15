@@ -72,16 +72,16 @@ export async function listCompanyOfficers(
     'Find one operation in MongoDB'
   )
  return {
-   active_count: res.filter(o=>o.resignation_date === undefined).length, // not sure what this should be?? I think it's if the companies are active
+   active_count: res.filter(o=>o.resigned_on === undefined).length, // not sure what this should be?? I think it's if the companies are active
    etag: '490e7c1c96f85192cf3f3973d59e9b33e47cade0',
-   inactive_count: res.filter(o=>o.resignation_date !== undefined).length, // not sure what this should be??
+   inactive_count: res.filter(o=>o.resigned_on !== undefined).length, // not sure what this should be??
    items: res.map(transformListCompanyOfficers),
    items_per_page,
    kind: 'officer-list',
    links: {
      self: `/company/${company_number}/officers`
    },
-   resigned_count: res.filter(o=>o.resignation_date !== undefined).length,
+   resigned_count: res.filter(o=>o.resigned_on !== undefined).length,
    start_index,
    total_results
  }

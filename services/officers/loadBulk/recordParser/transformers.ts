@@ -72,6 +72,10 @@ const appointmentTypes = {
   19: 'member-of-a-management-organ'
 }
 
+function stringifyDate(date: { day: number|string, month: number|string, year: number|string } | undefined){
+  return date ? [date.year, date.month, date.day].map(v => v?.toString().padStart(2, '0')).join('-') : undefined
+}
+
 function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
   const v = parsedRecord['Variable Data (Name/ Address/ Occupation Nationality/Usual Residential Country )']
   const transformedRecord: OfficerStorage = {
@@ -82,8 +86,8 @@ function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
     officer_role: appointmentTypes[parsedRecord['Appointment Type']],
     is_corporate_officer: parsedRecord['Corporate indicator'] === 'Y',
     //todo: save appointment and resignation dates as YYYY-MM-DD format to allow sorting on these fields
-    appointment_date: <{ day: number, month: number, year: number }>coalesceDates(parsedRecord['Appointment Date']),
-    resignation_date: coalesceDates(parsedRecord['Resignation Date']),
+    appointed_on: <string>stringifyDate(parsedRecord['Appointment Date']),
+    resigned_on: stringifyDate(parsedRecord['Resignation Date']),
     date_of_birth: <{ month: number, year: number }>coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
     name_elements: {
       title: v['TITLE'].replaceAll('.', '').trim() || undefined,

@@ -6,7 +6,7 @@ import {ListOfficerAppointmentsResponse} from "./schemas/listOfficerAppointments
 import {ListCompanyOfficersResponse} from "./schemas/listCompanyOfficersSchema.js";
 
 
-function formatDate(date: OfficerStorage['resignation_date']): string | undefined {
+function formatDate(date: { day: number|string, month: number|string, year: number|string } | undefined): string | undefined {
   return date ? [date.year, date.month, date.day].map(v => v?.toString().padStart(2, '0')).join('-') : undefined
 }
 
@@ -32,14 +32,14 @@ function transformOfficer(officer: OfficerStorage) {
       postal_code,
       region
     },
-    appointment_date,
+    appointed_on,
     country_of_residence,
     date_of_birth,
     name_elements: {forenames, surname, title},
     nationality,
     occupation,
     officer_role,
-    resignation_date
+    resigned_on
   } = officer
   const premises = addressLine1WithPremises ? addressLine1WithPremises.split(' ')[0] : undefined
   const address_line_1 = addressLine1WithPremises ? addressLine1WithPremises.split(' ').slice(1).join(' ') : undefined
@@ -55,8 +55,8 @@ function transformOfficer(officer: OfficerStorage) {
       month: date_of_birth.month,
       year: date_of_birth.year
     } : undefined,
-    resigned_on: formatDate(resignation_date),
-    appointed_on: formatDate(appointment_date),
+    resigned_on: resigned_on,
+    appointed_on:appointed_on,
     address: {
       locality: capsCase(locality),
       region: capsCase(region),

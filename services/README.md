@@ -36,7 +36,7 @@ This is not a component of the service and cannot be built alone as a Docker con
 | Name                 | URL QTY | Bulk file | Bulk loading | Updating | Serving |
 |----------------------|---------|-----------|--------------|----------|:--------|
 | PSC                  | 8       | Yes       | 8/8          | 4/8      | 4/8     |
-| Officers             | 4       | Yes       | 1/4          | 0/4      | 0/4     |
+| Officers             | 4       | Yes       | 4/4          | 0/4      | 3/4     |
 | Companies            | 3       | Yes       | 2/3          | 0/3      | 1/3     |
 | Charges              | 2       | No        |              |          |         |
 | Filing history       | 2       | No        |              |          |         |
