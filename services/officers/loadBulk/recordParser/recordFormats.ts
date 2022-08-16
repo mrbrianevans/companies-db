@@ -1,6 +1,6 @@
 import {getRecordType, RecordType} from "./RecordTypes.js";
 
-export type RecordTypeFormat = ({start: number, length: number, name: string, comment?: string}&({dataType: 'V', variableFormat: string}|{dataType: 'X'|'9'|'D'}))[]
+export type RecordTypeFormat = ({start: number, length: number, name: string, comment?: string}&({dataType: 'V', variableFormat: string}|{dataType: 'X'|'9'|'D'|'B'}))[]
 const personRecordVariableDataFormat = 'TITLE<FORENAMES<SURNAME<HONOURS<CARE OF<PO BOX<ADDRESS LINE 1<ADDRESS LINE 2<POST TOWN<COUNTY<COUNTRY<OCCUPATION<NATIONALITY<USUAL RESIDENTIAL COUNTRY<'
 const companyRecordVariableDataFormat = 'COMPANY NAME<'
 export const PersonRecordFormat: RecordTypeFormat = [
@@ -59,7 +59,47 @@ export const TrailerRecordFormat: RecordTypeFormat = [
   { start: 8, dataType: '9', length: 8, name: 'Record Count' }
 ]
 
-
+const personUpdateRecordVariableDataFormat = 'New Title<New Forenames<New Surname<New Honours<Care Of<PO Box<New Address Line 1<New Address Line 2<New Post Town<New County<New Country<Occupation<New Nationality<New Residential Country<<<<<<<<<<<<<<';
+export const PersonUpdateRecordFormat: RecordTypeFormat =
+  [
+    { start: 0, dataType: 'X', length: 8, name: 'Company Number' },
+    { start: 8, dataType: '9', length: 1, name: 'Record Type' },
+    { start: 9, dataType: 'X', length: 1, name: 'App Date Origin' },
+    { start: 10, dataType: 'X', length: 1, name: 'Res Date Origin' },
+    { start: 11, dataType: 'B', length: 1, name: 'Correction indicator' },
+    { start: 12, dataType: 'B', length: 1, name: 'Corporate indicator' },
+    { start: 13, dataType: 'X', length: 2, name: 'Filler' },
+    { start: 15, dataType: '9', length: 2, name: 'Old Appointment Type' },
+    { start: 17, dataType: '9', length: 2, name: 'New Appointment Type' },
+    { start: 19, dataType: '9', length: 12, name: 'Old Person Number' },
+    { start: 31, dataType: '9', length: 12, name: 'New Person Number' },
+    {
+      start: 43,
+      dataType: 'D',
+      length: 8,
+      name: 'Partial Date of Birth'
+    },
+    { start: 51, dataType: 'D', length: 8, name: 'Full Date of Birth' },
+    { start: 59, dataType: 'X', length: 8, name: 'Old Person Postcode' },
+    { start: 67, dataType: 'X', length: 8, name: 'New Person Postcode' },
+    { start: 75, dataType: 'D', length: 8, name: 'Appointment Date' },
+    { start: 83, dataType: 'D', length: 8, name: 'Resignation Date' },
+    { start: 91, dataType: 'D', length: 8, name: 'Change Date' },
+    { start: 99, dataType: 'D', length: 8, name: 'Update Date' },
+    {
+      start: 107,
+      dataType: '9',
+      length: 4,
+      name: 'Variable Data Length'
+    },
+    {
+      start: 111,
+      dataType: 'V',
+      variableFormat: personUpdateRecordVariableDataFormat,
+      length: 1138,
+      name: 'Variable Data (variable length field)'
+    }
+  ]
 
 export function getRecordFormat(recordType: RecordType){
   let format = PersonRecordFormat
@@ -75,6 +115,9 @@ export function getRecordFormat(recordType: RecordType){
       break;
     case RecordType.Person:
       format = PersonRecordFormat;
+      break;
+    case RecordType.PersonUpdate:
+      format = PersonUpdateRecordFormat;
       break;
   }
   return format

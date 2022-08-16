@@ -1,5 +1,5 @@
 import type {ParsedCompanyRecord, ParsedHeaderRecord, ParsedPersonRecord, ParsedTrailerRecord} from "./RecordTypes.js";
-import {RecordType} from "./RecordTypes.js";
+import {ParsedPersonUpdateRecord, RecordType} from "./RecordTypes.js";
 import {removeNulls} from '../../shared/utils.js'
 import type {OfficerStorage} from '../../shared/storageTypes/Officer.js'
 import type {CompanyStorage} from '../../shared/storageTypes/Company.js'
@@ -14,6 +14,8 @@ export function getTransformer(recordType: RecordType) {
       return personTransformer
     case RecordType.Trailer:
       return trailerTransformer
+    case RecordType.PersonUpdate:
+      return personUpdateTransformer
   }
 }
 
@@ -51,6 +53,7 @@ function coalesceDates(...dates: { day: string, month: string, year: string }[])
 }
 
 const appointmentDateOrigins = {
+  '': undefined,
   '1': 'appointment-document',
   '2': 'annual-return',
   '3': 'incorporation-document',
@@ -73,7 +76,7 @@ const appointmentTypes = {
 }
 
 function stringifyDate(date: { day: number|string, month: number|string, year: number|string } | undefined){
-  return date ? [date.year, date.month, date.day].map(v => v?.toString().padStart(2, '0')).join('-') : undefined
+  return date && date.year.toString().trim() ? [date.year, date.month, date.day].map(v => v?.toString().padStart(2, '0')).join('-') : undefined
 }
 
 function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
@@ -85,7 +88,6 @@ function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
     appointmentDateOrigin: appointmentDateOrigins[parsedRecord['App Date Origin']],
     officer_role: appointmentTypes[parsedRecord['Appointment Type']],
     is_corporate_officer: parsedRecord['Corporate indicator'] === 'Y',
-    //todo: save appointment and resignation dates as YYYY-MM-DD format to allow sorting on these fields
     appointed_on: <string>stringifyDate(parsedRecord['Appointment Date']),
     resigned_on: stringifyDate(parsedRecord['Resignation Date']),
     date_of_birth: <{ month: number, year: number }>coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
@@ -119,4 +121,75 @@ function headerTransformer(parsedRecord: ParsedHeaderRecord) {
 
 function trailerTransformer(parsedRecord: ParsedTrailerRecord) {
   return parsedRecord
+}
+
+// there are additional appointment types possible in update records, mainly resigned versions
+const updateAppointmentTypes = {
+  0: 'secretary',
+  1: 'director',
+  2: 'resigned-secretary',
+  3: 'resigned-director',
+  4: 'llp-member',
+  5: 'llp-designated-member',
+  6: 'resigned-llp-member',
+  7: 'resigned-llp-designated-member',
+  11: 'judicial-factor',
+  12: 'charities-act-receiver-or-manager',
+  13: 'caice-act-manager',
+  14: 'resigned-judicial-factor',
+  15: 'resigned-charities-act-receiver-or-manager',
+  16: 'resigned-caice-act-manager',
+  17: 'member-of-an-administrative-organ',
+  18: 'member-of-a-supervisory-organ',
+  19: 'member-of-a-management-organ',
+  20: 'resigned-member-of-an-administrative-organ',
+  21: 'resigned-member-of-a-supervisory-organ',
+  22: 'resigned-member-of-a-management-organ',
+  99: 'errored-appointment'
+} as const
+
+function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
+  const v = parsedRecord['Variable Data (variable length field)']
+  return {
+    company_number: parsedRecord['Company Number'],
+    appointment_date_origin: appointmentDateOrigins[parsedRecord['App Date Origin']],
+    resignation_date_origin:  appointmentDateOrigins[parsedRecord['Res Date Origin']],
+    correction: parsedRecord['Correction indicator'],
+    is_corporate_officer: parsedRecord['Corporate indicator'],
+    officer_role: {
+      old: updateAppointmentTypes[parsedRecord['Old Appointment Type']],
+      new: updateAppointmentTypes[parsedRecord['New Appointment Type']]
+    },
+    person_number:{
+      old: parsedRecord['Old Person Number'],
+      new: parsedRecord['New Person Number']
+    },
+    personNumberPrefix: parsedRecord['New Person Number'].toString().padStart(12, '0').slice(0, 8),
+    date_of_birth:  <{ month: number, year: number } | undefined>coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
+    address: {
+      old: {
+        postal_code: parsedRecord['Old Person Postcode'] || undefined
+      },
+      new: {
+        postal_code: parsedRecord['New Person Postcode'] || undefined,
+        care_of: v['Care Of'] || undefined,
+        po_box: v['PO Box'] || undefined,
+        address_line_1: v['New Address Line 1'] || undefined,
+        address_line_2: v['New Address Line 2'] || undefined,
+        locality: v['New Post Town'] || undefined,
+        region: v['New County'] || undefined,
+        country: v['New Country'] || undefined
+      }
+    },
+    appointed_on: <string>stringifyDate(parsedRecord['Appointment Date']),
+    resigned_on: stringifyDate(parsedRecord['Resignation Date']),
+    changed_on: stringifyDate(parsedRecord['Change Date']),
+    updated_on: stringifyDate(parsedRecord['Update Date']),
+    name_elements: {
+      title: v['New Title'].replaceAll('.', '').trim() || undefined,
+      forenames: v['New Forenames'].trim() || undefined,
+      surname: v['New Surname'].trim(),
+      honours: v['New Honours'].trim() || undefined
+    }
+  }
 }

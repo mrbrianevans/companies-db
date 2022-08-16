@@ -22,5 +22,7 @@ export const dataTypeParsers: { [T in RecordTypeFormat[number]['dataType']]: (se
   D: ()=>parseDate,
 // @ts-ignore
   V: (segment)=>(v:string)=>parseVariableData(segment.variableFormat, v),
-  X: ()=>v=>v.trim()
+  X: ()=>v=>v.trim(),
+  // Boolean (either a space or a "Y")
+  B: ()=>b=>b==='Y'
 }

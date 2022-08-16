@@ -1,3 +1,4 @@
+type ParsedDate = {day:string, month: string, year: string}
 export interface ParsedPersonRecord {
   'Company Number': string;
   'Record Type': number;
@@ -6,11 +7,11 @@ export interface ParsedPersonRecord {
   'Person Number': number;
   'Corporate indicator': string;
   'Filler': string;
-  'Appointment Date': {day:string, month: string, year: string};
-  'Resignation Date': {day:string, month: string, year: string};
+  'Appointment Date': ParsedDate;
+  'Resignation Date': ParsedDate;
   'Person Postcode': string;
-  'Partial Date of Birth': {day:string, month: string, year: string};
-  'Full Date of Birth': {day:string, month: string, year: string};
+  'Partial Date of Birth': ParsedDate;
+  'Full Date of Birth': ParsedDate;
   'Variable Data Length': number;
   'Variable Data (Name/ Address/ Occupation Nationality/Usual Residential Country )': {
     TITLE: string;
@@ -45,7 +46,7 @@ export interface ParsedCompanyRecord {
 export interface ParsedHeaderRecord{
   'Header Identifier': string;
   'Run Number': number;
-  'Production Date': number;
+  'Production Date': ParsedDate;
 }
 
 export interface ParsedTrailerRecord {
@@ -53,11 +54,51 @@ export interface ParsedTrailerRecord {
   'Record Count': number;
 }
 
+export interface ParsedPersonUpdateRecord{
+  'Company Number': string;
+  'Record Type': number;
+  'App Date Origin': string;
+  'Res Date Origin': string;
+  'Correction indicator': boolean;
+  'Corporate indicator': boolean;
+  'Filler': string;
+  'Old Appointment Type': number;
+  'New Appointment Type': number;
+  'Old Person Number': number;
+  'New Person Number': number;
+  'Partial Date of Birth': ParsedDate;
+  'Full Date of Birth': ParsedDate;
+  'Old Person Postcode': string;
+  'New Person Postcode': string;
+  'Appointment Date': ParsedDate;
+  'Resignation Date': ParsedDate;
+  'Change Date': ParsedDate;
+  'Update Date': ParsedDate;
+  'Variable Data Length': number;
+  'Variable Data (variable length field)':  {
+    'New Title': string;
+    'New Forenames': string;
+    'New Surname': string;
+    'New Honours': string;
+    'Care Of': string;
+    'PO Box': string;
+    'New Address Line 1': string;
+    'New Address Line 2': string;
+    'New Post Town': string;
+    'New County': string;
+    'New Country': string;
+    'Occupation': string;
+    'New Nationality': string;
+    'New Residential Country': string;
+  };
+}
+
 export enum RecordType {
   Header,
   Company,
   Person,
-  Trailer
+  Trailer,
+  PersonUpdate
 }
 
 
@@ -70,7 +111,10 @@ export function getRecordType(record: string): RecordType{
   }else{
     const recordType = record[8]
     if(recordType === '2') {
-      return RecordType.Person
+      if(record[11] === 'Y' || record[11] === ' ')
+        return RecordType.PersonUpdate
+      else
+        return RecordType.Person
     }
     else if(recordType === '1') {
       return RecordType.Company
