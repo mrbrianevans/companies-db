@@ -111,8 +111,11 @@ parseStream.on('data', ()=>{
 })
 
 const startTime = performance.now()
-await pipeline(inputStream, parseStream , stringStream, outputStream, {signal}).catch(e=>{
-  if(e.code === 'ABORT_ERR' && options.verbose) log("Aborted due to reaching specified limit of", options.limit)
+await pipeline(inputStream, parseStream , stringStream, outputStream, {signal})
+  .catch(e=>{
+    if(e.code === 'ABORT_ERR') {
+      if (options.verbose) log("Aborted due to reaching specified limit of", options.limit)
+    }else throw e
 })
 const duration = performance.now() - startTime
 if(options.verbose) log('Time taken to parse',count.toString(),'records:',duration.toFixed(2)+'ms')

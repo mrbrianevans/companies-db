@@ -123,6 +123,9 @@ function trailerTransformer(parsedRecord: ParsedTrailerRecord) {
   return parsedRecord
 }
 
+const resignedRoles = new Set([2,3,6,7,14,15,16,20,21,22])
+const currentRoles = new Set([0,1,4,5,11,12,13,17,18,19])
+
 // there are additional appointment types possible in update records, mainly resigned versions
 const updateAppointmentTypes = {
   0: 'secretary',
@@ -148,7 +151,7 @@ const updateAppointmentTypes = {
   99: 'errored-appointment'
 } as const
 
-function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
+export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
   const v = parsedRecord['Variable Data (variable length field)']
   return {
     company_number: parsedRecord['Company Number'],
@@ -156,6 +159,14 @@ function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
     resignation_date_origin:  appointmentDateOrigins[parsedRecord['Res Date Origin']],
     correction: parsedRecord['Correction indicator'],
     is_corporate_officer: parsedRecord['Corporate indicator'],
+    resigned: {
+      old: resignedRoles.has(parsedRecord['Old Appointment Type']) ,
+      new: resignedRoles.has(parsedRecord['New Appointment Type'])
+    },
+    role_current: {
+      old: currentRoles.has(parsedRecord['Old Appointment Type']) ,
+      new: currentRoles.has(parsedRecord['New Appointment Type'])
+    },
     officer_role: {
       old: updateAppointmentTypes[parsedRecord['Old Appointment Type']],
       new: updateAppointmentTypes[parsedRecord['New Appointment Type']]
@@ -164,7 +175,10 @@ function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
       old: parsedRecord['Old Person Number'],
       new: parsedRecord['New Person Number']
     },
-    personNumberPrefix: parsedRecord['New Person Number'].toString().padStart(12, '0').slice(0, 8),
+    person_number_prefix:{
+      old: parsedRecord['Old Person Number'].toString().padStart(12, '0').slice(0, 8),
+      new: parsedRecord['New Person Number'].toString().padStart(12, '0').slice(0, 8)
+    },
     date_of_birth:  <{ month: number, year: number } | undefined>coalesceDates(parsedRecord['Full Date of Birth'], parsedRecord['Partial Date of Birth']),
     address: {
       old: {
