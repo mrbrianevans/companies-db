@@ -38,7 +38,7 @@
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://red:6379"
     "env_file":
-      - "../.api.env"
+      - "streamUpdater/.sftp.env"
     "networks":
       - "officers"
   "web-service":
