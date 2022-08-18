@@ -151,6 +151,36 @@ const updateAppointmentTypes = {
   99: 'errored-appointment'
 } as const
 
+class AppointmentType{
+  private readonly appointmentTypeCode: number
+  constructor(appointmentTypeCode: number) {
+    this.appointmentTypeCode = appointmentTypeCode
+  }
+  get officer_role(){
+    //todo: this should never return a role prefixed with resigned-
+    return updateAppointmentTypes[this.appointmentTypeCode]
+  }
+  get resigned(){
+    return resignedRoles.has(this.appointmentTypeCode)
+  }
+  get current(){
+    return resignedRoles.has(this.appointmentTypeCode)
+  }
+  get errored(){
+    return this.appointmentTypeCode == 99
+  }
+  get code(){
+    return this.appointmentTypeCode
+  }
+  toJSON(){
+    return {
+      officer_role: this.officer_role,
+      resigned: this.resigned || undefined,
+      errored: this.errored || undefined
+    }
+  }
+}
+
 export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
   const v = parsedRecord['Variable Data (variable length field)']
   return {
@@ -159,17 +189,24 @@ export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
     resignation_date_origin:  appointmentDateOrigins[parsedRecord['Res Date Origin']],
     correction: parsedRecord['Correction indicator'],
     is_corporate_officer: parsedRecord['Corporate indicator'],
-    resigned: {
-      old: resignedRoles.has(parsedRecord['Old Appointment Type']) ,
-      new: resignedRoles.has(parsedRecord['New Appointment Type'])
-    },
-    role_current: {
-      old: currentRoles.has(parsedRecord['Old Appointment Type']) ,
-      new: currentRoles.has(parsedRecord['New Appointment Type'])
-    },
-    officer_role: {
-      old: updateAppointmentTypes[parsedRecord['Old Appointment Type']],
-      new: updateAppointmentTypes[parsedRecord['New Appointment Type']]
+    // @deprecated in favor of appointment_type
+    // resigned: {
+    //   old: resignedRoles.has(parsedRecord['Old Appointment Type']) ,
+    //   new: resignedRoles.has(parsedRecord['New Appointment Type'])
+    // },
+    // @deprecated in favor of appointment_type
+    // role_current: {
+    //   old: currentRoles.has(parsedRecord['Old Appointment Type']) ,
+    //   new: currentRoles.has(parsedRecord['New Appointment Type'])
+    // },
+    // @deprecated in favor of appointment_type
+    // officer_role: {
+    //   old: updateAppointmentTypes[parsedRecord['Old Appointment Type']],
+    //   new: updateAppointmentTypes[parsedRecord['New Appointment Type']]
+    // },
+    appointment_type: {
+      old: new AppointmentType(parsedRecord['Old Appointment Type']),
+      new: new AppointmentType(parsedRecord['New Appointment Type'])
     },
     person_number:{
       old: parsedRecord['Old Person Number'],

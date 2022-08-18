@@ -21,11 +21,11 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
 
   const mongo = await getMongoClient()
 
-  const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({company_number: record.company_number, officer_role: record.officer_role.old, personNumber: record.person_number.old})
+  const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({company_number: record.company_number, officer_role: record.appointment_type.old.officer_role, personNumber: record.person_number.old})
 
   if(oldRecord === null){
     // old record cannot be matched, therefore this could be a new appointment, depending on the officer_roles in update record
-    if(!record.resigned.old && !record.resigned.new){
+    if(record.appointment_type.old.current && record.appointment_type.new.current){
       // this is a new appointment
       // insert person appointment
       return UpdateTypes.NewAppointment
@@ -33,12 +33,12 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
 
   }else{
     // old record CAN be matched
-    if(record.role_current.old && record.resigned.new){
+    if(record.appointment_type.old.current && record.appointment_type.new.resigned){
       // previously was current, now resigned
       return UpdateTypes.Resignation
     }
 
-    else if(record.role_current.old && record.role_current.new && record.person_number.old === record.person_number.new){
+    else if(record.appointment_type.old.current && record.appointment_type.new.current && record.person_number.old === record.person_number.new){
 
       if(record.correction){
         return UpdateTypes.PersonDetailsAmendmentCorrection
@@ -48,20 +48,20 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
 
     }
 
-    else if(record.officer_role.old === record.officer_role.new && record.person_number_prefix.old === record.person_number_prefix.new && record.person_number.old !== record.person_number.new){
-      // person number has been incremented, prefixes are the same, but last 4 digits differ
+    else if(record.appointment_type.old.code === record.appointment_type.new.code && record.person_number_prefix.old === record.person_number_prefix.new && record.person_number.old !== record.person_number.new){
+      // person number has been incremented, prefixes are the same, but last 4 digits differ. appointment types are the same
       return UpdateTypes.PersonNumberIncrementation
     }
 
-    else if(record.officer_role.old === record.officer_role.new && record.person_number_prefix.old !== record.person_number_prefix.new){
+    else if(record.appointment_type.old.code === record.appointment_type.new.code && record.person_number_prefix.old !== record.person_number_prefix.new){
       return UpdateTypes.MergedRecord
     }
 
-    else if(record.officer_role.new === 'errored-appointment'){
+    else if(record.appointment_type.new.errored){
       return UpdateTypes.ErroredAppointment
     }
 
-    else if(record.resigned.old && record.role_current.new && record.appointed_on === oldRecord.appointed_on){
+    else if(record.appointment_type.old.resigned && record.appointment_type.new.current && record.appointed_on === oldRecord.appointed_on){
       return UpdateTypes.Reinstatement
     }
 
