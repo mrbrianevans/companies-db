@@ -31,4 +31,4 @@ async function loadAllFiles(directory: string, limit ?:number){
   console.timeEnd(`Load ${limit??files.length} files`)
 }
 // takes about 20 minutes to load all 9 files like this
-await loadAllFiles('N:\\CompaniesHouse\\officersdata\\Prod195_2898')
+await loadAllFiles('N:\\CompaniesHouse\\officersdata\\Prod195_3243')
