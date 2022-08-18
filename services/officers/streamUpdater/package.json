@@ -10,6 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "split2": "^4.1.0",
     "ssh2-sftp-client": "^9.0.3"
   },
   "devDependencies": {

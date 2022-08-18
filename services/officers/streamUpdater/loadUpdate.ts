@@ -1,13 +1,13 @@
 import { basename } from "path";
 import {createReadStream} from "fs";
 import split2 from 'split2'
-import {parseRecord} from "./recordParser/parseRecord.js";
+import {parseRecord} from "../shared/recordParser/parseRecord.js";
 import {Writable} from "stream";
-import {MongoInserter} from "./mongoInserter.js";
+import {MongoInserter} from "../shared/mongoInserter.js";
 import {once} from "node:events";
-import {RecordType} from "./recordParser/RecordTypes.js";
+import {RecordType} from "../shared/recordParser/RecordTypes.js";
 import { CompanyStorage } from "../shared/storageTypes/Company.js";
-import {classifyUpdateRecord} from "./classifyUpdateRecord.js";
+import {classifyUpdateRecord, UpdateTypes} from "./classifyUpdateRecord.js";
 
 const filepath = process.argv[2] // path to update file (required)
 if(!filepath) throw new Error('Filepath not specified. Please provide argv.2 as the path to update file.')
@@ -31,6 +31,7 @@ const inserterStreams = new Writable({
       case RecordType.PersonUpdate:
         delete chunk.recordType
         const updateType = await classifyUpdateRecord(chunk)
+        console.log(UpdateTypes[updateType])
         callback()
         break;
       default:

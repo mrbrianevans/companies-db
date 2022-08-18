@@ -1,10 +1,10 @@
-import {personUpdateTransformer} from "./recordParser/transformers.js";
+import {personUpdateTransformer} from "../shared/recordParser/transformers.js";
 import {getMongoClient} from '../shared/dbClients.js'
 import {OfficerStorage} from '../shared/storageTypes/Officer.js'
 
 const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
 
-enum UpdateTypes{
+export enum UpdateTypes{
   NewAppointment,
   Resignation,
   PersonDetailsAmendmentCorrection,
@@ -22,6 +22,8 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
   const mongo = await getMongoClient()
 
   const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({company_number: record.company_number, officer_role: record.appointment_type.old.officer_role, personNumber: record.person_number.old})
+
+  await mongo.close()
 
   if(oldRecord === null){
     // old record cannot be matched, therefore this could be a new appointment, depending on the officer_roles in update record

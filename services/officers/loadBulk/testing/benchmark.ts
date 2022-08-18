@@ -2,7 +2,7 @@
 
 
 import {createReadStream, createWriteStream} from "fs";
-import {parseRecord} from "../recordParser/parseRecord.js";
+import {parseRecord} from "../../shared/recordParser/parseRecord.js";
 import split2 from 'split2'
 import {once} from "node:events";
 import {performance} from "perf_hooks";

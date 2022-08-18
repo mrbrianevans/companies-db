@@ -4,7 +4,7 @@
 
 import split2 from 'split2'
 import {pipeline} from "stream/promises";
-import {parseRecord} from "./recordParser/parseRecord.js";
+import {parseRecord} from "../shared/recordParser/parseRecord.js";
 import {Transform, TransformCallback} from "stream";
 import commandLineUsage from 'command-line-usage'
 import commandLineArgs from 'command-line-args'
