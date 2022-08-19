@@ -6,6 +6,8 @@ import type { FastifyRequest } from 'fastify'
 import { GetRegisteredOfficeAddressSchema } from '../schemas/getRegisteredOfficeAddressSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
+import {GetCompanyProfileResponse} from "../schemas/getCompanyProfileSchema.js";
+import {callGetCompanyProfileApi} from "./getCompanyProfile.js";
 
 export interface Context {
   redis: FastifyRedis
@@ -53,16 +55,17 @@ export async function getRegisteredOfficeAddress(
 ): Promise<GetRegisteredOfficeAddressResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
   const collection =
-    context.mongo.db.collection<GetRegisteredOfficeAddressResponse>(colName)
+    context.mongo.db.collection<GetCompanyProfileResponse>('getCompanyProfile')
   const startFind = performance.now()
-  let res = await collection.findOne({ company_number })
+  let res: { registered_office_address: any }|null = await collection.findOne({ company_number }, {projection: {registered_office_address: 1}})
   const findDurationMs = performance.now() - startFind
   context.req.log.trace(
     { findDurationMs, found: Boolean(res) },
     'Find one operation in MongoDB'
   )
   if (!res) {
-    res = await callGetRegisteredOfficeAddressApi({ company_number }, {})
+    context.req.log.info({ company_number },'Registered address not found for company. Calling external API.')
+    res = await callGetCompanyProfileApi({ company_number }, {})
     if (res) {
       try {
         await collection.updateOne(
@@ -85,17 +88,13 @@ export async function getRegisteredOfficeAddress(
       }
     }
   }
-  return res ?? null
+
+    Object.assign(res?.registered_office_address??{}, {etag: 'a914a2ce96e25f11b96d05632be6426e1578ec64',
+      kind: 'registered-office-address',
+      links: {
+        self: `/company/${company_number}/registered-office-address`
+      }})
+
+  return res?.registered_office_address ?? null
 }
 
-async function callGetRegisteredOfficeAddressApi(pathParams, queryParams) {
-  const nonNullQueryParams = Object.fromEntries(
-    Object.entries(queryParams)
-      .filter(([k, v]) => v)
-      .map(([k, v]) => [k, String(v)])
-  )
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const { company_number } = pathParams
-  const path = `/company/${company_number}/registered-office-address`
-  return await reflect(path + '?' + urlQuery.toString())
-}

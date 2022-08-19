@@ -88,7 +88,7 @@ export async function getCompanyProfile(
   return res ?? null
 }
 
-async function callGetCompanyProfileApi(pathParams, queryParams) {
+export async function callGetCompanyProfileApi(pathParams, queryParams) {
   const nonNullQueryParams = Object.fromEntries(
     Object.entries(queryParams)
       .filter(([k, v]) => v)
