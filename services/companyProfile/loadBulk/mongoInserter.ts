@@ -11,6 +11,7 @@ export class MongoInserter<ChunkType = any> extends Writable {
   uidFields: (keyof ChunkType)[]
   private readonly startTime: number
   private counter: number
+  private stats: {upsertedCount:number, modifiedCount: number}
   private batches: number[]
   private timeTaken: number
   bufferedChunks: ChunkType[]
@@ -38,12 +39,11 @@ export class MongoInserter<ChunkType = any> extends Writable {
     this.batches = []
     this.bufferSize = bufferSize
     this.bufferedChunks = []
+    this.stats = {upsertedCount: 0, modifiedCount: 0}
   }
   async _construct(callback: (error?: Error | null) => void) {
     try {
-      this.mongo = new MongoClient(getEnv('MONGO_URL'), {
-        connectTimeoutMS: 5000
-      })
+      this.mongo = new MongoClient(getEnv('MONGO_URL'))
       await this.mongo.connect()
       callback()
     } catch (e) {
@@ -101,6 +101,8 @@ export class MongoInserter<ChunkType = any> extends Writable {
     // console.log('Mongo internal Batch sizes',bulk.batches.map(b=>b.size),'.total chunks:', numChunks)
     const startTime = performance.now()
     const result = await bulk.execute()
+    this.stats.upsertedCount += result.upsertedCount
+    this.stats.modifiedCount += result.modifiedCount
     const execTime = performance.now() - startTime
     this.timeTaken += execTime
     this.counter += numChunks
@@ -124,7 +126,7 @@ export class MongoInserter<ChunkType = any> extends Writable {
         this.collectionName,
         this.batches.length,
         'bulk ops',
-        `Average bulk batch size: ${average(this.batches).toFixed(1)}`
+        `Average bulk batch size: ${average(this.batches).toFixed(1)}`, this.stats
       )
     await this.mongo.close()
     callback()
