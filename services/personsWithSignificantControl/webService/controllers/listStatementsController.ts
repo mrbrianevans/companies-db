@@ -11,10 +11,7 @@ import {
   ListStatementsParams
 } from '../schemas/listStatementsSchema.js'
 
-export const listStatementsController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const listStatementsController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'listStatements' })
   await initListStatementsCollection(fastify.mongo.db)
   fastify.get<{
@@ -68,3 +65,4 @@ export const listStatementsController: FastifyPluginAsync = async (
     }
   )
 }
+export default listStatementsController

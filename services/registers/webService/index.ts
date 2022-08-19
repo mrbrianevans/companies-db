@@ -1,7 +1,5 @@
 import Fastify from 'fastify'
-import { getEnv } from './controllers/reflect.js'
-// --- import controllers ---
-import { getRegistersController } from './controllers/getRegistersController.js'
+import { getEnv } from '../shared/utils.js'
 
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'registers' } }
@@ -13,6 +11,6 @@ fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/registers'
 })
 // --- register controllers ---
-fastify.register(getRegistersController)
+fastify.register(import('./controllers/getRegistersController.js'))
 
 await fastify.listen({ port: 3000, host: '::' })

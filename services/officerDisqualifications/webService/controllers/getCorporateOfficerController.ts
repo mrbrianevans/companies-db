@@ -11,7 +11,7 @@ import {
   GetCorporateOfficerParams
 } from '../schemas/getCorporateOfficerSchema.js'
 
-export const getCorporateOfficerController: FastifyPluginAsync = async (
+const getCorporateOfficerController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -62,3 +62,4 @@ export const getCorporateOfficerController: FastifyPluginAsync = async (
     }
   )
 }
+export default getCorporateOfficerController

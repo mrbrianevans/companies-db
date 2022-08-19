@@ -28,7 +28,7 @@ console.log({SERVICES_DIR})
 
 
 async function createTagDirectories(tags) {
-    tags = tags.filter(t=>t.generate !== false)
+    // tags = tags.filter(t=>t.generate !== false)
     await mkdir(resolve(SERVICES_DIR), {recursive: true})
     await mkdir(resolve(SYS_TEST_DIR), {recursive: true})
     await newCaddyFile(SERVICES_DIR)
@@ -36,10 +36,10 @@ async function createTagDirectories(tags) {
     await genDockerCompose(SERVICES_DIR, tags)
     await genServiceMonolith(SERVICES_DIR, tags)
     for (const tag of tags) {
+        await genWebService(SERVICES_DIR, tag)
         if(tag.generate === false) continue
         await mkdir(resolve(SERVICES_DIR, tag.name), {recursive: true})
         await genSystemTest(SYS_TEST_DIR, tag.name)
-        await genWebService(SERVICES_DIR, tag)
         await genServiceDockerComposeFile(SERVICES_DIR, tag)
         await genLoadBulk(SERVICES_DIR, tag.name)
         await genDatabases(SERVICES_DIR, tag.name)
@@ -85,13 +85,12 @@ async function createRoutes(paths, tags) {
         await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema)
         await addCaddyFileEntry(SERVICES_DIR, path, tag)
         const monolith = await readFile(resolve(SERVICES_DIR, 'monolith.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
-fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}
-import { ${name}Controller } from '${['.', tag, 'webService', 'controllers', name + 'Controller.js'].join('/')}'`))
-        await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(monolith))
-        if(tags.find(t=>t.name===tag)?.generate === false) continue
-
+fastify.register(import('${['.', tag, 'webService', 'controllers', name + 'Controller.js'].join('/')}'))`))
+        await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(monolith, true))
         await generateWebServicePath({path,description,SERVICES_DIR, tag, name,Name,parameters,processParams,isPath,isQuery,getName,responseSchema,summary})
         await registerFastifyPluginInIndexFile(SERVICES_DIR, tag, name, Name)
+        if(tags.find(t=>t.name===tag)?.generate === false) continue
+
     }
 }
 

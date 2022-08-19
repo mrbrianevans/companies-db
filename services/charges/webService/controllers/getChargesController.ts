@@ -11,10 +11,7 @@ import {
   GetChargesParams
 } from '../schemas/getChargesSchema.js'
 
-export const getChargesController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const getChargesController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'getCharges' })
   await initGetChargesCollection(fastify.mongo.db)
   fastify.get<{ Params: GetChargesParams; Querystring: GetChargesQueryString }>(
@@ -59,3 +56,4 @@ export const getChargesController: FastifyPluginAsync = async (
     }
   )
 }
+export default getChargesController

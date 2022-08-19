@@ -11,7 +11,6 @@ export async function genServiceMonolith(SERVICES_DIR, tags) {
 import fastifyRedis from '@fastify/redis'
 import fastifyMongo from '@fastify/mongodb'
 import 'dotenv/config'
-// --- import controllers ---
 
 const fastify = Fastify({logger: true})
 

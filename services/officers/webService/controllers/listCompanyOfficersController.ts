@@ -11,7 +11,7 @@ import {
   ListCompanyOfficersParams
 } from '../schemas/listCompanyOfficersSchema.js'
 
-export const listCompanyOfficersController: FastifyPluginAsync = async (
+const listCompanyOfficersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -71,3 +71,4 @@ export const listCompanyOfficersController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default listCompanyOfficersController

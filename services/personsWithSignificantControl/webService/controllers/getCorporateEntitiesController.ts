@@ -11,7 +11,7 @@ import {
   GetCorporateEntitiesParams
 } from '../schemas/getCorporateEntitiesSchema.js'
 
-export const getCorporateEntitiesController: FastifyPluginAsync = async (
+const getCorporateEntitiesController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -62,3 +62,4 @@ export const getCorporateEntitiesController: FastifyPluginAsync = async (
     }
   )
 }
+export default getCorporateEntitiesController

@@ -20,7 +20,7 @@ export async function genWebService(SERVICES_DIR, tag){
 
 
 export async function generateWebServicePath({SERVICES_DIR, tag, name,Name,parameters,processParams,isPath,isQuery,getName,responseSchema,summary,path,description}){
-
+//todo: the typescript interfaces should be properly generated from the JSON schema, at the moment they aren't accurately reflecting enums.
     await writeFile(resolve(SERVICES_DIR, tag,'webService', 'schemas', name + 'Schema.ts'), prettyTs(`
 import { FromSchema } from "json-schema-to-ts";
 
@@ -60,7 +60,7 @@ import {${Name}Schema as schema, ${Name}QueryString, ${Name}Params } from "../sc
 
 
 
-export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
+const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
   fastify.log = fastify.log.child({route: '${name}'})
   await init${Name}Collection(fastify.mongo.db)
   fastify.get<{Params: ${Name}Params, Querystring: ${Name}QueryString}>('${path.replace(/\{(.*?)}/g, (whole, pName) => ':' + pName)}', schema, async (req, res)=>{
@@ -85,7 +85,7 @@ export const ${name}Controller: FastifyPluginAsync = async (fastify, opts)=>{
     else res.code(404).send({statusCode: 404, error:"Not found", message: 'Not found'})
   })
 }
-
+export default ${name}Controller
         `))
     // this reflects requests to the companies house api
     await writeFile(resolve(SERVICES_DIR, tag,'webService', 'controllers', 'reflect.ts'), prettyTs(`
@@ -123,78 +123,78 @@ try{
 }
         `))
     // write service stub
-    await writeFile(resolve(SERVICES_DIR, tag,'webService', 'service', name + '.ts'), prettyTs(`
-import type { ${Name}Response } from "../schemas/${name}Schema.js";
-import type {FastifyRedis} from "@fastify/redis";
-import type {FastifyMongoObject} from "@fastify/mongodb";
-import type {FastifyRequest} from "fastify";
-
-import { ${Name}Schema } from "../schemas/${name}Schema.js";
-import {reflect} from "../controllers/reflect.js";
-import {performance} from "perf_hooks";
-
-export interface Context{
-  redis: FastifyRedis,
-  mongo: FastifyMongoObject
-  req: FastifyRequest
-}
-// the main database collection for the ${name} service
-const colName = '${name}'
-
-/** Must be called before any data is inserted */
-export async function init${Name}Collection(db: FastifyMongoObject['db']){
-  if(!db) throw new Error('DB not defined')
-  const exists = await db.listCollections({name:colName}).toArray().then(a=>a.length)
-  if(!exists) {
-    console.log('Creating collection', colName)
-    const {example, ...schema} = { ...${Name}Schema['schema']['response']['200'] }
-    await db.createCollection(colName, {
-      storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}},
-      // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
-      // validator: {$jsonSchema: schema },
-       // validationAction: "error" || "warn" // if a write fails validation
-    })
-    ${parameters.filter(isPath).length ?`await db.collection(colName).createIndex({${parameters.filter(isPath).map(p=>getName(p) + ': 1').join(', ')}},{unique: true})`:''}
-  }
-}
-
-/**
- * ${summary ? summary + '.\n *' :''}
- * ${description ? description + '.\n *' :''}
- */
-export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response|null>{
-  if(!context.mongo.db) throw new Error('DB not defined')
-  const collection = context.mongo.db.collection<${Name}Response>(colName)
-  const startFind = performance.now()
-  let res = await collection.findOne({${processParams(parameters.filter(isPath))}})
-  const findDurationMs = performance.now() - startFind
-  context.req.log.trace({findDurationMs, found: Boolean(res)}, 'Find one operation in MongoDB')
-  if(!res){
-    res = await call${Name}Api({${processParams(parameters.filter(isPath))}}, {${processParams(parameters.filter(isQuery))}})
-    if(res){
-    try{
-    await collection.updateOne({${processParams(parameters.filter(isPath))}}, {$set: res}, {upsert: true})
-    }      catch (e) {
-        if(e.code === 121){
-          context.req.log.warn({${processParams(parameters)}},"Failed to upsert document from API due to validation error")
-        }else{
-          context.req.log.error({err: e},
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-  }
-  }
-  return res ?? null
-}
-
-async function call${Name}Api(pathParams, queryParams) {
-const nonNullQueryParams = Object.fromEntries(Object.entries(queryParams).filter(([k,v])=>v).map(([k,v])=>[k, String(v)]))
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-    ${parameters.filter(isPath).length ? `const {${parameters.filter(isPath).map(getName).join(', ')}} = pathParams`:''}
-    const path = \`${path.replaceAll('{','${')}\`
-  return await reflect(path + '?' + urlQuery.toString())
-}
-
-`))
+//     await writeFile(resolve(SERVICES_DIR, tag,'webService', 'service', name + '.ts'), prettyTs(`
+// import type { ${Name}Response } from "../schemas/${name}Schema.js";
+// import type {FastifyRedis} from "@fastify/redis";
+// import type {FastifyMongoObject} from "@fastify/mongodb";
+// import type {FastifyRequest} from "fastify";
+//
+// import { ${Name}Schema } from "../schemas/${name}Schema.js";
+// import {reflect} from "../controllers/reflect.js";
+// import {performance} from "perf_hooks";
+//
+// export interface Context{
+//   redis: FastifyRedis,
+//   mongo: FastifyMongoObject
+//   req: FastifyRequest
+// }
+// // the main database collection for the ${name} service
+// const colName = '${name}'
+//
+// /** Must be called before any data is inserted */
+// export async function init${Name}Collection(db: FastifyMongoObject['db']){
+//   if(!db) throw new Error('DB not defined')
+//   const exists = await db.listCollections({name:colName}).toArray().then(a=>a.length)
+//   if(!exists) {
+//     console.log('Creating collection', colName)
+//     const {example, ...schema} = { ...${Name}Schema['schema']['response']['200'] }
+//     await db.createCollection(colName, {
+//       storageEngine: {wiredTiger: {configString: 'block_compressor=zstd'}},
+//       // schema validation is temporarily disabled because mongo uses BSONschema which has slightly different types (doesn't support integer)
+//       // validator: {$jsonSchema: schema },
+//        // validationAction: "error" || "warn" // if a write fails validation
+//     })
+//     ${parameters.filter(isPath).length ?`await db.collection(colName).createIndex({${parameters.filter(isPath).map(p=>getName(p) + ': 1').join(', ')}},{unique: true})`:''}
+//   }
+// }
+//
+// /**
+//  * ${summary ? summary + '.\n *' :''}
+//  * ${description ? description + '.\n *' :''}
+//  */
+// export async function ${name}(context: Context, ${processParams(parameters, true)}): Promise<${Name}Response|null>{
+//   if(!context.mongo.db) throw new Error('DB not defined')
+//   const collection = context.mongo.db.collection<${Name}Response>(colName)
+//   const startFind = performance.now()
+//   let res = await collection.findOne({${processParams(parameters.filter(isPath))}})
+//   const findDurationMs = performance.now() - startFind
+//   context.req.log.trace({findDurationMs, found: Boolean(res)}, 'Find one operation in MongoDB')
+//   if(!res){
+//     res = await call${Name}Api({${processParams(parameters.filter(isPath))}}, {${processParams(parameters.filter(isQuery))}})
+//     if(res){
+//     try{
+//     await collection.updateOne({${processParams(parameters.filter(isPath))}}, {$set: res}, {upsert: true})
+//     }      catch (e) {
+//         if(e.code === 121){
+//           context.req.log.warn({${processParams(parameters)}},"Failed to upsert document from API due to validation error")
+//         }else{
+//           context.req.log.error({err: e},
+//             'Failed to insert document for a different reason to validation'
+//           )
+//         }
+//       }
+//   }
+//   }
+//   return res ?? null
+// }
+//
+// async function call${Name}Api(pathParams, queryParams) {
+// const nonNullQueryParams = Object.fromEntries(Object.entries(queryParams).filter(([k,v])=>v).map(([k,v])=>[k, String(v)]))
+//   const urlQuery = new URLSearchParams(nonNullQueryParams)
+//     ${parameters.filter(isPath).length ? `const {${parameters.filter(isPath).map(getName).join(', ')}} = pathParams`:''}
+//     const path = \`${path.replaceAll('{','${')}\`
+//   return await reflect(path + '?' + urlQuery.toString())
+// }
+//
+// `))
 }

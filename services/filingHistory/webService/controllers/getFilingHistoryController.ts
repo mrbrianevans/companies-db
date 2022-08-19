@@ -11,7 +11,7 @@ import {
   GetFilingHistoryParams
 } from '../schemas/getFilingHistorySchema.js'
 
-export const getFilingHistoryController: FastifyPluginAsync = async (
+const getFilingHistoryController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -62,3 +62,4 @@ export const getFilingHistoryController: FastifyPluginAsync = async (
     }
   )
 }
+export default getFilingHistoryController

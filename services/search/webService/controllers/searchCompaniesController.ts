@@ -11,10 +11,7 @@ import {
   SearchCompaniesParams
 } from '../schemas/searchCompaniesSchema.js'
 
-export const searchCompaniesController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const searchCompaniesController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'searchCompanies' })
   await initSearchCompaniesCollection(fastify.mongo.db)
   fastify.get<{
@@ -62,3 +59,4 @@ export const searchCompaniesController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default searchCompaniesController

@@ -11,10 +11,7 @@ import {
   SearchAllParams
 } from '../schemas/searchAllSchema.js'
 
-export const searchAllController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const searchAllController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'searchAll' })
   await initSearchAllCollection(fastify.mongo.db)
   fastify.get<{ Params: SearchAllParams; Querystring: SearchAllQueryString }>(
@@ -58,3 +55,4 @@ export const searchAllController: FastifyPluginAsync = async (
     }
   )
 }
+export default searchAllController

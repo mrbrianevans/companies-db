@@ -11,7 +11,7 @@ import {
   SearchDissolvedCompaniesParams
 } from '../schemas/searchDissolvedCompaniesSchema.js'
 
-export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
+const searchDissolvedCompaniesController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -65,3 +65,4 @@ export const searchDissolvedCompaniesController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default searchDissolvedCompaniesController

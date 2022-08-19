@@ -11,7 +11,7 @@ import {
   AdvancedCompanySearchParams
 } from '../schemas/advancedCompanySearchSchema.js'
 
-export const advancedCompanySearchController: FastifyPluginAsync = async (
+const advancedCompanySearchController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -83,3 +83,4 @@ export const advancedCompanySearchController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default advancedCompanySearchController

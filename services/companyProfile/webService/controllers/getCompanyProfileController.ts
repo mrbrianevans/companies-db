@@ -11,7 +11,7 @@ import {
   GetCompanyProfileParams
 } from '../schemas/getCompanyProfileSchema.js'
 
-export const getCompanyProfileController: FastifyPluginAsync = async (
+const getCompanyProfileController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -57,3 +57,4 @@ export const getCompanyProfileController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default getCompanyProfileController

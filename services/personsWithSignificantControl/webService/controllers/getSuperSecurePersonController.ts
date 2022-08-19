@@ -11,7 +11,7 @@ import {
   GetSuperSecurePersonParams
 } from '../schemas/getSuperSecurePersonSchema.js'
 
-export const getSuperSecurePersonController: FastifyPluginAsync = async (
+const getSuperSecurePersonController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -66,3 +66,4 @@ export const getSuperSecurePersonController: FastifyPluginAsync = async (
     }
   )
 }
+export default getSuperSecurePersonController

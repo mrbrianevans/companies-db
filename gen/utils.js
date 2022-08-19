@@ -1,10 +1,11 @@
 import prettier from "prettier";
 
-export const prettyTs = code => prettier.format(code, {
+export const prettyTs = (code, wide) => prettier.format(code, {
     semi: false,
     parser: 'typescript',
     singleQuote: true,
-    trailingComma: 'none'
+    trailingComma: 'none',
+    printWidth: wide ? 120 : undefined
 })
 
 

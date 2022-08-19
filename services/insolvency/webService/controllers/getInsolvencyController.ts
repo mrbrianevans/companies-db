@@ -11,10 +11,7 @@ import {
   GetInsolvencyParams
 } from '../schemas/getInsolvencySchema.js'
 
-export const getInsolvencyController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const getInsolvencyController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'getInsolvency' })
   await initGetInsolvencyCollection(fastify.mongo.db)
   fastify.get<{
@@ -57,3 +54,4 @@ export const getInsolvencyController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default getInsolvencyController

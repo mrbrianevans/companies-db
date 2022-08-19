@@ -11,10 +11,7 @@ import {
   GetRegistersParams
 } from '../schemas/getRegistersSchema.js'
 
-export const getRegistersController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const getRegistersController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'getRegisters' })
   await initGetRegistersCollection(fastify.mongo.db)
   fastify.get<{
@@ -57,3 +54,4 @@ export const getRegistersController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default getRegistersController

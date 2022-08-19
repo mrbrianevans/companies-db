@@ -11,7 +11,7 @@ import {
   GetNaturalOfficerParams
 } from '../schemas/getNaturalOfficerSchema.js'
 
-export const getNaturalOfficerController: FastifyPluginAsync = async (
+const getNaturalOfficerController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -57,3 +57,4 @@ export const getNaturalOfficerController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default getNaturalOfficerController

@@ -11,10 +11,7 @@ import {
   GetExemptionsParams
 } from '../schemas/getExemptionsSchema.js'
 
-export const getExemptionsController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const getExemptionsController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'getExemptions' })
   await initGetExemptionsCollection(fastify.mongo.db)
   fastify.get<{
@@ -57,3 +54,4 @@ export const getExemptionsController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default getExemptionsController

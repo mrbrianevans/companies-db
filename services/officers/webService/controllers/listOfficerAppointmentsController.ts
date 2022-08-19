@@ -11,7 +11,7 @@ import {
   ListOfficerAppointmentsParams
 } from '../schemas/listOfficerAppointmentsSchema.js'
 
-export const listOfficerAppointmentsController: FastifyPluginAsync = async (
+const listOfficerAppointmentsController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -62,3 +62,4 @@ export const listOfficerAppointmentsController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default listOfficerAppointmentsController

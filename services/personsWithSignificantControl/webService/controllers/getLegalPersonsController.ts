@@ -11,10 +11,7 @@ import {
   GetLegalPersonsParams
 } from '../schemas/getLegalPersonsSchema.js'
 
-export const getLegalPersonsController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const getLegalPersonsController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'getLegalPersons' })
   await initGetLegalPersonsCollection(fastify.mongo.db)
   fastify.get<{
@@ -62,3 +59,4 @@ export const getLegalPersonsController: FastifyPluginAsync = async (
     }
   )
 }
+export default getLegalPersonsController

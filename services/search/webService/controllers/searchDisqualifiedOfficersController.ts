@@ -11,7 +11,7 @@ import {
   SearchDisqualifiedOfficersParams
 } from '../schemas/searchDisqualifiedOfficersSchema.js'
 
-export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
+const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -61,3 +61,4 @@ export const searchDisqualifiedOfficersController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default searchDisqualifiedOfficersController

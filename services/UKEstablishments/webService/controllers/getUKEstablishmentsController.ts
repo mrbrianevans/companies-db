@@ -11,7 +11,7 @@ import {
   GetUKEstablishmentsParams
 } from '../schemas/getUKEstablishmentsSchema.js'
 
-export const getUKEstablishmentsController: FastifyPluginAsync = async (
+const getUKEstablishmentsController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -57,3 +57,4 @@ export const getUKEstablishmentsController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default getUKEstablishmentsController

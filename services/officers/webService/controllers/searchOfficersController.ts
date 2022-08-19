@@ -11,10 +11,7 @@ import {
   SearchOfficersParams
 } from '../schemas/searchOfficersSchema.js'
 
-export const searchOfficersController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const searchOfficersController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'searchOfficers' })
   await initSearchOfficersCollection(fastify.mongo.db)
   fastify.get<{
@@ -56,3 +53,4 @@ export const searchOfficersController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default searchOfficersController

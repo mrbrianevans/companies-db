@@ -11,10 +11,7 @@ import {
   ListChargesParams
 } from '../schemas/listChargesSchema.js'
 
-export const listChargesController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const listChargesController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'listCharges' })
   await initListChargesCollection(fastify.mongo.db)
   fastify.get<{
@@ -57,3 +54,4 @@ export const listChargesController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default listChargesController

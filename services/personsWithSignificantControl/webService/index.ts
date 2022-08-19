@@ -1,14 +1,5 @@
 import Fastify from 'fastify'
-import { getEnv } from './controllers/reflect.js'
-// --- import controllers ---
-import { getSuperSecurePersonController } from './controllers/getSuperSecurePersonController.js'
-import { getStatementController } from './controllers/getStatementController.js'
-import { listStatementsController } from './controllers/listStatementsController.js'
-import { getLegalPersonsController } from './controllers/getLegalPersonsController.js'
-import { getCorporateEntitiesController } from './controllers/getCorporateEntitiesController.js'
-import { getIndividualController } from './controllers/getIndividualController.js'
-import { listPersonsWithSignificantControlController } from './controllers/listPersonsWithSignificantControlController.js'
-import { getExemptionsController } from './controllers/getExemptionsController.js'
+import { getEnv } from '../shared/utils.js'
 
 const fastify = Fastify({
   logger: { level: 'trace', base: { service: 'personsWithSignificantControl' } }
@@ -20,13 +11,15 @@ fastify.register(import('@fastify/mongodb'), {
   url: getEnv('MONGO_URL') + '/personsWithSignificantControl'
 })
 // --- register controllers ---
-fastify.register(getSuperSecurePersonController)
-fastify.register(getStatementController)
-fastify.register(listStatementsController)
-fastify.register(getLegalPersonsController)
-fastify.register(getCorporateEntitiesController)
-fastify.register(getIndividualController)
-fastify.register(listPersonsWithSignificantControlController)
-fastify.register(getExemptionsController)
+fastify.register(import('./controllers/getSuperSecurePersonController.js'))
+fastify.register(import('./controllers/getStatementController.js'))
+fastify.register(import('./controllers/listStatementsController.js'))
+fastify.register(import('./controllers/getLegalPersonsController.js'))
+fastify.register(import('./controllers/getCorporateEntitiesController.js'))
+fastify.register(import('./controllers/getIndividualController.js'))
+fastify.register(
+  import('./controllers/listPersonsWithSignificantControlController.js')
+)
+fastify.register(import('./controllers/getExemptionsController.js'))
 
 await fastify.listen({ port: 3000, host: '::' })

@@ -11,7 +11,7 @@ import {
   ListFilingHistoryParams
 } from '../schemas/listFilingHistorySchema.js'
 
-export const listFilingHistoryController: FastifyPluginAsync = async (
+const listFilingHistoryController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -63,3 +63,4 @@ export const listFilingHistoryController: FastifyPluginAsync = async (
         .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
   })
 }
+export default listFilingHistoryController

@@ -11,10 +11,7 @@ import {
   GetIndividualParams
 } from '../schemas/getIndividualSchema.js'
 
-export const getIndividualController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const getIndividualController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'getIndividual' })
   await initGetIndividualCollection(fastify.mongo.db)
   fastify.get<{
@@ -62,3 +59,4 @@ export const getIndividualController: FastifyPluginAsync = async (
     }
   )
 }
+export default getIndividualController

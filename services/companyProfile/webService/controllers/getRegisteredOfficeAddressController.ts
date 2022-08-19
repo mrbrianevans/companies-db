@@ -11,7 +11,7 @@ import {
   GetRegisteredOfficeAddressParams
 } from '../schemas/getRegisteredOfficeAddressSchema.js'
 
-export const getRegisteredOfficeAddressController: FastifyPluginAsync = async (
+const getRegisteredOfficeAddressController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -62,3 +62,4 @@ export const getRegisteredOfficeAddressController: FastifyPluginAsync = async (
     }
   )
 }
+export default getRegisteredOfficeAddressController

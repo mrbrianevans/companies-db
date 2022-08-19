@@ -11,10 +11,7 @@ import {
   GetStatementParams
 } from '../schemas/getStatementSchema.js'
 
-export const getStatementController: FastifyPluginAsync = async (
-  fastify,
-  opts
-) => {
+const getStatementController: FastifyPluginAsync = async (fastify, opts) => {
   fastify.log = fastify.log.child({ route: 'getStatement' })
   await initGetStatementCollection(fastify.mongo.db)
   fastify.get<{
@@ -62,3 +59,4 @@ export const getStatementController: FastifyPluginAsync = async (
     }
   )
 }
+export default getStatementController

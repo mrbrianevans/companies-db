@@ -11,7 +11,7 @@ import {
   GetOfficerAppointmentParams
 } from '../schemas/getOfficerAppointmentSchema.js'
 
-export const getOfficerAppointmentController: FastifyPluginAsync = async (
+const getOfficerAppointmentController: FastifyPluginAsync = async (
   fastify,
   opts
 ) => {
@@ -66,3 +66,4 @@ export const getOfficerAppointmentController: FastifyPluginAsync = async (
     }
   )
 }
+export default getOfficerAppointmentController
