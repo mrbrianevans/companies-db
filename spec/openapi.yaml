@@ -10,14 +10,13 @@ servers:
 security:
   - api_key: []
 tags:
-  - description: Registered office address
-    name: registeredOfficeAddress
   - description: Company profile
     name: companyProfile
   - description: Search
     name: search
   - description: Officers
     name: officers
+    generate: false
   - description: Registers
     name: registers
   - description: Charges
@@ -32,6 +31,7 @@ tags:
     name: UKEstablishments
   - description: Persons with significant control
     name: personsWithSignificantControl
+    generate: false
 paths:
   "/company/{company_number}/registered-office-address":
     get:
@@ -105,7 +105,8 @@ paths:
             - https://api.company-information.service.gov.uk/company/{company_number}/registered-office-address.update
       summary: Registered Office Address
       tags:
-        - registeredOfficeAddress
+        - companyProfile
+      x-operationName: get registered office address
       x-eov-operation-handler: controllers/RegisteredOfficeAddressController
   "/company/{company_number}":
     get:

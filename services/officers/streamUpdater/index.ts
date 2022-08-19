@@ -1,8 +1,8 @@
 import { Temporal } from "@js-temporal/polyfill";
 import {downloadUpdateFile} from "./downloadUpdateFile.js";
 import {loadUpdateFile} from "./loadUpdate.js";
-import dotenv from 'dotenv'
-dotenv.config({path: '.sftp.env'})
+import {config} from 'dotenv'
+config({path: '.sftp.env'})
 
 const today = Temporal.Now.plainDateISO('UTC')
 const {year,month,day} = today

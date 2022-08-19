@@ -31,7 +31,7 @@ import { searchOfficersController } from './officers/webService/controllers/sear
 import { searchCompaniesController } from './search/webService/controllers/searchCompaniesController.js'
 import { searchAllController } from './search/webService/controllers/searchAllController.js'
 import { getCompanyProfileController } from './companyProfile/webService/controllers/getCompanyProfileController.js'
-import { getRegisteredOfficeAddressController } from './registeredOfficeAddress/webService/controllers/getRegisteredOfficeAddressController.js'
+import { getRegisteredOfficeAddressController } from './companyProfile/webService/controllers/getRegisteredOfficeAddressController.js'
 
 const fastify = Fastify({ logger: true })
 

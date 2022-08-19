@@ -237,8 +237,8 @@
                 header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
                 path_regexp ^\/company\/[A-Z\d]{4,8}\/registered-office-address$
         }
-        reverse_proxy @company-company_number-registered-office-address registered-office-address:3000 {
-                header_down Service companies-registered-office-address
+        reverse_proxy @company-company_number-registered-office-address company-profile:3000 {
+                header_down Service companies-company-profile
         }
 
 }

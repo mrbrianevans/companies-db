@@ -28,6 +28,7 @@ console.log({SERVICES_DIR})
 
 
 async function createTagDirectories(tags) {
+    tags = tags.filter(t=>t.generate !== false)
     await mkdir(resolve(SERVICES_DIR), {recursive: true})
     await mkdir(resolve(SYS_TEST_DIR), {recursive: true})
     await newCaddyFile(SERVICES_DIR)
@@ -35,6 +36,7 @@ async function createTagDirectories(tags) {
     await genDockerCompose(SERVICES_DIR, tags)
     await genServiceMonolith(SERVICES_DIR, tags)
     for (const tag of tags) {
+        if(tag.generate === false) continue
         await mkdir(resolve(SERVICES_DIR, tag.name), {recursive: true})
         await genSystemTest(SYS_TEST_DIR, tag.name)
         await genWebService(SERVICES_DIR, tag)
@@ -47,44 +49,6 @@ async function createTagDirectories(tags) {
         await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'service'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name,'webService', 'schemas'), {recursive: true})
         await mkdir(resolve(SERVICES_DIR, tag.name, 'loadBulk'), { recursive: true })
-    }
-}
-
-const isObject = obj => obj !== null && typeof obj === 'object';
-
-// fixes the schema where type=array has been used, but is supposed to be type=object
-function flattenItemsRecursive(schema, skip) {
-    if (!isObject(schema)) return
-    else if ('properties' in schema) {
-        schema.type = 'object'
-        for (const property in schema.properties) {
-            if (isObject(schema.properties[property])) {
-                flattenItemsRecursive(schema.properties[property], property)
-            }
-        }
-    }
-    else if ('items' in schema) {
-        if (schema.items.title !== skip && skip !== 'items') {
-            schema.type = 'object'
-            for (const item in schema.items) {
-                schema[item] = schema.items[item]
-            }
-            flattenItemsRecursive(schema)
-            delete schema.items
-        }else{
-            schema.type = 'array'
-            flattenItemsRecursive(schema.items)
-        }
-    }
-}
-function removeSchemaRequirements(schema){
-    return // skip for now, testing new schemas with correct requirements
-    if (!isObject(schema)) return
-    if ('required' in schema) schema.required = []
-    if ('items' in schema) removeSchemaRequirements(schema.items)
-    else if ('properties' in schema) {
-        for (const property in schema.properties)
-                removeSchemaRequirements(schema.properties[property])
     }
 }
 
@@ -104,11 +68,11 @@ function processParams(params, includeTypes = false, sep = ', ', docs = false) {
 const isPath = p => (p.paramType ?? p.in) === 'path'
 const isQuery = p => (p.paramType ?? p.in) === 'query'
 
-async function createRoutes(paths, responsePaths) {
+async function createRoutes(paths, tags) {
     for (const path in paths) {
         const {get: {parameters, ['x-operationName']: operationName, tags: [tag], summary, description}} = paths[path]
         const responsePath = path.replace('company_number', 'companyNumber')
-        const {get: {responses}} = responsePaths[responsePath] ?? responsePaths[path] // these are sometimes different
+        const {get: {responses}} = paths[responsePath] ?? paths[path] // these are sometimes different
         const responseSchema = responses[200].content['application/json'].schema
         const op = camelCase(operationName ?? 'get')
         const name = op === 'list' || op === 'get' ? camelCase(op + ' ' + tag) : op,
@@ -120,23 +84,21 @@ async function createRoutes(paths, responsePaths) {
         }
         await addPathSystemTest(SYS_TEST_DIR, tag, path, name, responseSchema)
         await addCaddyFileEntry(SERVICES_DIR, path, tag)
-        await generateWebServicePath({path,description,SERVICES_DIR, tag, name,Name,parameters,processParams,isPath,isQuery,getName,responseSchema,summary})
-        await registerFastifyPluginInIndexFile(SERVICES_DIR, tag, name, Name)
         const monolith = await readFile(resolve(SERVICES_DIR, 'monolith.ts')).then(String).then(index => index.replace(`// --- register controllers ---`, marker => `${marker}
 fastify.register(${name}Controller)`)).then(index => index.replace(`// --- import controllers ---`, marker => `${marker}
 import { ${name}Controller } from '${['.', tag, 'webService', 'controllers', name + 'Controller.js'].join('/')}'`))
         await writeFile(resolve(SERVICES_DIR, 'monolith.ts'), prettyTs(monolith))
+        if(tags.find(t=>t.name===tag)?.generate === false) continue
 
-
+        await generateWebServicePath({path,description,SERVICES_DIR, tag, name,Name,parameters,processParams,isPath,isQuery,getName,responseSchema,summary})
+        await registerFastifyPluginInIndexFile(SERVICES_DIR, tag, name, Name)
     }
 }
 
-// json spec contains response schema
-const spec = await readFile(resolve('../spec/apispec.json')).then(String).then(JSON.parse)
 // yaml spec is more correct
 const Yspec = await readFile(resolve('../spec/openapi.yaml')).then(String).then(YAML.parse)
 
 
 await createTagDirectories(Yspec.tags)
-await createRoutes(Yspec.paths, Yspec.paths)
+await createRoutes(Yspec.paths, Yspec.tags)
 // console.log(Object.keys(Yspec.paths).map(p=>`"${p}": [{query: {}, params: {company_number: getCompanyNumber()}}]`).join(',\n\t'))

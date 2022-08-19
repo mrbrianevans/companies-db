@@ -601,11 +601,17 @@ importers:
 
   officers/streamUpdater:
     specifiers:
+      '@js-temporal/polyfill': ^0.4.2
       '@types/node': ^18.0.0
       '@types/ssh2-sftp-client': ^7.1.0
+      dotenv: ^16.0.1
+      split2: ^4.1.0
       ssh2-sftp-client: ^9.0.3
       typescript: ^4.7.4
     dependencies:
+      '@js-temporal/polyfill': 0.4.2
+      dotenv: 16.0.1
+      split2: 4.1.0
       ssh2-sftp-client: 9.0.3
     devDependencies:
       '@types/node': 18.7.2
@@ -1011,6 +1017,14 @@ packages:
 
   /@ioredis/commands/1.2.0:
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
+    dev: false
+
+  /@js-temporal/polyfill/0.4.2:
+    resolution: {integrity: sha512-c85vRxyqnJaXKyf4tvYij8jwiVIZhNLYDI9C4LLuOwVEHf4HUqGg07BBn70Le71W193QT/vmKg3jPUyQxJRHKQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      jsbi: 4.3.0
+      tslib: 2.4.0
     dev: false
 
   /@redis/bloom/1.0.2_@redis+client@1.2.0:
@@ -1560,6 +1574,10 @@ packages:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
     dev: true
+
+  /jsbi/4.3.0:
+    resolution: {integrity: sha512-SnZNcinB4RIcnEyZqFPdGPVgrg2AcnykiBy0sHVJQKHYeaLUvi3Exj+iaPpLnFVkDPZIV4U0yvgC9/R4uEAZ9g==}
+    dev: false
 
   /json-schema-to-ts/2.5.5:
     resolution: {integrity: sha512-GFD5t0fUnX/B0gE9xbHjxv2BwFXRJND2+OKoLoMElJ3XRJ7dOBlLT7KXpg96aETeZ0RJbAZOfqHALBf5k4aIIA==}

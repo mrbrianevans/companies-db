@@ -1,13 +1,5 @@
 "version": "3.7"
 "services":
-  "registered-office-address":
-    "build": "registeredOfficeAddress/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
   "company-profile":
     "build": "companyProfile/webService"
     "networks":

@@ -1,7 +1,7 @@
 import { readFile, mkdir, stat } from 'fs/promises';
 import SftpClient from 'ssh2-sftp-client'
 import {dirExists, fileExists, getEnv} from '../shared/utils.js'
-import assert from "assert";
+import * as assert from "assert";
 
 /**
  * Download the update file for the date specified from the SFTP server. Requires ENV variables to be set.

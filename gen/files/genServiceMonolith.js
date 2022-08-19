@@ -58,7 +58,8 @@ await fastify.listen({port: 3000, host: '::'})
             "module": "ES2022",
             "target": "ES2021",
             "sourceMap": true,
-            "moduleResolution": "node", // "strictNullChecks": true
+            "moduleResolution": "node", // "strictNullChecks": true,
+            "allowSyntheticDefaultImports": true
         }, "exclude": ["node_modules"], references: tags.map(tag => ({path: tag.name + '/webService'}))
     }, null, 2))
 }

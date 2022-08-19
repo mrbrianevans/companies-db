@@ -36,6 +36,8 @@ tags:
   name: UKEstablishments
 - description: Persons with significant control
   name: personsWithSignificantControl
+- description: PSC discrepancies
+  name: pscDiscrepancies
 paths:
   /company/{companyNumber}/registered-office-address:
     get:
@@ -353,9 +355,14 @@ paths:
     get:
       description: Advanced search for a company
       parameters:
-      - description: The company name (must contain) advanced search filter
+      - description: The company name includes advanced search filter
         in: query
-        name: company_name
+        name: company_name_includes
+        schema:
+          type: string
+      - description: The company name excludes advanced search filter
+        in: query
+        name: company_name_excludes
         schema:
           type: string
       - description: The company status advanced search filter. To search using multiple
@@ -992,6 +999,45 @@ paths:
       tags:
       - personsWithSignificantControl
       x-operationName: get individual
+  /company/{company_number}/persons-with-significant-control/individual-beneficial-owner/{psc_id}:
+    get:
+      description: Get details of an individual beneficial owner
+      parameters:
+      - description: The company number of the beneficial owner details being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the beneficial owner details being requested.
+        in: path
+        name: psc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: individualBeneficialOwner
+                type: object
+          description: IndividualBO resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the individual beneficial owner
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get individual beneficial owner
   /company/{company_number}/persons-with-significant-control/corporate-entity/{psc_id}:
     get:
       description: Get details of a corporate entity with significant control
@@ -1033,6 +1079,47 @@ paths:
       tags:
       - personsWithSignificantControl
       x-operationName: get corporate entities
+  /company/{company_number}/persons-with-significant-control/corporate-entity-beneficial-owner/{psc_id}:
+    get:
+      description: Get details of a corporate entity beneficial owner
+      parameters:
+      - description: The company number of the corporate entity beneficial owner details
+          being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the corporate entity beneficial owner details being
+          requested.
+        in: path
+        name: psc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: corporateEntityBeneficialOwner
+                type: object
+          description: CorporateEntityBO resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the corporate entity beneficial owner
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get corporate entity beneficial owner
   /company/{company_number}/persons-with-significant-control/legal-person/{psc_id}:
     get:
       description: Get details of a legal person with significant control
@@ -1074,6 +1161,46 @@ paths:
       tags:
       - personsWithSignificantControl
       x-operationName: get legal persons
+  /company/{company_number}/persons-with-significant-control/legal-person-beneficial-owner/{psc_id}:
+    get:
+      description: Get details of a legal person beneficial owner
+      parameters:
+      - description: The company number of the legal person beneficial owner details
+          being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the legal person beneficial owner details being requested.
+        in: path
+        name: psc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: legalPersonBeneficialOwner
+                type: object
+          description: LegalPersonBO resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the legal person beneficial owner
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get legal person beneficial owner
   /company/{company_number}/persons-with-significant-control-statements:
     get:
       description: List of all persons with significant control statements
@@ -1211,6 +1338,46 @@ paths:
       tags:
       - personsWithSignificantControl
       x-operationName: get super secure person
+  /company/{company_number}/persons-with-significant-control/super-secure-beneficial-owner/{super_secure_id}:
+    get:
+      description: Get details of a super secure beneficial owner
+      parameters:
+      - description: The company number of the super secure beneficial owner details
+          being requested.
+        in: path
+        name: company_number
+        required: true
+        schema:
+          type: string
+      - description: The id of the super secure beneficial owner details being requested.
+        in: path
+        name: super_secure_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                title: superSecureBeneficialOwner
+                type: object
+          description: SuperSecureBO resource returned
+          headers:
+            ETag:
+              description: The ETag of the resource.
+              schema:
+                type: string
+        "401":
+          content: {}
+          description: Unauthorised
+        "404":
+          content: {}
+          description: Resource not found
+      summary: Get the super secure beneficial owner
+      tags:
+      - personsWithSignificantControl
+      x-operationName: get super secure beneficial owner
 components:
   schemas:
     companyRegister:
