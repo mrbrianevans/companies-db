@@ -124,7 +124,7 @@ export interface IntermediateCompany {
   };
   sicCodes: string[];
   limitedPartnerships?: { generalPartners: number, limitedPartners: number };
-  previousNames: { name: string, date: EurDateString }[];
+  previousNames: { name: string, conDate: EurDateString }[];
   confirmationStatement?: {
     lastMadeUpTo?: EurDateString,
     nextDueDate?: EurDateString
