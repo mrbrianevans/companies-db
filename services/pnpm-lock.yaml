@@ -261,6 +261,7 @@ importers:
       '@types/node': ^18.0.0
       '@types/ws': ^8.5.3
       camelcase: ^7.0.0
+      dotenv: ^16.0.1
       event-iterator: ^2.0.0
       genson-js: ^0.0.8
       json-schema-to-ts: ^2.5.5
@@ -270,6 +271,7 @@ importers:
       ws: ^8.8.0
     dependencies:
       camelcase: 7.0.0
+      dotenv: 16.0.1
       event-iterator: 2.0.0
       genson-js: 0.0.8
       json-schema-to-ts: 2.5.5

@@ -102,6 +102,9 @@ console.time('Download ZIP file '+i)
 const zipFilename = await downloadFile(i, total)
 console.timeEnd('Download ZIP file '+i)
 
+//todo: this can be improved by:
+// - don't save the unzipped file, rather just pipe from the unzip stream straight to the parser (see companyProfile)
+// - use split2(JSON.parse) instead of createInterface and Readable.from().map(JSON.parse)
 
 console.time('Unzip ZIP file '+i)
 const textFile = await unzipFile(zipFilename)
