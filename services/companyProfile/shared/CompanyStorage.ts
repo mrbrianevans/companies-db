@@ -1,5 +1,8 @@
 import { FromSchema } from 'json-schema-to-ts'
 
+// components should use this constant instead of hardcoding the collection name
+export const companyCollectionName = 'getCompanyProfile'
+
 export const CompanyStorageSchema = {
   type: 'object',
   properties: {

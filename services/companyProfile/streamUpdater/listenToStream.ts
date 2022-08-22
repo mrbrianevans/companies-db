@@ -22,14 +22,15 @@ export async function listenToStream(streamPath: string = "companies", startFrom
   const path = "/" + streamPath + (typeof startFromTimepoint === "number" ? `?timepoint=${startFromTimepoint}` : "")
   const options: RequestOptions = { hostname: "stream.companieshouse.gov.uk", path, auth }
   const response: IncomingMessage = await new Promise(resolve => get(options, im=>resolve(im)).end())
-  response.on("end", () => console.log("Stream ended. 'end' event triggered"))
+  response.on("close", () => emitter.emit('end'))
   const emitter = new EventEmitter({})
   if (response.statusCode === 200) {
-    nextTick(()=>emitter.emit('start'))
-    response.pipe(split2(JSON.parse))
-      .on("data", event=>emitter.emit('event', event))
+    nextTick(() => emitter.emit('start'))
+    response.pipe(split2(/\r?\n+/,l => l.trim().length>0?JSON.parse(l):undefined,{}))
+      .on("data", event => emitter.emit('event', event))
       .on("error", (e) => emitter.emit('error', e))
       .on("end", () => emitter.emit('end'))
+    // setTimeout(()=>response.destroy(),20_000) // for testing being disconnected
     return emitter
   }
   else {
