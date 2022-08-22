@@ -2,8 +2,11 @@ import {get, RequestOptions } from "https"
 import split2 from "split2"
 import "dotenv/config"
 import { IncomingMessage } from "node:http"
-import {EventEmitter} from "events";
+import {EventEmitter, on} from "events";
 import { nextTick,stdout,env } from "process";
+import {CompanyProfileEvent} from "./CompanyProfileEventSchema.js";
+import {setTimeout} from "timers/promises";
+import { getRedisClient } from "../shared/dbClients.js";
 
 /**
  * Connect to a stream, parse the events JSON.
@@ -36,5 +39,47 @@ export async function listenToStream(streamPath: string = "companies", startFrom
   else {
     response.pipe(stdout)
     throw new Error('Could not listen on stream')
+  }
+}
+
+
+export async function *streamEventsContinuously(path: string) {
+  const streamTimepointKey = 'streams:timepoint:'+path
+  try {
+    while (true) {//  reconnect if(when) ended
+      const redis = await getRedisClient()
+      const ac = new AbortController()
+      const {signal} = ac
+
+      //pick up at left off timepoint (saved in redis)
+      const previousTimepoint = await redis.get(streamTimepointKey)
+      if (previousTimepoint) console.log("Picking up from previous time point:", previousTimepoint)
+      const eventEmitter = await listenToStream(path, previousTimepoint ? parseInt(previousTimepoint) : undefined)
+      eventEmitter.on('end', () => {
+        console.log("Event emitter ended", new Date())
+        ac.abort()
+      })
+      eventEmitter.on('start', () => console.log("Event emitter started", new Date()))
+      eventEmitter.on('error', (e) => console.log("Event emitter errored", new Date(), e))
+      let counter = 0, lastTimepoint: number | null = null
+      try {
+        for await(const events of on(eventEmitter, 'event', {signal})) {
+          for (const event of <CompanyProfileEvent[]>events) {
+            counter++
+            await redis.set(streamTimepointKey, event.event.timepoint)
+            lastTimepoint = event.event.timepoint
+            yield event
+          }
+        }
+      } catch (e) {
+        if (e.code !== 'ABORT_ERR') throw e
+      }
+      console.log("End of loop after", counter, 'events. Will restart in 60 seconds. Last timepoint:', lastTimepoint)
+      await setTimeout(60_000) // wait a minute before reconnecting
+      await redis.quit()
+    }
+  } catch (e) {
+    console.log("Exiting update script due to failure to connect to Streaming API.")
+    console.log(e)
   }
 }
