@@ -42,7 +42,7 @@ export class AppointmentType{
     return resignedRoles.has(this.appointmentTypeCode)
   }
   get current(){
-    return resignedRoles.has(this.appointmentTypeCode)
+    return currentRoles.has(this.appointmentTypeCode)
   }
   get errored(){
     return this.appointmentTypeCode == 99

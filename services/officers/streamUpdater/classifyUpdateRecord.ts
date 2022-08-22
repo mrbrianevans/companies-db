@@ -21,7 +21,7 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
 
   const mongo = await getMongoClient()
 
-  const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({company_number: record.company_number, officer_role: record.appointment_type.old.officer_role, personNumber: record.person_number.old})
+  const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({company_number: record.company_number, personNumber: record.person_number.old, officer_role: record.appointment_type.old.officer_role})
 
   await mongo.close()
 
@@ -31,6 +31,8 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
       // this is a new appointment
       // insert person appointment
       return UpdateTypes.NewAppointment
+    }else{
+      // console.log("Record not found, and new and old roles aren't current: ", record.person_number,JSON.stringify(record.appointment_type), record.company_number)
     }
 
   }else{
