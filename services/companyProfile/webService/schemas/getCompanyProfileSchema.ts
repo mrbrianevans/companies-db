@@ -117,7 +117,7 @@ export const GetCompanyProfileSchema = {
                 type: 'string'
               }
             },
-            required: ['next_due', 'next_made_up_to']
+            required: []
           },
           date_of_creation: {
             type: 'string'
@@ -370,9 +370,7 @@ export const GetCompanyProfileSchema = {
             },
             required: [
               'originating_registry',
-              'registration_number',
-              'is_a_credit_financial_institution',
-              'accounting_requirement'
+              'registration_number'
             ]
           },
           date_of_dissolution: {
@@ -402,10 +400,8 @@ export const GetCompanyProfileSchema = {
           }
         },
         required: [
-          'can_file',
           'company_name',
           'company_number',
-          'date_of_creation',
           'etag',
           'links',
           'registered_office_address',

@@ -2,7 +2,7 @@ import {baseUrl} from "./url";
 import {headers} from "./headers";
 import assert from "assert";
 import {setTimeout} from "timers/promises";
-import { Temporal } from 'temporal-polyfill'
+import { Temporal } from '@js-temporal/polyfill'
 import Ajv, {Schema} from "ajv";
 const ajv = new Ajv()
 ajv.addFormat('date', (date)=> {

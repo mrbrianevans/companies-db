@@ -30,7 +30,7 @@ for await(const event of streamEventsContinuously<PscEvent>('persons-with-signif
     'individual-beneficial-owner':'getIndividualBeneficialOwner',
   } as const
   if(event.resource_kind in collections){
-    const entity = addPscIdAndCompanyNumber(event)
+    const {etag, ...entity} = addPscIdAndCompanyNumber(event)
     const {company_number, psc_id} = entity
     let collectionName = collections[event.resource_kind]
     const result = await mongo.db('personsWithSignificantControl').collection(collectionName).replaceOne({

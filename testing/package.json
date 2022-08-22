@@ -3,22 +3,25 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/mocha/lib/cli/cli.js tests\\**\\companyProfile.spec.ts --reporter=spec",
+    "test": "node --experimental-specifier-resolution=node --loader ts-node/esm node_modules/mocha/lib/cli/cli.js tests\\personsWithSignificantControl.spec.ts --reporter=spec",
     "index": "node --loader ts-node/esm index.ts",
     "benchmark": "node --loader ts-node/esm benchmark.ts",
-    "getTestData": "node --loader ts-node/esm getTestData.ts"
+    "getTestData": "node --loader ts-node/esm getTestData.ts",
+    "build": "tsc --build",
+    "watch": "tsc --build --watch"
   },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.4.2",
     "ajv": "^8.0.0-beta.4",
     "autocannon": "^7.9.0",
     "dotenv": "^16.0.1",
     "mocha": "^10.0.0",
-    "temporal-polyfill": "^0.0.7",
     "ts-node": "^10.7.0"
   },
   "devDependencies": {
     "@types/autocannon": "^7.6.1",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^17.0.34"
+    "@types/node": "^17.0.34",
+    "typescript": "^4.7.4"
   }
 }

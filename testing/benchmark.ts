@@ -1,18 +1,23 @@
 import testUrls from './testUrls.json' assert {type: 'json'}
-import {headers} from "./headers.js";
+import {getHeaders, headers} from "./headers.js";
 import autocannon from "autocannon";
 import {setTimeout} from "timers/promises";
 
 const url1 = 'localhost:3000'
 const url2 = 'https://api.company-information.service.gov.uk'
-const urls = [url1, url2]
+const urls = [url1,url2] as const
 
-const requests = Object.values(testUrls).flat().map(path=>({path}))
+const keys: Record<typeof urls[number]|string, string> = {
+  "localhost:3000": process.env.LOCALRESTKEY,
+  "https://api.company-information.service.gov.uk": process.env.RESTAPIKEY
+}
+
+const requests = testUrls.getCorporateEntities.map(path=>({path}))
 // call each API 500 times
 
 for (const url of urls) {
   // await setTimeout(300_000)
-  const results = await autocannon({url, requests, headers, amount: 500})
+  const results = await autocannon({url, requests, headers:getHeaders(keys[url]), amount: 200})
   console.log('\nFor URL:', url)
   console.log(autocannon.printResult(results))
 }
