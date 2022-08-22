@@ -24,4 +24,9 @@ export interface OfficerStorage {
   occupation?: string ,
   nationality?: string,
   country_of_residence: string | undefined
+
+  // the last time this record was changed
+  changed_on?: string,
+  // the last time this record was updated
+  updated_on?:string
 }

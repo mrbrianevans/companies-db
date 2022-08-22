@@ -6,6 +6,7 @@ import {once} from "node:events";
 import {RecordType} from "../shared/recordParser/RecordTypes.js";
 import {CompanyStorage} from "../shared/storageTypes/Company.js";
 import {classifyUpdateRecord, UpdateTypes} from "./classifyUpdateRecord.js";
+import {pipeline} from "stream/promises";
 
 export async function loadUpdateFile(updateFile: Readable)
 {
@@ -14,7 +15,7 @@ export async function loadUpdateFile(updateFile: Readable)
   const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
 
   const companyInserter = new MongoInserter<CompanyStorage>(DB_NAME, COMPANY_COLLECTION, ['company_number'])
-  let counter = Object.keys(UpdateTypes)
+  let counter = {}
   const inserterStreams = new Writable({
     objectMode: true,
     async write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
@@ -31,8 +32,9 @@ export async function loadUpdateFile(updateFile: Readable)
           // if(updateType === UpdateTypes.Unclassified) console.log(chunk)
           if(updateType === UpdateTypes.Unclassified) {
             process.stdout.write('.')
-            counter[UpdateTypes[updateType]]++
           }
+          if(UpdateTypes[updateType] in counter)counter[UpdateTypes[updateType]]++
+          else counter[UpdateTypes[updateType]] = 0
           callback()
           break;
         default:
@@ -47,8 +49,12 @@ export async function loadUpdateFile(updateFile: Readable)
     }
   })
 
-  const insertStream = updateFile.pipe(split2(parseRecord)).pipe(inserterStreams)
-  await once(insertStream, 'finish')
+  const ac = new AbortController()
+  setTimeout(()=>ac.abort(), 60_000)
+  await pipeline(updateFile, split2(parseRecord), inserterStreams, {signal: ac.signal}).catch(e=> {
+    if(e.code !== 'ABORT_ERR') throw e
+  })
+
   console.log("Classified counts:", counter)
   console.timeEnd('Process update file')
 }

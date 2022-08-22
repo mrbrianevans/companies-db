@@ -168,6 +168,9 @@ export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
       forenames: v['New Forenames'].trim() || undefined,
       surname: v['New Surname'].trim(),
       honours: v['New Honours'].trim() || undefined
-    }
+    },
+    occupation: v["Occupation"],
+    nationality: v['New Nationality'],
+    country_of_residence: v['New Residential Country']
   }
 }

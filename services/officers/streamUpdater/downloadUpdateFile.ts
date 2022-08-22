@@ -27,7 +27,7 @@ export async function streamUpdateFile(date: {year: number, month: number, day: 
 
   if(cache && await fileExists(outputName)) {
     console.log("File already exists locally, skipping downloading. To prevent, set cache=false.")
-    return createReadStream(outputName)
+    return createReadStream(outputName, {autoClose: true})
   }
 
   const sftp = new SftpClient();
@@ -41,14 +41,18 @@ export async function streamUpdateFile(date: {year: number, month: number, day: 
 
   const dirName = `/free/prod198/${date.year}/${pad(date.month)}/${pad(date.day)}/`
   const dayExists = await sftp.exists(dirName)
-  if(!dayExists) throw new Error('Requested date does not exist on server. Try a different day.')
+  if(!dayExists) {
+    await sftp.end()
+    throw new Error('Requested date does not exist on server. Try a different day.')
+  }
   // const filename = `Prod198_${3244}.txt` // run number could be calculated by number of days
   const filename = await sftp.list(dirName).then(f=>f.length === 1 ? f[0].name : undefined)
   if(cache){
     console.time('Download update file over SFTP')
     await sftp.fastGet(dirName + filename, outputName)
     console.timeEnd('Download update file over SFTP')
-    return createReadStream(outputName)
+    await sftp.end()
+    return createReadStream(outputName, {autoClose: true})
   }else{
     const writeStream = new PassThrough()
     writeStream.on('end', ()=> {
