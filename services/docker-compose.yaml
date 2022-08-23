@@ -20,14 +20,17 @@
     "volumes":
       - "auth_db:/data"
   "auth-service":
+    "hostname": "auth-service"
     "build": "auth"
     "networks":
       - "companiesv2_auth"
       - "companiesv2_microservices"
+      - "companiesv2_metrics"
     "logging":
       "driver": "local"
     "environment":
       "AUTH_DB_URL": "auth-db"
+      "LOKI_URL": "http://loki:3100"
   "metrics":
     "build": "monitoring/prometheus"
     "logging":

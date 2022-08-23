@@ -26,8 +26,10 @@
     "environment":
       "MONGO_URL": "mongodb://db"
       "REDIS_URL": "redis://red:6379"
+      "LOKI_URL": "http://loki:3100"
     "networks":
       - "search"
+      - "companiesv2_metrics"
   "updater":
     "build":
       "dockerfile": "Updater.Dockerfile"
@@ -37,10 +39,12 @@
     "environment":
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://red:6379"
+      "LOKI_URL": "http://loki:3100"
     "env_file":
       - "../.api.env"
     "networks":
       - "search"
+      - "companiesv2_metrics"
   "web-service":
     "hostname": "search-web-service"
     "build":
@@ -52,11 +56,13 @@
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://red:6379"
       "AUTH_URL": "http://auth-service:3000"
+      "LOKI_URL": "http://loki:3100"
     "env_file":
       - "../.api.env"
     "networks":
       - "companiesv2_microservices"
       - "search"
+      - "companiesv2_metrics"
 "networks":
   "companiesv2_microservices":
     "external": true

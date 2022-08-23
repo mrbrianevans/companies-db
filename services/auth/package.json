@@ -12,7 +12,8 @@
   "dependencies": {
     "@fastify/redis": "^6.0.0",
     "fastify": "^4.4.0",
-    "ioredis": "^5.2.2"
+    "ioredis": "^5.2.2",
+    "pino-loki": "^2.0.3"
   },
   "devDependencies": {
     "@types/node": "^18.7.2",

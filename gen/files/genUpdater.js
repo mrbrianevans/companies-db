@@ -74,21 +74,16 @@ async function genUpdaterPackage(SERVICES_DIR, tag){
 async function genUpdaterDockerfile(SERVICES_DIR, tag){
     const content = `FROM node:18
 
-# tried with PNPM but causes too many issues
-
+RUN corepack enable && corepack prepare pnpm@7.9.4 --activate
+WORKDIR /streamUpdater
 COPY streamUpdater/package.json /streamUpdater/
 COPY shared/package.json /shared/
-
-RUN cd streamUpdater && npm install && cd ../shared && npm install
-
+RUN cd /streamUpdater && pnpm install && cd /shared && pnpm install
 COPY shared /shared
 COPY streamUpdater /streamUpdater
+RUN pnpm run build
 
-WORKDIR /streamUpdater
-
-RUN npm run build
-
-CMD ["npm", "run", "start"]
+CMD ["pnpm", "run", "start"]
 
 `
     await writeFile(resolve(SERVICES_DIR, tag, 'Updater.Dockerfile'), content)

@@ -16,3 +16,6 @@ export async function getMongoClient(){
   await mongo.connect()
   return mongo
 }
+
+// components should use this constant instead of hardcoding the db name
+export const mongoDbName = 'officerDisqualifications'

@@ -21,8 +21,9 @@ export async function genDockerCompose(SERVICES_DIR) {
                 volumes: [ 'auth_db:/data' ]
             },
             'auth-service': {
+                hostname: 'auth-service',
                 build: 'auth',
-                networks: [ 'companiesv2_auth', 'companiesv2_microservices' ],
+                networks: [ 'companiesv2_auth', 'companiesv2_microservices', 'companiesv2_metrics' ],
                 logging: { driver: 'local' },
                 environment: { AUTH_DB_URL: 'auth-db', LOKI_URL: 'http://loki:3100' }
             },
@@ -110,13 +111,15 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag) {
             },
             "loader": {
                 "build": {dockerfile:"Loader.Dockerfile"}, depends_on: ['db'], "volumes": ["downloads:/loadBulk/downloads"], "environment": {
-                    "MONGO_URL": "mongodb://db", "REDIS_URL": "redis://red:6379"
-                }, networks: [tag.name]
+                    "MONGO_URL": "mongodb://db", "REDIS_URL": "redis://red:6379",
+                    "LOKI_URL": "http://loki:3100"
+                }, networks: [tag.name, 'companiesv2_metrics']
             },
             updater: {
                 build: {dockerfile:"Updater.Dockerfile"}, depends_on: ['db', 'red'], "environment": {
-                    "MONGO_URL": "mongodb://db:27017", "REDIS_URL": "redis://red:6379"
-                }, "env_file": ["../.api.env"], networks: [tag.name]
+                    "MONGO_URL": "mongodb://db:27017", "REDIS_URL": "redis://red:6379",
+                    "LOKI_URL": "http://loki:3100"
+                }, "env_file": ["../.api.env"], networks: [tag.name, 'companiesv2_metrics']
             },
             "web-service": {
                 hostname: kebabCase(tag.name) + "-web-service",
@@ -125,10 +128,11 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag) {
                 "environment": {
                     "MONGO_URL": "mongodb://db:27017",
                     "REDIS_URL": "redis://red:6379",
-                    "AUTH_URL": "http://auth-service:3000"
+                    "AUTH_URL": "http://auth-service:3000",
+                    "LOKI_URL": "http://loki:3100"
                 },
                 "env_file": ["../.api.env"],
-                networks: ['companiesv2_microservices', tag.name]
+                networks: ['companiesv2_microservices', tag.name, 'companiesv2_metrics']
             }
         },
         networks: {

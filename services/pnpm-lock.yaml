@@ -57,12 +57,16 @@ importers:
   UKEstablishments/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -102,6 +106,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -109,6 +114,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -122,12 +128,14 @@ importers:
       fastify: ^4.4.0
       ioredis: ^5.2.2
       json-schema-to-ts: ^2.5.5
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       ioredis: 5.2.2
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -160,12 +168,16 @@ importers:
   charges/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -205,6 +217,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -212,6 +225,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -244,12 +258,16 @@ importers:
   companyProfile/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -291,6 +309,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -298,6 +317,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -330,12 +350,16 @@ importers:
   filingHistory/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -375,6 +399,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -382,6 +407,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -414,12 +440,16 @@ importers:
   insolvency/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -459,6 +489,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -466,6 +497,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -498,12 +530,16 @@ importers:
   officerDisqualifications/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -543,6 +579,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -550,6 +587,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -590,11 +628,13 @@ importers:
       capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
       capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -628,6 +668,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -635,6 +676,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -667,12 +709,16 @@ importers:
   personsWithSignificantControl/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -714,6 +760,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -721,6 +768,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -753,12 +801,16 @@ importers:
   registers/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -798,6 +850,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -805,6 +858,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -837,12 +891,16 @@ importers:
   search/shared:
     specifiers:
       '@types/node': ^18.7.2
+      capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.8.1
+      pino-loki: ^2.0.3
       redis: ^4.2.0
       typescript: ^4.7.4
     dependencies:
+      capital-case: 1.0.4
       mongodb: 4.8.1
+      pino-loki: 2.0.3
       redis: 4.2.0
     devDependencies:
       '@types/node': 18.7.2
@@ -882,6 +940,7 @@ importers:
       fastify: 4.4.0
       json-schema-to-ts: ^2.5.5
       pino: ^8.4.1
+      pino-loki: ^2.0.3
       pino-pretty: ^9.0.0
       typescript: ^4.7.4
     dependencies:
@@ -889,6 +948,7 @@ importers:
       '@fastify/redis': 6.0.0
       fastify: 4.4.0
       pino: 8.4.1
+      pino-loki: 2.0.3
     devDependencies:
       '@types/node': 18.7.2
       json-schema-to-ts: 2.5.5
@@ -1092,6 +1152,10 @@ packages:
       safer-buffer: 2.1.2
     dev: false
 
+  /asynckit/0.4.0:
+    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+    dev: false
+
   /atomic-sleep/1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
@@ -1104,6 +1168,15 @@ packages:
       fastq: 1.13.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /axios/0.27.2:
+    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+    dependencies:
+      follow-redirects: 1.15.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /balanced-match/1.0.2:
@@ -1201,6 +1274,13 @@ packages:
     resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
     dev: true
 
+  /combined-stream/1.0.8:
+    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
+    engines: {node: '>= 0.8'}
+    dependencies:
+      delayed-stream: 1.0.0
+    dev: false
+
   /command-line-args/5.2.1:
     resolution: {integrity: sha512-H4UfQhZyakIjC74I9d34fGYDwk3XpSr17QhEd0Q3I9Xq1CETHo4Hcuo87WyWHpAF1aSLjLRf5lD9ZGX2qStUvg==}
     engines: {node: '>=4.0.0'}
@@ -1224,6 +1304,11 @@ packages:
   /commander/4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
+    dev: false
+
+  /commander/9.4.0:
+    resolution: {integrity: sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==}
+    engines: {node: ^12.20.0 || >=14}
     dev: false
 
   /concat-map/0.0.1:
@@ -1276,6 +1361,11 @@ packages:
     engines: {node: '>=4.0.0'}
     dev: false
 
+  /delayed-stream/1.0.0:
+    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
+    engines: {node: '>=0.4.0'}
+    dev: false
+
   /denque/2.1.0:
     resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
     engines: {node: '>=0.10'}
@@ -1298,7 +1388,6 @@ packages:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
     dependencies:
       once: 1.4.0
-    dev: true
 
   /err-code/2.0.3:
     resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
@@ -1398,6 +1487,25 @@ packages:
     engines: {node: '>=4.0.0'}
     dependencies:
       array-back: 3.1.0
+    dev: false
+
+  /follow-redirects/1.15.1:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
+  /form-data/4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
     dev: false
 
   /forwarded/0.2.0:
@@ -1548,6 +1656,18 @@ packages:
     dev: false
     optional: true
 
+  /mime-db/1.52.0:
+    resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
+    engines: {node: '>= 0.6'}
+    dev: false
+
+  /mime-types/2.1.35:
+    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
+    engines: {node: '>= 0.6'}
+    dependencies:
+      mime-db: 1.52.0
+    dev: false
+
   /minimatch/3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
@@ -1627,6 +1747,18 @@ packages:
       readable-stream: 4.1.0
       split2: 4.1.0
 
+  /pino-loki/2.0.3:
+    resolution: {integrity: sha512-nZ9sMaw69TBNwIpGzwbuFXD9Hs/aoYtcYxH4P0y5GAqlhG+kFq+fwgpcd1bv4cuvzb7OlelfpSpANxE5OMtITg==}
+    hasBin: true
+    dependencies:
+      axios: 0.27.2
+      commander: 9.4.0
+      pino-abstract-transport: 1.0.0
+      pump: 3.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /pino-pretty/9.0.0:
     resolution: {integrity: sha512-WcojVUw8aJQz0in90xj7nQo5g14d9bLkBnE80P/Sk8JxNilbtyXp9mNjRcF07uOBEoNMrdkBniv8Tu1Lale7Kw==}
     hasBin: true
@@ -1693,7 +1825,6 @@ packages:
     dependencies:
       end-of-stream: 1.4.4
       once: 1.4.0
-    dev: true
 
   /punycode/2.1.1:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}

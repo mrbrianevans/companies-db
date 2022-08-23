@@ -1,7 +1,8 @@
-/** Get an environment variable, or throw if its not set */
 import {capitalCase} from "capital-case";
 import { stat } from "fs/promises";
 
+
+/** Get an environment variable, or throw if its not set */
 export function getEnv(name: string): string {
   const value = process.env[name]
   if (value === undefined)

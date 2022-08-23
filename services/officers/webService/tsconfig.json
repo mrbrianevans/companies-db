@@ -5,8 +5,7 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "strictNullChecks": true,
-    "composite": true,
-    "allowSyntheticDefaultImports": true
+    "composite": true
   },
   "exclude": [
     "node_modules"

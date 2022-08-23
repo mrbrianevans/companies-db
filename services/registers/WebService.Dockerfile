@@ -1,6 +1,6 @@
 FROM node:18
 
-RUN corepack enable && corepack prepare pnpm@7.4.0 --activate
+RUN corepack enable && corepack prepare pnpm@7.9.4 --activate
 WORKDIR /webService
 COPY webService/package.json /webService/
 COPY shared/package.json /shared/

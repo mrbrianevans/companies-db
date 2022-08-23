@@ -1,9 +1,13 @@
 import Fastify from 'fastify'
 import { getEnv } from '../shared/utils.js'
-import { mongoDbName} from "../shared/dbClients.js";
+import { pinoLokiOptions } from '../shared/lokiLogger.js'
+import { mongoDbName } from '../shared/dbClients.js'
 
 const fastify = Fastify({
-  logger: { level: 'trace', base: { service: 'companyProfile' } }
+  logger: {
+    level: 'trace',
+    transport: { target: 'pino-loki', options: pinoLokiOptions }
+  }
 })
 // @ts-ignore
 fastify.register(import('@fastify/redis'), { url: getEnv('REDIS_URL') })
