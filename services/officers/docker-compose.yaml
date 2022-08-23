@@ -38,10 +38,11 @@
       "MONGO_URL": "mongodb://db:27017"
       "REDIS_URL": "redis://red:6379"
     "env_file":
-      - "streamUpdater/.sftp.env"
+      - "../.api.env"
     "networks":
       - "officers"
   "web-service":
+    "hostname": "officers-web-service"
     "build":
       "dockerfile": "WebService.Dockerfile"
     "depends_on":
@@ -53,8 +54,6 @@
       "AUTH_URL": "http://auth-service:3000"
     "env_file":
       - "../.api.env"
-    "ports":
-      - "3000:3000"
     "networks":
       - "companiesv2_microservices"
       - "officers"

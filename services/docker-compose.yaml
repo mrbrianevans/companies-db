@@ -1,85 +1,5 @@
 "version": "3.7"
 "services":
-  "company-profile":
-    "build": "companyProfile/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "search":
-    "build": "search/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "officers":
-    "build": "officers/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "registers":
-    "build": "registers/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "charges":
-    "build": "charges/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "filing-history":
-    "build": "filingHistory/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "insolvency":
-    "build": "insolvency/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "officer-disqualifications":
-    "build": "officerDisqualifications/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "ukestablishments":
-    "build": "UKEstablishments/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
-  "persons-with-significant-control":
-    "build": "personsWithSignificantControl/webService"
-    "networks":
-      - "companiesv2_microservices"
-    "env_file":
-      - ".env"
-    "logging":
-      "driver": "local"
   "gateway":
     "image": "caddy"
     "volumes":
@@ -118,22 +38,6 @@
       - "9090:9090"
     "networks":
       - "companiesv2_metrics"
-  "shared-mongo":
-    "image": "mongo"
-    "logging":
-      "driver": "local"
-    "networks":
-      - "companiesv2_microservices"
-    "volumes":
-      - "shared_mongo:/data/db"
-  "shared-redis":
-    "image": "redis"
-    "logging":
-      "driver": "local"
-    "networks":
-      - "companiesv2_microservices"
-    "volumes":
-      - "/data"
 "networks":
   "companiesv2_microservices":
     "external": true

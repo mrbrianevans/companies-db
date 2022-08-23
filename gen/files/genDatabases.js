@@ -20,8 +20,8 @@ CMD ["--quiet", "--wiredTigerCacheSizeGB", "0.5"]
     const mongoSampleScript = `
 /* this script should be run automatically on the creation of a new database instance, but in the event
  * that it needs to be run again, either:
- *  - in a mongo shell run \`.load /docker-entrypoint-initdb.d/createCollections.js\`
- *  - in a bash shell run \`mongosh /docker-entrypoint-initdb.d/createCollections.js\`
+ *  - in a mongo shell run \`.load /docker-entrypoint-initdb.d/createIndexes.js\`
+ *  - in a bash shell run \`mongosh /docker-entrypoint-initdb.d/createIndexes.js\`
  */
 db.disableFreeMonitoring()
 db = db.getSiblingDB('${tag}')

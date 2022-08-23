@@ -27,8 +27,8 @@ export async function addCaddyFileEntry(SERVICES_DIR, path, tag){
                 header_regexp Authorization ^Basic\\s[a-zA-Z0-9]+={0,2}$
                 path_regexp ^${path.replace('{company_number}', '[A-Z\\d]{4,8}').replace(/\{[a-z_]+}/gi, '[a-zA-Z0-9_-]+').replace(/\//g, '\\/')}$
         }
-        reverse_proxy ${ruleName} ${kebabCase(tag)}:3000 {
-                header_down Service companies-${kebabCase(tag)}
+        reverse_proxy ${ruleName} ${kebabCase(tag)}-web-service:3000 {
+                header_down Service ${kebabCase(tag)}
         }
 `))
     await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), caddyfile)

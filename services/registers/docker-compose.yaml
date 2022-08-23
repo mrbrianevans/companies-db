@@ -42,6 +42,7 @@
     "networks":
       - "registers"
   "web-service":
+    "hostname": "registers-web-service"
     "build":
       "dockerfile": "WebService.Dockerfile"
     "depends_on":
@@ -53,8 +54,6 @@
       "AUTH_URL": "http://auth-service:3000"
     "env_file":
       - "../.api.env"
-    "ports":
-      - "3000:3000"
     "networks":
       - "companiesv2_microservices"
       - "registers"
