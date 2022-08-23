@@ -6,6 +6,7 @@ import type { FastifyRequest } from 'fastify'
 import { GetCompanyProfileSchema } from '../schemas/getCompanyProfileSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
+import {companyCollectionName} from '../../shared/CompanyStorage.js'
 
 export interface Context {
   redis: FastifyRedis
@@ -13,7 +14,7 @@ export interface Context {
   req: FastifyRequest
 }
 // the main database collection for the getCompanyProfile service
-const colName = 'getCompanyProfile'
+const colName = companyCollectionName
 
 /** Must be called before any data is inserted */
 export async function initGetCompanyProfileCollection(

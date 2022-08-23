@@ -3,16 +3,16 @@ import {once} from "node:events";
 import {Readable} from "node:stream";
 
 // package imports
-import {MongoClient} from "mongodb";
 
 //project imports
-import {getEnv} from "./utils.js";
 import {Worker} from "worker_threads";
+import { companyCollectionName } from "../shared/CompanyStorage.js";
+import {getMongoClient, mongoDbName} from "../shared/dbClients.js";
 
 const concurrency = 7
 
-const DB_NAME = 'companyProfile'
-const COLL_NAME = 'getCompanyProfile'
+const DB_NAME = mongoDbName
+const COLL_NAME = companyCollectionName
 
 const today = new Date()
 today.setUTCDate(1)
@@ -43,8 +43,7 @@ async function loadAll(total = 7, limit?:number){
  * Creates collection with compression and an index on company number (if not exists).
  */
 async function createIndex(){
-  const mongo = new MongoClient(getEnv('MONGO_URL'))
-  await mongo.connect()
+  const mongo = await getMongoClient()
   const exists = await mongo.db(DB_NAME)
     .listCollections({ name: COLL_NAME })
     .toArray()

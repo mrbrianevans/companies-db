@@ -7,7 +7,7 @@
 db.disableFreeMonitoring()
 db = db.getSiblingDB('companyProfile')
 const collectionsToCreate = {
-    // collections go here like this collectionName: { indexColumn: 1 }
+    getCompanyProfile: {company_number: 1}
 }
 
 const existingCollections = db.getCollectionNames()
