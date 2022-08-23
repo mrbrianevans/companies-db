@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+  - name: Loki
+    type: loki
+    url: $LOKI_URL #env var
+  - name: Metrics
+    type: prometheus
+    url: $METRICS_URL #env var

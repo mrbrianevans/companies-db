@@ -29,15 +29,36 @@
     "environment":
       "AUTH_DB_URL": "auth-db"
   "metrics":
-    "image": "prom/prometheus"
+    "build": "monitoring/prometheus"
     "logging":
       "driver": "local"
-    "volumes":
-      - "./prometheus.yaml:/etc/prometheus/prometheus.yml"
     "ports":
       - "9090:9090"
     "networks":
       - "companiesv2_metrics"
+    "environment":
+      "CADDY_METRICS_URL": "http://gateway:2022"
+  "loki":
+    "build": "monitoring/loki"
+    "logging":
+      "driver": "local"
+    "networks":
+      - "companiesv2_metrics"
+  "grafana":
+    "build": "monitoring/grafana"
+    "ports":
+      - "9091:3000"
+    "logging":
+      "driver": "local"
+    "networks":
+      - "companiesv2_metrics"
+    "volumes":
+      - "grafana_data:/var/lib/grafana"
+      - "/var/log/grafana"
+      - "./monitoring/grafana/dashboards:/etc/grafana/dashboards"
+    "environment":
+      "LOKI_URL": "http://loki:3100"
+      "METRICS_URL": "http://metrics:9090"
 "networks":
   "companiesv2_microservices":
     "external": true
@@ -50,3 +71,5 @@
     "external": true
   "auth_db":
     "external": true
+  "grafana_data": null
+  "loki_data": null

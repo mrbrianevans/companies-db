@@ -3,7 +3,7 @@ import {writeFile} from "node:fs/promises";
 import {resolve} from "path";
 import {kebabCase} from "../utils.js";
 
-export async function genDockerCompose(SERVICES_DIR, tags) {
+export async function genDockerCompose(SERVICES_DIR) {
     await writeFile(resolve(SERVICES_DIR, 'docker-compose.yaml'), YAML.stringify({
         version: '3.7',
         services: {
@@ -24,14 +24,16 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
                 build: 'auth',
                 networks: [ 'companiesv2_auth', 'companiesv2_microservices' ],
                 logging: { driver: 'local' },
-                environment: { AUTH_DB_URL: 'auth-db' }
+                environment: { AUTH_DB_URL: 'auth-db', LOKI_URL: 'http://loki:3100' }
             },
             metrics: {
-                image: 'prom/prometheus',
+                build: 'monitoring/prometheus',
                 logging: { driver: 'local' },
-                volumes: [ './prometheus.yaml:/etc/prometheus/prometheus.yml' ],
                 ports: [ '9090:9090' ],
-                networks: [ 'companiesv2_metrics' ]
+                networks: [ 'companiesv2_metrics' ],
+                environment: {
+                    CADDY_METRICS_URL: 'http://gateway:2022'
+                }
             },
             // 'shared-mongo': {
             //     image: 'mongo',
@@ -44,14 +46,32 @@ export async function genDockerCompose(SERVICES_DIR, tags) {
             //     logging: { driver: 'local' },
             //     networks: [ 'companiesv2_microservices' ],
             //     volumes: [ '/data' ]
-            // }
+            // },
+            loki: {
+                build: 'monitoring/loki',
+                logging: { driver: 'local' },
+                networks: [ 'companiesv2_metrics' ]
+            },
+            grafana: {
+                build: 'monitoring/grafana',
+                ports: ["9091:3000"],
+                logging: { driver: 'local' },
+                networks: [ 'companiesv2_metrics' ],
+                volumes: ['grafana_data:/var/lib/grafana', '/var/log/grafana', './monitoring/grafana/dashboards:/etc/grafana/dashboards'],
+                environment: {
+                    LOKI_URL: 'http://loki:3100',
+                    METRICS_URL: 'http://metrics:9090'
+                }
+            }
         },
         networks: {
             companiesv2_microservices: {external: true},
             companiesv2_auth: {external: true},
             companiesv2_metrics: {external: true}
         },
-        volumes: {shared_mongo: {external: true}, auth_db: {external: true}}
+        volumes: {shared_mongo: {external: true}, auth_db: {external: true},
+            grafana_data: null,
+            loki_data: null}
     }, {defaultStringType: 'QUOTE_DOUBLE'}))
 }
 
