@@ -4,17 +4,23 @@ import {camelCase, kebabCase} from "../utils.js";
 
 
 export async function newCaddyFile(SERVICES_DIR){
-    await writeFile(resolve(SERVICES_DIR, 'Caddyfile'), `
+    await writeFile(resolve(SERVICES_DIR, 'gateway','Caddyfile'), `
 :2022 {
         metrics /metrics
 }
 :80 {
-        log # logs requests
+        log {
+            output stdout
+            format console
+        }
+        
         @notauthed not header_regexp Authorization ^Basic\\s[a-zA-Z0-9]+={0,2}$
+        header @notauthed Content-Type application/json
         respond @notauthed 401 {
                 body "{\\"statusCode\\": 401, \\"error\\": \\"Not authorised\\", \\"message\\": \\"Basic authentication token not included in request header.\\"}"
                 close
         }
+        
         # proxy to microservices
 }
 `.trim())

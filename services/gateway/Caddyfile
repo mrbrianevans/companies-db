@@ -2,12 +2,18 @@
         metrics /metrics
 }
 :80 {
-        log # logs requests
+        log {
+            output stdout
+            format console
+        }
+
         @notauthed not header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+        header @notauthed Content-Type application/json
         respond @notauthed 401 {
                 body "{\"statusCode\": 401, \"error\": \"Not authorised\", \"message\": \"Basic authentication token not included in request header.\"}"
                 close
         }
+
         # proxy to microservices
         @company-company_number-persons-with-significant-controlsuper-secure-super_secure_id {
                 header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$

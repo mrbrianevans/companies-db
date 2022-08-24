@@ -8,8 +8,8 @@ export async function genDockerCompose(SERVICES_DIR) {
         version: '3.7',
         services: {
             gateway: {
-                image: 'caddy',
-                volumes: [ './Caddyfile:/etc/caddy/Caddyfile' ],
+                build: 'gateway',
+                volumes: [ './gateway/Caddyfile:/etc/caddy/Caddyfile' ],
                 ports: [ '3000:80' ],
                 networks: [ 'companiesv2_microservices', 'companiesv2_metrics' ],
                 logging: { driver: 'local' }
