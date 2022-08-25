@@ -29,10 +29,10 @@ export async function loadUpdateFile(updateFile: Readable)
           delete chunk.recordType
           const updateType = await classifyUpdateRecord(chunk)
           // console.log(UpdateTypes[updateType])
-          // if(updateType === UpdateTypes.Unclassified) console.log(chunk)
-          if(updateType === UpdateTypes.Unclassified) {
-            process.stdout.write('.')
-          }
+          if(updateType === UpdateTypes.Unclassified) console.log(chunk)
+          // if(updateType === UpdateTypes.Unclassified) {
+          //   process.stdout.write('.')
+          // }
           if(UpdateTypes[updateType] in counter)counter[UpdateTypes[updateType]]++
           else counter[UpdateTypes[updateType]] = 0
           callback()

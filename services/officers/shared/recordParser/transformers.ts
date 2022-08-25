@@ -125,7 +125,7 @@ function trailerTransformer(parsedRecord: ParsedTrailerRecord) {
 }
 export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
   const v = parsedRecord['Variable Data (variable length field)']
-  return {
+  const transformedRecord = {
     company_number: parsedRecord['Company Number'],
     appointment_date_origin: appointmentDateOrigins[parsedRecord['App Date Origin']],
     resignation_date_origin:  appointmentDateOrigins[parsedRecord['Res Date Origin']],
@@ -169,8 +169,10 @@ export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
       surname: v['New Surname'].trim(),
       honours: v['New Honours'].trim() || undefined
     },
-    occupation: v["Occupation"],
-    nationality: v['New Nationality'],
-    country_of_residence: v['New Residential Country']
+    occupation: v["Occupation"] || undefined,
+    nationality: v['New Nationality'] || undefined,
+    country_of_residence: v['New Residential Country'] || undefined
   }
+  removeNulls(transformedRecord)
+  return transformedRecord
 }
