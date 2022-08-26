@@ -29,15 +29,18 @@ export async function loadUpdateFile(updateFile: Readable)
           delete chunk.recordType
           const updateType = await classifyUpdateRecord(chunk)
           // console.log(UpdateTypes[updateType])
-          if(updateType === UpdateTypes.Unclassified) console.log(chunk)
-          // if(updateType === UpdateTypes.Unclassified) {
-          //   process.stdout.write('.')
-          // }
+          // if(updateType === UpdateTypes.Unclassified)
+          if(updateType === UpdateTypes.Unclassified && chunk.appointment_type.old.current) {
+            // process.stdout.write('.')
+            const {person_number: {old: person_number}, company_number} = chunk
+            // console.log(JSON.stringify({person_number, company_number}),chunk)
+          }
           if(UpdateTypes[updateType] in counter)counter[UpdateTypes[updateType]]++
           else counter[UpdateTypes[updateType]] = 0
           callback()
           break;
         default:
+//todo: verify that the trailer record count matches the number of records processed
           console.log(chunk)
           callback()
           break;
@@ -50,8 +53,10 @@ export async function loadUpdateFile(updateFile: Readable)
   })
 
   const ac = new AbortController()
-  setTimeout(()=>ac.abort(), 60_000)
+  // setTimeout(()=>ac.abort(), 60_000)
   await pipeline(updateFile, split2(parseRecord), inserterStreams, {signal: ac.signal}).catch(e=> {
+    inserterStreams.end()
+    updateFile.destroy()
     if(e.code !== 'ABORT_ERR') throw e
   })
 

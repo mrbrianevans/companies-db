@@ -9,6 +9,7 @@ import {once} from "node:events";
 import {RecordType} from "../shared/recordParser/RecordTypes.js";
 import { CompanyStorage } from "../shared/storageTypes/Company.js";
 import { OfficerStorage } from "../shared/storageTypes/Officer.js";
+import {pipeline} from "stream/promises";
 
 const filepath = process.argv[2] // path to data file (required)
 if(!filepath) throw new Error('Filepath not specified. Please provide argv.2 as the path to data file.')
@@ -25,8 +26,8 @@ const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION
 
 const fileStream = createReadStream(filepath)
 
-const companyInserter = new MongoInserter<CompanyStorage>(DB_NAME, COMPANY_COLLECTION, ['company_number'])
-const personInserter = new MongoInserter<OfficerStorage>(DB_NAME, OFFICER_COLLECTION, ['company_number','person_number','officer_role','appointed_on'])
+const companyInserter = new MongoInserter<CompanyStorage>(DB_NAME, 'ni_com', ['company_number'],3, 'insert')
+const personInserter = new MongoInserter<OfficerStorage>(DB_NAME, 'ni', ['company_number','person_number','officer_role','appointed_on'], 3, 'insert')
 const inserterStreams = new Writable({
   objectMode: true,
   write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
@@ -46,14 +47,16 @@ const inserterStreams = new Writable({
     }
   },
   async final(callback: (error?: (Error | null)) => void) {
+//todo: verify that the trailer record count matches the number of records inserted
+    // not sure what it is, but there is an error causing the last few thousand records to not be inserted.
+    // this needs to be looked into because its causing a serious issue with the update files.
     await new Promise<void>(res=>companyInserter.end(()=>res()))
     await new Promise<void>(res=>personInserter.end(()=>res()))
     callback()
   }
 })
 
-const insertStream = fileStream.pipe(split2(parseRecord)).pipe(inserterStreams)
-await once(insertStream, 'finish')
+await pipeline(fileStream, split2(parseRecord), inserterStreams)
 
 await new Promise(resolve=>fileStream.close(resolve))
 
