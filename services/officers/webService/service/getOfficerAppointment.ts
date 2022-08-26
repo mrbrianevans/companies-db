@@ -57,7 +57,7 @@ export async function getOfficerAppointment(
   const collection =
     context.mongo.db.collection<OfficerStorage>('officers')
   const startFind = performance.now()
-  let res = await collection.findOne({ company_number, personNumber: parseInt(appointment_id) })
+  let res = await collection.findOne({ company_number, person_number: parseInt(appointment_id) })
   const findDurationMs = performance.now() - startFind
   context.req.log.trace(
     { findDurationMs, found: Boolean(res) },

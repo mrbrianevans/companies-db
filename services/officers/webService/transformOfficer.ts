@@ -88,8 +88,8 @@ function formatNameListOfficerAppointments(nameParts: OfficerStorage['name_eleme
 export function transformGetOfficerAppointment(officer: OfficerStorage): GetOfficerAppointmentResponse {
   const transformedOfficer = transformOfficer(officer)
   const links = {
-    self: `/company/${officer.company_number}/appointments/${officer.personNumber}`,
-    officer: {appointments: `/officers/${officer.personNumber}/appointments`}
+    self: `/company/${officer.company_number}/appointments/${officer.person_number}`,
+    officer: {appointments: `/officers/${officer.person_number}/appointments`}
   }
   const name = formatNameListCompanyOfficers(officer.name_elements)
   return {links, name, ...transformedOfficer}
@@ -107,8 +107,8 @@ export function transformListCompanyOfficers(officer: OfficerStorage): ListCompa
   const {name_elements, ...transformedOfficer} = transformOfficer(officer)
 
   const links = {
-    self: `/company/${officer.company_number}/appointments/${officer.personNumber}`,
-    officer: {appointments: `/officers/${officer.personNumber}/appointments`}
+    self: `/company/${officer.company_number}/appointments/${officer.person_number}`,
+    officer: {appointments: `/officers/${officer.person_number}/appointments`}
   }
   const name = formatNameListCompanyOfficers(officer.name_elements)
   return {links, name, ...transformedOfficer}

@@ -21,7 +21,7 @@ async function loadIndex(){
     .collection<OfficerStorage>('officers')
     .find({},{projection: {name:1,personNumber:1}})
     .skip(1_000_000)
-    .map(o=>({id:o.personNumber,value:o.name_elements})).stream()
+    .map(o=>({id:o.person_number,value:o.name_elements})).stream()
   await pipeline(officers, inserter)
 
   await mongo.close()

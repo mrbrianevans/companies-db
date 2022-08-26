@@ -21,7 +21,7 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
 
   const mongo = await getMongoClient()
 
-  const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({company_number: record.company_number, personNumber: record.person_number.old, officer_role: record.appointment_type.old.officer_role})
+  const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({company_number: record.company_number, person_number: record.person_number.old, officer_role: record.appointment_type.old.officer_role})
 
   await mongo.close()
 

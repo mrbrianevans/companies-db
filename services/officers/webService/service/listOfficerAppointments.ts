@@ -64,8 +64,8 @@ export async function listOfficerAppointments(
   const companiesCollection =
     context.mongo.db.collection<CompanyStorage>('companies')
   const startFind = performance.now()
-  const total_results = await officersCollection.countDocuments({ personNumber: parseInt(officer_id) })
-  const appointments = await officersCollection.find({ personNumber: parseInt(officer_id) }).skip(start_index).limit(items_per_page).toArray()
+  const total_results = await officersCollection.countDocuments({ person_number: parseInt(officer_id) })
+  const appointments = await officersCollection.find({ person_number: parseInt(officer_id) }).skip(start_index).limit(items_per_page).toArray()
   const companies = await companiesCollection.find({ company_number: {$in: appointments.map(a=>a.company_number)} }).skip(start_index).limit(items_per_page).toArray()
   const findDurationMs = performance.now() - startFind
   context.req.log.trace(

@@ -7,9 +7,24 @@
 db.disableFreeMonitoring()
 db = db.getSiblingDB('officers')
 const collectionsToCreate = {
-    officers: {company_number: 1, personNumber: 1}, // also needs an additional index on only personNumber
+    officers: {company_number: 1, person_number: 1, officer_role: 1, appointed_on:1}, // also needs an additional index on only person_number
     companies: {company_number: 1}
 }
+
+/*
+
+A note about the database structure:
+
+    officer appointment records are uniquely identified by 3 things: person number, company number and appointment type (officer role)
+    [maybe also appointment date, as the same person may be appointed multiple times after resigning]
+
+    Companies House database is structured in such as way that a relational database as follows makes sense:
+     - persons (person details such as date of birth or nationality) {PK person_number_prefix}
+     - sub-persons (variations of a persons details such as name, occupation or address, but still relating to the same human) {PK person_number, FK persons}
+     - companies (company details such as company name and status) {PK company_number}
+     - appointments (sub-person, company, appointment type, appointment date, resignation date) {PK company_number,person_number,officer_role,appointed_on, FK sub-persons,companies}
+
+ */
 
 const existingCollections = db.getCollectionNames()
 

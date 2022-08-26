@@ -82,12 +82,14 @@ function stringifyDate(date: { day: number|string, month: number|string, year: n
 
 function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
   const v = parsedRecord['Variable Data (Name/ Address/ Occupation Nationality/Usual Residential Country )']
+  const appointmentType = new AppointmentType(parsedRecord['Appointment Type'])
   const transformedRecord: OfficerStorage = {
-    personNumber: parsedRecord['Person Number'],
-    personNumberPrefix: parsedRecord['Person Number'].toString().padStart(12, '0').slice(0, 8),
+    person_number: parsedRecord['Person Number'],
+    person_number_prefix: parsedRecord['Person Number'].toString().padStart(12, '0').slice(0, 8),
     company_number: parsedRecord['Company Number'],
-    appointmentDateOrigin: appointmentDateOrigins[parsedRecord['App Date Origin']],
-    officer_role: appointmentTypes[parsedRecord['Appointment Type']],
+    appointment_date_origin: appointmentDateOrigins[parsedRecord['App Date Origin']],
+    officer_role: appointmentType.officer_role,
+    resigned: appointmentType.resigned,
     is_corporate_officer: parsedRecord['Corporate indicator'] === 'Y',
     appointed_on: <string>stringifyDate(parsedRecord['Appointment Date']),
     resigned_on: stringifyDate(parsedRecord['Resignation Date']),

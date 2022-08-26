@@ -12,11 +12,12 @@ import { CompanyStorage } from '../../shared/storageTypes/Company.js';
 test('transform officer from bulk database to response format', async function(t){
     await t.test('list officer appointments', async function(){
         const inputOfficer: OfficerStorage = {
-                personNumber: 168056490001,
-                personNumberPrefix: '16805649',
+                person_number: 168056490001,
+                person_number_prefix: '16805649',
                 company_number: 'OC370085',
-                appointmentDateOrigin: 'appointment-document',
+                appointment_date_origin: 'appointment-document',
                 officer_role: 'llp-member',
+                resigned: false,
                 is_corporate_officer: false,
                 appointed_on: '2012-04-02',
                 // date_of_birth: { month: 4, year: 1971 },
@@ -79,11 +80,12 @@ test('transform officer from bulk database to response format', async function(t
     await t.test('list company officers item', async function(){
         const inputOfficer: OfficerStorage = {
             // _id: "62f3a48f0b7769c34b2a28ff",
-            personNumber: 65020360001,
-            personNumberPrefix: '06502036',
+            person_number: 65020360001,
+            person_number_prefix: '06502036',
             company_number: '09870307',
-            appointmentDateOrigin: 'incorporation-document',
+            appointment_date_origin: 'incorporation-document',
             officer_role: 'director',
+            resigned: false,
             is_corporate_officer: false,
             appointed_on: '2015-11-12',
             date_of_birth: { month: 12, year: 1944 },
