@@ -8,6 +8,8 @@
       "driver": "local"
     "networks":
       - "officers"
+    ports:
+      - "27017:27017"
   "red":
     "build": "databases/redis"
     "volumes":
