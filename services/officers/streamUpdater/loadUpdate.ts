@@ -14,7 +14,7 @@ export async function loadUpdateFile(updateFile: Readable)
 
   const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
 
-  const companyInserter = new MongoInserter<CompanyStorage>(DB_NAME, COMPANY_COLLECTION, ['company_number'])
+  // const companyInserter = new MongoInserter<CompanyStorage>(DB_NAME, COMPANY_COLLECTION, ['company_number'])
   let counter = {}
   const inserterStreams = new Writable({
     objectMode: true,
@@ -47,7 +47,7 @@ export async function loadUpdateFile(updateFile: Readable)
       }
     },
     async final(callback: (error?: (Error | null)) => void) {
-      await new Promise<void>(res => companyInserter.end(() => res()))
+      // await new Promise<void>(res => companyInserter.end(() => res()))
       callback()
     }
   })

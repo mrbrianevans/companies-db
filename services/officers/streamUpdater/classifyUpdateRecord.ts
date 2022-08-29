@@ -88,7 +88,6 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
     if(oldRecord !== null) console.log('Could not find record for "old" person number, but could find one for new. Probably swapped around')
     else if(record.appointment_type.old.resigned) console.log("Change in details for resigned officer, could not find because not in database")
     else if(record.appointed_on === record.resigned_on) console.log("Appointed and resigned on same day")
-    else if(record.company_number.startsWith('R')) console.log("Failed to load early northern irish records beginning with R")
     else {
       const {person_number: {old: person_number}, company_number} = record
       console.log(JSON.stringify({person_number, company_number}),record)
