@@ -84,7 +84,7 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
     })
 
     await mongo.close()
-
+//todo: if its one of these known categories, reclassify it.
     if(oldRecord !== null) console.log('Could not find record for "old" person number, but could find one for new. Probably swapped around')
     else if(record.appointment_type.old.resigned) console.log("Change in details for resigned officer, could not find because not in database")
     else if(record.appointed_on === record.resigned_on) console.log("Appointed and resigned on same day")
