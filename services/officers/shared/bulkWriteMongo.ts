@@ -1,5 +1,7 @@
 import {Readable} from "node:stream";
 import {getMongoClient} from "./dbClients.js";
+import {RecordType} from "./recordParser/RecordTypes.js";
+import {MongoBulkWriteError} from "mongodb";
 
 /*
 
@@ -9,13 +11,15 @@ it ensures that every record is processed before the promise is fulfilled.
 Using BulkWrites is more efficient than normal inserts. Using .insert() is more efficient than findOneAndReplace({upsert:true}).
 Just make sure there is a unique index to enforce no-duplicates.
 
+If the script gets stuck, try restarting the database to clear locked operations.
+
  */
 
 export const writeMongo = (recordTypeField: string, recordTypes:{collection:string,value:any}[], dbName:string, processUnrecognisedRecords:(item:any)=>void = console.log, BulkOpSize = 1998) =>
   async function(source: Readable){
-  function throwIfErr(e){
+  function throwIfErr(e: MongoBulkWriteError){
     if(e.code !== 11000) throw e
-    return e.result.result
+    return e.result
   }
   const mongo = await getMongoClient()
   const db = mongo.db(dbName)

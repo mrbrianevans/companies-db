@@ -27,11 +27,12 @@ async function applyUpdatesSince(date: {year: number, month: number, day: number
   const allFiles = await readdir('downloads')
   const filesSince = allFiles.filter(f=>Temporal.PlainDate.from(f.slice(7,17)).since(date).sign === 1)
   for(const file of filesSince){
-    const str = createReadStream(resolve('downloads', file), )
-    await loadUpdateFile(str)
-    str.close()
+    const str = createReadStream(resolve('downloads', file))
+    const start = performance.now()
+    const count = await loadUpdateFile(str)
+    console.log((performance.now()-start).toFixed(0)+'ms','to load', count, 'records from', file)
   }
 }
 
-await applyUpdatesSince({year: 2022, month: 8, day: 18}, false)
+await applyUpdatesSince({year: 2021, month: 4, day: 23}, false)
 

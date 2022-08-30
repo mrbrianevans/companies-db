@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import { getMongoClient } from "../shared/dbClients.js";
 import type {personUpdateTransformer} from "../shared/recordParser/transformers.js";
-import {BulkResult} from "mongodb";
+import {BulkResult, MongoBulkWriteError} from "mongodb";
 
 
 /**
@@ -41,7 +41,7 @@ export function getUpdateReplacement(record: ReturnType<typeof personUpdateTrans
 
 export async function bulkWriteUpdates(updates: AsyncIterable<any>){
   const BulkOpSize = 1998
-  function throwIfErr(e){
+  function throwIfErr(e: MongoBulkWriteError){
     if(e.code !== 11000) {
       throw e
     }

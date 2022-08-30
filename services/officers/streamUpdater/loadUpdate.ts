@@ -21,7 +21,8 @@ export async function loadUpdateFile(updateFile: Readable)
     bulkWriteUpdates
   ).catch(e=>console.log(e))
 
-  console.log("Classified counts:", res)
+  console.log("Update file. Inserted", res?.stats.upserted, 'Updated', res?.stats.modified)
   console.timeEnd('Process update file')
+  return res?.counter ?? 0
 }
 

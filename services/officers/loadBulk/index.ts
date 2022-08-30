@@ -36,7 +36,7 @@ async function loadAllFiles(directory: string, limit ?:number){
   console.log("Loaded", totalCount, 'total records across files')
 }
 // takes about 20 minutes to load all 9 files like this, 10 minutes with new script
-await loadAllFiles('N:\\CompaniesHouse\\officersdata\\Prod195_3243')
+await loadAllFiles('N:\\CompaniesHouse\\officersdata\\Prod195_2898')
 
 /** Prints output from worker thread */
 function printOutput(label: string, filename: string, message: string|number|boolean){
