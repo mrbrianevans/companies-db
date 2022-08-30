@@ -112,6 +112,7 @@ export function getRecordEvent(updateType: UpdateTypes, record: ReturnType<typeo
           name_elements: record.name_elements,
           date_of_birth: record.date_of_birth,
           appointment_date_origin: record.appointment_date_origin,
+          resignation_date_origin: record.resignation_date_origin,
           resigned_on: record.resigned_on,
           is_corporate_officer: record.is_corporate_officer,
           changed_on: record.changed_on,
