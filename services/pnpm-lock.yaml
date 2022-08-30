@@ -647,6 +647,7 @@ importers:
     specifiers:
       '@js-temporal/polyfill': ^0.4.2
       '@types/node': ^18.0.0
+      '@types/split2': ^3.2.1
       '@types/ssh2-sftp-client': ^7.1.0
       dotenv: ^16.0.1
       split2: ^4.1.0
@@ -654,6 +655,7 @@ importers:
       typescript: ^4.7.4
     dependencies:
       '@js-temporal/polyfill': 0.4.2
+      '@types/split2': 3.2.1
       dotenv: 16.0.1
       split2: 4.1.0
       ssh2-sftp-client: 9.0.3
@@ -1068,7 +1070,6 @@ packages:
     resolution: {integrity: sha512-7uz3yU+LooBq4yNOzlZD9PU9/1Eu0rTD1MjQ6apOVEoHsPrMUrFw7W8XrvWtesm2vK67SBK9AyJcOXtMpl9bgQ==}
     dependencies:
       '@types/node': 18.7.2
-    dev: true
 
   /@types/ssh2-sftp-client/7.1.0:
     resolution: {integrity: sha512-YEM8EepQo7GtzcgY6Q8r9exk3gY6D687IvwRerijIQFaPWFtPYQdzordHhGH/WP+G7kIxNKgnj5pupJq3gLqwQ==}

@@ -39,11 +39,13 @@ export function getUpdateReplacement(record: ReturnType<typeof personUpdateTrans
   return {filter, replacement}
 }
 
-export async function bulkWriteUpdates(updates: Readable){
+export async function bulkWriteUpdates(updates: AsyncIterable<any>){
   const BulkOpSize = 1998
   function throwIfErr(e){
-    if(e.code !== 11000) throw e
-    return e.result.result
+    if(e.code !== 11000) {
+      throw e
+    }
+    return e.result
   }
   const mongo = await getMongoClient()
   const db = mongo.db('officers')
@@ -55,14 +57,14 @@ export async function bulkWriteUpdates(updates: Readable){
     stats.modified += res.nModified
     stats.upserted += res.nUpserted
   }
-  for await(const item of updates){
+  for await(const item of Readable.from(updates)){
       buffer.push(getUpdateReplacement(item))
       if(buffer.length === BulkOpSize){
         const items = buffer.splice(0, buffer.length)
         const res = await db.collection('officers')
           .bulkWrite(items.map(comp => ({replaceOne: {...comp, upsert: true}})),{ ordered: true }).catch(throwIfErr)
         counter += items.length
-        addStats(res)
+        addStats(res.result)
       }
   }
   {
@@ -70,7 +72,7 @@ export async function bulkWriteUpdates(updates: Readable){
     const res = await db.collection('officers')
       .bulkWrite(items.map(comp => ({replaceOne: {...comp, upsert: true}})),{ ordered: true }).catch(throwIfErr)
     counter += items.length
-    addStats(res.toJSON())
+    addStats(res.result)
   }
 
   await mongo.close()

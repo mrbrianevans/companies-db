@@ -14,16 +14,12 @@ export async function loadUpdateFile(updateFile: Readable)
 {
   console.time('Process update file')
 
-  const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
-
-  const ac = new AbortController()
-  // setTimeout(()=>ac.abort(), 60_000)
-  const res = await pipeline(updateFile, split2(parseRecord),
+  const res = await pipeline(
+    updateFile,
+    split2(parseRecord),
     async function*(source){for await(const item of source) if((<any>item).recordType === RecordType.PersonUpdate){yield item}},
-    bulkWriteUpdates, {signal: ac.signal}).catch(e=> {
-    updateFile.destroy()
-    if(e.code !== 'ABORT_ERR') throw e
-  })
+    bulkWriteUpdates
+  ).catch(e=>console.log(e))
 
   console.log("Classified counts:", res)
   console.timeEnd('Process update file')
