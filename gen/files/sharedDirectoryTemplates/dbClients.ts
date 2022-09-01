@@ -12,7 +12,7 @@ export async function getRedisClient(): Promise<RedisClientType<Pick<RedisDefaul
 // gets a connected mongo client. remember to call mongo.close()
 export async function getMongoClient(){
   const {MongoClient} = await import('mongodb')
-  const mongo = new MongoClient(getEnv('MONGO_URL'))
+  const mongo = new MongoClient(getEnv('MONGO_URL'), {ignoreUndefined: true})
   await mongo.connect()
   return mongo
 }

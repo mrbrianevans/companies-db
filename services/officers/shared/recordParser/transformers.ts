@@ -121,10 +121,11 @@ function personTransformer(parsedRecord: ParsedPersonRecord): OfficerStorage {
 function headerTransformer(parsedRecord: ParsedHeaderRecord) {
   return parsedRecord
 }
-
+export type HeaderRecord = ReturnType<typeof headerTransformer>
 function trailerTransformer(parsedRecord: ParsedTrailerRecord) {
   return parsedRecord
 }
+export type TrailerRecord = ReturnType<typeof trailerTransformer>
 export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
   const v = parsedRecord['Variable Data (variable length field)']
   const transformedRecord = {
@@ -178,3 +179,4 @@ export function personUpdateTransformer(parsedRecord: ParsedPersonUpdateRecord){
   removeNulls(transformedRecord)
   return transformedRecord
 }
+export type PersonUpdate = ReturnType<typeof personUpdateTransformer>

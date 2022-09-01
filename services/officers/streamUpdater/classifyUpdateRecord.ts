@@ -2,7 +2,7 @@ import {personUpdateTransformer} from "../shared/recordParser/transformers.js";
 import {getMongoClient} from '../shared/dbClients.js'
 import {OfficerStorage} from '../shared/storageTypes/Officer.js'
 
-const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
+const DB_NAME = 'officers_3232', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
 
 export enum UpdateTypes {
   NewAppointment,
@@ -19,14 +19,16 @@ export enum UpdateTypes {
 
 export async function classifyUpdateRecord(record: ReturnType<typeof personUpdateTransformer>): Promise<UpdateTypes> {
 
-  const mongo = await getMongoClient()
+  if(!('person_number' in record)) {
+    console.log('Cannot classify record: ', record)
+  }
 
+  const mongo = await getMongoClient()
   const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({
     company_number: record.company_number,
     person_number: record.person_number.old,
     officer_role: record.appointment_type.old.officer_role
-  })
-
+  }).catch(e=>console.log(e))
   await mongo.close()
 
   /*
@@ -65,13 +67,11 @@ export async function classifyUpdateRecord(record: ReturnType<typeof personUpdat
 
   {
     const mongo = await getMongoClient()
-
     const oldRecord = await mongo.db(DB_NAME).collection<OfficerStorage>(OFFICER_COLLECTION).findOne({
       company_number: record.company_number,
-      person_number: record.person_number.new,
+      person_number: record.person_number.new, // new person number instead of old
       officer_role: record.appointment_type.old.officer_role
     })
-
     await mongo.close()
     //there are about a hundred records each day that make it this far without being classified.
     // its usually due to an error in the update file or missing data in the database.

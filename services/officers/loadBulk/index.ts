@@ -28,15 +28,15 @@ async function loadAllFiles(directory: string, limit ?:number){
     w.on('error', err => printOutput('Error', filename, err.message))
     // trying to prefix all worker output with the filename being processed.
     w.stdout.on('data', (d:Buffer)=>printOutput('',filename, d.toString('utf8')))
-    const [{counter,inserted}] = await once(w, 'message') // worker only messages at end of process
-    printOutput('Msg', filename, JSON.stringify({counter, inserted}) )
+    const [{counter,stats}] = await once(w, 'message') // worker only messages at end of process
+    printOutput('Msg', filename, JSON.stringify({counter, stats}) )
     totalCount += counter
   }, {concurrency}).toArray()
   console.timeEnd(`Load ${limit??files.length} files`)
   console.log("Loaded", totalCount, 'total records across files')
 }
 // takes about 20 minutes to load all 9 files like this, 10 minutes with new script
-await loadAllFiles('N:\\CompaniesHouse\\officersdata\\Prod195_2898')
+await loadAllFiles('N:\\CompaniesHouse\\officersdata\\Prod216_3232')
 
 /** Prints output from worker thread */
 function printOutput(label: string, filename: string, message: string|number|boolean){

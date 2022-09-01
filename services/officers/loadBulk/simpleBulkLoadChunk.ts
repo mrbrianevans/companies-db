@@ -19,7 +19,7 @@ const insertStream = writeMongo('recordType', [
   {collection: COMPANY_COLLECTION, value: RecordType.Company},
   {collection: OFFICER_COLLECTION, value: RecordType.Person}], DB_NAME, processUnrecognised)
 let expectedCount: number|null = null
-const {counter,inserted} = await pipeline(fileStream, parseStream, insertStream)
+const {counter,stats} = await pipeline(fileStream, parseStream, insertStream)
 
 await new Promise(resolve=>fileStream.close(resolve))
 
@@ -27,7 +27,7 @@ console.timeEnd('Process file')
 console.log('Trailer', 'Expected:',expectedCount, 'Actual count:',counter)
 assert.equal(expectedCount, counter, 'Did not process the expected record count from trailer.')
 
-parentPort?.postMessage({counter,inserted})
+parentPort?.postMessage({counter,stats})
 
 function processUnrecognised(item){
   if(item.recordType === RecordType.Header) console.log('Header', item['Run Number'], item['Production Date'])
