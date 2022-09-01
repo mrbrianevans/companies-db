@@ -1,3 +1,5 @@
 **/node_modules
 loadBulk/downloads
 streamUpdater/downloads
+# **/*.js # not sure if this would also prevent database init scripts for mongo from loading. Only want these to be ignored from TypeScript projects
+**/*.*.map

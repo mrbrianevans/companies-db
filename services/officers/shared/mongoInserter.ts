@@ -1,10 +1,11 @@
 import { Writable } from 'stream'
-import { MongoClient } from 'mongodb'
+import { MongoClient, Document } from 'mongodb'
 import { average, getEnv } from './utils.js'
+import {getMongoClient} from "./dbClients.js";
 /**
  * Writable stream to save data to MongoDB. Uses bulk operations to be faster than individual writes. Can do about 5,000 ops/sec on my computer.
  */
-export class MongoInserter<ChunkType = any> extends Writable {
+export class MongoInserter<ChunkType extends Document = any> extends Writable {
   private mongo: MongoClient
   collectionName: string
   dbName: string
@@ -45,10 +46,7 @@ export class MongoInserter<ChunkType = any> extends Writable {
   }
   async _construct(callback: (error?: Error | null) => void) {
     try {
-      this.mongo = new MongoClient(getEnv('MONGO_URL'), {
-        connectTimeoutMS: 5000
-      })
-      await this.mongo.connect()
+      this.mongo = await getMongoClient()
       callback()
     } catch (e) {
       callback(e)

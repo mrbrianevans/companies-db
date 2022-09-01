@@ -1,0 +1,6 @@
+packages:
+  - './loadBulk'
+  - './streamUpdater'
+  - './webService'
+  - './shared'
+  - './search'

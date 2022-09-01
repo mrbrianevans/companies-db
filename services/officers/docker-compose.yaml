@@ -32,9 +32,34 @@
     "networks":
       - "officers"
       - "companiesv2_metrics"
-  "updater":
+  "updater-worker":
     "build":
       "dockerfile": "Updater.Dockerfile"
+    command: node job/worker.js
+    "depends_on":
+      - "db"
+      - "red"
+    "environment":
+      "MONGO_URL": "mongodb://db:27017"
+      "REDIS_URL": "redis://red:6379"
+      "LOKI_URL": "http://loki:3100"
+      SFTP_KEY_FILENAME: "/.ssh/key"
+    volumes:
+      - source: $HOST_SFTP_KEY_LOCATION
+        type: bind
+        target: /.ssh/key
+      - /home/node/.pnpm-store
+      - "downloads:/officers/streamUpdater/downloads"
+    "env_file":
+      - "../.api.env"
+      - "./.sftp.env"
+    "networks":
+      - "officers"
+      - "companiesv2_metrics"
+  "updater-scheduler":
+    "build":
+      "dockerfile": "Updater.Dockerfile"
+    command: node job/scheduler.js
     "depends_on":
       - "db"
       - "red"
@@ -44,6 +69,8 @@
       "LOKI_URL": "http://loki:3100"
     "env_file":
       - "../.api.env"
+    volumes:
+      - /home/node/.pnpm-store
     "networks":
       - "officers"
       - "companiesv2_metrics"
