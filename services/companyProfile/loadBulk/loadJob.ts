@@ -3,6 +3,7 @@ import {once} from "node:events";
 import {Readable} from "node:stream";
 
 // package imports
+import {Temporal} from '@js-temporal/polyfill'
 
 //project imports
 import {Worker} from "worker_threads";
@@ -10,51 +11,26 @@ import { companyCollectionName } from "../shared/CompanyStorage.js";
 import {getMongoClient, mongoDbName} from "../shared/dbClients.js";
 
 const concurrency = 7
-
 const DB_NAME = mongoDbName
 const COLL_NAME = companyCollectionName
-
-const today = new Date()
-today.setUTCDate(1)
-const date = today.toISOString().split('T')[0]
-
-
-async function loadAll(total = 7, limit?:number){
-  console.time(`Load ${limit??total} files`)
-
+const date = Temporal.Now.plainDateISO().with({day: 1}).toString()
+const workers = new Set<Worker>()
+async function loadAll(total = 7){
+  console.time(`Load ${total} files`)
   const segments = Array.from({length:total},(v,i)=>i+1)
-  // @ts-ignore
-  await Readable.from(segments).take(limit??total).map(async (index)=>{
-
+  await Readable.from(segments).map(async (index)=>{
+    const startTime = performance.now()
     const w = new Worker('./loadChunk.js', {workerData: {DB_NAME,COLL_NAME,index, total, date}})
+    workers.add(w)
     const [output] = await once(w, 'message') // worker only messages at end of process
-
+    workers.delete(w)
+    const {counter, stats} = output
+    console.log('W'+index,'Loaded', counter, 'records in', ((performance.now()-startTime)/1000).toFixed(1), 'seconds')
+    return counter
   }, {concurrency}).toArray()
-  console.timeEnd(`Load ${limit??total} files`)
-  // tried a few values for concurrency:
-  // - concurrency=8 avg 856 per second
-  // - concurrency=2 avg 2642 per second
-  // - concurrency=1 avg 5446 per second
-  // - concurrency=7 avg 8100 per second
-  // not sure what the bottle neck is? maybe network?
+  console.timeEnd(`Load ${total} files`)
 }
 
-/**
- * Creates collection with compression and an index on company number (if not exists).
- */
-async function createIndex(){
-  const mongo = await getMongoClient()
-  const exists = await mongo.db(DB_NAME)
-    .listCollections({ name: COLL_NAME })
-    .toArray()
-    .then((a) => a.length)
-  if (!exists) {
-    throw new Error("Cannot bulk load because collection does not exist in database. Recreate database in Docker.")
-  }
-  await mongo.close()
-}
-
-await createIndex()
 await loadAll(7)
 
 // this can load a file of 4,957,745 companies in 17m28s (averages 5,000 per second on my machine)
@@ -63,3 +39,15 @@ await loadAll(7)
 
 // UPDATE (after using Worker threads): this can load all 5,115,200 companies in about 4 minutes
 // 7 concurrent workers, each doing 8,000+ per second
+
+process.on('SIGINT', shutdown)
+process.on('SIGTERM', shutdown)
+async function shutdown(){
+  console.info('Graceful shutdown commenced', new Date().toISOString());
+  // ideally, this would post a message to each worker informing them of the shutdown, and they terminate MongoClients.
+  for(const worker of workers){
+    console.log('Terminating worker in thread',worker.threadId)
+    await worker.terminate()
+  }
+  process.exit(0)
+}

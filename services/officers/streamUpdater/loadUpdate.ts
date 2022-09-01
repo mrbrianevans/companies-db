@@ -16,7 +16,7 @@ export async function loadUpdateFile(updateFile: Readable)
     bulkWriteUpdates
   ).catch(e=>console.log(e))
 
-  console.log("Update file. Inserted", res?.stats.upserted, 'Updated', res?.stats.modified)
+  console.log("Update file. Result Stats", res?.stats)
   console.timeEnd('Process update file')
   return res?.counter ?? 0
 }
