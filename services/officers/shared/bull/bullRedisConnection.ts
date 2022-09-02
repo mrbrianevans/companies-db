@@ -1,4 +1,4 @@
-import { getEnv } from "../../shared/utils.js"
+import { getEnv } from "../utils.js"
 
 
 // only import this file if you need the redis connection.

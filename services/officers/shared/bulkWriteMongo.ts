@@ -59,7 +59,7 @@ export const writeMongo = (recordTypeField: string, recordTypes:{collection:stri
     return {counter, stats}
   }
 
-export const writeMongoCustom = (recordTypeField: string, recordTypes:{collection:string,value:any, mapper: (val: any)=>AnyBulkWriteOperation}[], dbName:string, processUnrecognisedRecords:(item:any)=>void = console.log, {BulkOpSize = 1998, ordered = false}={}) =>
+export const writeMongoCustom = <CustomReturnType = any>(recordTypeField: string, recordTypes:{collection:string,value:any, mapper: (val: any)=>AnyBulkWriteOperation}[], dbName:string, processUnrecognisedRecords:(item:any)=>CustomReturnType|Promise<CustomReturnType|void>|void = console.log, {BulkOpSize = 1998, ordered = false}={}) =>
   async function(source: Readable){
     function throwIfErr(e: MongoBulkWriteError){
       if(e.code !== 11000) throw e
@@ -69,7 +69,7 @@ export const writeMongoCustom = (recordTypeField: string, recordTypes:{collectio
     const db = mongo.db(dbName)
     const buffers = Object.fromEntries(recordTypes.map(r=>[r.collection, <any[]>[]]))
     let counter = 0, stats = Object.fromEntries(recordTypes.map(r=>[r.collection, {matched: 0, inserted: 0, modified: 0, upserted: 0}]))
-
+    const customReturnValues: CustomReturnType[] = []
     function addStats(collection,res: BulkResult){
       stats[collection].matched += res.nMatched
       stats[collection].inserted += res.nInserted
@@ -78,7 +78,10 @@ export const writeMongoCustom = (recordTypeField: string, recordTypes:{collectio
     }
     for await(const item of source){
       const recordType = recordTypes.find(r=>r.value === item[recordTypeField])
-      if(!recordType) processUnrecognisedRecords(item)
+      if(!recordType) {
+        const value = await processUnrecognisedRecords(item)
+        if(value) customReturnValues.push(value)
+      }
       else {
         delete item[recordTypeField]
         buffers[recordType.collection].push(item)
@@ -100,5 +103,5 @@ export const writeMongoCustom = (recordTypeField: string, recordTypes:{collectio
     }
 
     await mongo.close()
-    return {counter, stats}
+    return {counter, stats, customReturnValues}
   }

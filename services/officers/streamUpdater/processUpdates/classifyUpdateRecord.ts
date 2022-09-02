@@ -1,8 +1,8 @@
-import {personUpdateTransformer} from "../shared/recordParser/transformers.js";
-import {getMongoClient} from '../shared/dbClients.js'
-import {OfficerStorage} from '../shared/storageTypes/Officer.js'
+import {personUpdateTransformer} from "../../shared/recordParser/transformers.js";
+import {getMongoClient} from '../../shared/dbClients.js'
+import {OfficerStorage} from '../../shared/storageTypes/Officer.js'
 
-const DB_NAME = 'officers_3232', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
+const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION = 'officers';
 
 export enum UpdateTypes {
   NewAppointment,

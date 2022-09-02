@@ -1,10 +1,9 @@
-import {getMongoClient} from "../shared/dbClients.js";
-import type {PersonUpdate} from "../shared/recordParser/transformers.js";
-import type {AnyBulkWriteOperation, BulkResult, MongoBulkWriteError} from "mongodb";
-import type {OfficerUpdateFileRecordWithRecordType} from '../shared/recordParser/FileRecordTypes.js'
-import {CompanyStorage} from "../shared/storageTypes/Company.js";
-import {RecordType} from "../shared/recordParser/RecordTypes.js";
-import {writeMongoCustom} from "../shared/bulkWriteMongo.js";
+import type {PersonUpdate} from "../../shared/recordParser/transformers.js";
+import type {AnyBulkWriteOperation} from "mongodb";
+import type {OfficerUpdateFileRecordWithRecordType} from '../../shared/recordParser/FileRecordTypes.js'
+import {CompanyStorage} from "../../shared/storageTypes/Company.js";
+import {RecordType} from "../../shared/recordParser/RecordTypes.js";
+import {writeMongoCustom} from "../../shared/bulkWriteMongo.js";
 
 /**
  * Get a filter and replacement value for the officers collection based on an update file. Used for bulk writes.
@@ -53,7 +52,7 @@ export function getPersonUpdateReplacement(record: PersonUpdate): AnyBulkWriteOp
     }
   }
 }
-function getCompanyReplacement(record: CompanyStorage){
+export function getCompanyReplacement(record: CompanyStorage){
   const filter = {
     company_number: record.company_number
   }
@@ -64,8 +63,3 @@ function getCompanyReplacement(record: CompanyStorage){
     }
   }
 }
-
-export const bulkWriteUpdates = writeMongoCustom('recordType', [
-  {value: RecordType.Company, collection: 'companies', mapper: getCompanyReplacement},
-  {value: RecordType.PersonUpdate, collection: 'officers', mapper: getPersonUpdateReplacement}
-], 'officers')

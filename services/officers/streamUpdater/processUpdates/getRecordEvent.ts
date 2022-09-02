@@ -1,6 +1,6 @@
 
-import type { personUpdateTransformer } from "../shared/recordParser/transformers.js";
-import { OfficerStorage } from "../shared/storageTypes/Officer.js";
+import type { personUpdateTransformer } from "../../shared/recordParser/transformers.js";
+import { OfficerStorage } from "../../shared/storageTypes/Officer.js";
 import {UpdateTypes} from "./classifyUpdateRecord.js";
 
 interface UpdateEventInterface {

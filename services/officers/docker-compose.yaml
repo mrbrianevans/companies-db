@@ -23,8 +23,9 @@
       "dockerfile": "Loader.Dockerfile"
     "depends_on":
       - "db"
+      - "red"
     "volumes":
-      - "downloads:/loadBulk/downloads"
+      - "$OFFICERS_BULK_LOCATION:/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
       "REDIS_URL": "redis://red:6379"

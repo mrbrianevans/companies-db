@@ -10,8 +10,8 @@ Schedule a daily job to:
 
 
 import { Queue, QueueScheduler } from 'bullmq';
-import {queueName} from "./queueName.js";
-import {bullRedisConnection} from "./bullRedisConnection.js";
+import {queueName} from "../../shared/bull/queueName.js";
+import {bullRedisConnection} from "../../shared/bull/bullRedisConnection.js";
 
 
 const queueScheduler = new QueueScheduler(queueName, {connection: bullRedisConnection, autorun: true})
@@ -21,6 +21,9 @@ const queue = new Queue(queueName,{connection: bullRedisConnection})
 await queue.add('daily-update', {}, {
   repeat: {pattern: '0 8 * * *'} // 8AM every day
 })
+
+const jobs = await queue.getRepeatableJobs()
+console.log('Repeatable jobs scheduled: ', jobs.map(j=>j.name + ' - ' + j.pattern))
 
 queueScheduler.on('failed', (jobId: string, failedReason: Error, prev: string)=>{
   console.log("Job failed: ", jobId, failedReason.message, prev)

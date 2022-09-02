@@ -69,12 +69,13 @@ export async function streamUpdateFile(date: {year: number, month: number, day: 
 
 
 /** Download all the update files in a date range from the SFTP server */
-export async function downloadAllInRange(startDate:{year: number, month: number, day: number}, endDate:{year: number, month: number, day: number}=Temporal.Now.plainDateISO('UTC')){
+export async function downloadAllInRange(startDate:{year: number, month: number, day: number}, endDate:{year: number, month: number, day: number}=Temporal.Now.plainDateISO('UTC'), signal?: AbortSignal){
   const firstDay = Temporal.PlainDate.from(startDate)
   const daysDifference = firstDay.until(endDate).total('days')
 
   const sftp = await getSftpClient()
   for (let i = 0; i < daysDifference; i++) {
+    if(signal?.aborted) break
     const date = firstDay.add({days:i})
     if(date.dayOfWeek === 1 || date.dayOfWeek === 7) continue
     const outputName = `downloads/update-${date.year}-${pad(date.month)}-${pad(date.day)}.dat`

@@ -2,10 +2,10 @@ import {createReadStream} from "fs";
 import {resolve} from "path";
 import {pipeline} from "stream/promises";
 import split2 from "split2";
-import {parseRecord} from "../shared/recordParser/parseRecord.js";
+import {parseRecord} from "../../shared/recordParser/parseRecord.js";
 import {classifyUpdateRecord, UpdateTypes} from "./classifyUpdateRecord.js";
-import {OfficerUpdateFileRecordWithRecordType} from "../shared/recordParser/FileRecordTypes.js";
-import {RecordType} from "../shared/recordParser/RecordTypes.js";
+import {OfficerUpdateFileRecordWithRecordType} from "../../shared/recordParser/FileRecordTypes.js";
+import {RecordType} from "../../shared/recordParser/RecordTypes.js";
 
 /*
 This takes ridiculously long to run. About 6 hours to process 20,000 records for some reason. No idea what takes so long.

@@ -1,36 +1,27 @@
-import {queueName} from "./queueName.js";
+import {queueName} from "../../shared/bull/queueName.js";
 import { Worker, Job } from 'bullmq';
-import {Temporal} from "@js-temporal/polyfill";
-import { streamUpdateFile } from "../downloadUpdateFile.js";
-import { loadUpdateFile } from "../loadUpdate.js";
-import { getRedisClient } from "../../shared/dbClients.js";
-import { getEnv } from "../../shared/utils.js";
+import {applyUpdatesSince} from "../loadUpdate.js";
+import {getProductionDate} from "../../shared/lock/productionDate.js";
+import {bullRedisConnection} from "../../shared/bull/bullRedisConnection.js";
 
-const redisUrl = new URL(getEnv('REDIS_URL'))
+const ac = new AbortController()
+const {signal} = ac
+async function processJob(job: Job){
+  console.log(new Date(),'Update worker running', job.name, job.id)
+  const lastProductionDate = await getProductionDate()
+  const {totalCount, numUpdateFiles, untilDate} = await applyUpdatesSince(lastProductionDate, {ensureDownloaded: true, signal})
+  console.log( new Date(), `Applied ${numUpdateFiles} update files, a total of ${totalCount} updates, since ${lastProductionDate.toString()}, until ${untilDate.toString()}`)
+  await job.log(`Applied ${numUpdateFiles} update files, a total of ${totalCount} updates, since ${lastProductionDate.toString()}`)
+  return {totalCount, numUpdateFiles, lastProductionDate:lastProductionDate.toString()}
+}
 
-const worker = new Worker(queueName, async (job: Job) => {
-  console.log('Worker running', job.name)
-  const today = Temporal.Now.plainDateISO('UTC')
-  const {year,month,day} = today
-  const updateFile = await streamUpdateFile({year,month,day}, true)
-  const count = await loadUpdateFile(updateFile)
+const worker = new Worker(queueName, processJob,{connection: bullRedisConnection}) // starts a worker listening for jobs
 
-  return count
-},
-  {connection: {host: redisUrl.hostname, port: parseInt(redisUrl.port, 10) || undefined }}
-)
-
-// quit on ctrl-c when running docker in terminal
-process.on('SIGINT', shutdown);
-
-// quit properly on docker stop
-process.on('SIGTERM', shutdown)
-
-async function shutdown(){
-  console.info('Graceful shutdown commenced', new Date().toISOString());
-  if(worker.isRunning()){
-    console.log("Worker process forcefully stopped while worker was processing")
-  }
-  await worker.close(true)
+process.on('SIGINT', shutdown) // quit on ctrl-c when running docker in terminal
+process.on('SIGTERM', shutdown)// quit properly on docker stop
+async function shutdown(sig: string){
+  console.info('Graceful shutdown commenced', new Date().toISOString(), sig);
+  ac.abort() // this signals to the worker to finish the current file and then quit.
+  await worker.close(false)
   process.exit(0)
 }

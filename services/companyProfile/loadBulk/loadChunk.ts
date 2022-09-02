@@ -20,7 +20,7 @@ function transform(row){
 
 const bulkFile = await getBulkFile(index, total, date)
 const parseStream: Transform = Papa.parse(Papa.NODE_STREAM_INPUT, {header: true, fastMode: false, transformHeader: h=>h.trim(), dynamicTyping: h=>h!=='CompanyNumber', transform: val=>val===''?undefined:val})
-const inserter = mongoBulkWriter(null, [{value: null, collection: COLL_NAME, mapper: val => ({insertOne: {document:transform(val)}})}], DB_NAME)
+const inserter = mongoBulkWriter(null, [{value: null, collection: COLL_NAME, mapper: val => ({insertOne: {document:transform(val)}})}], DB_NAME, {BulkOpSize: 5994})
 
 const {counter, stats} = await pipeline(bulkFile, parseStream, inserter)
 
