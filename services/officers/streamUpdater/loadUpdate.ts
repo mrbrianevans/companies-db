@@ -87,3 +87,7 @@ interface ApplyUpdatesSinceOpts{
    */
   signal?: AbortSignal
 }
+//todo:
+// instead of the current arrangement of applyUpdatesSince of downloading the right files and then just
+// applying all of them after the start date, it would be better to have a function called applyNextUpdate() which checks
+// the most recent date in Redis, and downloads the file for the next consecutive update and loads it, until there are no more.

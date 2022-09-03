@@ -19,7 +19,7 @@ const queueScheduler = new QueueScheduler(queueName, {connection: bullRedisConne
 const queue = new Queue(queueName,{connection: bullRedisConnection})
 
 await queue.add('daily-update', {}, {
-  repeat: {pattern: '0 8 * * *'} // 8AM every day
+  repeat: {pattern: '0 8 * * *', tz: 'Europe/London'} // 8AM every day
 })
 
 const jobs = await queue.getRepeatableJobs()

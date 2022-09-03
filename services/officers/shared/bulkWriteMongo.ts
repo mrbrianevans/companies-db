@@ -68,13 +68,14 @@ export const writeMongoCustom = <CustomReturnType = any>(recordTypeField: string
     const mongo = await getMongoClient()
     const db = mongo.db(dbName)
     const buffers = Object.fromEntries(recordTypes.map(r=>[r.collection, <any[]>[]]))
-    let counter = 0, stats = Object.fromEntries(recordTypes.map(r=>[r.collection, {matched: 0, inserted: 0, modified: 0, upserted: 0}]))
+    let counter = 0, stats = Object.fromEntries(recordTypes.map(r=>[r.collection, {matched: 0, inserted: 0, modified: 0, upserted: 0, deleted: 0}]))
     const customReturnValues: CustomReturnType[] = []
     function addStats(collection,res: BulkResult){
       stats[collection].matched += res.nMatched
       stats[collection].inserted += res.nInserted
       stats[collection].modified += res.nModified
       stats[collection].upserted += res.nUpserted
+      stats[collection].deleted += res.nRemoved
     }
     for await(const item of source){
       const recordType = recordTypes.find(r=>r.value === item[recordTypeField])
