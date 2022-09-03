@@ -14,6 +14,7 @@ import {genDatabases} from "./files/genDatabases.js";
 import {genUpdater} from "./files/genUpdater.js";
 import {generateWebServicePath, genWebService} from "./files/genWebService.js";
 import {genSharedDirectory} from "./files/genSharedDirectory.js";
+import {genTagDirectory} from "./files/tagDirectory/genTagDirectory.mjs";
 
 // read apispec.{yaml|json}
 // for each tag, create a directory containing: package.json, tsconfig.json, index.ts, service dir, and controllers dir
@@ -37,6 +38,7 @@ async function createTagDirectories(tags) {
     await genServiceMonolith(SERVICES_DIR, tags)
     for (const tag of tags) {
         await genWebService(SERVICES_DIR, tag)
+        await genTagDirectory(SERVICES_DIR, tag)
         if(tag.generate === false) continue
         await mkdir(resolve(SERVICES_DIR, tag.name), {recursive: true})
         await genSystemTest(SYS_TEST_DIR, tag.name)

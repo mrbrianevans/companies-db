@@ -4,50 +4,39 @@ importers:
 
   loadBulk:
     specifiers:
-      '@types/node': ^18.6.3
+      '@types/node': ^18.7.14
       '@types/split2': ^3.2.1
-      bullmq: ^1.90.0
+      bullmq: ^1.90.1
       command-line-args: ^5.2.1
       command-line-usage: ^6.1.3
-      mongodb: 4.8.1
+      mongodb: 4.9.1
       split2: ^4.1.0
-      typescript: ^4.7.4
+      typescript: ^4.8.2
     dependencies:
-      bullmq: 1.90.0
+      bullmq: 1.90.1
       command-line-args: 5.2.1
       command-line-usage: 6.1.3
-      mongodb: 4.8.1
+      mongodb: 4.9.1
       split2: 4.1.0
     devDependencies:
       '@types/node': 18.7.14
       '@types/split2': 3.2.1
       typescript: 4.8.2
 
-  search:
-    specifiers:
-      '@types/node': ^18.7.2
-      redis: ^4.2.0
-      typescript: ^4.7.4
-    dependencies:
-      redis: 4.3.0
-    devDependencies:
-      '@types/node': 18.7.14
-      typescript: 4.8.2
-
   shared:
     specifiers:
       '@js-temporal/polyfill': ^0.4.2
-      '@types/node': ^18.7.2
+      '@types/node': ^18.7.14
       capital-case: ^1.0.4
       json-schema-to-ts: ^2.5.5
-      mongodb: 4.8.1
+      mongodb: 4.9.1
       pino-loki: ^2.0.3
-      redis: ^4.2.0
-      typescript: ^4.7.4
+      redis: ^4.3.0
+      typescript: ^4.8.2
     dependencies:
       '@js-temporal/polyfill': 0.4.2
       capital-case: 1.0.4
-      mongodb: 4.8.1
+      mongodb: 4.9.1
       pino-loki: 2.0.3
       redis: 4.3.0
     devDependencies:
@@ -58,21 +47,21 @@ importers:
   streamUpdater:
     specifiers:
       '@js-temporal/polyfill': ^0.4.2
-      '@types/node': ^18.0.0
+      '@types/node': ^18.7.14
       '@types/split2': ^3.2.1
       '@types/ssh2-sftp-client': ^7.1.0
-      bullmq: ^1.90.0
-      dotenv: ^16.0.1
-      mongodb: 4.8.1
+      bullmq: ^1.90.1
+      dotenv: ^16.0.2
+      mongodb: 4.9.1
       split2: ^4.1.0
       ssh2-sftp-client: ^9.0.3
-      typescript: ^4.7.4
+      typescript: ^4.8.2
     dependencies:
       '@js-temporal/polyfill': 0.4.2
       '@types/split2': 3.2.1
-      bullmq: 1.90.0
+      bullmq: 1.90.1
       dotenv: 16.0.2
-      mongodb: 4.8.1
+      mongodb: 4.9.1
       split2: 4.1.0
       ssh2-sftp-client: 9.0.3
     devDependencies:
@@ -84,17 +73,17 @@ importers:
     specifiers:
       '@fastify/mongodb': ^6.0.1
       '@fastify/redis': ^6.0.0
-      '@types/node': ^18.7.2
-      fastify: 4.4.0
+      '@types/node': ^18.7.14
+      fastify: ^4.5.3
       json-schema-to-ts: ^2.5.5
-      pino: ^8.4.1
+      pino: ^8.4.2
       pino-loki: ^2.0.3
-      pino-pretty: ^9.0.0
-      typescript: ^4.7.4
+      pino-pretty: ^9.1.0
+      typescript: ^4.8.2
     dependencies:
       '@fastify/mongodb': 6.0.1
       '@fastify/redis': 6.0.0
-      fastify: 4.4.0
+      fastify: 4.5.3
       pino: 8.4.2
       pino-loki: 2.0.3
     devDependencies:
@@ -411,8 +400,8 @@ packages:
     dev: false
     optional: true
 
-  /bullmq/1.90.0:
-    resolution: {integrity: sha512-kKsMkWyrtcAgqkVclw7YSOTCzaqv0WyGfufStk4GFCWXq9qgfZV8INYIkX4pfPkEA7H/k2Va+8ABTvg0X7DmWA==}
+  /bullmq/1.90.1:
+    resolution: {integrity: sha512-JY8mNzfnl+lfzFFzLJa6if+4YFvCMuJZDtQ8gvkcedoet+fDPEETF0iZ2fuzxCizuneARCniAiwIR/ESnqbuKw==}
     dependencies:
       cron-parser: 4.6.0
       get-port: 6.1.2
@@ -617,8 +606,8 @@ packages:
     resolution: {integrity: sha512-qKcDXmuZadJqdTm6vlCqioEbyewF60b/0LOFCcYN1B6BIZGlYJumWWOYs70SFYLDAH4YqdE1cxH/RKMG7rFxgA==}
     dev: false
 
-  /fastify/4.4.0:
-    resolution: {integrity: sha512-ePI4g9vPJXIBF4YlVcDSLxjvtdTrlM8QzdgYAPFGdCH+rot+4MXoFFAUb10fGrIcRRjaq6CvcbIzxiWQzMMHkw==}
+  /fastify/4.5.3:
+    resolution: {integrity: sha512-Q8Zvkmg7GnioMCDX1jT2Q7iRqjywlnDZ1735D2Ipf7ashCM/3/bqPKv2Jo1ZF2iDExct2eP1C/tdhcj0GG/OuQ==}
     dependencies:
       '@fastify/ajv-compiler': 3.2.0
       '@fastify/error': 3.0.0
@@ -852,18 +841,6 @@ packages:
     dependencies:
       '@types/whatwg-url': 8.2.2
       whatwg-url: 11.0.0
-    dev: false
-
-  /mongodb/4.8.1:
-    resolution: {integrity: sha512-/NyiM3Ox9AwP5zrfT9TXjRKDJbXlLaUDQ9Rg//2lbg8D2A8GXV0VidYYnA/gfdK6uwbnL4FnAflH7FbGw3TS7w==}
-    engines: {node: '>=12.9.0'}
-    dependencies:
-      bson: 4.7.0
-      denque: 2.1.0
-      mongodb-connection-string-url: 2.5.3
-      socks: 2.7.0
-    optionalDependencies:
-      saslprep: 1.0.3
     dev: false
 
   /mongodb/4.9.1:

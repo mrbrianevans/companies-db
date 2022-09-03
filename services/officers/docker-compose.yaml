@@ -87,6 +87,8 @@
       "REDIS_URL": "redis://red:6379"
       "AUTH_URL": "http://auth-service:3000"
       "LOKI_URL": "http://loki:3100"
+    volumes:
+      - /home/node/.pnpm-store
     "env_file":
       - "../.api.env"
     "networks":

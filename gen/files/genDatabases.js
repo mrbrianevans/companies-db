@@ -10,7 +10,7 @@ export async function genDatabases(SERVICES_DIR, tag){
 
     await writeFile(resolve(SERVICES_DIR, tag, 'databases', 'redis', 'Dockerfile'), 'FROM redislabs/redisearch:latest\n')
 
-    const mongoDockerfile = `FROM mongo:5
+    const mongoDockerfile = `FROM mongo:6
     
 ADD startupScripts docker-entrypoint-initdb.d
 

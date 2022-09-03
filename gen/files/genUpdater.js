@@ -74,16 +74,19 @@ async function genUpdaterPackage(SERVICES_DIR, tag){
 async function genUpdaterDockerfile(SERVICES_DIR, tag){
     const content = `FROM node:18
 
-RUN corepack enable && corepack prepare pnpm@7.9.4 --activate
-WORKDIR /streamUpdater
-COPY streamUpdater/package.json /streamUpdater/
-COPY shared/package.json /shared/
-RUN cd /streamUpdater && pnpm install && cd /shared && pnpm install
-COPY shared /shared
-COPY streamUpdater /streamUpdater
-RUN pnpm run build
+RUN corepack enable && corepack prepare pnpm@7.9.5 --activate && pnpm config set store-dir /home/node/.pnpm-store
+WORKDIR /${tag}
+COPY pnpm-*.yaml ./
+RUN pnpm fetch
 
-CMD ["pnpm", "run", "start"]
+COPY shared shared
+COPY streamUpdater streamUpdater
+RUN pnpm install --offline --frozen-lockfile --reporter=append-only
+
+
+WORKDIR /${tag}/streamUpdater
+RUN pnpm run build
+CMD ["node", "index.js"]
 
 `
     await writeFile(resolve(SERVICES_DIR, tag, 'Updater.Dockerfile'), content)
@@ -94,6 +97,15 @@ async function genUpdaterIndex(SERVICES_DIR, tag){
     const content = `
     console.log("I am the updater")
     console.log("Listen on streams for updates and keep the database up-to-date")
+    
+process.on('SIGINT', shutdown) // quit on ctrl-c when running docker in terminal
+process.on('SIGTERM', shutdown)// quit properly on docker stop
+async function shutdown(sig: string){
+  console.info('Graceful shutdown commenced', new Date().toISOString(), sig);
+    // perform any cleanup, eg close db connections, abort HTTP requests.
+  process.exit(0)
+}
+
 `
     await writeFile(resolve(SERVICES_DIR, tag, 'streamUpdater','index.ts'), prettyTs(content))
 }

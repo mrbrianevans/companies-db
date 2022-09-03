@@ -12,5 +12,5 @@ RUN pnpm install --offline --frozen-lockfile --reporter=append-only
 
 WORKDIR /officers/streamUpdater
 RUN pnpm run build
-CMD ["pnpm", "run", "start"]
+CMD ["node", "index.js"]
 

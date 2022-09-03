@@ -80,17 +80,21 @@ export async function genDockerCompose(SERVICES_DIR) {
 export async function genWebServiceDockerfile(SERVICES_DIR, tag) {
     await writeFile(resolve(SERVICES_DIR, tag.name,  'WebService.Dockerfile'), `FROM node:18
 
-RUN corepack enable && corepack prepare pnpm@7.9.4 --activate
-WORKDIR /webService
-COPY webService/package.json /webService/
-COPY shared/package.json /shared/
-RUN cd /webService && pnpm install && cd /shared && pnpm install
-COPY webService /webService
-COPY shared /shared
-RUN pnpm run clean
+RUN corepack enable && corepack prepare pnpm@7.9.5 --activate && pnpm config set store-dir /home/node/.pnpm-store
+WORKDIR /${tag.name}
+COPY pnpm-*.yaml ./
+RUN pnpm fetch
+
+COPY shared shared
+COPY webService webService
+RUN pnpm install --offline --frozen-lockfile --reporter=append-only
+
+
+WORKDIR /${tag.name}/webService
 RUN pnpm run build
+
 EXPOSE 3000
-CMD ["pnpm", "run", "start"]
+CMD ["node", "index.js"]
 `)
     // await writeFile(resolve(SERVICES_DIR, tag.name, 'webService', '.dockerignore'), `node_modules\n`)
 }
@@ -119,7 +123,7 @@ export async function genServiceDockerComposeFile(SERVICES_DIR, tag) {
                 build: {dockerfile:"Updater.Dockerfile"}, depends_on: ['db', 'red'], "environment": {
                     "MONGO_URL": "mongodb://db:27017", "REDIS_URL": "redis://red:6379",
                     "LOKI_URL": "http://loki:3100"
-                }, "env_file": ["../.api.env"], networks: [tag.name, 'companiesv2_metrics']
+                }, "env_file": ["../.api.env"], networks: [tag.name, 'companiesv2_metrics'], volumes: ['/home/node/.pnpm-store']
             },
             "web-service": {
                 hostname: kebabCase(tag.name) + "-web-service",

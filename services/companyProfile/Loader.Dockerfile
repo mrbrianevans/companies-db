@@ -12,5 +12,5 @@ RUN pnpm install --offline --frozen-lockfile --reporter=append-only
 
 WORKDIR /companyProfile/loadBulk
 RUN pnpm run build
-CMD ["node", "loadJob.js"]
+CMD ["pnpm", "run", "start"]
 

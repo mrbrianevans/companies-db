@@ -21,15 +21,15 @@ export async function genWebServicePackageJson(SERVICES_DIR, tag){
         "dependencies": {
             "@fastify/mongodb": "^6.0.1",
             "@fastify/redis": "^6.0.0",
-            "fastify": "4.4.0",
-            "pino": "^8.4.1",
+            "fastify": "^4.5.3",
+            "pino": "^8.4.2",
             "pino-loki": "^2.0.3"
         },
         "devDependencies": {
-            "@types/node": "^18.7.2",
+            "@types/node": "^18.7.14",
             "json-schema-to-ts": "^2.5.5",
-            "pino-pretty": "^9.0.0",
-            "typescript": "^4.7.4"
+            "pino-pretty": "^9.1.0",
+            "typescript": "^4.8.2"
         }
     }
     await writeFile(resolve(SERVICES_DIR, tag.name,'webService', 'package.json'), JSON.stringify(packageJson, null, 2)+'\n')
