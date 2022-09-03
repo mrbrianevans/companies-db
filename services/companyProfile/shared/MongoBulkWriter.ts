@@ -71,3 +71,50 @@ export const mongoBulkWriter = (recordTypeField: string|null, recordTypes:{colle
     await mongo.close()
     return {counter, stats}
   }
+
+/** Mongo bulk writer, but only writes every X seconds, rather than a specific buffer size */
+export const mongoTimedBulkWriter = (recordTypeField: string|null, recordTypes:{collection:string,value:any, mapper: (val: any)=>AnyBulkWriteOperation}[], dbName:string, {intervalSeconds = 60, processUnrecognisedRecords = console.log, ordered = false, maxBufferSize = 10000, verbose = false}={}) =>
+  async function(source: Readable){
+    function throwIfErr(e: MongoBulkWriteError){
+      if(e.code !== 11000) throw e
+      return e.result
+    }
+    const mongo = await getMongoClient()
+    const db = mongo.db(dbName)
+    const buffers = Object.fromEntries(recordTypes.map(r=>[r.collection, <any[]>[]]))
+    let counter = 0, stats = Object.fromEntries(recordTypes.map(r=>[r.collection, {matched: 0, inserted: 0, modified: 0, upserted: 0}]))
+
+    function addStats(collection,res: BulkResult){
+      stats[collection].matched += res.nMatched
+      stats[collection].inserted += res.nInserted
+      stats[collection].modified += res.nModified
+      stats[collection].upserted += res.nUpserted
+    }
+    async function executeBulk(reason: string = 'unspecified'){
+      for(const recordType of recordTypes){
+        const items = buffers[recordType.collection].splice(0, buffers[recordType.collection].length)
+        if(items.length) {
+          if(verbose) console.log("Bulk operation of", items.length, 'writes due to', reason)
+          const res = await db.collection(recordType.collection)
+            .bulkWrite(items.map(comp => ({insertOne: comp})), {ordered}).catch(throwIfErr)
+          counter += items.length
+          addStats(recordType.collection, res.result)
+        }
+      }
+    }
+    const executeInterval = setInterval(executeBulk, intervalSeconds * 1000, intervalSeconds + 's interval elapsed')
+    for await(const item of source){
+      const recordType = recordTypeField === null ? recordTypes[0] : recordTypes.find(r=>r.value === item[recordTypeField])
+      if(!recordType) processUnrecognisedRecords(item)
+      else {
+        if(recordTypeField !== null) delete item[recordTypeField]
+        buffers[recordType.collection].push(item)
+        if(buffers[recordType.collection].length >= maxBufferSize) await executeBulk('max buffer size reached')
+      }
+    }
+    clearInterval(executeInterval)
+    await executeBulk('finished streaming')
+
+    await mongo.close()
+    return {counter, stats}
+  }
