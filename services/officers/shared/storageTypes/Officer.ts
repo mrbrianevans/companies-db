@@ -1,5 +1,10 @@
 type Date = { day?: number | undefined, month?: number | undefined, year?: number | undefined }
-
+/**
+ * When scripts wish to access the officers collection, they ought to do it like this.
+ * @example
+ * mongo.db(mongoDbName).collection<OfficerStorage>(officerCollectionName)
+ */
+export const officerCollectionName = 'officers'
 export interface OfficerStorage {
   // these are not (directly) sent in API responses
   person_number: number,

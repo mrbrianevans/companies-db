@@ -90,6 +90,22 @@
     "networks":
       - "officers"
       - "companiesv2_metrics"
+  bulk-export:
+    build:
+      dockerfile: BulkExport.Dockerfile
+    depends_on:
+      - db
+      - red
+    "environment":
+      "MONGO_URL": "mongodb://db:27017"
+      "REDIS_URL": "redis://red:6379"
+      "LOKI_URL": "http://loki:3100"
+    volumes:
+      - /home/node/.pnpm-store
+      - /officers/bulkExport/exports
+    "networks":
+      - "officers"
+      - "companiesv2_metrics"
 
   "web-service":
     "hostname": "officers-web-service"
