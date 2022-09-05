@@ -9,7 +9,8 @@
     "watch": "tsc --build --watch",
     "start": "node index.js",
     "worker": "node job/worker.js",
-    "scheduler": "node job/scheduler.js"
+    "scheduler": "node job/scheduler.js",
+    "clean": "tsc -b --clean"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.2",
@@ -18,10 +19,10 @@
     "dotenv": "^16.0.2",
     "mongodb": "4.9.1",
     "split2": "^4.1.0",
-    "ssh2-sftp-client": "^9.0.3"
+    "ssh2-sftp-client": "^9.0.4"
   },
   "devDependencies": {
-    "@types/node": "^18.7.14",
+    "@types/node": "^18.7.15",
     "@types/ssh2-sftp-client": "^7.1.0",
     "typescript": "^4.8.2"
   }

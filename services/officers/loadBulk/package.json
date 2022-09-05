@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "start": "node index.js"
+    "start": "node index.js",
+    "clean": "tsc -b --clean"
   },
   "version": "1.0.0",
   "dependencies": {
@@ -18,7 +19,7 @@
     "split2": "^4.1.0"
   },
   "devDependencies": {
-    "@types/node": "^18.7.14",
+    "@types/node": "^18.7.15",
     "@types/split2": "^3.2.1",
     "typescript": "^4.8.2"
   }

@@ -5,7 +5,7 @@ The index uses about 4.6GB of RAM after creation, may use more during creation.
  */
 
 // create index if not exists
-async function createRedisIndex(){
+export async function createRedisIndex(){
   const redis = await getRedisClient()
   // for indexing names, stemming is disabled, but phonetic matching is enabled so that John will also match Jon.
   const schema: RediSearchSchema = {
@@ -18,11 +18,9 @@ async function createRedisIndex(){
   if(indices.includes(indexName))
     console.log("Index already exists",{indexName})
   else {
-    await redis.ft.CREATE('names', schema, {ON: 'HASH', PREFIX: 'officer:', NOOFFSETS: true, NOFREQS: true})
+    await redis.ft.CREATE(indexName, schema, {ON: 'HASH', PREFIX: 'officer:', NOOFFSETS: true, NOFREQS: true})
     console.log("Created index",{indexName})
   }
   await redis.quit()
 }
 
-
-await createRedisIndex()

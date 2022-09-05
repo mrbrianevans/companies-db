@@ -4,10 +4,12 @@
   "author": "Brian Evans",
   "type": "module",
   "main": "index.js",
+  "packageManager": "pnpm@7.11.0",
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "start": "node index.js"
+    "start": "node index.js",
+    "clean": "tsc -b --clean"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.2",
@@ -17,7 +19,7 @@
     "redis": "^4.3.0"
   },
   "devDependencies": {
-    "@types/node": "^18.7.14",
+    "@types/node": "^18.7.15",
     "json-schema-to-ts": "^2.5.5",
     "typescript": "^4.8.2"
   }

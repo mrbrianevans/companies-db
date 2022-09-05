@@ -25,7 +25,7 @@
       - "db"
       - "red"
     "volumes":
-      - "$OFFICERS_BULK_LOCATION:/loadBulk/downloads"
+      - "$OFFICERS_BULK_LOCATION:/officers/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
       "REDIS_URL": "redis://red:6379"
@@ -75,6 +75,22 @@
     "networks":
       - "officers"
       - "companiesv2_metrics"
+  search:
+    build:
+      dockerfile: Search.Dockerfile
+    depends_on:
+      - db
+      - red
+    "environment":
+      "MONGO_URL": "mongodb://db:27017"
+      "REDIS_URL": "redis://red:6379"
+      "LOKI_URL": "http://loki:3100"
+    volumes:
+      - /home/node/.pnpm-store
+    "networks":
+      - "officers"
+      - "companiesv2_metrics"
+
   "web-service":
     "hostname": "officers-web-service"
     "build":

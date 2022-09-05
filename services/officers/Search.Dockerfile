@@ -6,11 +6,11 @@ COPY pnpm-*.yaml ./
 RUN pnpm fetch
 
 COPY shared shared
-COPY loadBulk loadBulk
+COPY search search
 RUN pnpm install --offline --frozen-lockfile --reporter=append-only
 
 
-WORKDIR /officers/loadBulk
+WORKDIR /officers/search
 RUN pnpm run build
-CMD ["pnpm", "run", "start"]
+CMD ["node", "index.js"]
 

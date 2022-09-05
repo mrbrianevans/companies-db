@@ -7,10 +7,11 @@
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "start": "node index.js"
+    "start": "node index.js",
+    "clean": "tsc -b --clean"
   },
   "devDependencies": {
-    "@types/node": "^18.7.14",
+    "@types/node": "^18.7.15",
     "typescript": "^4.8.2"
   },
   "dependencies": {

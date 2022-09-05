@@ -1,6 +1,6 @@
 FROM node:18
 
-RUN corepack enable && corepack prepare pnpm@7.9.5 --activate && pnpm config set store-dir /home/node/.pnpm-store
+RUN corepack enable && corepack prepare pnpm@7.11.0 --activate && pnpm config set store-dir /home/node/.pnpm-store
 WORKDIR /officers
 COPY pnpm-*.yaml ./
 RUN pnpm fetch
