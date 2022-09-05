@@ -1,5 +1,6 @@
 import {RediSearchSchema, SchemaFieldTypes, SchemaTextFieldPhonetics} from "redis";
 import { getRedisClient } from "../shared/dbClients.js";
+import {searchIndexName, searchIndexPrefix} from "../shared/search/searchIndexConstants.js";
 /*
 The index uses about 4.6GB of RAM after creation, may use more during creation.
  */
@@ -14,12 +15,12 @@ export async function createRedisIndex(){
     // title and honours are not indexed, but are stored in the hash
   }
   const indices = await redis.ft._LIST()
-  const indexName = 'names'
-  if(indices.includes(indexName))
-    console.log("Index already exists",{indexName})
+
+  if(indices.includes(searchIndexName))
+    console.log("Index already exists",{searchIndexName})
   else {
-    await redis.ft.CREATE(indexName, schema, {ON: 'HASH', PREFIX: 'officer:', NOOFFSETS: true, NOFREQS: true})
-    console.log("Created index",{indexName})
+    await redis.ft.CREATE(searchIndexName, schema, {ON: 'HASH', PREFIX: searchIndexPrefix+':', NOOFFSETS: true, NOFREQS: true})
+    console.log("Created index",{searchIndexName})
   }
   await redis.quit()
 }

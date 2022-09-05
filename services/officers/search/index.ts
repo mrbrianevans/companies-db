@@ -1,6 +1,6 @@
 import {createRedisIndex} from "./createRedisIndex.js";
 import {loadIndex} from "./loadRedisIndex.js";
-import {searchIndex} from "./searchIndex.js";
+import {performSearch} from "../shared/search/performSearch.js";
 
 process.on('SIGINT', shutdown) // quit on ctrl-c when running docker in terminal
 process.on('SIGTERM', shutdown)// quit properly on docker stop
@@ -20,6 +20,6 @@ console.timeEnd('Load index')
 
 
 console.time('Search index')
-const res = await searchIndex('james @surname:"coombe"') // query language
+const res = await performSearch('james @surname:"coombe"') // query language
 console.timeEnd('Search index')
 console.log("result:", res)

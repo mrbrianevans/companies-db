@@ -12,11 +12,12 @@ import {getMongoClient} from '../shared/dbClients.js'
 import {writeRedis} from '../shared/bulkWriteRedis.js'
 import {pipeline} from "stream/promises";
 import {Transform, TransformCallback} from 'stream'
+import {searchIndexPrefix} from "../shared/search/searchIndexConstants.js";
 
 export async function loadIndex(){
   const mongo = await getMongoClient()
 
-  const inserter = writeRedis({prefix: 'officer'})
+  const inserter = writeRedis({prefix: searchIndexPrefix})
   const transformer = new Transform({
     objectMode: true,
     transform(chunk: {person_number:number, name_elements: Record<string,string>}, encoding: BufferEncoding, callback: TransformCallback) {

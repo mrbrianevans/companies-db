@@ -2,6 +2,7 @@ import type { SearchOfficersResponse } from '../schemas/searchOfficersSchema.js'
 import type { FastifyRedis } from '@fastify/redis'
 import type { FastifyMongoObject } from '@fastify/mongodb'
 import type { FastifyRequest } from 'fastify'
+import {performSearch} from "../../shared/search/performSearch.js";
 
 import { SearchOfficersSchema } from '../schemas/searchOfficersSchema.js'
 import { reflect } from '../controllers/reflect.js'
@@ -50,47 +51,14 @@ export async function searchOfficers(
   items_per_page?: number,
   start_index?: number
 ): Promise<SearchOfficersResponse | null> {
-  if (!context.mongo.db) throw new Error('DB not defined')
-  const collection =
-    context.mongo.db.collection<SearchOfficersResponse>(colName)
-  const startFind = performance.now()
-  let res = await collection.findOne({})
-  const findDurationMs = performance.now() - startFind
-  context.req.log.trace(
-    { findDurationMs, found: Boolean(res) },
-    'Find one operation in MongoDB'
-  )
-  if (!res) {
-    res = await callSearchOfficersApi({}, { q, items_per_page, start_index })
-    if (res) {
-      try {
-        await collection.updateOne({}, { $set: res }, { upsert: true })
-      } catch (e) {
-        if (e.code === 121) {
-          context.req.log.warn(
-            { q, items_per_page, start_index },
-            'Failed to upsert document from API due to validation error'
-          )
-        } else {
-          context.req.log.error(
-            { err: e },
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-    }
+  items_per_page ??= 35
+  start_index ??= 0
+  const results = await performSearch(q, {limit: items_per_page, skip: start_index})
+  return {
+    start_index, items_per_page,
+    items: [], //todo: map results from redis to companies house format of search results. Will require calls to Mongo.
+    page_number: Math.ceil(start_index/items_per_page),
+    total_results: results.length,
+    kind: 'search#officers'
   }
-  return res ?? null
-}
-
-async function callSearchOfficersApi(pathParams, queryParams) {
-  const nonNullQueryParams = Object.fromEntries(
-    Object.entries(queryParams)
-      .filter(([k, v]) => v)
-      .map(([k, v]) => [k, String(v)])
-  )
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-
-  const path = `/search/officers`
-  return await reflect(path + '?' + urlQuery.toString())
 }
