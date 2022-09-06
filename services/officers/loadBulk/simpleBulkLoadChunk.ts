@@ -14,6 +14,12 @@ const DB_NAME = 'officers', COMPANY_COLLECTION = 'companies', OFFICER_COLLECTION
 const filepath = process.argv[2] // path to data file (required)
 if(!filepath) throw new Error('Filepath not specified. Please provide argv.2 as the path to data file.')
 
+const ac = new AbortController()
+const {signal} = ac
+parentPort?.on('message', (msg)=> {
+  if(msg === 'abort') ac.abort()
+}) // allow parent thread to abort operation
+
 console.time('Process file')
 const fileStream = createReadStream(filepath)
 const parseStream = split2(parseRecord)
@@ -21,8 +27,7 @@ const insertStream = writeMongoCustom('recordType', [
   {collection: COMPANY_COLLECTION, value: RecordType.Company, mapper: val => ({insertOne: {document: val}})},
   {collection: OFFICER_COLLECTION, value: RecordType.Person, mapper: val => ({insertOne: {document: val}})}], DB_NAME, processHeaderAndTrailer)
 let expectedCount: number|null = null // this closure could be replaced by accessing customReturnValues
-const {counter,stats, customReturnValues} = await pipeline(fileStream, parseStream, insertStream)
-
+const {counter,stats, customReturnValues} = await pipeline(fileStream, parseStream, insertStream, {signal})
 await new Promise(resolve=>fileStream.close(resolve))
 
 console.timeEnd('Process file')

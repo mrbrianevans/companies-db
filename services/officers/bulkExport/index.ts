@@ -13,8 +13,11 @@ Strategy for bulk exports:
 
 import {getMongoClient, mongoDbName} from '../shared/dbClients.js';
 import {officerCollectionName, OfficerStorage} from '../shared/storageTypes/Officer.js';
+import {exportBulkQueueName} from "../shared/bull/queueNames.js";
+import {bullRedisConnection} from "../shared/bull/bullRedisConnection.js";
 import SonicBoom from "sonic-boom";
 import { once } from 'node:events';
+import {Job, Worker as BullWorker} from "bullmq";
 
 type ExportType = 'csv'|'json'
 interface ExportCollectionOptions{
@@ -35,12 +38,16 @@ async function exportCollection({collectionName, uniqueIndex, type = 'csv', outp
   const collection = mongo.db(mongoDbName).collection<OfficerStorage>(collectionName)
 
   const count = limit ?? await collection.estimatedDocumentCount()
-  console.log("Exporting", count, collectionName)
+  console.log(new Date(),"Exporting", count, collectionName)
 
   const file = new SonicBoom({dest: outputName, mkdir: true})
-  let wroteCount = 0, slowDownCount = 0
-  const officers = collection.find().sort(uniqueIndex).limit(limit)
+  let wroteCount = 0, slowDownCount = 0, started = false
+  const officers = collection.find({},{allowDiskUse:true}).sort(uniqueIndex).limit(limit)
   for await(const officer of officers.stream()){
+    if(!started){
+      started = true
+      console.log(new Date(), 'Started writing to file')
+    }
     if(signal?.aborted) break
     const slowDown = file.write(stringifyRecord(officer, type))
     if(slowDown) slowDownCount++
@@ -66,19 +73,25 @@ function stringifyRecord(record: any, type: ExportType): string{
   }
 }
 
-
 const ac = new AbortController()
 const {signal} = ac
+
+async function processJob(job: Job){
+  console.log('Processing job', job.name, 'on queue', job.queueName, job.id)
+  //todo: could get export options from job data with sensible defaults
+  console.time('Export officers')
+  await exportCollection({collectionName: officerCollectionName, uniqueIndex:{
+      company_number: 1, person_number:  1, officer_role:  1, appointed_on:  1}, limit: 500_000, signal, type:'json'})
+  console.timeEnd('Export officers')
+}
+
+const worker = new BullWorker(exportBulkQueueName, processJob,{connection: bullRedisConnection})
 
 process.on('SIGINT', shutdown) // quit on ctrl-c when running docker in terminal
 process.on('SIGTERM', shutdown)// quit properly on docker stop
 async function shutdown(sig: string){
   console.info('Graceful shutdown commenced', new Date().toISOString(), sig);
-  signal.addEventListener('finished', ()=>process.exit(0)) // only exit when async function sends event
   ac.abort() // this signals to the function to finish the current record and then exit, closing connections and files
+  await worker.close()
+  process.exit()
 }
-
-console.time('Export officers')
-await exportCollection({collectionName: officerCollectionName, uniqueIndex:{
-  company_number: 1, person_number:  1, officer_role:  1, appointed_on:  1}, limit: 500_000, signal, type:'json'})
-console.timeEnd('Export officers')

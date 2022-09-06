@@ -1,4 +1,4 @@
-import {queueName} from "../../shared/bull/queueName.js";
+import {dailyUpdatesQueueName} from "../../shared/bull/queueNames.js";
 import { Worker, Job } from 'bullmq';
 import {applyUpdatesSince} from "../loadUpdate.js";
 import {getProductionDate} from "../../shared/lock/productionDate.js";
@@ -15,7 +15,7 @@ async function processJob(job: Job){
   return {totalCount, numUpdateFiles, lastProductionDate:lastProductionDate.toString()}
 }
 
-const worker = new Worker(queueName, processJob,{connection: bullRedisConnection}) // starts a worker listening for jobs
+const worker = new Worker(dailyUpdatesQueueName, processJob,{connection: bullRedisConnection}) // starts a worker listening for jobs
 
 process.on('SIGINT', shutdown) // quit on ctrl-c when running docker in terminal
 process.on('SIGTERM', shutdown)// quit properly on docker stop

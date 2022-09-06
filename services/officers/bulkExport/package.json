@@ -10,6 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "bullmq": "^1.90.1",
     "sonic-boom": "^3.2.0"
   },
   "devDependencies": {
