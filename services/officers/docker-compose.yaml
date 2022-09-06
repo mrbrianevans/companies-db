@@ -106,6 +106,23 @@
     "networks":
       - "officers"
       - "companiesv2_metrics"
+  repl:
+    build:
+      dockerfile: Repl.Dockerfile
+    depends_on:
+      - db
+      - red
+    "environment":
+      "MONGO_URL": "mongodb://db:27017"
+      "REDIS_URL": "redis://red:6379"
+      "LOKI_URL": "http://loki:3100"
+    volumes:
+      - /home/node/.pnpm-store
+    "networks":
+      - "officers"
+      - "companiesv2_metrics"
+    tty: true
+    stdin_open: true
 
   "web-service":
     "hostname": "officers-web-service"

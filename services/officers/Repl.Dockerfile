@@ -6,14 +6,11 @@ COPY pnpm-*.yaml ./
 RUN pnpm fetch
 
 COPY shared shared
-COPY loadBulk loadBulk
+COPY repl repl
 RUN pnpm install --offline --frozen-lockfile --reporter=append-only
 
 
-WORKDIR /officers/loadBulk
+WORKDIR /officers/repl
 RUN pnpm run build
-CMD ["pnpm", "run", "start"]
+CMD ["node", "index.js"]
 
-# todo: the loader should be a Worker in BullMQ that can be triggered
-#  - wrap the load function in a worker
-#  - write a script to send a message on a BullMQ queue, eg trigger.js queue-name job-name (or a REPL)

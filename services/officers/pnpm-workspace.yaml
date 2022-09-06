@@ -5,3 +5,4 @@ packages:
   - './shared'
   - './search'
   - './bulkExport'
+  - './repl'
