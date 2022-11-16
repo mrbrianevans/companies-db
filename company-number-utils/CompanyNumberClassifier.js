@@ -74,11 +74,15 @@ export function classifyCompanyNumber(companyNumber){
     }
 }
 
-export const COMPANY_NUMBER_COUNTRY = {
-    ENGLAND_WALES: 0,
-    NORTHERN_IRELAND: 1,
-    SCOTLAND: 2,
-    UK: 3
+export const COMPANY_NUMBER_JURISDICTION = {
+    ENGLAND_WALES: 'england-wales',
+    WALES: 'wales',
+    ENGLAND: 'england',
+    NORTHERN_IRELAND: 'northern-ireland',
+    SCOTLAND: 'scotland',
+    UK: 'united-kingdom',
+    NON_EU: 'noneu',
+    EUROPEAN_UNION: 'european-union'
 }
 
 export function getCompanyNumberCountry(companyNumber){
@@ -87,20 +91,20 @@ export function getCompanyNumberCountry(companyNumber){
         case COMPANY_NUMBER_TYPE.EnglishOrWelshNotRequiredToRegister:
         case COMPANY_NUMBER_TYPE.LlpEnglandOrWales:
         case COMPANY_NUMBER_TYPE.EnglandWalesRegular:
-            return COMPANY_NUMBER_COUNTRY.ENGLAND_WALES
+            return COMPANY_NUMBER_JURISDICTION.ENGLAND_WALES
         case COMPANY_NUMBER_TYPE.Scotland:
         case COMPANY_NUMBER_TYPE.ScottishNotRequiredToRegister:
         case COMPANY_NUMBER_TYPE.OverseasScotland:
         case COMPANY_NUMBER_TYPE.LlpScotland:
-            return COMPANY_NUMBER_COUNTRY.SCOTLAND
+            return COMPANY_NUMBER_JURISDICTION.SCOTLAND
         case COMPANY_NUMBER_TYPE.NorthernIreland:
         case COMPANY_NUMBER_TYPE.OldNorthernIreland:
         case COMPANY_NUMBER_TYPE.LlpNorthernIreland:
         case COMPANY_NUMBER_TYPE.OverseasNorthernIreland:
-            return COMPANY_NUMBER_COUNTRY.NORTHERN_IRELAND
+            return COMPANY_NUMBER_JURISDICTION.NORTHERN_IRELAND
         case COMPANY_NUMBER_TYPE.OverseasUK:
         case COMPANY_NUMBER_TYPE.SocietasEuropaea:
-            return COMPANY_NUMBER_COUNTRY.UK
+            return COMPANY_NUMBER_JURISDICTION.UK
         default:
             throw new Error('Company number not classified into any country')
     }
@@ -160,3 +164,6 @@ jurisdiction:
     'england' : "England"
     'noneu' : "Foreign (Non E.U.)"
  */
+
+// const mapper = new Map()
+// mapper.set(/^NI/, {jurisdiction: COMPANY_NUMBER_JURISDICTION.NORTHERN_IRELAND, company_type: COMPANY_TYPE.ltd})

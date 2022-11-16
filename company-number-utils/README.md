@@ -37,13 +37,14 @@ Example usage:
 const country = getCompanyNumberCountry(companyNumber)
 ```
 
-## Enum `COMPANY_NUMBER_COUNTRY`
+## Enum `COMPANY_NUMBER_JURISDICTION`
 A constant (like an enum) to represent different countries that a company can be registered in. 
 Can be used to evaluate the output of `getCompanyNumberCountry`.
 
 Example usage:
+
 ```javascript
-if(country === COMPANY_NUMBER_COUNTRY.NORTHERN_IRELAND)
+if (country === COMPANY_NUMBER_JURISDICTION.NORTHERN_IRELAND)
     console.log("Company was registered in Northern Ireland")
 ```
 

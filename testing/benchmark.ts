@@ -12,7 +12,7 @@ const keys: Record<typeof urls[number]|string, string> = {
   "https://api.company-information.service.gov.uk": process.env.RESTAPIKEY
 }
 
-const requests = testUrls.getCorporateEntities.map(path=>({path}))
+const requests = testUrls.getCompanyProfile.map(path=>({path}))
 // call each API 500 times
 
 for (const url of urls) {

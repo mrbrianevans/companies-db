@@ -57,7 +57,7 @@ describe('company-profile-service', function () {
             next_due: { type: 'string' },
             next_made_up_to: { type: 'string' }
           },
-          required: ['next_due', 'next_made_up_to']
+          required: []
         },
         date_of_creation: { type: 'string' },
         etag: { type: 'string' },
@@ -208,7 +208,7 @@ describe('company-profile-service', function () {
         }
       },
       required: [
-        'can_file',
+        // 'can_file',
         'company_name',
         'company_number',
         'date_of_creation',

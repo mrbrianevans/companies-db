@@ -34,6 +34,8 @@ export async function listenToStream(streamPath: string = "companies", startFrom
       .on("end", () => emitter.emit('end'))
     // setTimeout(()=>response.destroy(),20_000) // for testing being disconnected
     return emitter
+  } else if(response.statusCode === 416){
+    throw new RangeError('Timepoint out of range')
   }
   else {
     response.pipe(stdout)
