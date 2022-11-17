@@ -7,8 +7,20 @@
             format console
         }
 
-        @notauthed not header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
-        header @notauthed Content-Type application/json
+        handle_path /manage/* {
+                root * /client
+	            encode gzip
+                try_files {path} {path}.html {path}index.html {path}/index.html
+                header Content-Security-Policy "default-src 'self' ;script-src 'self';img-src 'self' data:;worker-src 'self';style-src 'self' 'unsafe-inline' fonts.googleapis.com;manifest-src 'self';connect-src ws: 'self' fonts.googleapis.com;font-src fonts.google.com fonts.gstatic.com data:"
+                header /assets/* Cache-Control max-age=31536000,immutable
+                file_server
+        }
+
+        @notauthed {
+            not header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
+            not path /manage/*
+        }
+        # header @notauthed Content-Type application/json
         respond @notauthed 401 {
                 body "{\"statusCode\": 401, \"error\": \"Not authorised\", \"message\": \"Basic authentication token not included in request header.\"}"
                 close
@@ -247,4 +259,11 @@
                 header_down Service company-profile
         }
 
+#todo: this requires the API endpoints to be wrapped in Handles as well. Not sure if its the best approach
+#        handle {
+#            respond 404 {
+#                body "{\"statusCode\": 404, \"error\": \"Not found\", \"message\": \"Route not found.\"}"
+#                close
+#            }
+#        }
 }

@@ -3,7 +3,8 @@
   "gateway":
     build: 'gateway'
     "volumes":
-      - "./gateway/Caddyfile:/etc/caddy/Caddyfile"
+      - "./gateway/Caddyfile:/etc/caddy/Caddyfile" # todo: this should rather be built into the image I think
+      - manage_client_dist:/client
     "ports":
       - "3000:80"
     "networks":
@@ -62,6 +63,10 @@
     "environment":
       "LOKI_URL": "http://loki:3100"
       "METRICS_URL": "http://metrics:9090"
+  build-client:
+    build: 'manageUi'
+    volumes:
+      - manage_client_dist:/client/dist
 "networks":
   "companiesv2_microservices":
     "external": true
@@ -76,3 +81,4 @@
     "external": true
   "grafana_data": null
   "loki_data": null
+  manage_client_dist: null
