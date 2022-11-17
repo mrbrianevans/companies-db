@@ -1,16 +1,19 @@
 
 
 import React from 'react';
-import {AppShell, MantineProvider} from "@mantine/core";
+import {AppShell, MantineProvider, MantineThemeOverride} from "@mantine/core";
 import {ApplicationFooter, ApplicationHeader, ApplicationNavbar} from "./components/AppShellComponents.js";
 import {Outlet} from "react-router-dom";
+import {RecoilRoot} from "recoil";
 
-const theme = { fontFamily: 'Open Sans' }
+const theme: MantineThemeOverride = { fontFamily: 'Inter, sans-serif', fontFamilyMonospace: 'JetBrains Mono, monospace' }
 
 export const App = (props: React.PropsWithChildren) => (
   <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-    <AppShell header={<ApplicationHeader/>} footer={<ApplicationFooter/>} navbar={<ApplicationNavbar/>}>
-      <Outlet/>
-    </AppShell>
+    <RecoilRoot>
+      <AppShell header={<ApplicationHeader/>} footer={<ApplicationFooter/>} navbar={<ApplicationNavbar/>}>
+        <Outlet/>
+      </AppShell>
+    </RecoilRoot>
   </MantineProvider>
 );
