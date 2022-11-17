@@ -7,25 +7,35 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
-import {AppShell, MantineProvider} from '@mantine/core';
-import {ApplicationFooter, ApplicationHeader, ApplicationNavbar} from "./components/AppShellComponents.js";
+import {App} from "./App.js";
+import KeyPage from "./pages/KeyPage.js";
+import Tester from "./pages/Tester.js";
 
 const router = createBrowserRouter([
   {
     path: "/manage/",
-    element:  <Home />,
+    element:  <App />,
+    children: [
+      {
+        path: '/manage/',
+        element: <Home/>
+      },
+      {
+        path: '/manage/key',
+        element: <KeyPage/>
+      },
+      {
+        path: '/manage/tester',
+        element: <Tester/>
+      }
+    ]
   },
 ]);
 
-const theme = { fontFamily: 'Open Sans' }
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-      <AppShell header={<ApplicationHeader/>} footer={<ApplicationFooter/>} navbar={<ApplicationNavbar/>}>
-        <RouterProvider router={router} />
-      </AppShell>
-    </MantineProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 )

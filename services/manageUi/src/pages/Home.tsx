@@ -1,21 +1,13 @@
-import {Button, TextInput} from "@mantine/core";
-import {randomId} from "@mantine/hooks";
+import {NavLink} from "react-router-dom";
 
 function Home() {
 
   return (<div>
-      Do you already have an API key?
+     Welcome to Companies DB.
 
-<div style={{margin: '1rem 0', border: '1px solid black'}}>
-      Yes?
-      <TextInput label={"Enter your key here"} placeholder={randomId()}/>
-  </div>
+      Get started with an API key: <NavLink to={'key'}>Manage Key</NavLink>
 
-      <div style={{margin: '1rem 0', border: '1px solid black'}}>
-
-      No?
-      <Button>Create API key</Button>
-    </div>
+      These are our features: 1,2,3
 </div>
   )
 }

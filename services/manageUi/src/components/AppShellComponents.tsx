@@ -1,26 +1,35 @@
 
 
 import React from 'react';
-import {Footer, Header, Navbar, Text} from "@mantine/core";
+import {Button, Footer, Header, Navbar, Text, Title} from "@mantine/core";
+import {NavLink} from "react-router-dom";
 
 
 export const ApplicationHeader: React.FC = (props) => (
   <Header height={60}>
-    <h1>Companies Database</h1>
+    <Title><NavLink to={'/manage'}>Companies Database</NavLink></Title>
   </Header>
 );
 
 
 export const ApplicationFooter: React.FC = (props) => (
   <Footer height={60}>
-    <p>This website was made by Brian Evans</p>
+    <div style={{display: 'grid', placeItems: 'center'}}>
+      <Text color={'dimmed'}>This website was made by Brian Evans</Text>
+    </div>
   </Footer>
 );
 
 
 export const ApplicationNavbar = () => (
   <Navbar p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-    <Text>Application navbar</Text>
+    <Navbar.Section>
+      <div style={{display: 'grid', gap: 5, alignItems: 'stretch'}}>
+        <NavLink to={'key'}>API Key</NavLink>
+        <NavLink to={'tester'}>Endpoint Tester</NavLink>
+
+      </div>
+    </Navbar.Section>
   </Navbar>
 );
 
