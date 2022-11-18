@@ -1,16 +1,25 @@
 
 
 import React from 'react';
-import {Button, Footer, Header, Navbar, Text, Title} from "@mantine/core";
+import {Badge, Button, Footer, Header, Navbar, Text, Title} from "@mantine/core";
 import {NavLink} from "react-router-dom";
 import styles from './AppShellComponents.module.scss'
+import {useRecoilState} from "recoil";
+import {apiKeysState} from "../state/ApiKey.js";
 
 
-export const ApplicationHeader: React.FC = (props) => (
-  <Header height={60}>
-    <Text size={40}><NavLink to={'/manage/'} style={{color:'black', textDecoration: 'none'}}>Companies Database</NavLink></Text>
-  </Header>
-);
+export const ApplicationHeader: React.FC = (props) => {
+  const [apiKeys] = useRecoilState(apiKeysState)
+  return (
+    <Header height={60}>
+      <div className={styles.headerContainer}>
+        <Text size={40}><NavLink to={'/manage/'} style={{color: 'black', textDecoration: 'none'}}>Companies
+          Database</NavLink></Text>
+        {`${apiKeys.length} API keys loaded`}
+      </div>
+    </Header>
+  );
+};
 
 
 export const ApplicationFooter: React.FC = (props) => (

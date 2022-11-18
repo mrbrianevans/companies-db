@@ -16,9 +16,12 @@
                 file_server
         }
 
+        reverse_proxy /new auth-service:3000 # for creating new API keys
+
         @notauthed {
             not header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
             not path /manage/*
+            not path /new
         }
         # header @notauthed Content-Type application/json
         respond @notauthed 401 {

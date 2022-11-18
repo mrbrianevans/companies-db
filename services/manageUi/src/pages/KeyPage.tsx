@@ -1,42 +1,105 @@
 import React from 'react';
-import {Badge, Button, Code, Container, TextInput} from "@mantine/core";
+import {
+  Badge,
+  Button,
+  Code,
+  Container,
+  TextInput,
+  Title,
+  Text,
+  Table,
+  Group,
+  CopyButton,
+  ActionIcon,
+   NativeSelect
+} from "@mantine/core";
 import {useRecoilState} from "recoil";
-import {apiKeyState} from "../state/ApiKey.js";
-import {useInputState} from "@mantine/hooks";
+import {apiKeysState} from "../state/ApiKey.js";
+import {useClipboard, useInputState} from "@mantine/hooks";
+import {CheckIcon, CopyIcon, PlusIcon, TrashIcon} from '@radix-ui/react-icons'
+import { requestNewKey } from '../logic/requestNewKey.js';
 
 type KeyPageProps = {
 
 }
 
 const KeyPage: React.FC<KeyPageProps> = (props) => {
-  const [apiKey, setApiKey] = useRecoilState(apiKeyState)
-
+  const [apiKeys, setApiKeys] = useRecoilState(apiKeysState)
   const [enteredKey, setEnteredKey] = useInputState('')
+  const [enteredName, setEnteredName] = useInputState('API Key 1')
+  const [enteredNameAdded, setEnteredNameAdded] = useInputState('Added API Key 1')
+  const [addedUrl, setAddedUrl] = useInputState(window.location.origin)
+
+  async function createKey(name: string){
+    const {key} = await requestNewKey()
+    setApiKeys(prev=>prev.concat({name, key, baseUrl: window.location.origin, created: new Date().toISOString()}))
+  }
+  function addKey({name, key, url}: {name:string, key:string, url:string}){
+    setApiKeys(prev=>prev.concat({name, key, baseUrl: url}))
+  }
   return (
     <Container>
-      <div>
-        Your API key is: <Code>{apiKey}</Code>
-      </div>
+      <Title order={1}>API key management</Title>
+      <Text color={'dimmed'} size={'sm'}>Requests must be authenticated with an API key.</Text>
+
+      <Title order={2} mt={'xl'}>Your API keys</Title>
+      <Table >
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>URL</th>
+          <th>Key</th>
+          <th>Created</th>
+          <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        {
+          apiKeys.map(k=><tr key={k.key}>
+            <td>{k.name}</td>
+            <td>{k.baseUrl}</td>
+            <td>
+              <Group spacing={'xs'}>
+              <Code>{k.key}</Code>
+                <CopyButton value={k.key}>
+                  {({ copied, copy }) => (
+                    <ActionIcon color={'blue'} onClick={copy}>
+                      {copied ? <CheckIcon/> : <CopyIcon/>}
+                    </ActionIcon>
+                  )}
+                </CopyButton>
+              </Group>
+            </td>
+            <td>{k.created}</td>
+            <td>
+              <Group spacing={'xs'}>
+                <ActionIcon color={'red'} onClick={()=>setApiKeys(prev=>prev.filter(key=>key.key !== k.key))}><TrashIcon/></ActionIcon>
+              </Group>
+            </td>
+          </tr>)
+        }
+        </tbody>
+      </Table>
 
 
-      Do you already have an API key?
+      <Title order={2} mt={'xl'}>Create a new key</Title>
+      <Group style={{alignItems: 'end'}}>
+        <TextInput label={'Name'} placeholder={'My API key name'} style={{flexGrow: 1}} value={enteredName} onChange={setEnteredName}/>
+        <Button color={'green'} disabled={enteredName.trim() === ''} onClick={()=>createKey(enteredName)}>Create</Button>
+      </Group>
 
-      <div style={{margin: '1rem 0', border: '1px solid black'}}>
-        Saved keys in localStorage:
-        <Badge>0db671b1-4b47-4ce7-965a-1c641d7a4f46</Badge>
-      </div>
+      <Title order={2} mt={'xl'}>Add an existing key</Title>
+      <Group style={{alignItems: 'end'}}>
+        <TextInput label={'Name'} placeholder={'My Added Key'} value={enteredNameAdded} onChange={setEnteredNameAdded}/>
+        <TextInput label={'API key'} placeholder={'4294dd5f-1731-4cd6-abf3-6f886200516f'} style={{flexGrow: 1}} value={enteredKey} onChange={setEnteredKey}/>
+        <NativeSelect data={['https://api.company-information.service.gov.uk', window.location.origin]} label={'Base URL'}  value={addedUrl} onChange={setAddedUrl}/>
+        <Button color={'green'} disabled={enteredKey.length !== 36} leftIcon={<PlusIcon/>} onClick={()=>addKey({name: enteredNameAdded, key: enteredKey, url: addedUrl})}>Add</Button>
+      </Group>
 
-      <div style={{margin: '1rem 0', border: '1px solid black'}}>
-        Yes?
-        <TextInput label={"Enter your key here"} placeholder={'0db671b1-4b47-4ce7-965a-1c641d7a4f46'} value={enteredKey} onChange={setEnteredKey}/>
-        <Button onClick={()=>setApiKey(enteredKey)} disabled={enteredKey.length !== 36}>Use key</Button>
-      </div>
 
-      <div style={{margin: '1rem 0', border: '1px solid black'}}>
 
-        No?
-        <Button>Create API key</Button>
-      </div>
+
+
     </Container>
   );
 };

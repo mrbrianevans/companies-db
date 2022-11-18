@@ -2,25 +2,25 @@ import {NavLink} from "react-router-dom";
 import {Prism} from "@mantine/prism";
 import {Alert, Button, Code, Container, TextInput} from "@mantine/core";
 import {useRecoilState} from "recoil";
-import {apiKeyState} from "../state/ApiKey.js";
+import {apiKeysState} from "../state/ApiKey.js";
 import {callApi} from "../logic/callApi.js";
 import {useInputState} from "@mantine/hooks";
 import {useState} from "react";
 
 function Tester() {
 
-  const [apiKey] = useRecoilState(apiKeyState)
+  const [apiKeys] = useRecoilState(apiKeysState)
   const [json, setJson] = useState(undefined)
   const [error, setError] = useState<Error|undefined>(undefined)
   const [path, setPath] = useInputState('')
   function makeRequest(){
-    if(apiKey) callApi(path, window.location.origin, apiKey).then(response=>setJson(response)).catch(e=>setError(e))
+    if(apiKeys) callApi(path, window.location.origin, apiKeys[0].key).then(response=>setJson(response)).catch(e=>setError(e))
   }
 
   return (<Container>
 Here you can test the API.
       <div>
-      Your API key is: <Code>{apiKey}</Code>
+      Your API key is: <Code>{apiKeys[0].key}</Code>
       </div>
 
       <TextInput label={'URL path'} placeholder={'/company/06743114'} value={path} onChange={setPath}/>

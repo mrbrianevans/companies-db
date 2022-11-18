@@ -513,6 +513,7 @@ importers:
       '@mantine/core': ^5.8.0
       '@mantine/hooks': ^5.8.0
       '@mantine/prism': ^5.8.0
+      '@radix-ui/react-icons': ^1.1.1
       '@types/react': ^18.0.24
       '@types/react-dom': ^18.0.8
       '@vitejs/plugin-react': ^2.2.0
@@ -528,6 +529,7 @@ importers:
       '@mantine/core': 5.8.0_oropdu55clxolwu5c7qygkf2pm
       '@mantine/hooks': 5.8.0_react@18.2.0
       '@mantine/prism': 5.8.0_ewvkjm4ajyqza72j4kh4rch33a
+      '@radix-ui/react-icons': 1.1.1_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-router-dom: 6.4.3_biqbaboplfbrettd7655fr4n2y
@@ -1711,6 +1713,14 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
       '@babel/runtime': 7.20.1
+      react: 18.2.0
+    dev: false
+
+  /@radix-ui/react-icons/1.1.1_react@18.2.0:
+    resolution: {integrity: sha512-xc3wQC59rsFylVbSusQCrrM+6695ppF730Q6yqzhRdqDcRNWIm2R6ngpzBoSOQMcwnq4p805F+Gr7xo4fmtN1A==}
+    peerDependencies:
+      react: ^16.x || ^17.x || ^18.x
+    dependencies:
       react: 18.2.0
     dev: false
 
