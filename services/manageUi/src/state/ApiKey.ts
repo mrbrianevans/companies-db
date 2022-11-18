@@ -14,7 +14,8 @@ const localStorageEffect = <T>(key: string): AtomEffect<T> => ({setSelf, onSet})
 };
 
 
-type ApiKeys = {key: string, name: string, baseUrl: string, created?: string}[]
+export interface ApiKey {key: string, name: string, baseUrl: string, created?: string}
+export type ApiKeys = ApiKey[]
 
 export const apiKeysState = atom<ApiKeys>({
   key: 'apiKeys',

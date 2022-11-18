@@ -11,7 +11,7 @@ import {
   Group,
   CopyButton,
   ActionIcon,
-   NativeSelect
+  NativeSelect, Flex
 } from "@mantine/core";
 import {useRecoilState} from "recoil";
 import {apiKeysState} from "../state/ApiKey.js";
@@ -32,10 +32,10 @@ const KeyPage: React.FC<KeyPageProps> = (props) => {
 
   async function createKey(name: string){
     const {key} = await requestNewKey()
-    setApiKeys(prev=>prev.concat({name, key, baseUrl: window.location.origin, created: new Date().toISOString()}))
+    setApiKeys(prev=>prev.filter(k=>k.key !== key).concat({name, key, baseUrl: window.location.origin, created: new Date().toISOString()}))
   }
   function addKey({name, key, url}: {name:string, key:string, url:string}){
-    setApiKeys(prev=>prev.concat({name, key, baseUrl: url}))
+    setApiKeys(prev=>prev.filter(k=>k.key !== key).concat({name, key, baseUrl: url}))
   }
   return (
     <Container>
@@ -50,7 +50,7 @@ const KeyPage: React.FC<KeyPageProps> = (props) => {
           <th>URL</th>
           <th>Key</th>
           <th>Created</th>
-          <th>Remove</th>
+          <th><TrashIcon/></th>
         </tr>
         </thead>
         <tbody>
@@ -59,8 +59,8 @@ const KeyPage: React.FC<KeyPageProps> = (props) => {
             <td>{k.name}</td>
             <td>{k.baseUrl}</td>
             <td>
-              <Group spacing={'xs'}>
-              <Code>{k.key}</Code>
+              <Flex style={{alignItems: 'center'}}>
+              <Code style={{whiteSpace: 'nowrap'}} color={'blue'}>{k.key}</Code>
                 <CopyButton value={k.key}>
                   {({ copied, copy }) => (
                     <ActionIcon color={'blue'} onClick={copy}>
@@ -68,9 +68,9 @@ const KeyPage: React.FC<KeyPageProps> = (props) => {
                     </ActionIcon>
                   )}
                 </CopyButton>
-              </Group>
+              </Flex>
             </td>
-            <td>{k.created}</td>
+            <td>{k.created ? new Date(k.created).toLocaleDateString('en-GB') : ''}</td>
             <td>
               <Group spacing={'xs'}>
                 <ActionIcon color={'red'} onClick={()=>setApiKeys(prev=>prev.filter(key=>key.key !== k.key))}><TrashIcon/></ActionIcon>
