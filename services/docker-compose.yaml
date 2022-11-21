@@ -12,6 +12,8 @@
       - "companiesv2_metrics"
     "logging":
       "driver": "local"
+    "environment":
+      SITE_ADDRESS: ${SITE_ADDRESS-:80}
   "auth-db":
     "image": "redis"
     "networks":
@@ -75,8 +77,6 @@
   "companiesv2_metrics":
     "external": true
 "volumes":
-  "shared_mongo":
-    "external": true
   "auth_db":
     "external": true
   "grafana_data": null

@@ -19,6 +19,7 @@ import {ApiKey, apiKeysState} from "../state/ApiKey.js";
 import {ApiResponse, callApi, getAuthorizationHeader} from "../logic/callApi.js";
 import {useInputState} from "@mantine/hooks";
 import {useState} from "react";
+import RandomCompanyNumber from "../components/RandomCompanyNumber.js";
 
 // some basic validation to prevent erroneous requests
 function validUrl(url: string){
@@ -60,16 +61,18 @@ function Tester() {
       <Title order={1}>API Tester</Title>
       <Text color={'dimmed'}>Send authenticated requests to an API.</Text>
 
-      <Title order={2}>Choose API key to use</Title>
+      <Title order={2} mt={'xl'}>Choose API key to use</Title>
       <Select data={apiKeys.map(k=>({value: k.key, label: k.name, group: k.baseUrl}))} value={selectedKey?.key??null} onChange={k=>setSelectedKey(apiKeys.find(key=>key.key === k))}/>
 
       {selectedKey ? <div>
-          <Text>Server URL: <Code>{selectedKey?.baseUrl}</Code>.</Text>
-          <Text>API key: <Code>{selectedKey?.key}</Code>.</Text>
+          <Text>Server URL: <Code>{selectedKey?.baseUrl}</Code></Text>
+          <Text>API key: <Code>{selectedKey?.key}</Code></Text>
 
           <Divider my={'md'}/>
 
-          <Title order={2}>Send request</Title>
+        <RandomCompanyNumber/>
+
+          <Title order={2} mt={'xl'}>Send request</Title>
           <Group style={{alignItems: 'end'}}>
             <TextInput label={'URL path'} placeholder={'/company/06743114'} value={path} onChange={setPath} style={{flexGrow: 1}}/>
             <Button onClick={makeRequest} disabled={!validUrl(path)}>Request</Button>

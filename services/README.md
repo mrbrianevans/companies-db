@@ -65,7 +65,29 @@ This is because there are bulk files easily available for these data sets.
 More information about each service can be found in its dedicated README file.
 
 # How to run
-To start a service:
-- make sure the central service is running (`docker compose up -d --build` in this directory)
+Steps to run the API server:
+ - `git clone https://github.com/mrbrianevans/companies-db.git`
+ - `docker network create companiesv2_microservices`
+ - `docker network create companiesv2_auth`
+ - `docker network create companiesv2_metrics`
+ - `docker volume create auth_db`
+ - `cd companies-db/services && docker compose up -d --build`
 - `cd` into the directory of the service you want to run (eg `cd companyProfile`)
 - `docker compose up -d --build` to start the service (this will init a DB and start bulk loading)
+
+# Environment variables
+Docker will load a `.env` file if it exists in the `services` directory.
+
+This file can contain these variables:
+```
+SITE_ADDRESS # the address you want to listen on, can be localhost:PORT or a domain name.
+```
+
+Each of the services also requires a file named `.api.env` which must contain a variable named `RESTAPIKEY` which is a valid and active companies house API key.
+This is used to proxy requests if the data is not found in the local database.
+
+Example of `.api.env` file:
+```
+RESTAPIKEY=9cad50aa-bae0-4094-aa1e-818a65d7eb4f
+STREAM_KEY=e55f8120-3cab-49f6-a591-fd0f761ac378
+```
