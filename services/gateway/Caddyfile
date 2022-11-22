@@ -7,26 +7,40 @@
             format console
         }
 
-        handle_path /manage/* {
+	    encode zstd gzip
+
+        # redirect requests to the root URL to the manage UI
+        redir / /manage/ html
+
+        @manageUrls {
+            path /manage/*
+            path /manage
+        }
+
+        handle @manageUrls {
+	            uri strip_prefix /manage
                 root * /client
-	            encode gzip
-                try_files {path} {path}.html {path}index.html {path}/index.html
-                header Content-Security-Policy "default-src 'self' ;script-src 'self';img-src 'self' data:;worker-src 'self';style-src 'self' 'unsafe-inline' fonts.googleapis.com;manifest-src 'self';connect-src https://companies.stream ws: 'self' fonts.googleapis.com;font-src fonts.google.com fonts.gstatic.com data:"
+                try_files {path} {path}.html {path}/index.html index.html
+                header Content-Security-Policy "default-src 'self' ;script-src 'self';img-src 'self' data:;worker-src 'self';style-src 'self' 'unsafe-inline' fonts.googleapis.com;manifest-src 'self';connect-src https://companies.stream https://api.company-information.service.gov.uk ws: 'self' fonts.googleapis.com;font-src fonts.google.com fonts.gstatic.com data:"
                 header /assets/* Cache-Control max-age=31536000,immutable
                 file_server
         }
 
-        reverse_proxy /new auth-service:3000 # for creating new API keys
+        handle_path /auth/* {
+            reverse_proxy /new auth-service:3000 # for creating new API keys
+        }
 
         @notauthed {
             not header_regexp Authorization ^Basic\s[a-zA-Z0-9]+={0,2}$
             not path /manage/*
-            not path /new
+            not path /auth/*
         }
-        # header @notauthed Content-Type application/json
-        respond @notauthed 401 {
-                body "{\"statusCode\": 401, \"error\": \"Not authorised\", \"message\": \"Basic authentication token not included in request header.\"}"
-                close
+        handle @notauthed {
+            # header @notauthed Content-Type application/json
+            respond 401 {
+                    body "{\"statusCode\": 401, \"error\": \"Not authorised\", \"message\": \"Basic authentication token not included in request header.\"}"
+                    close
+            }
         }
 
         # proxy to microservices

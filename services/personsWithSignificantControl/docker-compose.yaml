@@ -8,6 +8,10 @@
       "driver": "local"
     "networks":
       - "personsWithSignificantControl"
+    deploy:
+      resources:
+        limits:
+          memory: 1.2GB
   "red":
     "build": "databases/redis"
     "volumes":

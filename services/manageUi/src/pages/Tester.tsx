@@ -82,7 +82,7 @@ function Tester() {
           {request && <Prism language={'javascript'} my={'md'}>{
 `const headers = {Authorization: '${getAuthorizationHeader(request.key)}'};
 const response = await fetch('${request.url}', {headers});
-const resource = await res.json();`
+const resource = await response.json();`
           }</Prism>}
           {error && <Alert title="Error calling API" color="red"><b>{error.name}</b> {error.message}</Alert>}
           {response && <div>
