@@ -6,7 +6,7 @@ import { mongoDbName } from '../shared/dbClients.js'
 const fastify = Fastify({
   logger: {
     level: 'trace',
-    transport: { target: 'pino-loki', options: pinoLokiOptions }
+    transport: { target: 'pino-loki', options: pinoLokiOptions('web-service') }
   }
 })
 // @ts-ignore

@@ -86,3 +86,11 @@ export function transformCorporatePsc(bulkCorporatePsc: BulkFileCorporatePsc): C
   if(company_number !== bulkCorporatePsc.company_number) throw new Error('Company number parsed from link does not match: '+JSON.stringify([company_number, bulkCorporatePsc.company_number, bulkCorporatePsc.data.links, {psc_id}]))
   return {...bulkCorporatePsc.data, psc_id,company_number: bulkCorporatePsc.company_number}
 }
+
+export function transformUnrecognised(bulkRecord): CorporatePscStorage{
+  const psc_ids = bulkRecord.data.links.self.match(/\/company\/([A-Z\d]{8})\/persons-with-significant-control\/[a-z-]+\/(.+)/)
+  if(!psc_ids) throw new Error('Cannot match PSC ID for unrecognised record from bulk file: '+JSON.stringify(bulkRecord.data.links))
+  const [,company_number,psc_id] = psc_ids
+  if(company_number !== bulkRecord.company_number) throw new Error('Company number parsed from link does not match: '+JSON.stringify([company_number, bulkRecord.company_number, bulkRecord.data.links, {psc_id}]))
+  return {...bulkRecord.data, psc_id,company_number: bulkRecord.company_number}
+}

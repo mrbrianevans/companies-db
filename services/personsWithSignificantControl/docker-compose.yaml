@@ -26,7 +26,7 @@
     "depends_on":
       - "db"
     "volumes":
-      - "downloads:/loadBulk/downloads"
+      - "downloads:/personsWithSignificantControl/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
       "REDIS_URL": "redis://red:6379"

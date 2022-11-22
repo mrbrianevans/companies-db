@@ -2,25 +2,25 @@ import {Readable} from "node:stream";
 import {once} from 'node:events'
 import {MongoClient} from "mongodb";
 import {getEnv} from "./utils.js";
+import {getLogger} from "../shared/lokiLogger.js";
 import {Worker} from "worker_threads";
 /*
-unfortunately, its impossible to stream the zip file through a pipeline due to the format used (.ZIP).
-It would only work if it used something like gunzip. So need to download entire file, then unzip entire file.
-The best way to do this is going to be to download the "chunks" of 60mb from CH, one at a time and process them concurrently.
-Readable.map({concurrency:8}) to download 8 chunks at a time. Need a library like archiver to unzip files.
-Could also use a worker_thread() for each chunk.
+Downloads small 60mb chunks of the dataset (concurrently), unzips, parses and inserts into Mongo.
+Much faster on multi-cored machines. Set MAX_CONCURRENCY environment variable to control concurrency.
  */
 const DB_NAME = 'personsWithSignificantControl';
-const concurrency = 10
-
-async function loadAllFiles(total = 22, limit ?:number){
+const concurrency = process.env.MAX_CONCURRENCY ? parseInt(process.env.MAX_CONCURRENCY) : 10
+const logger = getLogger('loader', false)
+async function loadAllFiles(total = 22, limit=total, skip = 0){
+  logger.info('Bulk loading PSC. Total files=%i, limit=%i, skip=%i', total, limit, skip)
   console.time(`Load ${limit??total} files`)
   const segments = Array.from({length:total},(v,i)=>i+1)
   // @ts-ignore
-  await Readable.from(segments).take(limit??total).map(async (i)=>{
+  await Readable.from(segments).drop(skip).take(limit??total).map(async (i)=>{
     const w = new Worker('./loaderWorker.js', {argv: [i, total], workerData: {DB_NAME}})
     const [output] = await once(w, 'message') // worker only messages at end of process
     console.log("Output from worker", i, output)
+    logger.info({output}, 'Worker %i %s', i, JSON.stringify(output))
   }, {concurrency}).toArray()
   console.timeEnd(`Load ${limit??total} files`)
 }

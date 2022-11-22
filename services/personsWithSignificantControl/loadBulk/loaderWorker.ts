@@ -10,7 +10,7 @@ import {
   transformLegalPsc,
   transformPscExemptions,
   transformPscStatement,
-  transformSuperSecurePsc
+  transformSuperSecurePsc, transformUnrecognised
 } from "./transformPscFromBulk.js";
 import {pipeline} from "stream/promises";
 import {once} from 'node:events'
@@ -35,13 +35,16 @@ import {LegalPscStorage} from "../shared/storageTypes/legalPscStorage.js";
 import {CorporatePscStorage} from "../shared/storageTypes/corporatePscStorage.js";
 import {ExemptionsStorage} from "../shared/storageTypes/exemptionsStorage.js";
 import {Writable} from "stream";
+import {getLogger} from "../shared/lokiLogger.js";
 
 const yauzlOpenZip = promisify(yauzl.open)
 
+const logger = getLogger('loader', false)
 const DB_NAME = workerData?.DB_NAME??'ch';
 const date = new Date().toISOString().split('T')[0]
 const i = parseInt(process.argv[2])
 const total = parseInt(process.argv[3])
+logger.info({DB_NAME, date, i, total},'PSC bulk load worker started %i/%i', i, total)
 if (isMainThread) {
   console.log("Running worker in main thread")
 } else {
@@ -105,6 +108,7 @@ console.timeEnd('Download ZIP file '+i)
 //todo: this can be improved by:
 // - don't save the unzipped file, rather just pipe from the unzip stream straight to the parser (see companyProfile)
 // - use split2(JSON.parse) instead of createInterface and Readable.from().map(JSON.parse)
+// - this would benefit much from the mongoInserter found in the officers service. When implementing beneficial owners, this is required.
 
 console.time('Unzip ZIP file '+i)
 const textFile = await unzipFile(zipFilename)
@@ -116,6 +120,7 @@ const lines = createInterface({input: file})
 const individualInserter = new MongoInserter<IndividualPscStorage>(DB_NAME, 'getIndividual', ["company_number","psc_id"], 2)
 const legalInserter = new MongoInserter<LegalPscStorage>(DB_NAME, 'getLegalPersons', ["company_number","psc_id"], 0)
 const corporateInserter = new MongoInserter<CorporatePscStorage>(DB_NAME, 'getCorporateEntities', ["company_number","psc_id"], 1)
+const unrecognisedInserter = new MongoInserter(DB_NAME, 'unrecognisedRecords', ["company_number","psc_id"], 1)
 const superSecureInserter = new MongoInserter<SuperSecureStorage>(DB_NAME, 'getSuperSecurePerson', ["company_number","super_secure_id"], 0)
 const statementInserter = new MongoInserter<StatementStorage>(DB_NAME, 'getStatement', ["company_number","statement_id"], 2)
 const summaryInserter = new MongoInserter<BulkFilePscSummary['data']>(DB_NAME, 'summary', ["generated_at"], 0)
@@ -143,10 +148,14 @@ const splitterStream = new Writable({
         break;
       case "totals#persons-of-significant-control-snapshot":
         const {data} = chunk
+        logger.info(data, 'PSC bulk file summary, worker %i', i)
         summaryInserter.write(data, callback)
         break;
       case "exemptions":
         exemptionsInserter.write(transformPscExemptions(<BulkFilePscExemptions>chunk), callback)
+        break;
+      default:
+        unrecognisedInserter.write(transformUnrecognised(chunk), callback)
         break;
     }
   },
