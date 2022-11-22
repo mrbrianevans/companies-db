@@ -11,6 +11,7 @@
 
         # redirect requests to the root URL to the manage UI
         redir / /manage/ html
+        header / Content-Type text/html
 
         @manageUrls {
             path /manage/*
@@ -36,7 +37,7 @@
             not path /auth/*
         }
         handle @notauthed {
-            # header @notauthed Content-Type application/json
+            header @notauthed Content-Type application/json
             respond 401 {
                     body "{\"statusCode\": 401, \"error\": \"Not authorised\", \"message\": \"Basic authentication token not included in request header.\"}"
                     close

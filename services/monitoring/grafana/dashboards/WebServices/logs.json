@@ -1,25 +1,6 @@
 {
   "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
-        "type": "dashboard"
-      }
-    ]
+    "list": []
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
@@ -29,7 +10,10 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": "loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "8960829e8148"
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -49,9 +33,9 @@
       },
       "targets": [
         {
-          "datasource": "loki",
+          "datasource": "Loki",
           "editorMode": "builder",
-          "expr": "{component=\"web-service\"} |= `incoming request` | json | line_format `{{.level}} {{.service}} {{.reqId}} {{.msg}} {{.req_method}} {{.req_url}}`",
+          "expr": "{level=\"info\"} |= `incoming request` | json | line_format `{{.level}} {{.service}} {{.reqId}} {{.msg}} {{.req_method}} {{.req_url}}`",
           "queryType": "range",
           "refId": "A"
         }
@@ -60,7 +44,10 @@
       "type": "logs"
     },
     {
-      "datasource": "loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "8960829e8148"
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -80,9 +67,9 @@
       },
       "targets": [
         {
-          "datasource": "loki",
+          "datasource": "Loki",
           "editorMode": "builder",
-          "expr": "{component=\"web-service\"} |= `request completed` | json | line_format `{{.level}} {{.service}} {{.reqId}} Response time: {{round .responseTime 2}}ms`",
+          "expr": "{level=\"info\"} |= `request completed` | json | line_format `{{.level}} {{.service}} {{.reqId}} Response time: {{round .responseTime 2}}ms`",
           "queryType": "range",
           "refId": "A"
         }
@@ -91,7 +78,11 @@
       "type": "logs"
     },
     {
-      "datasource": "loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "8960829e8148"
+      },
+      "description": "Timing of mongodb find one operations",
       "gridPos": {
         "h": 9,
         "w": 12,
@@ -111,14 +102,14 @@
       },
       "targets": [
         {
-          "datasource": "loki",
-          "editorMode": "code",
-          "expr": "{component=\"web-service\"} | json | line_format `{{.level}} {{.service}} {{.reqId}} {{.msg}}`",
+          "datasource": "Loki",
+          "editorMode": "builder",
+          "expr": "{level=\"debug\"} |= `Find one operation in MongoDB` | json | line_format `{{.level}} {{.service}} {{.reqId}} {{.msg}} {{ round .findDurationMs 2}}ms     {{.service}}`",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Server logs",
+      "title": "Mongo finds",
       "type": "logs"
     }
   ],
@@ -129,13 +120,13 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Logs",
   "uid": "B6bJ9DG4z",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }
