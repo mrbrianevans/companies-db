@@ -12,7 +12,7 @@ const DB_NAME = 'personsWithSignificantControl';
 const concurrency = process.env.MAX_CONCURRENCY ? parseInt(process.env.MAX_CONCURRENCY) : 10
 const logger = getLogger('loader', false)
 async function loadAllFiles(total = 22, limit=total, skip = 0){
-  logger.info('Bulk loading PSC. Total files=%i, limit=%i, skip=%i', total, limit, skip)
+  logger.info({total, limit, skip, concurrency},'Bulk loading PSC. Total files=%i, limit=%i, skip=%i, concurrency=%i', total, limit, skip, concurrency)
   console.time(`Load ${limit??total} files`)
   const segments = Array.from({length:total},(v,i)=>i+1)
   // @ts-ignore
@@ -20,9 +20,10 @@ async function loadAllFiles(total = 22, limit=total, skip = 0){
     const w = new Worker('./loaderWorker.js', {argv: [i, total], workerData: {DB_NAME}})
     const [output] = await once(w, 'message') // worker only messages at end of process
     console.log("Output from worker", i, output)
-    logger.info({output}, 'Worker %i %s', i, JSON.stringify(output))
+    logger.info({output}, 'Worker %i %s', i, output)
   }, {concurrency}).toArray()
   console.timeEnd(`Load ${limit??total} files`)
+  logger.info({total, limit, skip, concurrency},'Finished bulk loading PSC. Total files=%i, limit=%i, skip=%i, concurrency=%i', total, limit, skip, concurrency)
 }
 const collections = ['getIndividual','getLegalPersons','getCorporateEntities','getSuperSecurePerson','getStatement','getExemptions']
 /**

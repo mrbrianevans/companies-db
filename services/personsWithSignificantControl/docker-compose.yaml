@@ -31,6 +31,7 @@
       "MONGO_URL": "mongodb://db"
       "REDIS_URL": "redis://red:6379"
       "LOKI_URL": "http://loki:3100"
+      MAX_CONCURRENCY: ${MAX_CONCURRENCY}
     "networks":
       - "personsWithSignificantControl"
       - "companiesv2_metrics"
