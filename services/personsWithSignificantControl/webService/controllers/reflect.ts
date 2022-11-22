@@ -1,5 +1,6 @@
-import pino from 'pino'
-const logger = pino()
+import {getLogger} from '../../shared/lokiLogger.js'
+
+const logger = getLogger('web-service')
 const apiUrl = 'https://api.company-information.service.gov.uk'
 const headers = {
   Authorization:
@@ -15,7 +16,7 @@ export function getEnv(name: string): string {
 }
 
 export async function reflect(path) {
-  logger.info({ path, apiUrl }, 'Outgoing request to Official API')
+  logger.debug({ path, apiUrl }, 'Outgoing request to Official API')
   const res = await fetch(apiUrl + path, { headers })
   logger.info(
     { path, status: res.status },

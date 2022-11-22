@@ -12,6 +12,7 @@
   "dependencies": {
     "capital-case": "^1.0.4",
     "mongodb": "^4.9.1",
+    "pino": "^8.5.0",
     "pino-loki": "^2.0.3",
     "redis": "^4.3.1"
   },

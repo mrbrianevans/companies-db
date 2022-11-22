@@ -5,6 +5,11 @@ import {randomUUID} from "crypto";
 const WINDOW_SIZE_MINUTES = 5
 const DEFAULT_QUOTA = 600
 
+//todo: change the way values are stored in redis to make it easier to manage at scale:
+// - api keys should expire after 60 days if they haven't been used
+// - as much info should be stored in a hash for the api key as possible (eg {[apiKey]: {quota, created, totalRequests, ipAddress}})
+// - would be nice to have some sort of history, such as number of requests per day for each key, to allow user to view usage
+// - need a different response for a valid key which has exhausted its limit and a non-existent (or expired/invalid) key
 interface Context{
   redis: FastifyRedis,
   req: FastifyRequest

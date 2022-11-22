@@ -1,3 +1,4 @@
+import pino from 'pino';
 import type PinoLoki from 'pino-loki'
 import {getEnv} from "./utils.js";
 
@@ -10,5 +11,12 @@ export const pinoLokiOptions: Parameters<typeof PinoLoki>[0] = {
   timeout: 5000,
   batching: true
 }
+
+const pinoLokiTransport = pino.transport({
+  target: 'pino-loki',
+  options: pinoLokiOptions
+})
+
+export const getLogger = component => pino(pinoLokiTransport)
 
 await fetch(pinoLokiOptions.host + '/ready').then(r=>console.log(pinoLokiOptions.labels?.service,'LOKI:',r.status, r.statusText))

@@ -89,8 +89,9 @@ export default ${name}Controller
         `))
     // this reflects requests to the companies house api
     await writeFile(resolve(SERVICES_DIR, tag,'webService', 'controllers', 'reflect.ts'), prettyTs(`
-        import pino from 'pino'
-const logger = pino()
+import {getLogger} from '../../shared/lokiLogger.js'
+
+const logger = getLogger('web-service') 
         const apiUrl = 'https://api.company-information.service.gov.uk'
 const headers =  {Authorization: 'Basic '+Buffer.from(getEnv('RESTAPIKEY')+':').toString('base64')}
 
