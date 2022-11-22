@@ -7,6 +7,7 @@ type RandomCompanyNumberProps = {
 }
 
 async function fetchCompanyNumber(){
+  if(window.location.origin !== 'https://companiesdb.co.uk') return ['07048732']
   const res = await fetch('https://companies.stream/events/randomCompanyNumbers')
   const companyNumbers = await res.json()
   return companyNumbers[0]
@@ -17,7 +18,11 @@ const [companyNumber, setCompanyNumber] = useState<string>()
   return (
     <Group spacing={'sm'}>
       <Button onClick={()=>fetchCompanyNumber().then(setCompanyNumber)}>Random company number</Button>
-      {companyNumber && <CopyableCode value={companyNumber}/>}
+      {companyNumber && <div style={{display:'inline-flex', gap: '10px', flexWrap: 'wrap'}}>
+          <CopyableCode value={companyNumber}/>
+          <CopyableCode value={'/company/'+companyNumber}/>
+          <CopyableCode value={'/company/'+companyNumber+'/persons-with-significant-control'}/>
+      </div>}
     </Group>
   );
 };

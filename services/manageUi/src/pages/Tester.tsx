@@ -20,6 +20,7 @@ import {ApiResponse, callApi, getAuthorizationHeader} from "../logic/callApi.js"
 import {useInputState} from "@mantine/hooks";
 import {useState} from "react";
 import RandomCompanyNumber from "../components/RandomCompanyNumber.js";
+import RequestCode from "../components/RequestCode.js";
 
 // some basic validation to prevent erroneous requests
 function validUrl(url: string){
@@ -48,12 +49,13 @@ function Tester() {
   function makeRequest(){
     if(selectedKey) {
       setRequest({key: selectedKey.key, url: new URL(path, selectedKey.baseUrl).toString()})
+      setResponse(undefined)
       callApi(path, selectedKey.baseUrl, selectedKey.key)
-        .then(response => setResponse(response)).then(()=>setError(undefined))
-        .catch(e => {
-          setError(e)
-          setResponse(undefined)
+        .then(response => {
+            setResponse(response)
+            setError(undefined)
         })
+        .catch(e => setError(e))
     }
   }
 
@@ -78,14 +80,11 @@ function Tester() {
             <Button onClick={makeRequest} disabled={!validUrl(path)}>Request</Button>
           </Group>
 
-          {request && <Code block my={'md'}>{`GET ${request.url}\nAuthorization: ${getAuthorizationHeader(request.key)}`}</Code>}
-          {request && <Prism language={'javascript'} my={'md'}>{
-`const headers = {Authorization: '${getAuthorizationHeader(request.key)}'};
-const response = await fetch('${request.url}', {headers});
-const resource = await response.json();`
-          }</Prism>}
+          {request && <RequestCode url={request.url} apiKey={request.key}/>}
+
           {error && <Alert title="Error calling API" color="red"><b>{error.name}</b> {error.message}</Alert>}
           {response && <div>
+              <Title order={3} my={'md'}>Response</Title>
               <Group>
                   <Badge color={getStatusColor(response.status)} radius={'xs'} size={'lg'}>Status {response.status} {response.statusText}</Badge>
                 {response.headers.get('content-type') && <Badge radius={'xs'} size={'lg'} color={response.isJson?'green':'gray'}>{response.headers.get('content-type')}</Badge>}

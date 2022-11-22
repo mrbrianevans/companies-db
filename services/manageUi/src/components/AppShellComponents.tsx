@@ -23,8 +23,8 @@ export const ApplicationHeader: React.FC = (props) => {
 
 
 export const ApplicationFooter: React.FC = (props) => (
-  <Footer height={60}>
-    <div style={{display: 'grid', placeItems: 'center'}}>
+  <Footer height={30}>
+    <div style={{display: 'grid', placeItems: 'end'}}>
       <Text color={'dimmed'}>This website was made by Brian Evans</Text>
     </div>
   </Footer>
