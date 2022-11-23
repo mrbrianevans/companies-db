@@ -55,7 +55,7 @@ const listPersonsWithSignificantControlController: FastifyPluginAsync = async (
       }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      const result = listPersonsWithSignificantControl(
+      const result = await listPersonsWithSignificantControl(
         context,
         company_number,
         items_per_page,
@@ -66,7 +66,7 @@ const listPersonsWithSignificantControlController: FastifyPluginAsync = async (
       else
         res
           .code(404)
-          .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
+          .send({ statusCode: 404, error: 'Not found', message: 'Company PSC not found' })
     }
   )
 }

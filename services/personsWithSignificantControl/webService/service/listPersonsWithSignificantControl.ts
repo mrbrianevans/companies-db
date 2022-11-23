@@ -6,6 +6,10 @@ import type { FastifyRequest } from 'fastify'
 import { ListPersonsWithSignificantControlSchema } from '../schemas/listPersonsWithSignificantControlSchema.js'
 import { reflect } from '../controllers/reflect.js'
 import { performance } from 'perf_hooks'
+import {GetIndividualResponse} from "../schemas/getIndividualSchema.js";
+import {GetLegalPersonsResponse} from "../schemas/getLegalPersonsSchema.js";
+import {GetCorporateEntitiesResponse} from "../schemas/getCorporateEntitiesSchema.js";
+import {GetSuperSecurePersonResponse} from "../schemas/getSuperSecurePersonSchema.js";
 
 export interface Context {
   redis: FastifyRedis
@@ -50,63 +54,37 @@ export async function initListPersonsWithSignificantControlCollection(
 export async function listPersonsWithSignificantControl(
   context: Context,
   company_number: string,
-  items_per_page?: string,
-  start_index?: string,
-  register_view?: string
+  items_per_page = 25,
+  start_index = 0,
+  register_view = false
 ): Promise<ListPersonsWithSignificantControlResponse | null> {
+  if(register_view) throw new Error('Register view not yet supported. Try setting to false or omitting.')
   if (!context.mongo.db) throw new Error('DB not defined')
-  const collection =
-    context.mongo.db.collection<ListPersonsWithSignificantControlResponse>(
-      colName
+  const collections = new Set(['getCorporateEntities', 'getIndividual', 'getLegalPersons', 'getSuperSecurePerson'])
+  const items: ListPersonsWithSignificantControlResponse['items'] = []
+  let total_results = 0
+  for (const collectionName of collections) {
+    const collection = context.mongo.db.collection<GetIndividualResponse|GetLegalPersonsResponse|GetCorporateEntitiesResponse|GetSuperSecurePersonResponse>(collectionName)
+    const startFind = performance.now()
+    const collectionItems = await collection.find({ company_number }).limit(items_per_page).toArray()
+    context.req.log.trace(
+      { duration: performance.now() - startFind, found: collectionItems.length, operation: 'find', collectionName },
+      'Find operation in MongoDB'
     )
-  const startFind = performance.now()
-  let res = await collection.findOne({ company_number })
-  const findDurationMs = performance.now() - startFind
-  context.req.log.trace(
-    { findDurationMs, found: Boolean(res) },
-    'Find one operation in MongoDB'
-  )
-  if (!res) {
-    res = await callListPersonsWithSignificantControlApi(
-      { company_number },
-      { items_per_page, start_index, register_view }
-    )
-    if (res) {
-      try {
-        await collection.updateOne(
-          { company_number },
-          { $set: res },
-          { upsert: true }
-        )
-      } catch (e) {
-        if (e.code === 121) {
-          context.req.log.warn(
-            { company_number, items_per_page, start_index, register_view },
-            'Failed to upsert document from API due to validation error'
-          )
-        } else {
-          context.req.log.error(
-            { err: e },
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-    }
+    items.push(...collectionItems)
+    total_results += await collection.countDocuments({ company_number })
   }
-  return res ?? null
-}
-
-async function callListPersonsWithSignificantControlApi(
-  pathParams,
-  queryParams
-) {
-  const nonNullQueryParams = Object.fromEntries(
-    Object.entries(queryParams)
-      .filter(([k, v]) => v)
-      .map(([k, v]) => [k, String(v)])
-  )
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const { company_number } = pathParams
-  const path = `/company/${company_number}/persons-with-significant-control`
-  return await reflect(path + '?' + urlQuery.toString())
+  //todo: sort items to allow for paging results
+  if(total_results === 0) return null
+  else return {
+    items: items.slice(start_index, start_index + items_per_page),
+    start_index,
+    items_per_page,
+    ceased_count: items.filter(o=>o.ceased_on !== undefined).length,
+    active_count: items.filter(o=>o.ceased_on === undefined).length,
+    links: {
+      self: `/company/${company_number}/persons-with-significant-control`
+    },
+    total_results
+  }
 }

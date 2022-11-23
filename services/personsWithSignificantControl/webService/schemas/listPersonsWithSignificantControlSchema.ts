@@ -7,16 +7,16 @@ export interface ListPersonsWithSignificantControlParams {
 
 export interface ListPersonsWithSignificantControlQueryString {
   /** The number of persons with significant control to return per page. */
-  items_per_page?: string
+  items_per_page?: number
   /** The offset into the entire result set that this page starts. */
-  start_index?: string
+  start_index?: number
   /** Display register specific information. If register is held at
 Companies House and register_view is set to true, only PSCs which are
 active or were terminated during election period are shown together with
-full dates of birth where available. Accepted values are: -`true`  
+full dates of birth where available. Accepted values are: -`true`
 -`false`  \n Defaults to false.
  */
-  register_view?: string
+  register_view?: boolean
 }
 
 export const ListPersonsWithSignificantControlSchema = {
@@ -34,13 +34,13 @@ export const ListPersonsWithSignificantControlSchema = {
       type: 'object',
       properties: {
         items_per_page: {
-          type: 'string'
+          type: 'integer'
         },
         start_index: {
-          type: 'string'
+          type: 'integer'
         },
         register_view: {
-          type: 'string'
+          type: 'boolean'
         }
       },
       required: []
