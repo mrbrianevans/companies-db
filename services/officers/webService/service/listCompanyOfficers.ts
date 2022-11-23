@@ -59,6 +59,8 @@ export async function listCompanyOfficers(
   order_by: 'appointed_on'| 'resigned_on'|'surname' = 'appointed_on'
 ): Promise<ListCompanyOfficersResponse | null> {
   if (!context.mongo.db) throw new Error('DB not defined')
+  if(register_view) throw new Error('Register view not yet supported. Try setting to false or omitting.')
+  if(register_type) throw new Error('Register type not yet supported. Try setting to false or omitting.')
   if(items_per_page > 100) items_per_page = 100
   if(items_per_page < 0) items_per_page = 0
   const collection =
@@ -68,8 +70,8 @@ export async function listCompanyOfficers(
   let res = await collection.find({ company_number }).sort(order_by, 'ascending').skip(start_index).limit(items_per_page).toArray()
   const findDurationMs = performance.now() - startFind
   context.req.log.trace(
-    { findDurationMs, found: Boolean(res) },
-    'Find one operation in MongoDB'
+    { findDurationMs, found: res.length },
+    'Find operation in MongoDB'
   )
  return {
    active_count: res.filter(o=>o.resigned_on === undefined).length, // not sure what this should be?? I think it's if the companies are active

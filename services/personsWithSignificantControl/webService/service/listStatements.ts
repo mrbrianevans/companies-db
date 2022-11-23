@@ -1,11 +1,10 @@
-import type { ListStatementsResponse } from '../schemas/listStatementsSchema.js'
-import type { FastifyRedis } from '@fastify/redis'
-import type { FastifyMongoObject } from '@fastify/mongodb'
-import type { FastifyRequest } from 'fastify'
-
-import { ListStatementsSchema } from '../schemas/listStatementsSchema.js'
-import { reflect } from '../controllers/reflect.js'
-import { performance } from 'perf_hooks'
+import type {ListStatementsResponse} from '../schemas/listStatementsSchema.js'
+import {ListStatementsSchema} from '../schemas/listStatementsSchema.js'
+import type {FastifyRedis} from '@fastify/redis'
+import type {FastifyMongoObject} from '@fastify/mongodb'
+import type {FastifyRequest} from 'fastify'
+import {performance} from 'perf_hooks'
+import {GetStatementResponse} from "../schemas/getStatementSchema.js";
 
 export interface Context {
   redis: FastifyRedis
@@ -50,58 +49,35 @@ export async function initListStatementsCollection(
 export async function listStatements(
   context: Context,
   company_number: string,
-  items_per_page?: number,
-  start_index?: number,
-  register_view?: undefined
+  items_per_page = 25,
+  start_index = 0,
+  register_view = false
 ): Promise<ListStatementsResponse | null> {
+  if(register_view) throw new Error('Register view not yet supported. Try setting to false or omitting.')
   if (!context.mongo.db) throw new Error('DB not defined')
+  if(items_per_page > 100) items_per_page = 100
+  if(items_per_page < 0) items_per_page = 0
   const collection =
-    context.mongo.db.collection<ListStatementsResponse>(colName)
+    context.mongo.db.collection<GetStatementResponse>('getStatement')
   const startFind = performance.now()
-  let res = await collection.findOne({ company_number })
-  const findDurationMs = performance.now() - startFind
+  let items = await collection.find({ company_number }).skip(start_index).limit(items_per_page).toArray()
   context.req.log.trace(
-    { findDurationMs, found: Boolean(res) },
-    'Find one operation in MongoDB'
+    { duration: performance.now() - startFind, found: items.length, operation: 'find' },
+    'Find operation in MongoDB'
   )
-  if (!res) {
-    res = await callListStatementsApi(
-      { company_number },
-      { items_per_page, start_index, register_view }
-    )
-    if (res) {
-      try {
-        await collection.updateOne(
-          { company_number },
-          { $set: res },
-          { upsert: true }
-        )
-      } catch (e) {
-        if (e.code === 121) {
-          context.req.log.warn(
-            { company_number, items_per_page, start_index, register_view },
-            'Failed to upsert document from API due to validation error'
-          )
-        } else {
-          context.req.log.error(
-            { err: e },
-            'Failed to insert document for a different reason to validation'
-          )
-        }
-      }
-    }
+  const startCount = performance.now()
+  let total_results = await collection.countDocuments({ company_number })
+  context.req.log.trace(    { duration: performance.now() - startCount, operation: 'count' },    'MongoDB count'  )
+  if(total_results === 0) return null
+  else return {
+    items,
+    start_index,
+    items_per_page,
+    ceased_count: items.filter(o=>o.ceased_on !== undefined).length,
+    active_count: items.filter(o=>o.ceased_on === undefined).length,
+    links: {
+      self: `/company/${company_number}/persons-with-significant-control-statements`
+    },
+    total_results
   }
-  return res ?? null
-}
-
-async function callListStatementsApi(pathParams, queryParams) {
-  const nonNullQueryParams = Object.fromEntries(
-    Object.entries(queryParams)
-      .filter(([k, v]) => v)
-      .map(([k, v]) => [k, String(v)])
-  )
-  const urlQuery = new URLSearchParams(nonNullQueryParams)
-  const { company_number } = pathParams
-  const path = `/company/${company_number}/persons-with-significant-control-statements`
-  return await reflect(path + '?' + urlQuery.toString())
 }

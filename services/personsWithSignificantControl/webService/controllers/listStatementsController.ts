@@ -1,14 +1,10 @@
-import { FastifyPluginAsync } from 'fastify'
+import {FastifyPluginAsync} from 'fastify'
+import {Context, initListStatementsCollection, listStatements} from '../service/listStatements.js'
+import {auth} from './reflect.js'
 import {
-  listStatements,
-  Context,
-  initListStatementsCollection
-} from '../service/listStatements.js'
-import { auth } from './reflect.js'
-import {
-  ListStatementsSchema as schema,
+  ListStatementsParams,
   ListStatementsQueryString,
-  ListStatementsParams
+  ListStatementsSchema as schema
 } from '../schemas/listStatementsSchema.js'
 
 const listStatementsController: FastifyPluginAsync = async (fastify, opts) => {
@@ -50,7 +46,7 @@ const listStatementsController: FastifyPluginAsync = async (fastify, opts) => {
       }
       const { redis, mongo } = fastify
       const context: Context = { redis, mongo, req }
-      const result = listStatements(
+      const result = await listStatements(
         context,
         company_number,
         items_per_page,
@@ -61,7 +57,7 @@ const listStatementsController: FastifyPluginAsync = async (fastify, opts) => {
       else
         res
           .code(404)
-          .send({ statusCode: 404, error: 'Not found', message: 'Not found' })
+          .send({ statusCode: 404, error: 'Not found', message: 'Company PSC not found' })
     }
   )
 }

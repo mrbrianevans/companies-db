@@ -38,7 +38,9 @@ export const ListStatementsSchema = {
         start_index: {
           type: 'integer'
         },
-        register_view: {}
+        register_view: {
+          type: 'boolean'
+        }
       },
       required: []
     },
