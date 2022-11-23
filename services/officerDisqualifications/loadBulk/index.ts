@@ -8,8 +8,8 @@ import {classifyDisqualifiedOfficerRecordType, disqualifiedOfficersRecordTypes} 
 
 const options = {
   input: process.argv[2],
-  limit: 10,
-  output: undefined,
+  limit: Infinity,
+  output: process.argv[3],
   verbose: true
 }
 

@@ -1,4 +1,4 @@
-import camelcaseKeys from 'camelcase-keys';
+import camelcaseKeys from 'camelcase-keys-deep';
 
 export type RecordFields = ({start: number, length: number, name: string, comment?: string}&({dataType: 'V', variableFormat: string}|{dataType: 'X'|'9'|'D'|'B'}))[]
 export interface RecordTypeSpec {
@@ -9,9 +9,9 @@ export interface RecordTypeSpec {
 
 function parseDate(date){
   return {
-    year: date.slice(0,4).trim(),
-    month: date.slice(4,6).trim(),
-    day: date.slice(6).trim()
+    year: date.slice(0,4).trim() ? parseInt(date.slice(0,4).trim()): undefined,
+    month: date.slice(4,6).trim() ? parseInt(date.slice(4,6).trim()): undefined,
+    day: date.slice(6).trim() ? parseInt(date.slice(6).trim()): undefined
   }
 }
 
@@ -22,7 +22,7 @@ export function parseVariableData(keysFormat: string, valuesString: string){
 }
 
 export const dataTypeParsers: { [T in RecordFields[number]['dataType']]: (segment: RecordFields[number]  )=>(v: string)=>any } = {
-  "9": ()=>parseInt,
+  "9": ()=>n=>parseInt(n, 10),
   D: ()=>parseDate,
 // @ts-ignore
   V: (segment)=>(v:string)=>parseVariableData(segment.variableFormat, v),
