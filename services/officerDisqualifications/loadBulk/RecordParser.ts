@@ -19,7 +19,7 @@ function parseDate(date){
 
 // cache used to improve performance. Could also be compiled when a Parser is constructed.
 const variableDataFormatCache = new Map()
-export function parseVariableData(keysFormat: string, valuesString: string, transformer = camelcaseKeys){
+function parseVariableData(keysFormat: string, valuesString: string, transformer = camelcaseKeys){
   if(!variableDataFormatCache.has(keysFormat)){
     variableDataFormatCache.set(keysFormat, keysFormat.split('<').filter(k=>k.length))
   }
@@ -28,7 +28,7 @@ export function parseVariableData(keysFormat: string, valuesString: string, tran
   return transformer(Object.fromEntries(keys.map((k,i)=>[k, values[i]]).filter(([, val])=>val !== '')))
 }
 
-export const dataTypeParsers: { [T in RecordFields[number]['dataType']]: (segment: RecordFields[number]  )=>(v: string)=>any } = {
+const dataTypeParsers: { [T in RecordFields[number]['dataType']]: (segment: RecordFields[number]  )=>(v: string)=>any } = {
   "9": ()=>n=>parseInt(n, 10),
   D: ()=>parseDate,
 // @ts-ignore
@@ -47,7 +47,7 @@ export const dataTypeParsers: { [T in RecordFields[number]['dataType']]: (segmen
  * @param recordString - a line from the bulk file
  * @param format - a format to parse the segment with.
  */
-export function parseRecordByFormat(recordString: string, format: RecordFields){
+function parseRecordByFormat(recordString: string, format: RecordFields){
   return Object.fromEntries(format.map(segment=> {
     const rawValue = recordString.slice(segment.start, segment.start + segment.length)
     const dataTypeParser = dataTypeParsers[segment.dataType]
