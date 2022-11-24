@@ -1,6 +1,6 @@
-import camelcaseKeys from 'camelcase-keys-deep';
+import camelcaseKeys from 'camelcase-keys';
 
-export type RecordFields = ({start: number, length: number, name: string, comment?: string}&({dataType: 'V', variableFormat: string}|{dataType: 'X'|'9'|'D'|'B'}))[]
+export type RecordFields = ({start: number, length: number, name: string, comment?: string}&({dataType: 'V', variableFormat: string, variableTransformer?:(record: Record<string, string>) => any}|{dataType: 'X'|'9'|'D'|'B'}))[]
 export interface RecordTypeSpec {
   fields: RecordFields
   transformer?: (record) => any
@@ -8,25 +8,32 @@ export interface RecordTypeSpec {
 }
 
 function parseDate(date){
-  return {
+  if(date.trim().length === 0) return undefined
+  else
+    return {
     year: date.slice(0,4).trim() ? parseInt(date.slice(0,4).trim()): undefined,
     month: date.slice(4,6).trim() ? parseInt(date.slice(4,6).trim()): undefined,
     day: date.slice(6).trim() ? parseInt(date.slice(6).trim()): undefined
   }
 }
 
-export function parseVariableData(keysFormat: string, valuesString: string){
-  const keys = keysFormat.split('<').map(s=>(s)).filter(k=>k.length)
+// cache used to improve performance. Could also be compiled when a Parser is constructed.
+const variableDataFormatCache = new Map()
+export function parseVariableData(keysFormat: string, valuesString: string, transformer = camelcaseKeys){
+  if(!variableDataFormatCache.has(keysFormat)){
+    variableDataFormatCache.set(keysFormat, keysFormat.split('<').filter(k=>k.length))
+  }
+  const keys = variableDataFormatCache.get(keysFormat)
   const values = valuesString.split('<')
-  return Object.fromEntries(keys.map((k,i)=>[k, values[i]]))
+  return transformer(Object.fromEntries(keys.map((k,i)=>[k, values[i]]).filter(([, val])=>val !== '')))
 }
 
 export const dataTypeParsers: { [T in RecordFields[number]['dataType']]: (segment: RecordFields[number]  )=>(v: string)=>any } = {
   "9": ()=>n=>parseInt(n, 10),
   D: ()=>parseDate,
 // @ts-ignore
-  V: (segment)=>(v:string)=>parseVariableData(segment.variableFormat, v),
-  X: ()=>v=>v.trim(),
+  V: (segment)=>(v:string)=>parseVariableData(segment.variableFormat, v, segment.variableTransformer),
+  X: ()=>v=>v.trim()||undefined,
   // Boolean (either a space or a "Y")
   B: ()=>b=>b==='Y'
 }
@@ -68,7 +75,7 @@ export class RecordParser{
     const recordTypeSpec = this.recordTypeSpecs.find(r=>r.recordTypeEnum === recordType)
     if(!recordTypeSpec) throw new Error('Cannot parse record. Record type spec not provided for recordType='+String(JSON.stringify(recordType)))
     const rawValues = parseRecordByFormat(record, recordTypeSpec.fields)
-    const transformer = recordTypeSpec.transformer ?? (o => camelcaseKeys(o))
+    const transformer = recordTypeSpec.transformer ?? camelcaseKeys
     const transformedValue = transformer(rawValues)
     return {...transformedValue, recordType}
   }

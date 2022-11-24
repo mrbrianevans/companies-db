@@ -28,17 +28,12 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
     recordTypeEnum: DisqualifiedOfficersRecordType.Trailer,
     fields: [
       { name: 'Trailer Identifier ', dataType: 'X', start: 0, length: 8 },
-      { name: '', dataType: 'X', start: 8, length: 1 },
       { name: 'Type 1 Record Count', dataType: '9', start: 9, length: 8 },
-      { name: '', dataType: 'X', start: 17, length: 1 },
       { name: 'Type 2 Record Count', dataType: '9', start: 18, length: 8 },
-      { name: '', dataType: 'X', start: 26, length: 1 },
       { name: 'Type 3 Record Count', dataType: '9', start: 27, length: 8 },
-      { name: '', dataType: 'X', start: 35, length: 1 },
       { name: 'Type 4 Record Count', dataType: '9', start: 36, length: 8 },
-      { name: '', dataType: 'X', start: 44, length: 1 },
       {
-        name: 'Total Record Count (excluding Header & Trailer)',
+        name: 'Total Record Count excluding Header  Trailer',
         dataType: '9',
         start: 45,
         length: 8
