@@ -1,6 +1,6 @@
 import type {RecordTypeSpec} from './RecordParser.js'
 
-enum DisqualifiedOfficersRecordType{
+export enum DisqualifiedOfficersRecordType{
   Header,
   Person,
   Disqualification,
