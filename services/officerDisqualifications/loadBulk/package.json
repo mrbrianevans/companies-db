@@ -12,7 +12,8 @@
   "dependencies": {
     "camelcase-keys": "^8.0.2",
     "mongodb": "^4.9.1",
-    "split2": "^4.1.0"
+    "split2": "^4.1.0",
+    "title-case": "^3.0.3"
   },
   "devDependencies": {
     "@types/node": "^18.7.18",

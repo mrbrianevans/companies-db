@@ -10,19 +10,22 @@ import {singleMongoBulkWriter} from '../shared/mongoInserter.js'
 import {formatRecords} from "./formatRecords.js";
 import ReadWriteStream = NodeJS.ReadWriteStream;
 import {getEnv} from "./utils.js";
+import { mongoDbName } from "../shared/dbClients.js";
 
 const absFilePath = getEnv('DISQUAL_BULK_FILE_PATH')
 const inputStream = createReadStream(absFilePath)
 const parser = new RecordParser(disqualifiedOfficersRecordTypes, classifyDisqualifiedOfficerRecordType)
 const parseStream = split2(r=>parser.parse(r))
 const mongoStream = singleMongoBulkWriter( {
-  dbName: 'officerDisqualifications', collection:'getNaturalOfficer', BulkOpSize: 8000,
+  dbName: mongoDbName, collection:'getNaturalOfficer', BulkOpSize: 8000,
   mapper: val=>({replaceOne: {replacement: val, upsert: true, filter: {officer_id:val.officer_id}}})
 })
 
 console.time('load disqualified officers')
-await pipeline(inputStream, parseStream, formatRecords as unknown as ReadWriteStream, mongoStream)
+const res = await pipeline(inputStream, parseStream, formatRecords as unknown as ReadWriteStream, mongoStream)
 console.timeEnd('load disqualified officers')
+
+console.log(res)
 
 /*
 

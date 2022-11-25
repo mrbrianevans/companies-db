@@ -44,7 +44,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
     recordTypeEnum: DisqualifiedOfficersRecordType.Person,
     fields: [
       { name: 'RECORD-TYPE', dataType: 'X', start: 0, length: 1 },
-      { name: 'PERSON-NUMBER', dataType: '9', start: 1, length: 12 },
+      { name: 'PERSON-NUMBER', dataType: 'X', start: 1, length: 12 },
       { name: 'PERSON-DATE-OF-BIRTH', dataType: 'D', start: 13, length: 8 },
       { name: 'PERSON-POSTCODE', dataType: 'X', start: 21, length: 8 },
       { name: 'PERSON-VARIABLE-IND', dataType: '9', start: 29, length: 4 },
@@ -66,7 +66,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
       },
       {
         name: 'PERSON-NUMBER',
-        dataType: '9',
+        dataType: 'X',
         start: 1,
         length: 12
       },
@@ -98,7 +98,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
         comment: '“ORDER” or “UNDERTAKING”'
       },
       {
-        name: 'DISQUAL-ORDER/UNDERTAKING-DATE',
+        name: 'DISQUAL-ORDER-UNDERTAKING-DATE',
         dataType: 'D',
         start: 79,
         length: 8,
@@ -143,7 +143,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
       },
       {
         name: 'PERSON-NUMBER',
-        dataType: '9',
+        dataType: 'X',
         start: 1,
         length: 12
       },
@@ -194,7 +194,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
       },
       {
         name: 'PERSON-NUMBER',
-        dataType: '9',
+        dataType: 'X',
         start: 1,
         length: 12
       },

@@ -8,6 +8,7 @@
         }
 
 	    encode zstd gzip
+	    header Server CompaniesDb
 
         # redirect requests to the root URL to the manage UI
         redir / /manage/ html

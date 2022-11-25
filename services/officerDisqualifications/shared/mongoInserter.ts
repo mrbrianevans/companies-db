@@ -32,20 +32,25 @@ interface MongoBulkWriterOpts{
  */
 export const mongoBulkWriter = (recordTypeField: string|null, recordTypes:{collection:string,value:any, mapper: (val: any)=>AnyBulkWriteOperation}[], dbName:string, {BulkOpSize = 1998, processUnrecognisedRecords = console.log, ordered = false}: MongoBulkWriterOpts={}) =>
   async function(source: Readable){
+  let limit =1
     function throwIfErr(e: MongoBulkWriteError){
+    // if(++limit < 3) console.log(e)
+      //todo: it is not replacing records correctly. it just throws a duplicate error when you try and replace a record?
       if(e.code !== 11000) throw e
       return e.result
     }
     const mongo = await getMongoClient()
     const db = mongo.db(dbName)
     const buffers = Object.fromEntries(recordTypes.map(r=>[r.collection, <any[]>[]]))
-    let counter = 0, stats = Object.fromEntries(recordTypes.map(r=>[r.collection, {matched: 0, inserted: 0, modified: 0, upserted: 0}]))
+    let counter = 0, stats = Object.fromEntries(recordTypes.map(r=>[r.collection, {matched: 0, inserted: 0, modified: 0, upserted: 0, removed: 0, errors: 0}]))
 
     function addStats(collection,res: BulkResult){
       stats[collection].matched += res.nMatched
       stats[collection].inserted += res.nInserted
       stats[collection].modified += res.nModified
       stats[collection].upserted += res.nUpserted
+      stats[collection].removed += res.nRemoved
+      stats[collection].errors += res.writeErrors.length
     }
     for await(const item of source){
       const recordType = recordTypeField === null ? recordTypes[0] : recordTypes.find(r=>r.value === item[recordTypeField])
