@@ -22,11 +22,12 @@
     "depends_on":
       - "db"
     "volumes":
-      - "downloads:/loadBulk/downloads"
+      - "./loadBulk/bulkFiles:/officerDisqualifications/loadBulk/downloads"
     "environment":
       "MONGO_URL": "mongodb://db"
       "REDIS_URL": "redis://red:6379"
       "LOKI_URL": "http://loki:3100"
+      DISQUAL_BULK_FILE_PATH: /officerDisqualifications/loadBulk/downloads/Prod192_3251.txt
     "networks":
       - "officerDisqualifications"
       - "companiesv2_metrics"

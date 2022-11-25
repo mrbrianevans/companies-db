@@ -8,6 +8,7 @@ db.disableFreeMonitoring()
 db = db.getSiblingDB('officerDisqualifications')
 const collectionsToCreate = {
     // collections go here like this collectionName: { indexColumn: 1 }
+    getNaturalOfficer: {officer_id: 1}
 }
 
 const existingCollections = db.getCollectionNames()
