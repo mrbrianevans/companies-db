@@ -5,6 +5,8 @@ import {createReadStream, createWriteStream} from "fs";
 import {pipeline} from "stream/promises";
 import {RecordParser} from "./RecordParser.js";
 import {classifyDisqualifiedOfficerRecordType, disqualifiedOfficersRecordTypes} from "./disqualifiedOfficersFile.js";
+import {formatRecords} from "./formatRecords.js";
+import ReadWriteStream = NodeJS.ReadWriteStream;
 
 const options = {
   input: process.argv[2],
@@ -33,7 +35,7 @@ parseStream.on('data', ()=>{
 })
 
 const startTime = performance.now()
-await pipeline(inputStream, parseStream , stringStream, outputStream, {signal})
+await pipeline(inputStream, parseStream , formatRecords as unknown as ReadWriteStream,stringStream, outputStream, {signal})
   .catch(e=>{
     if(e.code === 'ABORT_ERR') {
       if (options.verbose) log("Aborted due to reaching specified limit of", options.limit)

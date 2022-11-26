@@ -32,10 +32,7 @@ interface MongoBulkWriterOpts{
  */
 export const mongoBulkWriter = (recordTypeField: string|null, recordTypes:{collection:string,value:any, mapper: (val: any)=>AnyBulkWriteOperation}[], dbName:string, {BulkOpSize = 1998, processUnrecognisedRecords = console.log, ordered = false}: MongoBulkWriterOpts={}) =>
   async function(source: Readable){
-  let limit =1
     function throwIfErr(e: MongoBulkWriteError){
-    // if(++limit < 3) console.log(e)
-      //todo: it is not replacing records correctly. it just throws a duplicate error when you try and replace a record?
       if(e.code !== 11000) throw e
       return e.result
     }
@@ -52,6 +49,16 @@ export const mongoBulkWriter = (recordTypeField: string|null, recordTypes:{colle
       stats[collection].removed += res.nRemoved
       stats[collection].errors += res.writeErrors.length
     }
+    // perform a bulk operation for a record type. modifies the buffer for that record type by removing all items.
+    async function bulkOp(recordType) {
+      const items = buffers[recordType.collection].splice(0, buffers[recordType.collection].length)
+      if (items.length > 0) {
+        const res = await db.collection(recordType.collection)
+          .bulkWrite(items.map(comp => recordType.mapper(comp)), {ordered}).catch(throwIfErr)
+        counter += items.length
+        addStats(recordType.collection, res.result)
+      }
+    }
     for await(const item of source){
       const recordType = recordTypeField === null ? recordTypes[0] : recordTypes.find(r=>r.value === item[recordTypeField])
       if(!recordType) processUnrecognisedRecords(item)
@@ -59,22 +66,12 @@ export const mongoBulkWriter = (recordTypeField: string|null, recordTypes:{colle
         if(recordTypeField !== null) delete item[recordTypeField]
         buffers[recordType.collection].push(item)
         if(buffers[recordType.collection].length === BulkOpSize){
-          const items = buffers[recordType.collection].splice(0, buffers[recordType.collection].length)
-          const res = await db.collection(recordType.collection)
-            .bulkWrite(items.map(comp => recordType.mapper(comp)),{ ordered }).catch(throwIfErr)
-          counter += items.length
-          addStats(recordType.collection, res.result)
+          await bulkOp(recordType)
         }
       }
     }
     for(const recordType of recordTypes){
-      const items = buffers[recordType.collection].splice(0, buffers[recordType.collection].length)
-      if(items.length > 0) {
-        const res = await db.collection(recordType.collection)
-          .bulkWrite(items.map(comp => ({insertOne: comp})), {ordered}).catch(throwIfErr)
-        counter += items.length
-        addStats(recordType.collection, res.result)
-      }
+      await bulkOp(recordType)
     }
 
     await mongo.close()

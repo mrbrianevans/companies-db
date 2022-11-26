@@ -117,12 +117,12 @@ function constructApiResponse(person, disquals, exemptions, variations) {
       disqualified_from: convertDate(d.disqualStartDate),
       disqualified_until: convertDate(d.disqualEndDate),
       address: {
-        region: person.personDetails.county ? titleCase(person.personDetails.county) : undefined,
-        locality: person.personDetails.posttown ? titleCase(person.personDetails.posttown) : undefined,
+        region: person.personDetails.county ? titleCase(person.personDetails.county.toLowerCase()) : undefined,
+        locality: person.personDetails.posttown ? titleCase(person.personDetails.posttown.toLowerCase()) : undefined,
         postal_code: person.personPostcode,
-        address_line_1: person.personDetails.addressLine1 ? titleCase(person.personDetails.addressLine1) : undefined,
-        address_line_2: person.personDetails.addressLine2 ? titleCase(person.personDetails.addressLine2) : undefined,
-        country: person.personDetails.country ? titleCase(person.personDetails.country) : undefined
+        address_line_1: person.personDetails.addressLine1 ? titleCase(person.personDetails.addressLine1.toLowerCase()) : undefined,
+        address_line_2: person.personDetails.addressLine2 ? titleCase(person.personDetails.addressLine2.toLowerCase()) : undefined,
+        country: person.personDetails.country ? titleCase(person.personDetails.country.toLowerCase()) : undefined
       },
       disqualification_type: getDisqualificationType(d.disqualificationType),
       company_names: [d.companyName], // this should combine multiple disqualifications if they are the same but for many companies
@@ -141,14 +141,14 @@ function constructApiResponse(person, disquals, exemptions, variations) {
     disqualifications,
     permissions_to_act,
     etag: randomUUID(),
-    forename: forename ? titleCase(forename) : undefined, other_names: other_names ? titleCase(other_names) : undefined,
+    forename: forename ? titleCase(forename.toLowerCase()) : undefined, other_names: other_names ? titleCase(other_names.toLowerCase()) : undefined,
     kind: 'corporateNumber' in person.personDetails ? 'corporate-disqualification' : 'natural-disqualification',
     links: {
       self: `/disqualified-officers/natural/${officer_id}`
     },
-    nationality: person.personDetails.nationality ? titleCase(person.personDetails.nationality) : undefined,
+    nationality: person.personDetails.nationality ? titleCase(person.personDetails.nationality.toLowerCase()) : undefined,
     surname: person.personDetails.surname,
-    title: person.personDetails.title ? titleCase(person.personDetails.title) : undefined
+    title: person.personDetails.title ? titleCase(person.personDetails.title.toLowerCase()) : undefined
   }
 }
 
