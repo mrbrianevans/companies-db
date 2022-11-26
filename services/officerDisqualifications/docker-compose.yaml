@@ -19,6 +19,7 @@
   "loader":
     "build":
       "dockerfile": "Loader.Dockerfile"
+    command: node verifyDatabase.js
     "depends_on":
       - "db"
     "volumes":
@@ -31,6 +32,8 @@
     "networks":
       - "officerDisqualifications"
       - "companiesv2_metrics"
+    "env_file":
+      - "../.api.env"
   "updater":
     "build":
       "dockerfile": "Updater.Dockerfile"

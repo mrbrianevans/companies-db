@@ -547,6 +547,7 @@ importers:
     specifiers:
       '@types/node': ^18.7.18
       camelcase-keys: ^8.0.2
+      deep-object-diff: ^1.1.9
       json-schema-to-ts: ^2.5.5
       mongodb: ^4.9.1
       split2: ^4.1.0
@@ -554,6 +555,7 @@ importers:
       typescript: ^4.8.3
     dependencies:
       camelcase-keys: 8.0.2
+      deep-object-diff: 1.1.9
       mongodb: 4.9.1
       split2: 4.1.0
       title-case: 3.0.3
@@ -2368,6 +2370,10 @@ packages:
   /deep-extend/0.6.0:
     resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
     engines: {node: '>=4.0.0'}
+    dev: false
+
+  /deep-object-diff/1.1.9:
+    resolution: {integrity: sha512-Rn+RuwkmkDwCi2/oXOFS9Gsr5lJZu/yTGpK7wAaAIE75CC+LCGEZHpY6VQJa/RoJcrmaA/docWJZvYohlNkWPA==}
     dev: false
 
   /delayed-stream/1.0.0:
