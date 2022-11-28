@@ -21,38 +21,56 @@ const headers = {
     'Basic ' + Buffer.from(getEnv('RESTAPIKEY') + ':').toString('base64')
 }
 
-await verifyDatabase(2)
+await verifyDatabase(299)
 
 
 async function verifyDatabase(size = 10){
   const mongo = await getMongoClient()
-  let matched = 0
+  let matched = 0, failed = 0, unfound = 0
   for await(const record of mongo.db(mongoDbName).collection('getNaturalOfficer').aggregate([{$sample: {size}}])){
-    const officialRecord = await findOfficialRecord(record)
-    const equal = compareRecords(record, officialRecord)
-    if(!equal){
-      const difference = detailedDiff(record, officialRecord)
-      //@ts-ignore
-      delete difference.deleted._id
-      //@ts-ignore
-      delete difference.deleted.officer_id
-      //@ts-ignore
-      delete difference.updated.etag
-      //@ts-ignore
-      delete difference.updated.links.self
-
-      console.log("Record does not match official record. Differences:")
-      console.log(JSON.stringify(record))
-      console.log(JSON.stringify(officialRecord))
-      // console.log(difference)
+    const officialRecord = await findOfficialRecord(record, mongo).then(normaliseDbRecord)
+    const {date_of_birth, forename, surname} = record
+    if(officialRecord?.date_of_birth !== date_of_birth) {
+      unfound++
+      continue
+    }
+    const normalisedRecord = normaliseDbRecord(record)
+    const equal = compareRecords(normalisedRecord, officialRecord)
+    const difference = diff(normalisedRecord, officialRecord)
+    if(difference && !equal){
+      failed++
+      console.log("Difference in record", JSON.stringify({date_of_birth, forename, surname}))
+      // console.log("Record does not match official record. Differences:")
+      // console.log(JSON.stringify(record))
+      // console.log(JSON.stringify(officialRecord))
+      console.log(JSON.stringify(difference))
     }else{
       matched++
     }
   }
-  console.log(matched, 'records matched')
+  console.log(matched, 'records matched out of', matched + failed, failed, 'failed')
+  console.log('did not find', unfound, 'records on official api. skipped validating these')
+  console.log('Percentage accurate:', (matched/(matched+failed)*100).toFixed(1))
   await mongo.close()
 }
 
+function normaliseDbRecord(record){
+  delete record?._id
+  delete record?.officer_id
+  delete record?.etag
+  delete record?.honours
+  delete record?.links.self
+  for(const d of record?.disqualifications??[]){
+    delete d.reason.description_identifier
+    d.address.address_line_1 = [d.address.premises,d.address.premise,d.address.address_line_1].filter(d=>d).join(' ')
+    delete d.address.premises
+    delete d.address.premise
+  }
+  for(const d of record?.permissions_to_act??[]){
+    delete d.court_name
+  }
+  return JSON.parse(JSON.stringify(record).toLowerCase())
+}
 
 function compareRecords(a, b){
   try{
@@ -67,12 +85,15 @@ function compareRecords(a, b){
 }
 
 
-async function findOfficialRecord(recordFromMongo){
-  const name = [recordFromMongo.forename, recordFromMongo.other_names, recordFromMongo.surname].join(' ')
-  const {body:searchResults} = await callApi(`/search/disqualified-officers?q=${name}`)
-  const bestMatch = searchResults.items?.[0]
+async function findOfficialRecord(recordFromMongo, mongo){
+  const cached = await mongo.db(mongoDbName).collection('naturalOfficerCache').findOne({_id:recordFromMongo.officer_id})
+  if(cached) return cached
+  const name = [recordFromMongo.forename, recordFromMongo.other_forenames, recordFromMongo.surname].join(' ')
+  const {body:searchResults} = await callApi(`/search/disqualified-officers?q=${name}&items_per_page=3`)
+  const bestMatch = searchResults.items?.find(i=>recordFromMongo.date_of_birth === undefined || i.date_of_birth?.startsWith(recordFromMongo.date_of_birth))
   if(!bestMatch) return null
   const {body: disqualificationRecord} = await callApi(bestMatch.links.self)
+  if(disqualificationRecord) await mongo.db(mongoDbName).collection('naturalOfficerCache').insertOne({...disqualificationRecord, _id:recordFromMongo.officer_id})
   return disqualificationRecord
 }
 
@@ -85,7 +106,7 @@ export interface ApiResponse{
 }
 
 export async function callApi(path: string): Promise<ApiResponse>{
-  console.log("Requesting", path)
+  // console.log("Requesting", path)
   const url = new URL(path, API_URL)
   const startTime = performance.now()
   const res = await fetch(url, {method: 'GET', headers})

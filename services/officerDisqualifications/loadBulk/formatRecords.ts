@@ -80,12 +80,15 @@ function convertDate(date: { year: number, month: number, day: number }) {
 }
 
 function getActSection(sectionOfTheAct: string) {
+  const [id, ...sectionNumber] = sectionOfTheAct.split(' ').at(-1)??[]
+  // can be {section:'10'} or {article: '10'} depending on S10 or A10 value prefix.
+  const part = {[id === 'S' ? 'section':'article']:sectionNumber.join('')}
   if (sectionOfTheAct.startsWith('CDDA 1986')) {
-    return {act: 'company-directors-disqualification-act-1986', section: sectionOfTheAct.split(' ').at(-1)?.slice(1)}
+    return {act: 'company-directors-disqualification-act-1986', ...part}
   } else if (sectionOfTheAct.startsWith('CDDO 2002')) {
     return {
       act: 'company-directors-disqualification-northern-ireland-order-2002',
-      section: sectionOfTheAct.split(' ').at(-1)?.slice(1)
+      ...part
     }
   } else throw new Error('Could not get section of the act from: ' + sectionOfTheAct)
 }
@@ -96,6 +99,12 @@ function getDisqualificationType(disqualType: string) {
   else throw new Error('Unrecognised disqualification type: ' + disqualType)
 }
 
+function getHearingDateKey(disqualTypeEnum:'court-order'|'undertaking'){
+  if(disqualTypeEnum === 'court-order') return 'heard_on'
+  else if(disqualTypeEnum === 'undertaking') return 'undertaken_on'
+  else throw new Error('Unrecognised disqualification type enum: '+disqualTypeEnum)
+}
+
 /** Splits forename into forename and other_names */
 function parseForenames(forenames: string) {
   const [forename, ...otherNamesArray] = forenames?.split(' ') ?? []
@@ -103,34 +112,43 @@ function parseForenames(forenames: string) {
 }
 
 function constructApiResponse(person, disquals, exemptions, variations) {
-  const permissions_to_act = exemptions.length ? exemptions.map(e => ({
-    company_names: [e.exemptionCompanyName], // this should combine multiple exemptions if they have the same dates and court name?
-    // court_name: '',
-    granted_on: convertDate(e.exemptionStartDate),
-    expires_on: convertDate(e.exemptionEndDate)
-  })) : undefined
+  // combine exemptions if the dates are the same, and put company names in an array
+  const permissionDates = new Set(exemptions.map(e=>[convertDate(e.exemptionStartDate),convertDate(e.exemptionEndDate)].join(' - ')))
+  const permissions_to_act = exemptions.length ? [...permissionDates].map(key => {
+    const es = exemptions.filter(e=>[convertDate(e.exemptionStartDate),convertDate(e.exemptionEndDate)].join(' - ') === key)
+    return ({
+      company_names: es.map(e=>e.exemptionCompanyName).sort(),
+      // court_name: '', // don't have this data point
+      granted_on: convertDate(es[0].exemptionStartDate),
+      expires_on: convertDate(es[0].exemptionEndDate)
+    });
+  }) : undefined
   const {forename, other_names} = parseForenames(person.personDetails.forenames)
-  const disqualifications = disquals.map(d => {
-    const {act, section} = getActSection(d.sectionOfTheAct)
+  const address = {
+    region: person.personDetails.county ? titleCase(person.personDetails.county.toLowerCase()) : undefined,
+    locality: person.personDetails.posttown ? titleCase(person.personDetails.posttown.toLowerCase()) : undefined,
+    postal_code: person.personPostcode,
+    address_line_1: person.personDetails.addressLine1 ? titleCase(person.personDetails.addressLine1.toLowerCase()) : undefined,
+    address_line_2: person.personDetails.addressLine2 ? titleCase(person.personDetails.addressLine2.toLowerCase()) : undefined,
+    country: person.personDetails.country ? titleCase(person.personDetails.country.toLowerCase()) : undefined
+  }
+  const disqualificationCases = new Set(disquals.map(d=>d.caseNumber)) // de-duplicate cases, combine company names in array
+  const disqualifications = [...disqualificationCases].map(caseNumber => {
+    const d = disquals.find(di=>di.caseNumber === caseNumber) // find first disqual with the right case number
+    const actSection = getActSection(d.sectionOfTheAct)
+    const disqualification_type = getDisqualificationType(d.disqualificationType)
+    const company_names = disquals.filter(di=>di.caseNumber === d.caseNumber).map(di=>di.companyName).filter(s=>s).sort()
     return {
-      undertaken_on: convertDate(d['disqualOrder/undertakingDate']),
+      [getHearingDateKey(disqualification_type)]: convertDate(d['disqualOrderUndertakingDate']),
       disqualified_from: convertDate(d.disqualStartDate),
       disqualified_until: convertDate(d.disqualEndDate),
-      address: {
-        region: person.personDetails.county ? titleCase(person.personDetails.county.toLowerCase()) : undefined,
-        locality: person.personDetails.posttown ? titleCase(person.personDetails.posttown.toLowerCase()) : undefined,
-        postal_code: person.personPostcode,
-        address_line_1: person.personDetails.addressLine1 ? titleCase(person.personDetails.addressLine1.toLowerCase()) : undefined,
-        address_line_2: person.personDetails.addressLine2 ? titleCase(person.personDetails.addressLine2.toLowerCase()) : undefined,
-        country: person.personDetails.country ? titleCase(person.personDetails.country.toLowerCase()) : undefined
-      },
-      disqualification_type: getDisqualificationType(d.disqualificationType),
-      company_names: [d.companyName], // this should combine multiple disqualifications if they are the same but for many companies
+      address,
+      disqualification_type,
+      company_names: company_names.length ? company_names : undefined,
       reason: {
-        // court_name: d.courtName,
-        act,
-        section
+        ...actSection
       },
+      court_name: disqualification_type === 'court-order' && d.courtName ? titleCase(d.courtName.toLowerCase()):undefined,
       case_identifier: d.caseNumber
     }
   })
@@ -141,12 +159,12 @@ function constructApiResponse(person, disquals, exemptions, variations) {
     disqualifications,
     permissions_to_act,
     etag: randomUUID(),
-    forename: forename ? titleCase(forename.toLowerCase()) : undefined, other_names: other_names ? titleCase(other_names.toLowerCase()) : undefined,
+    forename: forename ? titleCase(forename.toLowerCase()) : undefined, other_forenames: other_names ? titleCase(other_names.toLowerCase()) : undefined,
     kind: 'corporateNumber' in person.personDetails ? 'corporate-disqualification' : 'natural-disqualification',
     links: {
       self: `/disqualified-officers/natural/${officer_id}`
     },
-    nationality: person.personDetails.nationality ? titleCase(person.personDetails.nationality.toLowerCase()) : undefined,
+    nationality: person.personDetails.nationality ? person.personDetails.nationality.toLowerCase().split(',').map(titleCase).join(',') : undefined,
     surname: person.personDetails.surname,
     title: person.personDetails.title ? titleCase(person.personDetails.title.toLowerCase()) : undefined
   }
