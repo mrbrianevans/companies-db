@@ -5,9 +5,14 @@ export function getEnv(name: string): string {
     throw new Error(`${name} environment variable not set`)
   return value
 }
-export function average<T>(arr: T[], valueGetter = (a: T) => Number(a)) {
-  return arr.reduce(
-    (avg, current, index) => (index * avg + valueGetter(current)) / (index + 1),
-    0
-  )
+
+// calculate the average value in an array
+export function average<T extends number>(arr: T[]): number
+export function average<T>(arr: T[], valueGetter: (val: T) => number): number
+export function average<T>(
+  arr: { reduce(fn: () => number, initial: number): Promise<number> },
+  valueGetter: (val: T) => number
+): Promise<number>
+export function average<T>(arr, valueGetter = (a) => Number(a)) {
+  return arr.reduce((avg, current, index) => (index * avg + valueGetter(current)) / (index + 1), 0)
 }

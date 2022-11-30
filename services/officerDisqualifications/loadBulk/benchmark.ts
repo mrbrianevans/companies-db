@@ -4,6 +4,7 @@ import {classifyDisqualifiedOfficerRecordType, disqualifiedOfficersRecordTypes} 
 import {pipeline} from "stream/promises";
 import split2 from 'split2'
 import {setTimeout} from "timers/promises";
+import { average } from "./utils.js";
 
 // parse a single file and return the time taken
 async function runBenchmark(){
@@ -30,14 +31,3 @@ console.log('Results: ', times.map(t=>t.toFixed(1)).join(' '))
 const averageDuration = average(times)
 console.log('Average:', averageDuration, 'ms ±', Math.round(Math.max(Math.max(...times) - averageDuration, averageDuration - Math.min(...times))))
 
-
-// calculate the average value in an array
-export function average<T extends number>(arr: T[]): number
-export function average<T>(arr: T[], valueGetter: (val: T) => number): number
-export function average<T>(
-  arr: { reduce(fn: () => number, initial: number): Promise<number> },
-  valueGetter: (val: T) => number
-): Promise<number>
-export function average<T>(arr, valueGetter = (a) => Number(a)) {
-  return arr.reduce((avg, current, index) => (index * avg + valueGetter(current)) / (index + 1), 0)
-}
