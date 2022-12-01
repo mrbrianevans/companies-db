@@ -1,4 +1,3 @@
-import camelcaseKeys from 'camelcase-keys';
 
 interface VariableFormatOptions{
   dataType: 'V',
@@ -56,7 +55,7 @@ function parseDate(date) {
 // cache used to improve performance. Could also be compiled when a Parser is constructed.
 const variableDataFormatCache = new Map()
 
-function parseVariableData(keysFormat: string, valuesString: string, transformer = camelcaseKeys) {
+function parseVariableData(keysFormat: string, valuesString: string, transformer =  (s=>s)) {
   if (!variableDataFormatCache.has(keysFormat)) {
     variableDataFormatCache.set(keysFormat, keysFormat.split('<').filter(k => k.length))
   }
@@ -113,7 +112,7 @@ export class RecordParser {
     const recordTypeSpec = this.recordTypeSpecs.find(r => r.recordTypeEnum === recordType)
     if (!recordTypeSpec) throw new Error('Cannot parse record. Record type spec not provided for recordType=' + String(JSON.stringify(recordType)))
     const rawValues = parseRecordByFormat(record, recordTypeSpec.fields)
-    const transformer = recordTypeSpec.transformer ?? camelcaseKeys
+    const transformer = recordTypeSpec.transformer ?? (s=>s)
     const transformedValue = transformer(rawValues)
     return {...transformedValue, recordType}
   }

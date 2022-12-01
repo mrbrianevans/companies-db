@@ -21,13 +21,16 @@ async function runBenchmark(){
 
 // parse the file 5 times to get an average duration
 const times = [] as number[]
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 15; i++) {
   const {durationMs} = await runBenchmark()
-  times.push(durationMs)
+  if(i > 1) times.push(durationMs)
   await setTimeout(250)
 }
 
+times.sort((a,b)=>a-b)
 console.log('Results: ', times.map(t=>t.toFixed(1)).join(' '))
 const averageDuration = average(times)
-console.log('Average:', averageDuration, 'ms ±', Math.round(Math.max(Math.max(...times) - averageDuration, averageDuration - Math.min(...times))))
+const avgError = Math.round(Math.max(Math.max(...times) - averageDuration, averageDuration - Math.min(...times)))
+const median = times[Math.floor(times.length/2)]
+console.log('Average:', averageDuration, 'ms ±', avgError, 'median', median)
 

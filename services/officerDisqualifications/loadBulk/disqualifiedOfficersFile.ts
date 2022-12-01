@@ -1,5 +1,6 @@
 import type {RecordTypeSpec} from './RecordParser.js'
-
+import camelcaseKeys from 'camelcase-keys';
+// const camelcaseKeys = s => s // for testing speed improvement. takes about 40ms off.
 export enum DisqualifiedOfficersRecordType{
   Header,
   Person,
@@ -18,6 +19,7 @@ export function classifyDisqualifiedOfficerRecordType(record: string): Disqualif
 export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
   {
     recordTypeEnum: DisqualifiedOfficersRecordType.Header,
+    transformer: camelcaseKeys,
     fields: [
       {name: 'Header Identifier', dataType: 'X', start: 0, length: 8},
       {name: 'Run Number', dataType: '9', start: 8, length: 4},
@@ -26,6 +28,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
   },
   {
     recordTypeEnum: DisqualifiedOfficersRecordType.Trailer,
+    transformer: camelcaseKeys,
     fields: [
       { name: 'Trailer Identifier ', dataType: 'X', start: 0, length: 8 },
       { name: 'Type 1 Record Count', dataType: '9', start: 9, length: 8 },
@@ -42,6 +45,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
   },
   {
     recordTypeEnum: DisqualifiedOfficersRecordType.Person,
+    transformer: camelcaseKeys,
     fields: [
       { name: 'RECORD-TYPE', dataType: 'X', start: 0, length: 1 },
       { name: 'PERSON-NUMBER', dataType: 'X', start: 1, length: 12 },
@@ -56,6 +60,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
   },
   {
     recordTypeEnum: DisqualifiedOfficersRecordType.Disqualification,
+    transformer: camelcaseKeys,
     fields: [
       {
         name: 'RECORD-TYPE',
@@ -133,6 +138,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
   },
   {
     recordTypeEnum: DisqualifiedOfficersRecordType.Exemption,
+    transformer: camelcaseKeys,
     fields: [
       {
         name: 'RECORD-TYPE',
@@ -184,6 +190,7 @@ export const disqualifiedOfficersRecordTypes: RecordTypeSpec[] = [
   },
   {
     recordTypeEnum: DisqualifiedOfficersRecordType.Variation,
+    transformer: camelcaseKeys,
     fields: [
       {
         name: 'RECORD-TYPE',
